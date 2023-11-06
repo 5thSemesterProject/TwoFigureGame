@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.TextCore;
 
 public class CharacterData
 {
@@ -15,6 +17,7 @@ public class CharacterData
     public GameObject gameObject;
     public Movement movement;
     public CharacterState currentState;
+    public CinemachineVirtualCamera virtualCamera;
 }
 
 public class CharacterManager : MonoBehaviour
@@ -35,7 +38,7 @@ public class CharacterManager : MonoBehaviour
         customInputMaps = new CustomInputs();
         SwitchControlScheme(customInputMaps.InGame);
 
-        //Set Up StateMaschines
+        //Set Up StateMachines
         GameObject[] characters = GetOrSpawnCharacters();
         characterDatas = SetUpCharacters(characters);
     }
@@ -48,7 +51,9 @@ public class CharacterManager : MonoBehaviour
     public static void SwitchCharacters()
     {
         characterDatas[count].currentState = new AIState(characterDatas[count].currentState.characterData);
+        characterDatas[count].virtualCamera.gameObject.SetActive(false);
         count = (count+1) % characterDatas.Length;
+        characterDatas[count].virtualCamera.gameObject.SetActive(true);
         Debug.Log(count);
     }
 
@@ -77,6 +82,8 @@ public class CharacterManager : MonoBehaviour
             GameObject obj = EnsureCharacter(characters[i]);
             datas[i] = new CharacterData(obj);
             datas[i].currentState = new SetUpState(datas[i]);
+            datas[i].virtualCamera = datas[i].gameObject.GetComponentInChildren<CinemachineVirtualCamera>();
+            datas[i].virtualCamera.gameObject.SetActive(false);
         }
 
         return datas;
@@ -179,6 +186,7 @@ class IdleState : CharacterState
     public override CharacterState UpdateState()
     {
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
+        characterData.virtualCamera.gameObject.SetActive(true);
         characterData.movement.MovePlayer(inputVector);
 
         return this;
