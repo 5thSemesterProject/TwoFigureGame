@@ -31,6 +31,7 @@ public class CharacterManager : MonoBehaviour
 
     //Character Prefab
     [SerializeField] private GameObject characterPrefab;
+    [SerializeField] private GameObject cameraPrefab;
 
     void Start()
     {
@@ -41,6 +42,8 @@ public class CharacterManager : MonoBehaviour
         //Set Up StateMachines
         GameObject[] characters = GetOrSpawnCharacters();
         characterDatas = SetUpCharacters(characters);
+
+        CamManager.SetCamPrefab(cameraPrefab);
     }
 
     void Update()
@@ -48,13 +51,25 @@ public class CharacterManager : MonoBehaviour
         characterDatas[count].currentState = characterDatas[count].currentState.UpdateState();
     }
 
-    public static void SwitchCharacters()
+    GameObject GetActiveCharacter()
     {
+        return characterDatas[count].gameObject;
+    }
+
+    public static void SwitchCharacters()
+    {   
+        //Delete old Camera
+        if (characterDatas[count]!=null)
+        {
+            CamManager.DeleteCamera(characterDatas[count].virtualCamera);
+            characterDatas[count].virtualCamera = null;
+        }
+
         characterDatas[count].currentState = new AIState(characterDatas[count].currentState.characterData);
-        characterDatas[count].virtualCamera.gameObject.SetActive(false);
         count = (count+1) % characterDatas.Length;
-        characterDatas[count].virtualCamera.gameObject.SetActive(true);
-        Debug.Log(count);
+        
+        //Set up new Camera
+        CamManager.SpawnCamera(characterDatas[count].gameObject.transform, out characterDatas[count].virtualCamera);
     }
 
     #region Setup
@@ -82,8 +97,6 @@ public class CharacterManager : MonoBehaviour
             GameObject obj = EnsureCharacter(characters[i]);
             datas[i] = new CharacterData(obj);
             datas[i].currentState = new SetUpState(datas[i]);
-            datas[i].virtualCamera = datas[i].gameObject.GetComponentInChildren<CinemachineVirtualCamera>();
-            datas[i].virtualCamera.gameObject.SetActive(false);
         }
 
         return datas;
@@ -186,7 +199,6 @@ class IdleState : CharacterState
     public override CharacterState UpdateState()
     {
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
-        characterData.virtualCamera.gameObject.SetActive(true);
         characterData.movement.MovePlayer(inputVector);
 
         return this;

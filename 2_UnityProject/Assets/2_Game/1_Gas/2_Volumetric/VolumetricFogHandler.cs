@@ -39,7 +39,6 @@ public class VolumetricFogHandler : MonoBehaviour
                 float circlePosZ = circlePosition.z;
                 float circleRadius  = localVolumetricFog.parameters.materialMask.GetVector($"_Sphere0{i+1}").w;
                 localVolumetricFog.parameters.materialMask.SetVector($"_Sphere0{i+1}",new Vector4(circlePosX,circlePosY,circlePosZ,circleRadius));
-                Debug.Log ("test");
             }
                 
     }
