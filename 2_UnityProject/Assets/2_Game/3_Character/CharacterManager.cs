@@ -33,7 +33,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private GameObject characterPrefab;
     [SerializeField] private GameObject cameraPrefab;
 
-    void Start()
+    private void Start()
     {
         //Set Up Inputs
         customInputMaps = new CustomInputs();
@@ -48,7 +48,7 @@ public class CharacterManager : MonoBehaviour
         SwitchCharacters();
     }
 
-    void Update()
+    private void Update()
     {
         characterDatas[characterIndex].currentState = characterDatas[characterIndex].currentState.UpdateState();
     }
@@ -165,10 +165,27 @@ public abstract class CharacterState
     public CharacterState(CharacterData data)
     {
         characterData = data;
+        CharacterManager.customInputMaps.InGame.Action.performed += SwitchCharacters;
     }
 
     public CharacterData characterData;
     public abstract CharacterState UpdateState();
+
+    protected void RemoveCharacterSwitch()
+    {
+        CharacterManager.customInputMaps.InGame.Action.performed -= SwitchCharacters;
+    }
+
+    protected virtual void SwitchCharacters(InputAction.CallbackContext context)
+    {
+        ExitState();
+        CharacterManager.SwitchCharacters();
+    }
+
+    protected virtual void ExitState()
+    {
+        RemoveCharacterSwitch();
+    }
 }
 
 class SetUpState : CharacterState
@@ -183,7 +200,10 @@ class SetUpState : CharacterState
 
 class AIState : CharacterState
 {
-    public AIState(CharacterData data) : base(data) { }
+    public AIState(CharacterData data) : base(data)
+    {
+        RemoveCharacterSwitch();
+    }
 
     public override CharacterState UpdateState()
     {
@@ -195,25 +215,41 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-        CharacterManager.customInputMaps.InGame.Action.performed += Action;
+        
     }
 
     public override CharacterState UpdateState()
     {
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
-        characterData.movement.MovePlayer(inputVector);
+        if (inputVector.magnitude > 0)
+        {
+            ExitState();
+            return new MoveState(characterData);
+        }
 
         return this;
     }
+}
 
-    private void Action(InputAction.CallbackContext context)
+class MoveState : CharacterState
+{
+    public MoveState(CharacterData data) : base(data)
     {
-        ExitState();
-        CharacterManager.SwitchCharacters();
+
     }
 
-    private void ExitState()
+    public override CharacterState UpdateState()
     {
-        CharacterManager.customInputMaps.InGame.Action.performed -= Action;
+        Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
+        if (inputVector.magnitude <= 0)
+        {
+            ExitState();
+            return new IdleState(characterData);
+        }
+
+        characterData.movement.MovePlayer(inputVector);
+
+        return this;
+
     }
 }
