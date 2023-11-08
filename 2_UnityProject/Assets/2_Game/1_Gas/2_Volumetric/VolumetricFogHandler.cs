@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.VFX;
@@ -7,15 +8,11 @@ using UnityEngine.VFX;
 public class VolumetricFogHandler : MonoBehaviour
 {   
     [SerializeField] LayerMask layerMask;
-    Transform[] maskPos;
+    Vector4[] sphereInfo;
     int maxMasks = 3;
 
     LocalVolumetricFog localVolumetricFog;
 
-    void Awake()
-    {
-        
-    }
     void Start()
     {
         ImportSmokeMasks();
@@ -24,45 +21,33 @@ public class VolumetricFogHandler : MonoBehaviour
 
     void Update()
     {
-        SetTransforms(maskPos);
+        SetSpheres(sphereInfo);
     }
 
-    void SetTransforms(Transform[] transforms)
+    void SetSpheres(Vector4[] sphereInfoInput)
     {
         for (int i =0;i<maxMasks;i++)
         {
-            if (transforms[i]!=null)
-            {
-                Vector3 circlePosition = transforms[i].position;
-                float circlePosX = circlePosition.x;
-                float circlePosY = circlePosition.y;
-                float circlePosZ = circlePosition.z;
                 float circleRadius  = localVolumetricFog.parameters.materialMask.GetVector($"_Sphere0{i+1}").w;
-                localVolumetricFog.parameters.materialMask.SetVector($"_Sphere0{i+1}",new Vector4(circlePosX,circlePosY,circlePosZ,circleRadius));
-            }
-                
-    }
+                localVolumetricFog.parameters.materialMask.SetVector($"_Sphere0{i+1}",sphereInfoInput[i]);       
+        }
     }
 
     void ImportSmokeMasks()
     {
-        maskPos = new Transform[maxMasks];
-        var allObjects = FindObjectsOfType<GameObject>() ;
+        sphereInfo = new Vector4[maxMasks];
+        IEnumerable <IIntersectSmoke> findObjects = FindObjectsOfType<MonoBehaviour>().OfType<IIntersectSmoke>();
+        List<IIntersectSmoke> allObjects = findObjects.ToList<IIntersectSmoke>();
         int counter = 0;
-        for (int i = 0; i < allObjects.Length; i++)
+        for (int i = 0; i < allObjects.Count(); i++)
         {
-            if ((layerMask.value & (1 << allObjects[i].layer)) > 0)
-            {
-                
                 if (counter>=maxMasks)
                 {
                     Debug.Log("There are more objects that mask out smoked then previsouly set");
                     break;
                 }     
-                Debug.Log (allObjects[i].name);
-                maskPos[counter] = allObjects[i].transform;
+                sphereInfo[counter] = allObjects[i].GetSphereInformation();
                 counter++;
-            }
         }
     }
 }
