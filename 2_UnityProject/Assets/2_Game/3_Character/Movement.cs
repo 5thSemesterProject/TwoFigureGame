@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 using UnityEngine.Windows;
 using static UnityEngine.Rendering.DebugUI;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviour, IIntersectSmoke
 {
     private CharacterController characterController;
     private Vector2 previousMovement;
@@ -27,6 +27,11 @@ public class Movement : MonoBehaviour
             characterController = gameObject.AddComponent<CharacterController>();
             characterController.slopeLimit = characterController.stepOffset = 0;
         }
+    }
+
+    public Vector4 GetSphereInformation()
+    {
+        return VectorHelper.Convert3To4(transform.position,2);
     }
 
     #region Movement

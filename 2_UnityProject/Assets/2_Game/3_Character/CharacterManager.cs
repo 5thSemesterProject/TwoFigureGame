@@ -27,7 +27,7 @@ public class CharacterManager : MonoBehaviour
 
     //State Maschine
     private static CharacterData[] characterDatas;
-    private static int count = 0;
+    private static int characterIndex = 0;
 
     //Character Prefab
     [SerializeField] private GameObject characterPrefab;
@@ -43,33 +43,35 @@ public class CharacterManager : MonoBehaviour
         GameObject[] characters = GetOrSpawnCharacters();
         characterDatas = SetUpCharacters(characters);
 
+        //Setu up Camera
         CamManager.SetCamPrefab(cameraPrefab);
+        SwitchCharacters();
     }
 
     void Update()
     {
-        characterDatas[count].currentState = characterDatas[count].currentState.UpdateState();
+        characterDatas[characterIndex].currentState = characterDatas[characterIndex].currentState.UpdateState();
     }
 
     GameObject GetActiveCharacter()
     {
-        return characterDatas[count].gameObject;
+        return characterDatas[characterIndex].gameObject;
     }
 
     public static void SwitchCharacters()
     {   
         //Delete old Camera
-        if (characterDatas[count]!=null)
+        if (characterDatas[characterIndex].virtualCamera!=null)
         {
-            CamManager.DeleteCamera(characterDatas[count].virtualCamera);
-            characterDatas[count].virtualCamera = null;
+            CamManager.DeleteCamera(characterDatas[characterIndex].virtualCamera);
+            characterDatas[characterIndex].virtualCamera = null;
         }
 
-        characterDatas[count].currentState = new AIState(characterDatas[count].currentState.characterData);
-        count = (count+1) % characterDatas.Length;
+        characterDatas[characterIndex].currentState = new AIState(characterDatas[characterIndex].currentState.characterData);
+        characterIndex = (characterIndex+1) % characterDatas.Length;
         
         //Set up new Camera
-        CamManager.SpawnCamera(characterDatas[count].gameObject.transform, out characterDatas[count].virtualCamera);
+        CamManager.SpawnCamera(characterDatas[characterIndex].gameObject.transform, out characterDatas[characterIndex].virtualCamera);
     }
 
     #region Setup
