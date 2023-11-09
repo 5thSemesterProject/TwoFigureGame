@@ -38,8 +38,8 @@ public class CamManager: MonoBehaviour
         activeCameras.Remove(camToDestroy);
 
         instance.StartCoroutine(instance.WaitForCameraToDelete(camToDestroy.gameObject));
-
    }
+
 
    IEnumerator WaitForCameraToDelete(GameObject objectToDestroy)
    {
