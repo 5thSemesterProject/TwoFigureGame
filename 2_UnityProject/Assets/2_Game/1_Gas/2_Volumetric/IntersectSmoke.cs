@@ -6,5 +6,6 @@ using UnityEngine;
 
 public interface IIntersectSmoke
 {
-    Vector4 GetSphereInformation();
+    public Vector4 GetSphereInformation();
+    public GameObject GetGameObject();
 }

@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 using UnityEngine.Windows;
 using static UnityEngine.Rendering.DebugUI;
 
-public class Movement : MonoBehaviour, IIntersectSmoke
+public class Movement : MonoBehaviour
 {
     private CharacterController characterController;
     private Vector2 previousMovement;
@@ -32,6 +32,11 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     public Vector4 GetSphereInformation()
     {
         return VectorHelper.Convert3To4(transform.position,2);
+    }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
     }
 
     #region Movement
@@ -87,17 +92,18 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
     private Vector2 CalculateOptimizedMovement(Vector2 movement, Vector3 position)
     {
-        Vector3 RaycastEnd = position + Vector3.up + Vector2ToVector3(movement.normalized) * 4;
+        Vector3 RaycastEnd = position + Vector3.up + VectorHelper.Convert2To3(movement.normalized) * 4;
+
 
         RaycastHit hit;
-        Physics.Linecast(position + Vector3.up, position + Vector3.up + Vector2ToVector3(movement.normalized) * 4, out hit, LayerMask.GetMask("Walls"));
+        Physics.Linecast(position + Vector3.up, position + Vector3.up + VectorHelper.Convert2To3(movement.normalized) * 4, out hit, LayerMask.GetMask("Walls"));
         if (hit.collider != null)
         {
-            Vector2 ray = Vector3ToVector2(hit.point - position);
+            Vector2 ray = VectorHelper.Convert3To2(hit.point - position);
             Vector3 dir = hit.point - position;
-            Vector2 dir2 = Vector3ToVector2(dir);
+            Vector2 dir2 = VectorHelper.Convert3To2(dir);
             Vector3 normal = hit.normal;
-            Vector2 normal2 = Vector3ToVector2(normal).normalized;
+            Vector2 normal2 = VectorHelper.Convert3To2(normal).normalized;
 
             float distance = ray.magnitude * Vector2.Dot(ray.normalized, normal2.normalized);
             distance = Mathf.Abs(distance);
@@ -131,13 +137,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     #endregion
 
     #region Conversion
-    private Vector2 Vector3ToVector2(Vector3 value)
-    {
-        return new(value.x, value.z);
-    }
-    private Vector3 Vector2ToVector3(Vector2 value)
-    {
-        return new(value.x, 0, value.y);
-    }
+  
     #endregion
 }
