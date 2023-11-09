@@ -63,7 +63,7 @@ public class CharacterManager : MonoBehaviour
         //Delete old Camera
         if (characterDatas[characterIndex].virtualCamera!=null)
         {
-            CamManager.DeleteCamera(characterDatas[characterIndex].virtualCamera);
+            characterDatas[characterIndex].virtualCamera.gameObject.SetActive(false);
             characterDatas[characterIndex].virtualCamera = null;
         }
 
@@ -71,7 +71,8 @@ public class CharacterManager : MonoBehaviour
         characterIndex = (characterIndex+1) % characterDatas.Length;
         
         //Set up new Camera
-        CamManager.SpawnCamera(characterDatas[characterIndex].gameObject.transform, out characterDatas[characterIndex].virtualCamera);
+        if (characterDatas[characterIndex].virtualCamera==null)
+            CamManager.SpawnCamera(characterDatas[characterIndex].gameObject.transform, out characterDatas[characterIndex].virtualCamera);
     }
 
     #region Setup

@@ -75,7 +75,7 @@ public class VolumetricFogHandler : MonoBehaviour
     void CheckColliders()
     {   
         Vector3 colliderSize = localVolumetricFog.parameters.size;
-        Collider[] hitColliders = Physics.OverlapBox(transform.position, colliderSize/2, Quaternion.identity, layerMask);
+        Collider[] hitColliders = Physics.OverlapBox(transform.position, colliderSize/2+Vector3.one, Quaternion.identity, layerMask);
 
         //Check if object is already in list
         for (int i = 0; i < hitColliders.Length; i++)
