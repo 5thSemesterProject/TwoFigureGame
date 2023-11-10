@@ -205,6 +205,7 @@ class AIState : CharacterState
 {
     public AIState(CharacterData data) : base(data)
     {
+        Debug.Log ("Activated AI State for "+ characterData.gameObject);
         RemoveCharacterSwitch();
     }
 
