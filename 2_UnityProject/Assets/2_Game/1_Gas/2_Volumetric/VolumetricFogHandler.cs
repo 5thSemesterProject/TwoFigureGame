@@ -80,7 +80,6 @@ public class VolumetricFogHandler : MonoBehaviour
         //Check if object is already in list
         for (int i = 0; i < hitColliders.Length; i++)
         {   
-            Debug.Log (hitColliders[i].gameObject.name);
             if (!intersectSmokeTransforms.Contains(hitColliders[i].transform))
             {
                 AddSmokeMask(hitColliders[i].transform);

@@ -145,7 +145,6 @@ public class CharacterManager : MonoBehaviour
             {
                 DisableControlSchemes();
                 actionMap.Enable();
-                Debug.Log($"Input: {actionMap.name} enabled");
             }
         }
     }
@@ -219,7 +218,7 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-        
+    
     }
 
     public override CharacterState UpdateState()
@@ -230,6 +229,8 @@ class IdleState : CharacterState
             ExitState();
             return new MoveState(characterData);
         }
+
+        characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",0);
 
         return this;
     }
@@ -252,6 +253,9 @@ class MoveState : CharacterState
         }
 
         characterData.movement.MovePlayer(inputVector);
+        characterData.gameObject.GetComponent<Animator>().SetBool("Grounded",true);
+        characterData.gameObject.GetComponent<Animator>().SetFloat("MotionSpeed",2);
+        characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",4);
 
         return this;
 
