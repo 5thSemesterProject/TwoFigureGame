@@ -29,4 +29,21 @@ public class Interactable : MonoBehaviour
 
     protected virtual void Function(){}
 
+    void OnDrawGizmosSelected()
+    {
+        if (triggeredBy!=null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(triggeredBy.transform.position,transform.position);
+        }
+            
+        if (triggering!=null)
+        {
+             Gizmos.color = Color.green;
+             Gizmos.DrawLine(triggering.transform.position,transform.position);
+        }        
+    }
+        
 }
+
+
