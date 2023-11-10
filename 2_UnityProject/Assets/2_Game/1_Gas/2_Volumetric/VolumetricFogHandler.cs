@@ -8,7 +8,7 @@ public class VolumetricFogHandler : MonoBehaviour
 {   
     [SerializeField] LayerMask layerMask;
     List<Transform> intersectSmokeTransforms  = new List<Transform>();
-    int maxMasks = 3;
+    int maxMasks = 6;
 
     LocalVolumetricFog localVolumetricFog;
 
