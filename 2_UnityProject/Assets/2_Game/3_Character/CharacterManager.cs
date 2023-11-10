@@ -91,6 +91,7 @@ public class CharacterManager : MonoBehaviour
             for (int i = characters.Length; i < 2; i++)
             {
                 temp[i] = EnsureCharacter(Instantiate(characterPrefab,Vector3.forward * i, Quaternion.identity));
+                temp[i].name = "SpawnedCharacter_"+i;
             }
 
             characters = temp;
@@ -205,7 +206,8 @@ class AIState : CharacterState
 {
     public AIState(CharacterData data) : base(data)
     {
-        Debug.Log ("Activated AI State for "+ characterData.gameObject);
+        characterData.gameObject.GetComponent<Animator>().SetBool("Grounded",true);
+        characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",0);
         RemoveCharacterSwitch();
     }
 
@@ -219,7 +221,7 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-    
+        //Debug.Log ("New Idle for " + characterData.gameObject+" with speed " +characterData.gameObject.GetComponent<Animator>().GetFloat("Speed") );
     }
 
     public override CharacterState UpdateState()
@@ -230,9 +232,6 @@ class IdleState : CharacterState
             ExitState();
             return new MoveState(characterData);
         }
-
-        characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",0);
-
         return this;
     }
 }
@@ -241,7 +240,8 @@ class MoveState : CharacterState
 {
     public MoveState(CharacterData data) : base(data)
     {
-
+        characterData.gameObject.GetComponent<Animator>().SetFloat("MotionSpeed",2);
+        characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",4);
     }
 
     public override CharacterState UpdateState()
@@ -254,9 +254,8 @@ class MoveState : CharacterState
         }
 
         characterData.movement.MovePlayer(inputVector);
-        characterData.gameObject.GetComponent<Animator>().SetBool("Grounded",true);
-        characterData.gameObject.GetComponent<Animator>().SetFloat("MotionSpeed",2);
-        characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",4);
+
+
 
         return this;
 
