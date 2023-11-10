@@ -20,6 +20,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private float rotationSpeed = 50f;
     private float minWallDistance = 0.7f;
 
+    public Interactable interactable;
+
     private void Awake()
     {
         if (!TryGetComponent(out characterController))

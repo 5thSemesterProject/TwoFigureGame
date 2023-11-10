@@ -18,6 +18,7 @@ public class CharacterData
     public Movement movement;
     public CharacterState currentState;
     public CinemachineVirtualCamera virtualCamera;
+    public Interactable interactable;
 }
 
 public class CharacterManager : MonoBehaviour
@@ -74,6 +75,7 @@ public class CharacterManager : MonoBehaviour
         if (characterDatas[characterIndex].virtualCamera==null)
             CamManager.SpawnCamera(characterDatas[characterIndex].gameObject.transform, out characterDatas[characterIndex].virtualCamera);
     }
+
 
     #region Setup
     private CharacterData[] SetUpCharacters(GameObject[] characters)
@@ -187,6 +189,7 @@ public abstract class CharacterState
     {
         RemoveCharacterSwitch();
     }
+    
 }
 
 class SetUpState : CharacterState
