@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Door : Interactable
 {
-    // Start is called before the first frame update
-    void Start()
+    Animator animator;
+
+    void  Start()
     {
-        
+        animator = GetComponent<Animator>();
+    }
+    protected override void Function()
+    {
+        animator.SetBool("Open",true);
+    }
+    protected override void Highlight()
+    {
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
