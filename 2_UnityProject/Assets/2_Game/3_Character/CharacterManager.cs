@@ -272,7 +272,7 @@ class IdleState : CharacterState
 
         
         if (characterData.movement.interactable !=null && CharacterManager.customInputMaps.InGame.Action.triggered)
-            characterData.movement.interactable.Trigger();
+            characterData.movement.interactable.TriggerByPlayer();
 
         return this;
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -32,18 +33,23 @@ public abstract class Interactable : MonoBehaviour
             movementComp.interactable = null;
     }
 
-    /// <summary>
-    /// The main functionality of this interactable.
-    /// </summary>
+    public void TriggerByPlayer()
+    {
+        if (triggeredBy==null)
+            Function();
+    }
+
     public void Trigger()
     {
         if (triggering==null)
             Function();
-        else
+        else if (triggering!=null)
             triggering.Trigger();
     }
 
-    
+    /// <summary>
+    /// The main functionality of this interactable.
+    /// </summary>
     protected virtual void Function(){}
 
     /// <summary>
