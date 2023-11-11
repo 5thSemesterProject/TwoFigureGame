@@ -8,6 +8,7 @@ using UnityEngine.TextCore;
 
 public class CharacterData
 {
+
     public CharacterData(GameObject obj)
     {
         gameObject = obj;
@@ -21,17 +22,33 @@ public class CharacterData
     public Interactable interactable;
 }
 
+public class WomanData: CharacterData
+{
+    public WomanData(GameObject obj):base(obj)
+    {
+    }
+}
+
+public class ManData: CharacterData
+{
+    public ManData(GameObject obj):base(obj)
+    {
+    }
+}
+
 public class CharacterManager : MonoBehaviour
 {
     //Inputs
     public static CustomInputs customInputMaps;
 
-    //State Maschine
+    //State Machine
     private static CharacterData[] characterDatas;
     private static int characterIndex = 0;
 
     //Character Prefab
     [SerializeField] private GameObject characterPrefab;
+    [SerializeField] private GameObject manPrefab, womanPrefab;
+    [SerializeField] private CharacterData manData, womanData;
     [SerializeField] private GameObject cameraPrefab;
 
     private void Start()
@@ -41,17 +58,26 @@ public class CharacterManager : MonoBehaviour
         SwitchControlScheme(customInputMaps.InGame);
 
         //Set Up StateMachines
-        GameObject[] characters = GetOrSpawnCharacters();
-        characterDatas = SetUpCharacters(characters);
+        //GameObject[] characters = GetOrSpawnCharacters();
+        //characterDatas = SetUpCharacters(characters);
 
-        //Setu up Camera
+        //Spawn Characters
+        SpawnCharacters();
+
+        //Set up Camera
         CamManager.SetCamPrefab(cameraPrefab);
-        SwitchCharacters();
     }
 
     private void Update()
     {
-        characterDatas[characterIndex].currentState = characterDatas[characterIndex].currentState.UpdateState();
+        //characterDatas[characterIndex].currentState = characterDatas[characterIndex].currentState.UpdateState();
+        //for (int i = 0; i < characterDatas.Length; i++)
+       // {
+        //    characterDatas[i].currentState = characterDatas[i].currentState.UpdateState();
+        //}
+
+        manData.currentState = manData.currentState.UpdateState();
+        womanData.currentState = womanData.currentState.UpdateState();
     }
 
     GameObject GetActiveCharacter()
@@ -59,25 +85,25 @@ public class CharacterManager : MonoBehaviour
         return characterDatas[characterIndex].gameObject;
     }
 
-    public static void SwitchCharacters()
-    {   
-        //Delete old Camera
-        if (characterDatas[characterIndex].virtualCamera!=null)
-        {
-            characterDatas[characterIndex].virtualCamera.gameObject.SetActive(false);
-            characterDatas[characterIndex].virtualCamera = null;
-        }
-
-        characterDatas[characterIndex].currentState = new AIState(characterDatas[characterIndex].currentState.characterData);
-        characterIndex = (characterIndex+1) % characterDatas.Length;
-        
-        //Set up new Camera
-        if (characterDatas[characterIndex].virtualCamera==null)
-            CamManager.SpawnCamera(characterDatas[characterIndex].gameObject.transform, out characterDatas[characterIndex].virtualCamera);
-    }
-
 
     #region Setup
+
+    void SpawnCharacters()
+    {
+        GameObject spawnedMan = Instantiate(manPrefab,Vector3.forward,Quaternion.identity);
+        spawnedMan.name = "SpawnedMan";
+        GameObject spawnedWoman = Instantiate(womanPrefab,Vector3.forward*2,Quaternion.identity);
+        spawnedMan.name = "SpawnedWoman";
+        womanData = new WomanData(spawnedWoman);
+        manData = new ManData(spawnedMan);
+
+        CamManager.SetCamPrefab(cameraPrefab);
+        CamManager.SpawnCamera(womanData.gameObject.transform, out womanData.virtualCamera);
+        CamManager.SpawnCamera(manData.gameObject.transform, out manData.virtualCamera);
+
+        womanData.currentState = new SetUpState(womanData);
+        manData.currentState = new SetUpState(manData);
+    }
     private CharacterData[] SetUpCharacters(GameObject[] characters)
     {
         if (characters.Length < 2)
@@ -90,7 +116,7 @@ public class CharacterManager : MonoBehaviour
 
             for (int i = characters.Length; i < 2; i++)
             {
-                temp[i] = EnsureCharacter(Instantiate(characterPrefab,Vector3.forward * i, Quaternion.identity));
+                temp[i] = SetUpCharacter(Instantiate(characterPrefab,Vector3.forward * i, Quaternion.identity));
                 temp[i].name = "SpawnedCharacter_"+i;
             }
 
@@ -100,7 +126,7 @@ public class CharacterManager : MonoBehaviour
         CharacterData[] datas = new CharacterData[characters.Length];
         for (int i = 0; i < datas.Length; i++)
         {
-            GameObject obj = EnsureCharacter(characters[i]);
+            GameObject obj = SetUpCharacter(characters[i]);
             datas[i] = new CharacterData(obj);
             datas[i].currentState = new SetUpState(datas[i]);
         }
@@ -108,7 +134,7 @@ public class CharacterManager : MonoBehaviour
         return datas;
     }
 
-    private GameObject EnsureCharacter(GameObject obj)
+    private GameObject SetUpCharacter(GameObject obj)
     {
         CharacterController controller = obj.GetComponent<CharacterController>();
         if (!controller)
@@ -129,9 +155,7 @@ public class CharacterManager : MonoBehaviour
     {
         GameObject[] characters = GameObject.FindGameObjectsWithTag("Character");
         if (characters == null)
-        {
             return new GameObject[0];
-        }
         return characters;
     }
     #endregion
@@ -156,7 +180,7 @@ public class CharacterManager : MonoBehaviour
         {
             if (actionMaps.enabled)
             {
-                actionMaps.Disable();
+                //actionMaps.Disable();
             }
         }
     }
@@ -168,26 +192,24 @@ public abstract class CharacterState
     public CharacterState(CharacterData data)
     {
         characterData = data;
-        CharacterManager.customInputMaps.InGame.Action.performed += SwitchCharacters;
     }
 
     public CharacterData characterData;
-    public abstract CharacterState UpdateState();
-
-    protected void RemoveCharacterSwitch()
+    public CharacterState UpdateState() //Update Method that every State checks everytime
     {
-        CharacterManager.customInputMaps.InGame.Action.performed -= SwitchCharacters;
+        return SpecificStateUpdate();
     }
+
+    public abstract CharacterState SpecificStateUpdate(); //Specifically for a certain state designed actions
 
     protected virtual void SwitchCharacters(InputAction.CallbackContext context)
     {
-        ExitState();
-        CharacterManager.SwitchCharacters();
+        SwitchState();
     }
 
-    protected virtual void ExitState()
+    protected virtual CharacterState SwitchState(CharacterState updatedState = null)
     {
-        RemoveCharacterSwitch();
+        return updatedState;
     }
     
 }
@@ -196,8 +218,10 @@ class SetUpState : CharacterState
 {
     public SetUpState(CharacterData characterData) : base(characterData) { }
 
-    public override CharacterState UpdateState()
-    {
+    public override CharacterState SpecificStateUpdate()
+    {   
+        if (characterData is ManData)
+            return new AIState(characterData);
         return new IdleState(characterData);
     }
 }
@@ -208,12 +232,24 @@ class AIState : CharacterState
     {
         characterData.gameObject.GetComponent<Animator>().SetBool("Grounded",true);
         characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",0);
-        RemoveCharacterSwitch();
+
+        if (characterData.virtualCamera!=null)
+            characterData.virtualCamera.gameObject.SetActive(false);
     }
 
-    public override CharacterState UpdateState()
+    public override CharacterState SpecificStateUpdate()
     {
-        return new IdleState(characterData);
+        if (CharacterManager.customInputMaps.InGame.Action.triggered)
+        {
+            if (characterData.virtualCamera==null)
+                CamManager.SpawnCamera(characterData.gameObject.transform, out characterData.virtualCamera);
+            else
+                characterData.virtualCamera.gameObject.SetActive(true);
+
+            return SwitchState (new IdleState(characterData));
+        }
+
+        return new AIState(characterData);
     }
 }
 
@@ -221,17 +257,20 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-        //Debug.Log ("New Idle for " + characterData.gameObject+" with speed " +characterData.gameObject.GetComponent<Animator>().GetFloat("Speed") );
+        characterData.gameObject.GetComponent<Animator>().SetBool("Grounded",true);
+        characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",0);
     }
 
-    public override CharacterState UpdateState()
+    public override CharacterState SpecificStateUpdate()
     {
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
         if (inputVector.magnitude > 0)
-        {
-            ExitState();
-            return new MoveState(characterData);
+            return SwitchState(new MoveState(characterData));
+
+        if (CharacterManager.customInputMaps.InGame.Action.triggered){
+            return SwitchState (new AIState(characterData));
         }
+
         return this;
     }
 }
@@ -244,18 +283,17 @@ class MoveState : CharacterState
         characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",4);
     }
 
-    public override CharacterState UpdateState()
+    public override CharacterState SpecificStateUpdate()
     {
-        Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
-        if (inputVector.magnitude <= 0)
-        {
-            ExitState();
-            return new IdleState(characterData);
+        if (CharacterManager.customInputMaps.InGame.Action.triggered){
+            return SwitchState (new AIState(characterData));
         }
 
+        Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
+        if (inputVector.magnitude <= 0)
+            return SwitchState(new IdleState(characterData));
+
         characterData.movement.MovePlayer(inputVector);
-
-
 
         return this;
 
