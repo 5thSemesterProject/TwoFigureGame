@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore;
@@ -51,6 +52,8 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private CharacterData manData, womanData;
     [SerializeField] private GameObject cameraPrefab;
 
+    [SerializeField] TextMeshProUGUI debuggingDump;
+
     private void Start()
     {
         //Set Up Inputs
@@ -78,6 +81,8 @@ public class CharacterManager : MonoBehaviour
 
         manData.currentState = manData.currentState.UpdateState();
         womanData.currentState = womanData.currentState.UpdateState();
+
+        debuggingDump.text = "Woman: "+womanData.currentState.GetType() +"\n Man: "+ manData.currentState.GetType();
     }
 
     GameObject GetActiveCharacter()
@@ -202,12 +207,7 @@ public abstract class CharacterState
 
     public abstract CharacterState SpecificStateUpdate(); //Specifically for a certain state designed actions
 
-    protected virtual void SwitchCharacters(InputAction.CallbackContext context)
-    {
-        SwitchState();
-    }
-
-    protected virtual CharacterState SwitchState(CharacterState updatedState = null)
+    protected  CharacterState SwitchState(CharacterState updatedState)
     {
         return updatedState;
     }
@@ -239,17 +239,17 @@ class AIState : CharacterState
 
     public override CharacterState SpecificStateUpdate()
     {
-        if (CharacterManager.customInputMaps.InGame.Action.triggered)
+        if (CharacterManager.customInputMaps.InGame.Switch.triggered)
         {
             if (characterData.virtualCamera==null)
                 CamManager.SpawnCamera(characterData.gameObject.transform, out characterData.virtualCamera);
             else
                 characterData.virtualCamera.gameObject.SetActive(true);
 
-            return SwitchState (new IdleState(characterData));
+            return new IdleState(characterData);
         }
 
-        return new AIState(characterData);
+        return this;
     }
 }
 
@@ -263,13 +263,16 @@ class IdleState : CharacterState
 
     public override CharacterState SpecificStateUpdate()
     {
+        if (CharacterManager.customInputMaps.InGame.Switch.triggered)
+            return new AIState(characterData);
+
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
         if (inputVector.magnitude > 0)
             return SwitchState(new MoveState(characterData));
 
-        if (CharacterManager.customInputMaps.InGame.Action.triggered){
-            return SwitchState (new AIState(characterData));
-        }
+        
+        if (characterData.movement.interactable !=null && CharacterManager.customInputMaps.InGame.Action.triggered)
+            characterData.movement.interactable.Trigger();
 
         return this;
     }
@@ -285,9 +288,11 @@ class MoveState : CharacterState
 
     public override CharacterState SpecificStateUpdate()
     {
-        if (CharacterManager.customInputMaps.InGame.Action.triggered){
-            return SwitchState (new AIState(characterData));
-        }
+         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
+            return new AIState(characterData);
+
+        if (characterData.movement.interactable !=null && CharacterManager.customInputMaps.InGame.Action.triggered)
+            characterData.movement.interactable.Trigger();
 
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
         if (inputVector.magnitude <= 0)
