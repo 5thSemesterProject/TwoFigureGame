@@ -22,6 +22,7 @@ public class SoundSystem : MonoBehaviour
     private void Awake()
     {
         // Set up and play the background music
+        DontDestroyOnLoad(this.gameObject);
         backgroundMusicPlayer = gameObject.AddComponent<AudioSource>();
         backgroundMusicPlayer.loop = true;
         backgroundMusicPlayer.volume = musicDefaultVolume;
