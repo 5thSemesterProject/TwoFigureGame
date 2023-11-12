@@ -1,26 +1,43 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.TextCore;
+
+public class OxygenData
+{
+    public float maxOxygen;
+    public float currentOxygen;
+    public float fallOfRate;
+
+    public OxygenData(float maxOxygen,float fallOfRate)
+    {
+        this.maxOxygen = maxOxygen;
+        currentOxygen = maxOxygen;
+        this.fallOfRate = fallOfRate;
+    }
+
+    public void FallOff()
+    {
+        currentOxygen -=fallOfRate*Time.deltaTime;
+    }
+}
 
 public class CharacterData
 {
-
     public CharacterData(GameObject obj)
     {
         gameObject = obj;
         movement = gameObject.GetComponent<Movement>();
+        animator = gameObject.GetComponent<Animator>();
     }
 
     public GameObject gameObject;
     public Movement movement;
+    public Animator animator;
     public CharacterState currentState;
     public CinemachineVirtualCamera virtualCamera;
     public Interactable interactable;
+    public OxygenData oxygenData;
 }
 
 public class WomanData: CharacterData
@@ -60,10 +77,6 @@ public class CharacterManager : MonoBehaviour
         customInputMaps = new CustomInputs();
         SwitchControlScheme(customInputMaps.InGame);
 
-        //Set Up StateMachines
-        //GameObject[] characters = GetOrSpawnCharacters();
-        //characterDatas = SetUpCharacters(characters);
-
         //Spawn Characters
         SpawnCharacters();
 
@@ -73,12 +86,6 @@ public class CharacterManager : MonoBehaviour
 
     private void Update()
     {
-        //characterDatas[characterIndex].currentState = characterDatas[characterIndex].currentState.UpdateState();
-        //for (int i = 0; i < characterDatas.Length; i++)
-       // {
-        //    characterDatas[i].currentState = characterDatas[i].currentState.UpdateState();
-        //}
-
         manData.currentState = manData.currentState.UpdateState();
         womanData.currentState = womanData.currentState.UpdateState();
 
@@ -95,6 +102,7 @@ public class CharacterManager : MonoBehaviour
 
     void SpawnCharacters()
     {
+        //Prefab Setup
         GameObject spawnedMan = Instantiate(manPrefab,Vector3.forward,Quaternion.identity);
         spawnedMan.name = "SpawnedMan";
         GameObject spawnedWoman = Instantiate(womanPrefab,Vector3.forward*2,Quaternion.identity);
@@ -102,59 +110,20 @@ public class CharacterManager : MonoBehaviour
         womanData = new WomanData(spawnedWoman);
         manData = new ManData(spawnedMan);
 
+        //Oxygen Setup
+        womanData.oxygenData = new OxygenData(100,0.1f);
+        manData.oxygenData = new OxygenData(100,0.1f);
+
+        //Cam Setup
         CamManager.SetCamPrefab(cameraPrefab);
         CamManager.SpawnCamera(womanData.gameObject.transform, out womanData.virtualCamera);
         CamManager.SpawnCamera(manData.gameObject.transform, out manData.virtualCamera);
 
+        //Statemachine Setup
         womanData.currentState = new SetUpState(womanData);
         manData.currentState = new SetUpState(manData);
     }
-    private CharacterData[] SetUpCharacters(GameObject[] characters)
-    {
-        if (characters.Length < 2)
-        {
-            GameObject[] temp = new GameObject[2];
-            for (int i = 0; i < characters.Length; i++)
-            {
-                temp[i] = characters[i];
-            }
 
-            for (int i = characters.Length; i < 2; i++)
-            {
-                temp[i] = SetUpCharacter(Instantiate(characterPrefab,Vector3.forward * i, Quaternion.identity));
-                temp[i].name = "SpawnedCharacter_"+i;
-            }
-
-            characters = temp;
-        }
-
-        CharacterData[] datas = new CharacterData[characters.Length];
-        for (int i = 0; i < datas.Length; i++)
-        {
-            GameObject obj = SetUpCharacter(characters[i]);
-            datas[i] = new CharacterData(obj);
-            datas[i].currentState = new SetUpState(datas[i]);
-        }
-
-        return datas;
-    }
-
-    private GameObject SetUpCharacter(GameObject obj)
-    {
-        CharacterController controller = obj.GetComponent<CharacterController>();
-        if (!controller)
-        {
-            obj.AddComponent<CharacterController>();
-        }
-
-        Movement movement = obj.GetComponent<Movement>();
-        if (movement)
-        {
-            obj.AddComponent<Movement>();
-        }
-
-        return obj;
-    }
 
     private GameObject[] GetOrSpawnCharacters()
     {
@@ -201,8 +170,28 @@ public abstract class CharacterState
 
     public CharacterData characterData;
     public CharacterState UpdateState() //Update Method that every State checks everytime
-    {
+    {   
+        OxygenFallOff();
         return SpecificStateUpdate();
+    }
+
+    public void OxygenFallOff()
+    {   
+        Collider[] hitColliders = Physics.OverlapBox(characterData.gameObject.transform.position, Vector3.one/2);
+        
+        for (int i = 0; i < hitColliders.Length; i++)
+        {
+            if (hitColliders[i].TryGetComponent(out VolumetricFogHandler volumetricFogHandler))
+            {
+                characterData.oxygenData.FallOff();
+            }
+            else if (hitColliders[i].TryGetComponent(out Oxygenstation oxygenstation))
+            {
+                characterData.oxygenData.currentOxygen += oxygenstation.ChargePlayer();
+            }
+        }   
+
+        
     }
 
     public abstract CharacterState SpecificStateUpdate(); //Specifically for a certain state designed actions
@@ -230,8 +219,8 @@ class AIState : CharacterState
 {
     public AIState(CharacterData data) : base(data)
     {
-        characterData.gameObject.GetComponent<Animator>().SetBool("Grounded",true);
-        characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",0);
+        characterData.animator.SetBool("Grounded",true);
+        characterData.animator.SetFloat("Speed",0);
 
         if (characterData.virtualCamera!=null)
             characterData.virtualCamera.gameObject.SetActive(false);
@@ -257,8 +246,8 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-        characterData.gameObject.GetComponent<Animator>().SetBool("Grounded",true);
-        characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",0);
+        characterData.animator.SetBool("Grounded",true);
+        characterData.animator.SetFloat("Speed",0);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -282,8 +271,8 @@ class MoveState : CharacterState
 {
     public MoveState(CharacterData data) : base(data)
     {
-        characterData.gameObject.GetComponent<Animator>().SetFloat("MotionSpeed",2);
-        characterData.gameObject.GetComponent<Animator>().SetFloat("Speed",4);
+        characterData.animator.SetFloat("MotionSpeed",2);
+        characterData.animator.SetFloat("Speed",4);
     }
 
     public override CharacterState SpecificStateUpdate()
