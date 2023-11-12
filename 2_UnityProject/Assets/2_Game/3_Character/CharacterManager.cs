@@ -20,6 +20,12 @@ public class OxygenData
     {
         currentOxygen -=fallOfRate*Time.deltaTime;
     }
+
+    public void InreaseOxygen(float amount)
+    {
+        if (currentOxygen<=maxOxygen)
+            currentOxygen+=amount;
+    }
 }
 
 public class CharacterData
@@ -69,7 +75,9 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private CharacterData manData, womanData;
     [SerializeField] private GameObject cameraPrefab;
 
-    [SerializeField] TextMeshProUGUI debuggingDump;
+    [Header ("Debugging")]
+    [SerializeField] TextMeshProUGUI debuggingCharacterStateMachines;
+    [SerializeField] TextMeshProUGUI debuggingOxygenCharacters;
 
     private void Start()
     {
@@ -89,7 +97,8 @@ public class CharacterManager : MonoBehaviour
         manData.currentState = manData.currentState.UpdateState();
         womanData.currentState = womanData.currentState.UpdateState();
 
-        debuggingDump.text = "Woman: "+womanData.currentState.GetType() +"\n Man: "+ manData.currentState.GetType();
+        debuggingCharacterStateMachines.text = "Woman: "+womanData.currentState.GetType() +"\n Man: "+ manData.currentState.GetType();
+        debuggingOxygenCharacters.text = "WomanOxy: "+womanData.oxygenData.currentOxygen+ "\n ManOxy: "+manData.oxygenData.currentOxygen;
     }
 
     GameObject GetActiveCharacter()
@@ -111,8 +120,8 @@ public class CharacterManager : MonoBehaviour
         manData = new ManData(spawnedMan);
 
         //Oxygen Setup
-        womanData.oxygenData = new OxygenData(100,0.1f);
-        manData.oxygenData = new OxygenData(100,0.1f);
+        womanData.oxygenData = new OxygenData(100,1f);
+        manData.oxygenData = new OxygenData(100,1f);
 
         //Cam Setup
         CamManager.SetCamPrefab(cameraPrefab);
@@ -171,11 +180,11 @@ public abstract class CharacterState
     public CharacterData characterData;
     public CharacterState UpdateState() //Update Method that every State checks everytime
     {   
-        OxygenFallOff();
+        OxygenHandling();
         return SpecificStateUpdate();
     }
 
-    public void OxygenFallOff()
+    public void OxygenHandling()
     {   
         Collider[] hitColliders = Physics.OverlapBox(characterData.gameObject.transform.position, Vector3.one/2);
         
@@ -185,9 +194,10 @@ public abstract class CharacterState
             {
                 characterData.oxygenData.FallOff();
             }
-            else if (hitColliders[i].TryGetComponent(out Oxygenstation oxygenstation))
-            {
-                characterData.oxygenData.currentOxygen += oxygenstation.ChargePlayer();
+            else if (hitColliders[i].TryGetComponent(out Oxygenstation oxygenstation) 
+                    &&characterData.oxygenData.currentOxygen<=characterData.oxygenData.maxOxygen )
+            {   
+                    characterData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
             }
         }   
 

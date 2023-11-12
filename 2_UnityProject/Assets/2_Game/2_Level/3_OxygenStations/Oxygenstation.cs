@@ -9,7 +9,7 @@ public class Oxygenstation : MonoBehaviour
 
     void  Awake()
     {
-        new OxygenData(200,0.1f);
+        oxygenData = new OxygenData(200,0.1f);
     }
 
     public float ChargePlayer()
