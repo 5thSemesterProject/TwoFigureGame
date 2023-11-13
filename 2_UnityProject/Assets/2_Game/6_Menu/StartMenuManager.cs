@@ -54,14 +54,14 @@ public class StartMenuManager : MonoBehaviour
     #region Button Logics
     private IEnumerator StartGame()
     {
-        var camera =  cameraManager.ActivateCamera("GameStartCam");
-        //CinemachineTrackedDolly path = camera.GetComponent<CinemachineTrackedDolly>();
+        CinemachineVirtualCamera camera =  cameraManager.ActivateCamera("GameStartCam");
+        CinemachineTrackedDolly path = camera.GetCinemachineComponent<CinemachineTrackedDolly>();
 
         float i = 0;
         while (i<2)
         {
             i += Time.deltaTime/1.5f;
-            //path.m_PathPosition = i;
+            path.m_PathPosition = i;
             yield return null;
         }
         transition = null;
