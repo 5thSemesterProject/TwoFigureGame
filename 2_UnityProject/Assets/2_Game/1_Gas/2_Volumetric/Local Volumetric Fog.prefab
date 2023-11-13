@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 8627901437392219179}
   - component: {fileID: 1566437507607408154}
   - component: {fileID: 4023119200596948605}
+  - component: {fileID: 3550507055868323551}
   m_Layer: 0
   m_Name: Local Volumetric Fog
   m_TagString: Untagged
@@ -273,7 +274,7 @@ MonoBehaviour:
     textureScrollingSpeed: {x: 0, y: 0, z: 0}
     textureTiling: {x: 1, y: 1, z: 1}
     positiveFade: {x: 0, y: 0, z: 0}
-    negativeFade: {x: 0, y: 0, z: 0}
+    negativeFade: {x: 0, y: 0.16666667, z: 0}
     m_EditorUniformFade: 0
     m_EditorPositiveFade: {x: 0, y: 0, z: 0}
     m_EditorNegativeFade: {x: 0, y: 0.16666667, z: 0}
@@ -302,3 +303,24 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 8
+--- !u!65 &3550507055868323551
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3505272919656027332}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 20, y: 6, z: 20}
+  m_Center: {x: 0, y: 0, z: 0}
