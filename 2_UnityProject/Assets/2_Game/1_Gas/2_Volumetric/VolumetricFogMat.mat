@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VoumetricFog
+  m_Name: VolumetricFogMat
   m_Shader: {fileID: -6465566751694194690, guid: 8582a232c17af5b46b6c9e09baac19ed, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -23,24 +23,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Flipbook_3652155095c94693bf3dcefa72a250a0_Texture2D_2807702774_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 1561147b6ed3e144f9bafdaa84f253d7, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_1d05e53c01bf4682aafed1fdfeb70ab1_Texture_1_Texture2D:
-        m_Texture: {fileID: 11700000, guid: bc05f2e39084d7849a52034d2d41f1ef, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_39e65e19382f49f19716e3e8081f6457_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 1d8481de16af723418a688958c41224b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_59e0177aa3074ec18246d744527f6a58_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 1d8481de16af723418a688958c41224b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture3D_f1cfaac04dca43608051da630a684a16_Texture_1_Texture3D:
-        m_Texture: {fileID: 11700000, guid: bc05f2e39084d7849a52034d2d41f1ef, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -58,7 +46,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
-    - _Alpha: 0.02
+    - _Alpha: 1
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 0
     - _AlphaMin: 0.1
@@ -73,14 +61,13 @@ Material:
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
     - _EnableFogOnTransparent: 1
-    - _MaskInfluence: 200
     - _OpaqueCullMode: 2
     - _RenderQueueType: 1
     - _Softness: 0.1
-    - _Speed: 0.2
+    - _Speed: 1
     - _SrcBlend: 1
     - _SurfaceType: 0
-    - _Tiling: 0.1
+    - _Tiling: 0.5
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
@@ -93,18 +80,18 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _Color_1: {r: 0.16601808, g: 0.45754716, b: 0.080574304, a: 0}
-    - _Color_2: {r: 0.12144734, g: 0.16981131, b: 0, a: 0}
+    - _Color_1: {r: 0.09803922, g: 0.9921569, b: 0.1529412, a: 0}
+    - _Color_2: {r: 0.1176471, g: 0.3490196, b: 0.03921569, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _Sphere01: {r: 2.95, g: 2.67, b: -6.731, a: 2}
-    - _Sphere02: {r: 3.3956628, g: 0, b: -0.7717457, a: 2}
-    - _Sphere03: {r: -0.4828206, g: 0, b: 1.6372108, a: 2}
+    - _Sphere02: {r: 0, g: 0, b: 1, a: 2}
+    - _Sphere03: {r: 1.8631359, g: 0, b: -2.074293, a: 2}
     - _Sphere04: {r: 0, g: 0, b: 0, a: 0}
     - _Sphere05: {r: 0, g: 0, b: 0, a: 0}
     - _Sphere06: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &1710243314255875969
+--- !u!114 &5117984448472902102
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
