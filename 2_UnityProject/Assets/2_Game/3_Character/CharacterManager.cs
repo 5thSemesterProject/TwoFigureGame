@@ -229,8 +229,7 @@ class AIState : CharacterState
 {
     public AIState(CharacterData data) : base(data)
     {
-        characterData.animator.SetBool("Grounded",true);
-        characterData.animator.SetFloat("Speed",0);
+  
 
         if (characterData.virtualCamera!=null)
             characterData.virtualCamera.gameObject.SetActive(false);
@@ -256,8 +255,7 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-        characterData.animator.SetBool("Grounded",true);
-        characterData.animator.SetFloat("Speed",0);
+  
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -281,8 +279,7 @@ class MoveState : CharacterState
 {
     public MoveState(CharacterData data) : base(data)
     {
-        characterData.animator.SetFloat("MotionSpeed",2);
-        characterData.animator.SetFloat("Speed",4);
+ 
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -294,10 +291,10 @@ class MoveState : CharacterState
             characterData.movement.interactable.Trigger();
 
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
-        if (inputVector.magnitude <= 0)
+        Vector2 MovementVector = characterData.movement.MovePlayer(inputVector);
+        if (MovementVector.magnitude <= 0)
             return SwitchState(new IdleState(characterData));
 
-        characterData.movement.MovePlayer(inputVector);
 
         return this;
 
