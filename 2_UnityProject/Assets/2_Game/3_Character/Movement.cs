@@ -24,6 +24,8 @@ public class Movement : MonoBehaviour
 
     public Interactable interactable;
 
+    public CharacterType characterType;
+
 
     private void Awake()
     {
@@ -149,9 +151,6 @@ public class Movement : MonoBehaviour
 
     private IEnumerator Crawl(GameObject crawlObject,float crawlDuration)
     {
-        //characterController.enabled = false;
-        //rigidbody.isKinematic = true;
-
         float time = 0;
         Vector3 crawlDir = GetCrawlDir(crawlObject);
 

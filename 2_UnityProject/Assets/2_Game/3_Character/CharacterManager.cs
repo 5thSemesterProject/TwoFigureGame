@@ -115,7 +115,9 @@ public class CharacterManager : MonoBehaviour
         GameObject spawnedWoman = Instantiate(womanPrefab,Vector3.forward*2,Quaternion.identity);
         spawnedMan.name = "SpawnedWoman";
         womanData = new WomanData(spawnedWoman);
+        womanData.movement.characterType = CharacterType.Woman;
         manData = new ManData(spawnedMan);
+        manData.movement.characterType = CharacterType.Man;
 
         //Oxygen Setup
         womanData.oxygenData = new OxygenData(100,1f);
@@ -125,6 +127,7 @@ public class CharacterManager : MonoBehaviour
         CamManager.SetCamPrefab(cameraPrefab);
         CamManager.SpawnCamera(womanData.gameObject.transform, out womanData.virtualCamera);
         CamManager.SpawnCamera(manData.gameObject.transform, out manData.virtualCamera);
+
 
         //Statemachine Setup
         womanData.currentState = new SetUpState(womanData);
@@ -209,7 +212,8 @@ public abstract class CharacterState
     {
         updatedState = null;
 
-        if (characterData.movement.interactable !=null&& CharacterManager.customInputMaps.InGame.Action.triggered)
+        if (characterData.movement.interactable !=null
+        && CharacterManager.customInputMaps.InGame.Action.triggered)
         {
             switch(characterData.movement.interactable)
             {

@@ -5,13 +5,21 @@ using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Analytics;
+
+public enum CharacterType
+{
+    None, Woman, Man
+}
 
 public abstract class Interactable : MonoBehaviour
 {
     Interactable prevTriggeredBy;
     [SerializeField] public Interactable triggeredBy;
     [SerializeField] Interactable triggering;
-    [SerializeField] bool showLinesWhenNotSelected;
+
+    public CharacterType specificCharacterAccess;
+
     Interactable prevTriggering;
     Action action;
     /// <summary>
@@ -21,7 +29,11 @@ public abstract class Interactable : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<Movement>(out Movement movementComp))
-            movementComp.interactable = this;
+        {
+            if (specificCharacterAccess == CharacterType.None||specificCharacterAccess ==movementComp.characterType)
+                movementComp.interactable = this;
+        }
+            
     }
 
     /// <summary>
@@ -152,12 +164,6 @@ public abstract class Interactable : MonoBehaviour
     {
        DrawLines();
     }
-
-    void  OnDrawGizmos()
-    {
-        if (showLinesWhenNotSelected)
-            DrawLines();
-    }  
     #endregion
 }
 
