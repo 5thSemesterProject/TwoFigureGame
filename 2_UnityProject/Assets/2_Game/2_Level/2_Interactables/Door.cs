@@ -10,8 +10,9 @@ public class Door : Interactable
     void  Start()
     {
         animator = GetComponent<Animator>();
+        AddAction(()=>OpenDoor());
     }
-    protected override void Function()
+    public void OpenDoor()
     {
         animator.SetBool("Open",true);
     }

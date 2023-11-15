@@ -13,7 +13,7 @@ public abstract class Interactable : MonoBehaviour
     [SerializeField] Interactable triggering;
     [SerializeField] bool showLinesWhenNotSelected;
     Interactable prevTriggering;
-
+    Action action;
     /// <summary>
     /// Called when another object exits the collider of this interactable.
     /// </summary>
@@ -36,21 +36,21 @@ public abstract class Interactable : MonoBehaviour
     public void TriggerByPlayer()
     {
         if (triggeredBy==null)
-            Function();
+            action.Invoke();
     }
 
     public void Trigger()
     {
         if (triggering==null)
-            Function();
+            action.Invoke();
         else if (triggering!=null)
             triggering.Trigger();
     }
 
-    /// <summary>
-    /// The main functionality of this interactable.
-    /// </summary>
-    protected virtual void Function(){}
+    public void AddAction(Action action)
+    {
+        this.action = action;
+    }
 
     /// <summary>
     /// Highlights the interactable object.
