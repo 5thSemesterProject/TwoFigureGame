@@ -47,6 +47,7 @@ public class Movement : MonoBehaviour
     }
 
     #region Movement
+
     public Vector2 MovePlayer(Vector2 axis, float speed = 1)
     {
         float yValue = transform.position.y;

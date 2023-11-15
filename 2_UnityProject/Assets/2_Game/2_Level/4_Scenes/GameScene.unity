@@ -605,9 +605,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3c0317c621024504b94d45f3d8b6df9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterPrefab: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
   manPrefab: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
-  womanPrefab: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+  womanPrefab: {fileID: 4416926081852918481, guid: 5164f4fdfd7bb114eac8c30b5d77b1a6, type: 3}
   cameraPrefab: {fileID: 3075780233431565091, guid: b3cffecff5809e344b35c27b28fdea6a, type: 3}
   debuggingCharacterStateMachines: {fileID: 537188521}
   debuggingOxygenCharacters: {fileID: 640065498}
@@ -1028,7 +1027,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.26474926, y: -0, z: -0, w: 0.9643173}
-  m_LocalPosition: {x: 60.266487, y: 2.6929991, z: 22.156507}
+  m_LocalPosition: {x: 0.70167065, y: 8.5529995, z: 4.229253}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1239,15 +1238,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1566437507607408154, guid: 70fad6a288f5c8f41a0589068d36101b, type: 3}
       propertyPath: parameters.textureOffset.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1566437507607408154, guid: 70fad6a288f5c8f41a0589068d36101b, type: 3}
       propertyPath: parameters.textureOffset.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1566437507607408154, guid: 70fad6a288f5c8f41a0589068d36101b, type: 3}
       propertyPath: parameters.textureOffset.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1566437507607408154, guid: 70fad6a288f5c8f41a0589068d36101b, type: 3}
       propertyPath: parameters.m_EditorAdvancedFade
@@ -1324,10 +1323,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3505272919656027332, guid: 70fad6a288f5c8f41a0589068d36101b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1699279688}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70fad6a288f5c8f41a0589068d36101b, type: 3}
 --- !u!1 &1330009184
 GameObject:
@@ -1639,32 +1635,6 @@ Transform:
   - {fileID: 415246754}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1699279685 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3505272919656027332, guid: 70fad6a288f5c8f41a0589068d36101b, type: 3}
-  m_PrefabInstance: {fileID: 1328076470}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1699279688
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699279685}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 20, y: 6, z: 20}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1874853772
 GameObject:
   m_ObjectHideFlags: 0

@@ -70,7 +70,6 @@ public class CharacterManager : MonoBehaviour
     private static int characterIndex = 0;
 
     //Character Prefab
-    [SerializeField] private GameObject characterPrefab;
     [SerializeField] private GameObject manPrefab, womanPrefab;
     [SerializeField] private CharacterData manData, womanData;
     [SerializeField] private GameObject cameraPrefab;
@@ -229,10 +228,11 @@ class AIState : CharacterState
 {
     public AIState(CharacterData data) : base(data)
     {
-  
-
         if (characterData.virtualCamera!=null)
             characterData.virtualCamera.gameObject.SetActive(false);
+
+        characterData.movement.MovePlayer(Vector2.zero,0);
+
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -255,7 +255,7 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-  
+        characterData.movement.MovePlayer(Vector2.zero,0);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -270,6 +270,10 @@ class IdleState : CharacterState
         
         if (characterData.movement.interactable !=null && CharacterManager.customInputMaps.InGame.Action.triggered)
             characterData.movement.interactable.TriggerByPlayer();
+
+        if (Input.GetKeyDown(KeyCode.H)){
+            return SwitchState(new CrawlState(characterData));
+        }
 
         return this;
     }
@@ -300,3 +304,21 @@ class MoveState : CharacterState
 
     }
 }
+
+class CrawlState : CharacterState
+{
+    public CrawlState(CharacterData data) : base(data)
+    {
+        characterData.animator.SetBool("Crawl",true);
+    }
+
+    public override CharacterState SpecificStateUpdate()
+    {
+        if (CharacterManager.customInputMaps.InGame.Switch.triggered)
+            return new AIState(characterData);
+
+        return this;
+
+    }
+}
+
