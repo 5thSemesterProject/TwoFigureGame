@@ -153,14 +153,14 @@ public class Movement : MonoBehaviour
         //rigidbody.isKinematic = true;
 
         float time = 0;
-        Vector3 slideDir = GetCrawlDir(crawlObject);
+        Vector3 crawlDir = GetCrawlDir(crawlObject);
 
         //Lerp Rotation and Position
         Vector3 originPos = transform.position;
         Quaternion originRot = transform.rotation;
 
-        Vector3 targetPos = new Vector3(crawlObject.transform.position.x, transform.position.y, crawlObject.transform.position.z) + -slideDir * 1f;
-        Quaternion targetRot = Quaternion.LookRotation(slideDir);
+        Vector3 targetPos = new Vector3(crawlObject.transform.position.x, transform.position.y, crawlObject.transform.position.z) + -crawlDir * 1f;
+        Quaternion targetRot = Quaternion.LookRotation(crawlDir);
 
         while (time < 0.1f)
         {
@@ -180,7 +180,7 @@ public class Movement : MonoBehaviour
         animator.SetFloat("Speed",0);
         while (time < crawlDuration)
         {   
-            transform.Translate(slideDir * Time.timeScale * 500 * Time.deltaTime * movementSpeed / 10, Space.World);
+            transform.Translate(crawlDir * Time.timeScale * Time.deltaTime*movementSpeed / 10, Space.World);
             time += Time.deltaTime * Time.timeScale;
 
             yield return null;
@@ -193,7 +193,7 @@ public class Movement : MonoBehaviour
     private Vector3 GetCrawlDir(GameObject crawlObject)
     {
         Vector3 crawlPos = crawlObject.transform.position;
-        Vector3 crawlDir = crawlObject.transform.up; //Up because vent asset is rotated
+        Vector3 crawlDir = crawlObject.transform.forward;
         Vector3 relativePos = Vector3.Normalize(transform.position - crawlPos);
 
         float scalar = Vector3.Dot(relativePos, crawlDir) > 0 ? -1 : 1;

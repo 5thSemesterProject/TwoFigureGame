@@ -327,7 +327,7 @@ class CrawlState : CharacterState
 {
     public CrawlState(CharacterData data) : base(data)
     {
-        characterData.movement.StartCrawl(characterData.movement.interactable);
+        characterData.movement.StartCrawl(characterData.movement.interactable,2);
     }
 
     public override CharacterState SpecificStateUpdate()
