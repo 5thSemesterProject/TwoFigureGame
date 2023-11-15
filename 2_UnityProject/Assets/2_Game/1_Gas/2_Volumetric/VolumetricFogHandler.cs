@@ -29,7 +29,21 @@ public class VolumetricFogHandler : MonoBehaviour
         List<Vector4> sphereInfos  = new List<Vector4>();
         foreach(Transform transformItem in transforms)
         {
-            sphereInfos.Add(VectorHelper.Convert3To4(transformItem.position,2));
+            float radius = 2;
+            
+            //Get all monobehvaiours
+            MonoBehaviour[] allMonoBehaviours = transformItem.GetComponents<MonoBehaviour>();
+            for (int i = 0; i < allMonoBehaviours.Length; i++)
+            {
+                if (allMonoBehaviours[i] is IIntersectSmoke)
+                {
+                    IIntersectSmoke component = allMonoBehaviours[i] as IIntersectSmoke;
+                    radius = component.GetIntersectionRadius();
+                    Debug.Log ("Test");
+                }
+            }
+                
+            sphereInfos.Add(VectorHelper.Convert3To4(transformItem.position,radius));
         }
         SetSpheres(sphereInfos.ToArray());
     }

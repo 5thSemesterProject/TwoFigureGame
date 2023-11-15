@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Oxygenstation : MonoBehaviour
+public class Oxygenstation : MonoBehaviour, IIntersectSmoke
 {
    OxygenData oxygenData;
-   float chargeRate = 5.0f;
+   [SerializeField]float chargeRate = 5.0f;
+   [SerializeField] float smokeIntersectionRadius;
 
     void  Awake()
     {
@@ -22,5 +23,10 @@ public class Oxygenstation : MonoBehaviour
         
         return 0;
 
+    }
+
+    public float GetIntersectionRadius()
+    {
+        return smokeIntersectionRadius;
     }
 }

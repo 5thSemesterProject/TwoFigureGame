@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 using UnityEngine.Windows;
 using static UnityEngine.Rendering.DebugUI;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviour, IIntersectSmoke
 {
     private CharacterController characterController;
     private Animator animator;
@@ -20,6 +20,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private float lerpValue = 0.2f;
     [SerializeField] private float movementSpeed = 25f;
     [SerializeField] private float rotationSpeed = 50f;
+
+    [SerializeField] private float smokeIntersectionRadius = 2;
     private float minWallDistance = 0.7f;
 
     public Interactable interactable;
@@ -40,6 +42,8 @@ public class Movement : MonoBehaviour
             Debug.LogWarning("No animator found on the character!");
         }
     }
+
+
 
     public Vector4 GetSphereInformation()
     {
@@ -201,7 +205,10 @@ public class Movement : MonoBehaviour
         return crawlDir * scalar;
     }
 
-
+    public float GetIntersectionRadius()
+    {
+        return smokeIntersectionRadius;
+    }
 }
 
 
