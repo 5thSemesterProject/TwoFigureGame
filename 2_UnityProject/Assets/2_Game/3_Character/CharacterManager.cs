@@ -42,7 +42,6 @@ public class CharacterData
     public Animator animator;
     public CharacterState currentState;
     public CinemachineVirtualCamera virtualCamera;
-    public Interactable interactable;
     public OxygenData oxygenData;
 }
 
@@ -179,11 +178,16 @@ public abstract class CharacterState
     public CharacterData characterData;
     public CharacterState UpdateState() //Update Method that every State checks everytime
     {   
-        OxygenHandling();
+        HandleOxygen();
+
+        HandleInteractable(out CharacterState interactableState);
+        if (interactableState!=null)
+            return interactableState;
+
         return SpecificStateUpdate();
     }
 
-    public void OxygenHandling()
+    public void HandleOxygen()
     {   
         Collider[] hitColliders = Physics.OverlapBox(characterData.gameObject.transform.position, Vector3.one/2);
         
@@ -198,7 +202,25 @@ public abstract class CharacterState
             {   
                     characterData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
             }
-        }   
+        }      
+    }
+
+    public void HandleInteractable(out CharacterState updatedState)
+    {
+        updatedState = null;
+
+        if (characterData.movement.interactable !=null&& CharacterManager.customInputMaps.InGame.Action.triggered)
+        {
+            switch(characterData.movement.interactable)
+            {
+                default:
+                    characterData.movement.interactable.TriggerByPlayer();
+                break;     
+                case Crawl:
+                    updatedState = new CrawlState(characterData);
+                break;
+            }
+        }
 
         
     }
@@ -271,10 +293,6 @@ class IdleState : CharacterState
         if (characterData.movement.interactable !=null && CharacterManager.customInputMaps.InGame.Action.triggered)
             characterData.movement.interactable.TriggerByPlayer();
 
-        if (Input.GetKeyDown(KeyCode.H)){
-            return SwitchState(new CrawlState(characterData));
-        }
-
         return this;
     }
 }
@@ -309,13 +327,16 @@ class CrawlState : CharacterState
 {
     public CrawlState(CharacterData data) : base(data)
     {
-        characterData.animator.SetBool("Crawl",true);
+        characterData.movement.StartCrawl(characterData.movement.interactable);
     }
 
     public override CharacterState SpecificStateUpdate()
     {
         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
             return new AIState(characterData);
+
+        if (characterData.movement.coroutine==null)
+            return new IdleState(characterData);
 
         return this;
 

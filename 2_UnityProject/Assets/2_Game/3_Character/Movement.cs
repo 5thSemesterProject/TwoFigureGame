@@ -15,12 +15,15 @@ public class Movement : MonoBehaviour
     private CharacterController characterController;
     private Animator animator;
 
+    public Coroutine coroutine;
+
     [SerializeField] private float lerpValue = 0.2f;
     [SerializeField] private float movementSpeed = 25f;
     [SerializeField] private float rotationSpeed = 50f;
     private float minWallDistance = 0.7f;
 
     public Interactable interactable;
+
 
     private void Awake()
     {
@@ -138,4 +141,68 @@ public class Movement : MonoBehaviour
         return (dir2 - proj).normalized;
     }
     #endregion
+    
+    public void StartCrawl(Interactable crawl,float crawlDuration = 1)
+    {
+        coroutine = StartCoroutine(Crawl(crawl.gameObject,crawlDuration));
+    }
+
+    private IEnumerator Crawl(GameObject crawlObject,float crawlDuration)
+    {
+        //characterController.enabled = false;
+        //rigidbody.isKinematic = true;
+
+        float time = 0;
+        Vector3 slideDir = GetCrawlDir(crawlObject);
+
+        //Lerp Rotation and Position
+        Vector3 originPos = transform.position;
+        Quaternion originRot = transform.rotation;
+
+        Vector3 targetPos = new Vector3(crawlObject.transform.position.x, transform.position.y, crawlObject.transform.position.z) + -slideDir * 1f;
+        Quaternion targetRot = Quaternion.LookRotation(slideDir);
+
+        while (time < 0.1f)
+        {
+            transform.position = Vector3.Lerp(originPos, targetPos, time * 10);
+            transform.rotation = Quaternion.Slerp(originRot, targetRot, time * 10);
+
+            time += Time.deltaTime * Time.timeScale;
+            yield return null;
+        }
+
+        transform.position = targetPos;
+        transform.rotation = targetRot;
+        
+        //Start Crawling
+        time = 0;
+        animator.SetBool("Crawl",true);
+        animator.SetFloat("Speed",0);
+        while (time < crawlDuration)
+        {   
+            transform.Translate(slideDir * Time.timeScale * 500 * Time.deltaTime * movementSpeed / 10, Space.World);
+            time += Time.deltaTime * Time.timeScale;
+
+            yield return null;
+        }
+
+        animator.SetBool("Crawl",false);
+        coroutine = null;
+    }
+
+    private Vector3 GetCrawlDir(GameObject crawlObject)
+    {
+        Vector3 crawlPos = crawlObject.transform.position;
+        Vector3 crawlDir = crawlObject.transform.up; //Up because vent asset is rotated
+        Vector3 relativePos = Vector3.Normalize(transform.position - crawlPos);
+
+        float scalar = Vector3.Dot(relativePos, crawlDir) > 0 ? -1 : 1;
+        crawlDir = new Vector3(crawlDir.x, 0, crawlDir.z).normalized;
+
+        return crawlDir * scalar;
+    }
+
+
 }
+
+
