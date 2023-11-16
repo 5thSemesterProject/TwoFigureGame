@@ -181,6 +181,9 @@ public abstract class CharacterState
     public CharacterData characterData;
     public CharacterState UpdateState() //Update Method that every State checks everytime
     {   
+        if ( !(characterData.currentState is AIState))
+            CamManager.FindOccludingObjects(characterData.gameObject.transform);
+
         HandleOxygen();
 
         HandleInteractable(out CharacterState interactableState);

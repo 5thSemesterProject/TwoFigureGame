@@ -39,7 +39,6 @@ public class VolumetricFogHandler : MonoBehaviour
                 {
                     IIntersectSmoke component = allMonoBehaviours[i] as IIntersectSmoke;
                     radius = component.GetIntersectionRadius();
-                    Debug.Log ("Test");
                 }
             }
                 
