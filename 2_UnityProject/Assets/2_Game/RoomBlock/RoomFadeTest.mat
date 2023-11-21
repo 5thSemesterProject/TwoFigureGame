@@ -70,6 +70,8 @@ Material:
     - _AlphaCutoffEnable: 1
     - _AlphaDstBlend: 0
     - _AlphaSrcBlend: 1
+    - _Animate: 0
+    - _AnimationSpeed: 5
     - _BlendMode: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
@@ -81,15 +83,17 @@ Material:
     - _DstBlend: 0
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
+    - _NoiseInfluence: 50
+    - _NoiseScale: 0.1
     - _OpaqueCullMode: 2
-    - _Radius: 20.63
+    - _Radius: 50
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _ShouldFade: 0
+    - _ShouldFade: 1
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 8
