@@ -44,11 +44,27 @@ Material:
   - TransparentBackface
   - RayTracingPrepass
   - MOTIONVECTORS
-  m_LockedProperties: _MainTexture _Tint
+  m_LockedProperties: _Emission _MainTexture _Metalic _NormalMap _Roughness _Tint
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Emission:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Metalic:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Roughness:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -70,7 +86,7 @@ Material:
     - _AlphaCutoffEnable: 1
     - _AlphaDstBlend: 0
     - _AlphaSrcBlend: 1
-    - _Animate: 0
+    - _Animate: 1
     - _AnimationSpeed: 5
     - _BlendMode: 0
     - _ConservativeDepthOffsetEnable: 0
@@ -83,8 +99,8 @@ Material:
     - _DstBlend: 0
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
-    - _NoiseInfluence: 50
-    - _NoiseScale: 0.1
+    - _NoiseInfluence: 20
+    - _NoiseScale: 0.3
     - _OpaqueCullMode: 2
     - _Radius: 50
     - _RayTracing: 0
