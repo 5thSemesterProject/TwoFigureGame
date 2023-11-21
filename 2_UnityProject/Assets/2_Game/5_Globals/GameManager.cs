@@ -51,4 +51,9 @@ public class GameManager : MonoBehaviour
     {
         yield return null;
     }
+
+    public static void SoftPauseGame()
+    {
+
+    }
 }
