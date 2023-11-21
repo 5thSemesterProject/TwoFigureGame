@@ -7,83 +7,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.Rendering;
 
-class OccludingObject
-{
-     public GameObject gameObject;
-     public Coroutine coroutine;
-     public Renderer renderer;
-     public MonoBehaviour runCoroutineOn;
 
-     public OccludingObject(GameObject gameObject,Coroutine coroutine, MonoBehaviour runCoroutineOn)
-     {
-          this.gameObject = gameObject;
-          this.coroutine = coroutine;
-          this.runCoroutineOn = runCoroutineOn;
-          renderer = gameObject.GetComponent<Renderer>();
-     }
-
-    public override bool Equals(object obj)
-    {
-         if (obj == null || GetType() != obj.GetType())
-        {
-            return false;
-        }
-
-        OccludingObject other = (OccludingObject)obj;
-        return ReferenceEquals(this.gameObject, other.gameObject);
-    }
-
-     public override int GetHashCode()
-    {
-        return ReferenceEquals(gameObject, null) ? 0 : gameObject.GetHashCode();
-    }
-
-    public void LerpAlpha(float targetAlpha)
-     {
-          
-        if (coroutine != null)
-        {
-            runCoroutineOn.StopCoroutine(coroutine);
-            coroutine = null;
-        }
-
-        coroutine = runCoroutineOn.StartCoroutine(_LerpAlpha(targetAlpha));
-     }
-
-     IEnumerator _LerpAlpha(float targetAlpha)
-     {
-        float currentAlpha = GetAlpha();
-        float elapsedTime = 0;
-        float duration = 0.8f;
-
-        while (elapsedTime < duration)
-        {
-            currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, elapsedTime / duration);
-
-            SetAlpha(currentAlpha);   
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        coroutine = null;
-     }
-
-     public void SetAlpha(float inputAlpha)
-     {
-          Material material = renderer.materials[0];     
-          Vector4 color = material.GetVector("_BaseColor");
-          color.w = inputAlpha;
-          material.SetVector("_BaseColor",color);
-     }
-
-     public float GetAlpha()
-     {
-          Material material = renderer.materials[0];     
-          Vector4 color = material.GetVector("_BaseColor");
-          return color.w;
-     }
-
-}
 
 
 public class CamManager: MonoBehaviour
@@ -157,7 +81,25 @@ public class CamManager: MonoBehaviour
           }
    }
 
-   static IEnumerable<OccludingObject> GetOccludingObjects(Transform transformToBeVisible)
+    public static void FindOccludingObjects_(Transform transformToBeVisible)
+    {
+
+        var tempOccludingObjects = GetOccludingObjects(transformToBeVisible);
+
+        //Find Objects To Reset and Reset
+        List<OccludingObject> objectsToReset = occludingObjects.Except(tempOccludingObjects).ToList();
+        objectsToReset.ForEach(occludingObject => occludingObject.LerpAlpha(1));
+
+        //Update List and Adjust Alpha
+        occludingObjects = tempOccludingObjects;
+
+        foreach (var item in occludingObjects)
+        {
+            item.LerpAlpha(0.5f);
+        }
+    }
+
+    static IEnumerable<OccludingObject> GetOccludingObjects(Transform transformToBeVisible)
    { 
      int smokeLayerIndex = 7;
      int allLayersMask = ~ (1 << smokeLayerIndex);
@@ -184,7 +126,10 @@ public class CamManager: MonoBehaviour
           GameObject hitGameObject = raycastHits[i].transform.gameObject;
           if (hitGameObject.tag =="Wall")
           {
-               tempOccludingObjects.Add(new OccludingObject(hitGameObject,null,runCouroutineOn));
+                if (hitGameObject.TryGetComponent(out OccludingObject occludingObject))
+                    tempOccludingObjects.Add(occludingObject);
+                else
+                    tempOccludingObjects.Add(hitGameObject.AddComponent<OccludingObject>());
           }
                
      }
