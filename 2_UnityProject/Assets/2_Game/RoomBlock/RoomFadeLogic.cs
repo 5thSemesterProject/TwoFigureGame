@@ -83,7 +83,7 @@ public class RoomFadeLogic : MonoBehaviour
         }
 
         //Turn Off Fade if is visible
-        material.SetInt("_ShouldFade", bFadeIn ? 0 : 1);
+        SetVisible(bFadeIn);
 
         fadeRoutine = null;
     }
