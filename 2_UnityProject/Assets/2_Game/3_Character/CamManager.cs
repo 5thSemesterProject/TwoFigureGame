@@ -5,13 +5,13 @@ using Cinemachine;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Rendering;
 
 class OccludingObject
 {
      public GameObject gameObject;
      public Coroutine coroutine;
      public Renderer renderer;
-
      public MonoBehaviour runCoroutineOn;
 
      public OccludingObject(GameObject gameObject,Coroutine coroutine, MonoBehaviour runCoroutineOn)
@@ -40,30 +40,32 @@ class OccludingObject
 
     public void LerpAlpha(float targetAlpha)
      {
-          if (coroutine!=null)
-          {
-               runCoroutineOn.StopCoroutine(coroutine);
-               coroutine = null;
-          }
-               
-          coroutine = runCoroutineOn.StartCoroutine(_LerpAlpha(targetAlpha));
+          
+        if (coroutine != null)
+        {
+            runCoroutineOn.StopCoroutine(coroutine);
+            coroutine = null;
+        }
+
+        coroutine = runCoroutineOn.StartCoroutine(_LerpAlpha(targetAlpha));
      }
 
-     IEnumerator _LerpAlpha(float alpha)
+     IEnumerator _LerpAlpha(float targetAlpha)
      {
-          float currentAlpha = GetAlpha();
-          float targetAlpha = alpha;
-          float speed = 0.1f;
-          float t = 0;
+        float currentAlpha = GetAlpha();
+        float elapsedTime = 0;
+        float duration = 0.8f;
 
-          while (Mathf.Abs(currentAlpha-targetAlpha)>0.01f)
-          {
-               currentAlpha = Mathf.Lerp(currentAlpha,targetAlpha,t);
-               SetAlpha(currentAlpha);
-               t +=speed*Time.deltaTime;
-               yield return null;
-          } 
-          coroutine = null;
+        while (elapsedTime < duration)
+        {
+            currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, elapsedTime / duration);
+
+            SetAlpha(currentAlpha);   
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        coroutine = null;
      }
 
      public void SetAlpha(float inputAlpha)
@@ -72,8 +74,6 @@ class OccludingObject
           Vector4 color = material.GetVector("_BaseColor");
           color.w = inputAlpha;
           material.SetVector("_BaseColor",color);
-          Material[] materials = new Material[1]{material};
-          renderer.materials = materials;
      }
 
      public float GetAlpha()
@@ -83,18 +83,18 @@ class OccludingObject
           return color.w;
      }
 
-
 }
 
 
 public class CamManager: MonoBehaviour
 {    
-     [SerializeField] Transform camParent;
-     CinemachineBrain cineBrain;
-     static CamManager instance;
+    [SerializeField] Transform camParent;
+    CinemachineBrain cineBrain;
+    static CamManager instance;
     static GameObject characterCamPrefab;
     static List<CinemachineVirtualCamera> activeCameras = new List<CinemachineVirtualCamera>();
-    static List<OccludingObject> occludingObjects = new List<OccludingObject>();
+    static IEnumerable<OccludingObject> occludingObjects = new List<OccludingObject>();
+    static RaycastHit [] raycastHits = new RaycastHit[12];
 
 
     void Awake()
@@ -142,65 +142,55 @@ public class CamManager: MonoBehaviour
 
    public static void FindOccludingObjects(Transform transformToBeVisible)
    {
-          List<OccludingObject> tempOccludingObjects = GetOccludingObjects(transformToBeVisible);
+          var tempOccludingObjects = GetOccludingObjects(transformToBeVisible);
 
           //Find Objects To Reset and Reset
-          List<OccludingObject> objectsToReset = occludingObjects.Except(tempOccludingObjects).ToList();;
+          List<OccludingObject> objectsToReset = occludingObjects.Except(tempOccludingObjects).ToList();
           objectsToReset.ForEach(occludingObject =>occludingObject.LerpAlpha(1));
-
-
+ 
           //Update List and Adjust Alpha
           occludingObjects = tempOccludingObjects;
-          occludingObjects.ForEach(occludingObject=>occludingObject.LerpAlpha(0.5f));
+          
+          foreach(var item in occludingObjects)
+          {
+               item.LerpAlpha(0.5f);
+          }
    }
 
-   static List<OccludingObject> GetOccludingObjects(Transform transformToBeVisible)
+   static IEnumerable<OccludingObject> GetOccludingObjects(Transform transformToBeVisible)
    { 
-     Vector3 offset = new Vector3(0,1,0);
      int smokeLayerIndex = 7;
      int allLayersMask = ~ (1 << smokeLayerIndex);
      int layerMask =allLayersMask;
-
-     List<OccludingObject> tempOccludingObjects = new List<OccludingObject>();
      MonoBehaviour runCouroutineOn = transformToBeVisible.GetComponent<Movement>();
+     CharacterController characterController = transformToBeVisible.GetComponent<CharacterController>();
 
-     Vector3 startPoint = Camera.main.transform.position;
-     Vector3 endPoint = transformToBeVisible.position+offset;
+     float radius = characterController.radius;
+     float radiusOffset =  characterController.height/2-radius;
+     Vector3 worldCenter  = characterController.transform.TransformPoint(characterController.center);
+     Vector3 point1 = worldCenter+ characterController.transform.up*radiusOffset;
+     Vector3 point2 = worldCenter -characterController.transform.up*radiusOffset;
      
-     Vector3 endPointHead = transformToBeVisible.position+Vector3.up*2;
-
-     Vector3 direction = endPoint-startPoint;
+     Vector3 startPoint = Camera.main.transform.position;;
+     Vector3 direction = startPoint-worldCenter;
      direction = direction.normalized;
 
-     GameObject hitObject;
+     int amountOfHits = Physics.CapsuleCastNonAlloc(point1,point2,radius,direction,raycastHits,Mathf.Infinity,layerMask);
 
+     List<OccludingObject> tempOccludingObjects = new List<OccludingObject>();
 
-     //Import all occluding objects
-     while(true)
+     for (int i = 0; i < amountOfHits; i++)
      {
-          Debug.DrawRay(startPoint,direction*400,Color.red,0.1f,true);
-
-          if (Physics.Raycast(startPoint, direction, out RaycastHit hitInfo,Mathf.Infinity,layerMask))
-          {    
-               hitObject = hitInfo.transform.gameObject;
+          GameObject hitGameObject = raycastHits[i].transform.gameObject;
+          if (hitGameObject.tag =="Wall")
+          {
+               tempOccludingObjects.Add(new OccludingObject(hitGameObject,null,runCouroutineOn));
           }
                
-          else
-               break;
-
-               if (hitObject.tag =="Wall" && !tempOccludingObjects.Any(obj => obj.gameObject == hitObject))
-               {
-                    tempOccludingObjects.Add(new OccludingObject(hitObject,null,runCouroutineOn));
-               }
-               else
-               break;
-
-          startPoint = hitInfo.point;
      }
 
      return tempOccludingObjects;
    }
-
 
 
 }

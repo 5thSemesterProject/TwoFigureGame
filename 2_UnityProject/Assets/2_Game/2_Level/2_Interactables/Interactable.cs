@@ -132,7 +132,8 @@ public abstract class Interactable : MonoBehaviour
 
     void DrawLines()
     {
-         if (triggeredBy != null)
+#if UNITY_EDITOR
+        if (triggeredBy != null)
         {
             Handles.color = Color.red;
             Handles.DrawAAPolyLine(20f,triggeredBy.transform.position, transform.position);
@@ -145,8 +146,9 @@ public abstract class Interactable : MonoBehaviour
             Handles.DrawAAPolyLine(20f,triggering.transform.position, transform.position);
             DrawArrow(triggering.transform.position, transform.position);
         }
+#endif
     }
-
+#if UNITY_EDITOR
     void DrawArrow(Vector3 start,Vector3 end)
     {
         Vector3 direction = end-start;
@@ -159,8 +161,9 @@ public abstract class Interactable : MonoBehaviour
         Handles.DrawAAPolyLine(20f,end, leftEndPoint);
         Handles.DrawAAPolyLine(20f,end, rightEndPoint);
     }
+#endif
 
-   void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
     {
        DrawLines();
     }
