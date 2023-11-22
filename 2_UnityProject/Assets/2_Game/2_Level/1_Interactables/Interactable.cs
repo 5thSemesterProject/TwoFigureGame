@@ -12,6 +12,7 @@ public enum CharacterType
     None, Woman, Man
 }
 
+
 public abstract class Interactable : MonoBehaviour
 {
     Interactable prevTriggeredBy;
@@ -54,7 +55,7 @@ public abstract class Interactable : MonoBehaviour
     public void Trigger()
     {
         if (triggering==null)
-            action.Invoke();
+            action?.Invoke();
         else if (triggering!=null)
             triggering.Trigger();
     }
