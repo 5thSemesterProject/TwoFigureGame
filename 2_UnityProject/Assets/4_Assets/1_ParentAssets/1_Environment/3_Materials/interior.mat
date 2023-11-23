@@ -29,8 +29,8 @@ Material:
   - TransparentBackface
   - RayTracingPrepass
   - TransparentDepthPostpass
-  m_LockedProperties: :m_EnableInstancingVariants _Color _Emission _MainTexture _Metalic
-    _NormalMap _Roughness _UseMetallicMap _UseNormalMap _UseRoughnessMap
+  m_LockedProperties: _Color _Emission _MainTexture _Metalic _NormalMap _Roughness
+    _UseMetallicMap _UseNormalMap _UseRoughnessMap
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -182,7 +182,7 @@ Material:
     - _AlphaRemapMax: 1
     - _AlphaRemapMin: 0
     - _AlphaSrcBlend: 1
-    - _Animate: 1
+    - _Animate: 0
     - _AnimationSpeed: 5
     - _Anisotropy: 0
     - _BlendMode: 0
@@ -231,8 +231,8 @@ Material:
     - _Metallic: 0
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
-    - _NoiseInfluence: 20
-    - _NoiseScale: 3
+    - _NoiseInfluence: 50
+    - _NoiseScale: 0.1
     - _NormalMapSpace: 0
     - _NormalScale: 1
     - _ObjectSpaceUVMapping: 0
@@ -243,7 +243,7 @@ Material:
     - _PPDMinSamples: 5
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
-    - _Radius: 100
+    - _Radius: 0
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
@@ -313,7 +313,7 @@ Material:
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _Tint: {r: 1, g: 1, b: 1, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
