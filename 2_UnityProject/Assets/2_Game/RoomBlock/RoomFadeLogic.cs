@@ -29,6 +29,11 @@ public class RoomFadeLogic : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        SetVisible(true);
+    }
+
     private void SetVisible(bool visible)
     {
         SetMaterialInt(nameShouldFade, visible ? 0 : 1);
