@@ -29,9 +29,8 @@ Material:
   - TransparentBackface
   - RayTracingPrepass
   - TransparentDepthPostpass
-  m_LockedProperties: :m_EnableInstancingVariants _Animate _AnimationSpeed _Color
-    _Emission _MainTexture _Metalic _NoiseInfluence _NoiseScale _NormalMap _Roughness
-    _UseMetallicMap _UseNormalMap _UseRoughnessMap
+  m_LockedProperties: :m_EnableInstancingVariants _Color _Emission _MainTexture _Metalic
+    _NormalMap _Radius _Roughness _UseMetallicMap _UseNormalMap _UseRoughnessMap
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -244,7 +243,7 @@ Material:
     - _PPDMinSamples: 5
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
-    - _Radius: 100
+    - _Radius: 0
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
