@@ -22,7 +22,9 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     [SerializeField] private float rotationSpeed = 50f;
 
     [SerializeField] private float smokeIntersectionRadius = 2;
+    [SerializeField] private float gravity = 9.81f;
     private float minWallDistance = 0.7f;
+    [SerializeField] private float timeFalling;
 
     public Interactable interactable;
 
@@ -43,8 +45,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         }
     }
 
-
-
     public Vector4 GetSphereInformation()
     {
         return VectorHelper.Convert3To4(transform.position,2);
@@ -56,15 +56,30 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     }
 
     #region Movement
+    private void Update()
+    {
+        //characterController.Move(Vector3.down*0.001f);
+
+        if (!characterController.isGrounded)
+        {
+            float gravityFallDistance = 9.81f * timeFalling * timeFalling;
+            characterController.Move(Vector3.down * gravityFallDistance);
+            timeFalling += Time.deltaTime;
+        }
+        else
+        {
+            timeFalling = 0;
+        }
+    }
 
     public Vector2 MovePlayer(Vector2 axis, float speed = 1)
     {
-        float yValue = transform.position.y;
+        //float yValue = transform.position.y;
         axis = axis.magnitude >= 1 ? axis.normalized : axis;
 
-        Vector2 characterForward = VectorHelper.Convert3To2(Camera.main.transform.forward).normalized;
-        Vector2 characterRight = VectorHelper.Convert3To2(Camera.main.transform.right).normalized;
-        Vector3 movementDir = VectorHelper.Convert2To3(characterForward * axis.y + characterRight * axis.x);
+        Vector3 characterForward = Camera.main.transform.forward;
+        Vector3 characterRight = Camera.main.transform.right;
+        Vector3 movementDir = characterForward * axis.y + characterRight * axis.x;
         Vector3 movement = movementDir * movementSpeed * speed * Time.deltaTime * Time.timeScale / 3;
         movement = VectorHelper.Convert2To3(OptimizeMovement(transform.position, VectorHelper.Convert3To2(movement)));
         movement = VectorHelper.Convert2To3(AssureMovement(transform.position, VectorHelper.Convert3To2(movement)));
@@ -83,7 +98,8 @@ public class Movement : MonoBehaviour, IIntersectSmoke
                 transform.rotation = targetRotation;
             }
         }
-        transform.position = new Vector3(transform.position.x, yValue, transform.position.z);
+
+        //transform.position = new Vector3(transform.position.x, yValue, transform.position.z);
 
         float animationSpeed = movementDir.magnitude * 3;
         animator.SetBool("Grounded", true);
