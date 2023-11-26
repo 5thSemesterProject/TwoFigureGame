@@ -9,8 +9,10 @@ public class RoomFadeLogic : MonoBehaviour
     [SerializeField] private int playerLayer = 9;
     [SerializeField] private float maxFadeRadius = 50;
     [SerializeField] private float fadeTime = 1;
+    [SerializeField] private float CharacterRadius = 5;
 
     private Coroutine fadeRoutine;
+    private BoxCollider[] roomColliders;
 
     //Shader Variable Names
     private string nameRadius = "_Radius";
@@ -27,6 +29,8 @@ public class RoomFadeLogic : MonoBehaviour
         {
             SetVisible(false);
         }
+
+        roomColliders = GetComponents<BoxCollider>();
     }
 
     private void OnDisable()
@@ -73,13 +77,35 @@ public class RoomFadeLogic : MonoBehaviour
         }
     }
 
+    Vector3 cetnerdebug = Vector3.zero;
+    Vector3 RadiusDebug = Vector3.zero;
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(cetnerdebug, RadiusDebug);
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == playerLayer)
         {
+            for (int i = 0; i < roomColliders.Length; i++)
+            {
+                int characterInCollider = Physics.OverlapBoxNonAlloc(roomColliders[i].center + transform.position, roomColliders[i].size / 2, new Collider[1], roomColliders[i].transform.rotation, LayerMask.GetMask("Player"));
+                if (characterInCollider > 0)
+                {
+                    return;
+                }
+            }
+
             SetMaterialVector(nameEpicenter, VectorHelper.Convert3To2(other.transform.position));
             StartFade(false);
         }
+    }
+
+    public static void ReevaluateActiveCharacter()
+    {
+
     }
     #endregion
 
