@@ -76,10 +76,10 @@ public class RoomFadeLogic : MonoBehaviour
         if (other.gameObject.layer == playerLayer)
         {
             GameObject[] characterInColliders = GetCharactersInColliders();
+            SetMaterialFloat(nameCharRadius, 0);
 
             if (characterInColliders.Length > 0)
             {
-                SetMaterialFloat(nameCharRadius, 0);
                 if (characterInColliders.Length > 1|| CharacterManager.ActiveCharacterRigidbody == characterInColliders[0])
                 {
                     return;
