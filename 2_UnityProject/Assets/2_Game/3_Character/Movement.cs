@@ -62,7 +62,9 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         float yValue = transform.position.y;
         axis = axis.magnitude >= 1 ? axis.normalized : axis;
 
-        Vector3 movementDir = VectorHelper.Convert2To3(axis);
+        Vector2 characterForward = VectorHelper.Convert3To2(Camera.main.transform.forward).normalized;
+        Vector2 characterRight = VectorHelper.Convert3To2(Camera.main.transform.right).normalized;
+        Vector3 movementDir = VectorHelper.Convert2To3(characterForward * axis.y + characterRight * axis.x);
         Vector3 movement = movementDir * movementSpeed * speed * Time.deltaTime * Time.timeScale / 3;
         movement = VectorHelper.Convert2To3(OptimizeMovement(transform.position, VectorHelper.Convert3To2(movement)));
         movement = VectorHelper.Convert2To3(AssureMovement(transform.position, VectorHelper.Convert3To2(movement)));
