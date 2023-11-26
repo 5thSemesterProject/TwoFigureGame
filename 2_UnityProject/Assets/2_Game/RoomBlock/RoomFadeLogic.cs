@@ -36,6 +36,7 @@ public class RoomFadeLogic : MonoBehaviour
     private void OnDisable()
     {
         SetVisible(true);
+        SetMaterialVector(nameEpicenter, Vector2.zero);
     }
 
     private void SetVisible(bool visible)
