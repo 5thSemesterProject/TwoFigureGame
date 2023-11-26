@@ -79,7 +79,7 @@ public class RoomFadeLogic : MonoBehaviour
 
             if (characterInColliders.Length > 0)
             {
-
+                SetMaterialFloat(nameCharRadius, 0);
                 if (characterInColliders.Length > 1|| CharacterManager.ActiveCharacterRigidbody == characterInColliders[0])
                 {
                     return;
