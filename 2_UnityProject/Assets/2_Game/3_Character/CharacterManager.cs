@@ -35,6 +35,7 @@ public class CharacterData
         gameObject = obj;
         movement = gameObject.GetComponent<Movement>();
         animator = gameObject.GetComponent<Animator>();
+        roomFadeRigidBody = gameObject.GetComponentInChildren<Rigidbody>().gameObject;
     }
 
     public GameObject gameObject;
@@ -43,6 +44,7 @@ public class CharacterData
     public CharacterState currentState;
     public CinemachineVirtualCamera virtualCamera;
     public OxygenData oxygenData;
+    public GameObject roomFadeRigidBody;
 }
 
 public class WomanData: CharacterData
@@ -59,6 +61,12 @@ public class ManData: CharacterData
     }
 }
 
+public enum Characters
+{
+    Man,
+    Woman
+}
+
 public class CharacterManager : MonoBehaviour
 {
     //Inputs
@@ -70,12 +78,25 @@ public class CharacterManager : MonoBehaviour
 
     //Character Prefab
     [SerializeField] private GameObject manPrefab, womanPrefab;
-    [SerializeField] private CharacterData manData, womanData;
+    [SerializeField] private static CharacterData manData, womanData;
     [SerializeField] private GameObject cameraPrefab;
 
     [Header ("Debugging")]
     [SerializeField] TextMeshProUGUI debuggingCharacterStateMachines;
     [SerializeField] TextMeshProUGUI debuggingOxygenCharacters;
+
+    //Active Character
+    public static GameObject ActiveCharacterRigidbody
+    {
+        get
+        {
+            if (manData.currentState.GetType() == typeof(AIState))
+            {
+                return womanData.roomFadeRigidBody;
+            }
+            return womanData.roomFadeRigidBody;
+        }
+    }
 
     private void Start()
     {
@@ -260,8 +281,7 @@ class AIState : CharacterState
         if (characterData.virtualCamera!=null)
             characterData.virtualCamera.gameObject.SetActive(false);
 
-        characterData.movement.MovePlayer(Vector2.zero,0);
-
+        characterData.movement.MovePlayer(Vector2.zero, 0);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -272,6 +292,8 @@ class AIState : CharacterState
                 CamManager.SpawnCamera(characterData.gameObject.transform, out characterData.virtualCamera);
             else
                 characterData.virtualCamera.gameObject.SetActive(true);
+
+            CustomEvents.RaiseCharacterSwitch(characterData.roomFadeRigidBody);
 
             return new IdleState(characterData);
         }
