@@ -10,15 +10,23 @@ public class Door : Interactable
     void  Start()
     {
         animator = GetComponent<Animator>();
-        AddAction(()=>OpenDoor());
+        AddTriggerAction(()=>OpenDoor());
+        AddUntriggerAction(()=>CloseDoor());
     }
     public void OpenDoor()
     {
         animator.SetBool("Open",true);
     }
+
+    public void CloseDoor()
+    {
+        animator.SetBool("Open",false);
+    }
+
     protected override void Highlight()
     {
-
+        
     }
+
 
 }
