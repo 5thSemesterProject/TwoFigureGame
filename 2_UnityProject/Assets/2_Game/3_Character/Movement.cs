@@ -81,7 +81,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
                 transform.rotation = targetRotation;
             }
         }
-        transform.position = new Vector3(transform.position.x, yValue, transform.position.z);
+        //transform.position = new Vector3(transform.position.x, yValue, transform.position.z);
 
         float animationSpeed = movementDir.magnitude * 3;
         animator.SetBool("Grounded", true);

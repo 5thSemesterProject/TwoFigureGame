@@ -7,15 +7,43 @@ public class PressurePlate : Interactable
 {
     [SerializeField] float scaleColliderFactor = 0.8f;
     [SerializeField] int maxColliders = 4;
+    [SerializeField] GameObject button;
+    [SerializeField] float pressAmount = 0.05f;
+    [SerializeField] float pressSpeed = 0.1f;
+
+    Vector3 initialButtonPos;
+
     Vector3 colliderSize;
     Collider[] hitColliders;
+
+    Vector3 targetPos;
+    Coroutine coroutine;
+
+    bool pressed;
 
     void Start()
     {
         colliderSize = transform.localScale * scaleColliderFactor;
         colliderSize.y = 2;
         hitColliders = new Collider[maxColliders];
+        coroutine  = StartCoroutine(PressDownAnim());
+        initialButtonPos = button.transform.position;
     }
+
+    IEnumerator PressDownAnim()
+    {
+        targetPos = button.transform.position;
+        float t = 0;
+
+        while (true)
+        {
+            Vector3 curentPos = Vector3.Lerp(button.transform.position,targetPos,t);
+            button.transform.position = curentPos;
+            t+=Time.deltaTime*pressSpeed;
+            yield return null;
+        }
+    }
+
     protected override void Highlight()
     {
         Debug.Log("Highlighted");
@@ -29,13 +57,19 @@ public class PressurePlate : Interactable
 
     void CheckActivation()
     {
-        if (SteppedOn())
+        if (SteppedOn() && pressed==false)
         {
-            GetComponent<Renderer>().materials[0].SetColor("_BaseColor", Color.red);
+            targetPos = initialButtonPos+Vector3.down*pressAmount;
+            pressed = true;
             Trigger();
         }
-        else
-            GetComponent<Renderer>().materials[0].SetColor("_BaseColor", Color.white);
+        else if (!SteppedOn()&&pressed==true)
+        {
+             targetPos = initialButtonPos;
+             Untrigger();
+             pressed = false;
+        }
+            
     }
 
     public bool SteppedOn()
