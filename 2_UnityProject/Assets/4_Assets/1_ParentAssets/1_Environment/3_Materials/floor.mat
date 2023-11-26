@@ -29,8 +29,9 @@ Material:
   - TransparentBackface
   - RayTracingPrepass
   - MOTIONVECTORS
-  m_LockedProperties: :m_EnableInstancingVariants _Color _Emission _MainTexture _Metalic
-    _NormalMap _Roughness _UseMetallicMap _UseNormalMap _UseRoughnessMap
+  m_LockedProperties: :m_EnableInstancingVariants _Animate _AnimationSpeed _Color
+    _Emission _MainTexture _Metalic _NoiseInfluence _NoiseScale _NormalMap _Roughness
+    _UseMetallicMap _UseNormalMap _UseRoughnessMap
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -186,6 +187,7 @@ Material:
     - _AnimationSpeed: 5
     - _Anisotropy: 0
     - _BlendMode: 0
+    - _CharacterRadius: 0
     - _CoatMask: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
@@ -309,6 +311,7 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _Epicenter: {r: 0, g: 0, b: 0, a: 0}
+    - _InactiveCharacter: {r: 0, g: 0, b: 0, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
