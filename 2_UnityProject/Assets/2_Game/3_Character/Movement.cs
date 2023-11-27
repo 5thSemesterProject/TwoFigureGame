@@ -10,6 +10,11 @@ using UnityEngine.UIElements;
 using UnityEngine.Windows;
 using static UnityEngine.Rendering.DebugUI;
 
+public enum TraversalType
+{
+    Crawl, JumpOver
+}
+
 public class Movement : MonoBehaviour, IIntersectSmoke
 {
     private CharacterController characterController;
@@ -166,15 +171,21 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     }
     #endregion
     
-    public void StartCrawl(Interactable crawl,float crawlDuration = 1)
+    public void StartCrawl(Interactable crawl,TraversalType traversalType,float traversalDuration = 1)
     {
-        coroutine = StartCoroutine(Crawl(crawl.gameObject,crawlDuration));
+        string animationName="";
+        if (traversalType == TraversalType.Crawl)
+            animationName = "Crawl";
+        else if (traversalType == TraversalType.JumpOver)
+            animationName = "Crawl";
+
+        coroutine = StartCoroutine(Traverse(crawl.gameObject,traversalDuration,animationName));
     }
 
-    private IEnumerator Crawl(GameObject crawlObject,float crawlDuration)
+    private IEnumerator Traverse(GameObject crawlObject,float crawlDuration, string animationType)
     {
         float time = 0;
-        Vector3 crawlDir = GetCrawlDir(crawlObject);
+        Vector3 crawlDir = GetTraverseDir(crawlObject);
 
         //Lerp Rotation and Position
         Vector3 originPos = transform.position;
@@ -197,7 +208,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         
         //Start Crawling
         time = 0;
-        animator.SetBool("Crawl",true);
+        animator.SetBool(animationType,true);
         animator.SetFloat("Speed",0);
         while (time < crawlDuration)
         {   
@@ -207,11 +218,11 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             yield return null;
         }
 
-        animator.SetBool("Crawl",false);
+        animator.SetBool(animationType,false);
         coroutine = null;
     }
 
-    private Vector3 GetCrawlDir(GameObject crawlObject)
+    private Vector3 GetTraverseDir(GameObject crawlObject)
     {
         Vector3 crawlPos = crawlObject.transform.position;
         Vector3 crawlDir = crawlObject.transform.forward;

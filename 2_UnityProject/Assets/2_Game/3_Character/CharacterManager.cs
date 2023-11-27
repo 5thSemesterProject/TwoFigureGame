@@ -240,7 +240,7 @@ public abstract class CharacterState
             else if (hitColliders[i].TryGetComponent(out Oxygenstation oxygenstation) 
                     &&characterData.oxygenData.currentOxygen<=characterData.oxygenData.maxOxygen )
             {   
-                    characterData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
+                characterData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
             }
         }      
     }
@@ -375,7 +375,27 @@ class CrawlState : CharacterState
 {
     public CrawlState(CharacterData data) : base(data)
     {
-        characterData.movement.StartCrawl(characterData.movement.interactable,2);
+        characterData.movement.StartCrawl(characterData.movement.interactable,TraversalType.Crawl,2);
+    }
+
+    public override CharacterState SpecificStateUpdate()
+    {
+        if (CharacterManager.customInputMaps.InGame.Switch.triggered)
+            return new AIState(characterData);
+
+        if (characterData.movement.coroutine==null)
+            return new IdleState(characterData);
+
+        return this;
+
+    }
+}
+
+class JumpOverState : CharacterState
+{
+    public JumpOverState(CharacterData data) : base(data)
+    {
+        characterData.movement.StartCrawl(characterData.movement.interactable,TraversalType.JumpOver,2);
     }
 
     public override CharacterState SpecificStateUpdate()
