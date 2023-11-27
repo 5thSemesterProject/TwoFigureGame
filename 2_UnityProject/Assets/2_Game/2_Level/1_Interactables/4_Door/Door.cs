@@ -9,7 +9,7 @@ public class Door : Interactable
 
     void  Start()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         AddTriggerAction(()=>OpenDoor());
         AddUntriggerAction(()=>CloseDoor());
     }
