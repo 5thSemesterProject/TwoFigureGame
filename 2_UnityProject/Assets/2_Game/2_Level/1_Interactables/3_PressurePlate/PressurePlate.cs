@@ -82,7 +82,6 @@ public class PressurePlate : Interactable
             //Check if player is in collider
             if (hitColliders[i] != null && hitColliders[i].gameObject.TryGetComponent(out Movement movement))
             {
-                Debug.Log ("Test");
                 return true;
             }
         }

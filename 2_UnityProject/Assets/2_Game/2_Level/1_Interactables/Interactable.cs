@@ -19,7 +19,6 @@ public abstract class Interactable : MonoBehaviour
     [SerializeField] public Interactable triggeredBy;
     [SerializeField] Interactable triggering;
     public CharacterType specificCharacterAccess;
-
     Interactable prevTriggering;
     Action triggerAction;
 
@@ -45,6 +44,15 @@ public abstract class Interactable : MonoBehaviour
     {
         if (other.TryGetComponent<Movement>(out Movement movementComp))
             movementComp.interactable = null;
+    }
+
+    void  OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent<Movement>(out Movement movementComp))
+        {
+            if (specificCharacterAccess == CharacterType.None||specificCharacterAccess ==movementComp.characterType)
+                movementComp.interactable = this;
+        }
     }
 
     public void TriggerByPlayer()
@@ -135,7 +143,7 @@ public abstract class Interactable : MonoBehaviour
         // Check for a loop by traversing the triggering chain
         while (current != null)
         {
-            if (current == source)
+            if (current == source && current!=null && source!=null)
             {
                 Debug.LogWarning("Warning: Creating a loop in triggering relationships. This can lead to unexpected behavior.");
                 break;

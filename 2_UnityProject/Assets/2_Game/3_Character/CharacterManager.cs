@@ -251,6 +251,7 @@ public abstract class CharacterState
             {
                 default:
                     characterData.movement.interactable.TriggerByPlayer();
+                    characterData.movement.interactable = null;
                 break;     
                 case Crawl:
                     updatedState = new CrawlState(characterData);
