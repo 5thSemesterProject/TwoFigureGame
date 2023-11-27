@@ -77,11 +77,13 @@ public class RoomFadeLogic : MonoBehaviour
         {
             GameObject[] characterInColliders = GetCharactersInColliders();
             SetMaterialFloat(nameCharRadius, 0);
+            charactersInRoom.Remove(other.gameObject);
 
             if (characterInColliders.Length > 0)
             {
                 if (characterInColliders.Length > 1|| CharacterManager.ActiveCharacterRigidbody == characterInColliders[0])
                 {
+                    charactersInRoom.Add(other.gameObject);
                     return;
                 }
 
@@ -89,7 +91,6 @@ public class RoomFadeLogic : MonoBehaviour
                 SetMaterialFloat(nameCharRadius, CharacterRadius);
             }
 
-            charactersInRoom.Remove(other.gameObject);
             SetMaterialVector(nameEpicenter, VectorHelper.Convert3To2(other.transform.position));
             StartFade(false);
         }
