@@ -264,9 +264,9 @@ public abstract class CharacterState
                 case JumpOver:
                     updatedState = new JumpOverState(characterData);
                 break;
-                //case MoveObject:
-                   // updatedState = new MoveObjectState(characterData);
-                   // break;
+                case MoveObject:
+                    updatedState = new MoveObjectState(characterData);
+                    break;
             }
         }
 
@@ -399,6 +399,8 @@ class JumpOverState : CharacterState
     public JumpOverState(CharacterData data) : base(data)
     {
         characterData.movement.StartTraversing(characterData.movement.interactable,TraversalType.JumpOver,2);
+
+        handleInteractables = false;
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -416,19 +418,46 @@ class JumpOverState : CharacterState
 
 class MoveObjectState : CharacterState
 {
+    private MoveObject movableObject;
+    private Transform previousParent;
+
     public MoveObjectState(CharacterData data) : base(data)
     {
+        //Disable ability to interact with other objects
+        handleInteractables = false;
+
+        //Get the NoveObject Script if it exists
+        if (data.movement.interactable.GetType() == typeof(MoveObject))
+        {
+            movableObject = (MoveObject)data.movement.interactable;
+        }
+        else
+        {
+            Debug.LogWarning("Interactable activated MoveObject State but is not MoveObject!");
+        }
+
+        //Parent Character To Box
+        previousParent = characterData.gameObject.transform.parent;
+        characterData.gameObject.transform.parent = movableObject.transform;
     }
 
     public override CharacterState SpecificStateUpdate()
     {
+        //Enter AI State if triggered
         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
             return new AIState(characterData);
 
+        //Return to idle if player released the input
         if (CharacterManager.customInputMaps.InGame.Action.phase == InputActionPhase.Waiting)
         {
+            //Unparent Character
+            characterData.gameObject.transform.parent = previousParent;
+
             return new IdleState(characterData);
         }
+
+        Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
+        movableObject.MoveWithObject(inputVector);
 
         return this;
     }

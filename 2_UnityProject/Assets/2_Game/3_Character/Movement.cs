@@ -21,6 +21,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     private Animator animator;
 
     public Coroutine coroutine;
+    public Coroutine lerpRoutine;
 
     [SerializeField] private float lerpValue = 0.2f;
     [SerializeField] private float movementSpeed = 25f;
@@ -34,7 +35,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     public Interactable interactable;
 
     public CharacterType characterType;
-
 
     private void Awake()
     {
@@ -50,6 +50,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         }
     }
 
+    #region FogStuff
     public Vector4 GetSphereInformation()
     {
         return VectorHelper.Convert3To4(transform.position,2);
@@ -59,6 +60,12 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     {
         return gameObject;
     }
+
+    public float GetIntersectionRadius()
+    {
+        return smokeIntersectionRadius;
+    }
+    #endregion
 
     #region Movement
     private void Update()
@@ -170,7 +177,8 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         return (dir2 - proj).normalized;
     }
     #endregion
-    
+
+    #region Traversing
     public void StartTraversing(Interactable crawl,TraversalType traversalType,float traversalDuration = 1)
     {
         string animationName="";
@@ -233,10 +241,11 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
         return crawlDir * scalar;
     }
+    #endregion
 
-    public float GetIntersectionRadius()
+    public void LerpPlayerTo(Vector3 postions, Quaternion rotation, float speed = 1)
     {
-        return smokeIntersectionRadius;
+        
     }
 }
 
