@@ -202,8 +202,6 @@ public class CharacterManager : MonoBehaviour
 
 public abstract class CharacterState
 {
-    protected bool handleInteractables = true;
-
     public CharacterState(CharacterData data)
     {
         characterData = data;
@@ -217,12 +215,9 @@ public abstract class CharacterState
 
         HandleOxygen();
 
-        if (handleInteractables)
-        {
-            HandleInteractable(out CharacterState interactableState);
-            if (interactableState != null)
-                return interactableState;
-        }
+        HandleInteractable(out CharacterState interactableState);
+        if (interactableState!=null)
+            return interactableState;
 
         return SpecificStateUpdate();
     }
@@ -257,13 +252,10 @@ public abstract class CharacterState
                 default:
                     characterData.movement.interactable.TriggerByPlayer();
                     characterData.movement.interactable = null;
-                    break;     
+                break;     
                 case Crawl:
                     updatedState = new CrawlState(characterData);
-                    break;
-                case MoveObject:
-                    updatedState = new MoveObjectState(characterData);
-                    break;
+                break;
             }
         }
 
@@ -299,8 +291,6 @@ class AIState : CharacterState
             characterData.virtualCamera.gameObject.SetActive(false);
 
         characterData.movement.MovePlayer(Vector2.zero, 0);
-
-        handleInteractables = false;
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -391,22 +381,3 @@ class CrawlState : CharacterState
     }
 }
 
-class MoveObjectState : CharacterState
-{
-    public MoveObjectState(CharacterData data) : base(data)
-    {
-    }
-
-    public override CharacterState SpecificStateUpdate()
-    {
-        if (CharacterManager.customInputMaps.InGame.Switch.triggered)
-            return new AIState(characterData);
-
-        if (CharacterManager.customInputMaps.InGame.Action.phase == InputActionPhase.Waiting)
-        {
-            return new IdleState(characterData);
-        }
-
-        return this;
-    }
-}
