@@ -27,9 +27,9 @@ public abstract class Interactable : MonoBehaviour
     /// Called when another object exits the collider of this interactable.
     /// </summary>
     /// <param name="other">The collider of the other object.</param>
-    void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Movement>(out Movement movementComp))
+        if (other.TryGetComponent(out Movement movementComp))
         {
             if (specificCharacterAccess == CharacterType.None||specificCharacterAccess ==movementComp.characterType)
                 movementComp.interactable = this;
