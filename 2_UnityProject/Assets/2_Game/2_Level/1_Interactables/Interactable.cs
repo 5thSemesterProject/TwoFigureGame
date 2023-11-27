@@ -143,7 +143,7 @@ public abstract class Interactable : MonoBehaviour
         // Check for a loop by traversing the triggering chain
         while (current != null)
         {
-            if (current == source && current!=null && source!=null)
+            if (current == source && source!=null)
             {
                 Debug.LogWarning("Warning: Creating a loop in triggering relationships. This can lead to unexpected behavior.");
                 break;

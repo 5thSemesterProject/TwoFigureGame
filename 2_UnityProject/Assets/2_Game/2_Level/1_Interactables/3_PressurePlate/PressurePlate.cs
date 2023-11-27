@@ -97,7 +97,7 @@ public class PressurePlate : Interactable
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(transform.position, colliderSize);
     }
 
