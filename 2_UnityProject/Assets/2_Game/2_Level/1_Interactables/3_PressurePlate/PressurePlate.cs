@@ -6,7 +6,7 @@ using UnityEngine.Rendering.HighDefinition;
 public class PressurePlate : Interactable
 {
     [SerializeField] float scaleColliderFactor = 0.8f;
-    [SerializeField] int maxColliders = 4;
+    [SerializeField] int maxColliders = 100;
     [SerializeField] GameObject button;
     [SerializeField] float pressAmount = 0.05f;
     [SerializeField] float pressSpeed = 0.1f;
@@ -78,10 +78,11 @@ public class PressurePlate : Interactable
         Physics.OverlapBoxNonAlloc(transform.position,colliderSize, hitColliders, Quaternion.identity);
 
         for (int i = 0; i < hitColliders.Length; i++)
-        {   
+        {  
             //Check if player is in collider
             if (hitColliders[i] != null && hitColliders[i].gameObject.TryGetComponent(out Movement movement))
             {
+                Debug.Log ("Test");
                 return true;
             }
         }
