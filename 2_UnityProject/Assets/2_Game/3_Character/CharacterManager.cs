@@ -35,7 +35,15 @@ public class CharacterData
         gameObject = obj;
         movement = gameObject.GetComponent<Movement>();
         animator = gameObject.GetComponent<Animator>();
-        roomFadeRigidBody = gameObject.GetComponentInChildren<Rigidbody>().gameObject;
+
+        var rigidbodysOnCharacter = gameObject.GetComponentsInChildren<Rigidbody>();
+        foreach (var rigidbody in rigidbodysOnCharacter)
+        {
+            if (rigidbody.gameObject.layer == 9)
+            {
+                roomFadeRigidBody = rigidbody.gameObject;
+            }
+        }
     }
 
     public GameObject gameObject;
@@ -94,7 +102,7 @@ public class CharacterManager : MonoBehaviour
             {
                 return womanData.roomFadeRigidBody;
             }
-            return womanData.roomFadeRigidBody;
+            return manData.roomFadeRigidBody;
         }
     }
 
