@@ -171,13 +171,13 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     }
     #endregion
     
-    public void StartCrawl(Interactable crawl,TraversalType traversalType,float traversalDuration = 1)
+    public void StartTraversing(Interactable crawl,TraversalType traversalType,float traversalDuration = 1)
     {
         string animationName="";
         if (traversalType == TraversalType.Crawl)
             animationName = "Crawl";
         else if (traversalType == TraversalType.JumpOver)
-            animationName = "Crawl";
+            animationName = "JumpOver";
 
         coroutine = StartCoroutine(Traverse(crawl.gameObject,traversalDuration,animationName));
     }

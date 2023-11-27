@@ -261,6 +261,9 @@ public abstract class CharacterState
                 case Crawl:
                     updatedState = new CrawlState(characterData);
                     break;
+                case JumpOver:
+                    updatedState = new JumpOverState(characterData);
+                break;
                 //case MoveObject:
                    // updatedState = new MoveObjectState(characterData);
                    // break;
@@ -375,7 +378,7 @@ class CrawlState : CharacterState
 {
     public CrawlState(CharacterData data) : base(data)
     {
-        characterData.movement.StartCrawl(characterData.movement.interactable,TraversalType.Crawl,2);
+        characterData.movement.StartTraversing(characterData.movement.interactable,TraversalType.Crawl,2);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -395,7 +398,7 @@ class JumpOverState : CharacterState
 {
     public JumpOverState(CharacterData data) : base(data)
     {
-        characterData.movement.StartCrawl(characterData.movement.interactable,TraversalType.JumpOver,2);
+        characterData.movement.StartTraversing(characterData.movement.interactable,TraversalType.JumpOver,2);
     }
 
     public override CharacterState SpecificStateUpdate()
