@@ -24,7 +24,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     [SerializeField] private float smokeIntersectionRadius = 2;
     [SerializeField] private float gravity = 9.81f;
     private float minWallDistance = 0.7f;
-    [SerializeField] private float timeFalling;
+    private float timeFalling;
 
     public Interactable interactable;
 
