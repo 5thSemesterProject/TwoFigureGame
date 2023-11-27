@@ -43,7 +43,12 @@ public abstract class Interactable : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent<Movement>(out Movement movementComp))
-            movementComp.interactable = null;
+        {
+            if (movementComp.interactable == this)
+            {
+                movementComp.interactable = null;
+            }
+        }
     }
 
     void  OnTriggerStay(Collider other)
