@@ -261,9 +261,9 @@ public abstract class CharacterState
                 case Crawl:
                     updatedState = new CrawlState(characterData);
                     break;
-                case MoveObject:
-                    updatedState = new MoveObjectState(characterData);
-                    break;
+                //case MoveObject:
+                   // updatedState = new MoveObjectState(characterData);
+                   // break;
             }
         }
 
