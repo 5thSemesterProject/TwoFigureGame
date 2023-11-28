@@ -23,7 +23,6 @@ public class MoveBox : Interactable
         }
 
         distance = Mathf.Clamp01(Mathf.Abs(distance));
-        Debug.Log(distance);
         return isBlocked;
     }
 
