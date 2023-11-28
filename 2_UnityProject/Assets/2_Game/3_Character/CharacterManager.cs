@@ -1,5 +1,6 @@
 using Cinemachine;
 using TMPro;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -203,6 +204,7 @@ public class CharacterManager : MonoBehaviour
 public abstract class CharacterState
 {
     protected bool handleInteractables = true;
+    protected Oxygenstation lastOxyggenStation;
 
     public CharacterState(CharacterData data)
     {
@@ -229,10 +231,13 @@ public abstract class CharacterState
 
     public void HandleOxygen()
     {   
-        Collider[] hitColliders = Physics.OverlapBox(characterData.gameObject.transform.position, Vector3.one/2);
+        Collider[] hitColliders = Physics.OverlapBox(characterData.gameObject.transform.position, Vector3.one);
+        bool oxygenStationActive = false;
         
         for (int i = 0; i < hitColliders.Length; i++)
         {
+            Debug.Log (hitColliders[i].name);
+
             if (hitColliders[i].TryGetComponent(out VolumetricFogHandler volumetricFogHandler))
             {
                 characterData.oxygenData.FallOff();
@@ -241,8 +246,23 @@ public abstract class CharacterState
                     &&characterData.oxygenData.currentOxygen<=characterData.oxygenData.maxOxygen )
             {   
                 characterData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
+
+                if (lastOxyggenStation!=oxygenstation)
+                {
+                    lastOxyggenStation = oxygenstation;
+                    lastOxyggenStation.AddCharacter();
+                    oxygenStationActive = true;
+                }
+
             }
-        }      
+        }
+
+        if (lastOxyggenStation!=null && !oxygenStationActive)
+        {
+            lastOxyggenStation.RemoveCharacter();
+            lastOxyggenStation = null;
+        }
+            
     }
 
     public void HandleInteractable(out CharacterState updatedState)

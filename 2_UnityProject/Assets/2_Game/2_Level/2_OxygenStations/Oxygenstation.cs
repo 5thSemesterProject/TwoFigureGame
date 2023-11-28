@@ -8,6 +8,9 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
    [SerializeField]float chargeRate = 5.0f;
    [SerializeField] float smokeIntersectionRadius;
 
+
+   int amountOfCharacters;
+
     void  Awake()
     {
         oxygenData = new OxygenData(200,0.1f);
@@ -28,5 +31,20 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     public float GetIntersectionRadius()
     {
         return smokeIntersectionRadius;
+    }
+
+    public void AddCharacter()
+    {
+        amountOfCharacters++;
+    }
+
+    public int GetAmountOfCharacters()
+    {
+        return amountOfCharacters;
+    }
+
+    public void RemoveCharacter()
+    {
+        amountOfCharacters--;
     }
 }

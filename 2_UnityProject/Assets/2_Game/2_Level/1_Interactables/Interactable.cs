@@ -18,11 +18,13 @@ public abstract class Interactable : MonoBehaviour
     Interactable prevTriggeredBy;
     [SerializeField] public Interactable triggeredBy;
     [SerializeField] Interactable triggering;
+    [SerializeField]bool active = true;
     public CharacterType specificCharacterAccess;
     Interactable prevTriggering;
     Action triggerAction;
-
     Action untriggerAction;
+
+
     /// <summary>
     /// Called when another object exits the collider of this interactable.
     /// </summary>
@@ -65,15 +67,18 @@ public abstract class Interactable : MonoBehaviour
     public void TriggerByPlayer()
     {
         if (triggeredBy==null)
-            triggerAction.Invoke();
+            Trigger();
     }
 
     public void Trigger()
     {
-        if (triggering==null)
-            triggerAction?.Invoke();
-        else if (triggering!=null)
-            triggering.Trigger();
+        if (active)
+        {
+            if (triggering==null)
+                triggerAction?.Invoke();
+            else if (triggering!=null)
+                triggering.Trigger();
+        }
     }
 
     public void Untrigger()
@@ -94,6 +99,10 @@ public abstract class Interactable : MonoBehaviour
         this.untriggerAction = action;
     }
 
+    public void SetTriggering(bool active)
+    {
+        this.active = active;
+    }
 
     /// <summary>
     /// Highlights the interactable object.
