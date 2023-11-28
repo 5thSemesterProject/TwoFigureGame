@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
+
+public enum ActivationMode
+{
+    Player, Box
+}
 
 public class PressurePlate : Interactable
 {
@@ -10,6 +16,7 @@ public class PressurePlate : Interactable
     [SerializeField] GameObject button;
     [SerializeField] float pressAmount = 0.05f;
     [SerializeField] float pressSpeed = 0.1f;
+    [SerializeField] ActivationMode activationMode;
 
     Vector3 initialButtonPos;
 
@@ -72,18 +79,28 @@ public class PressurePlate : Interactable
             
     }
 
+    bool CheckAccess(Collider collider)
+    {
+        if (collider!=null)
+        {
+            if (collider.gameObject.TryGetComponent(out Movement movement)&&activationMode == ActivationMode.Player)
+                return true;
+            else if (collider.gameObject.TryGetComponent(out MoveBox moveObject)&&activationMode == ActivationMode.Box)
+                return true;
+        }
+        return false;
+    }
+
     public bool SteppedOn()
     {   
         System.Array.Clear(hitColliders, 0, hitColliders.Length);
-        Physics.OverlapBoxNonAlloc(transform.position,colliderSize, hitColliders, Quaternion.identity);
+        Physics.OverlapBoxNonAlloc(transform.position+Vector3.up*colliderSize.y/2,colliderSize, hitColliders, Quaternion.identity);
 
         for (int i = 0; i < hitColliders.Length; i++)
         {  
             //Check if player is in collider
-            if (hitColliders[i] != null && hitColliders[i].gameObject.TryGetComponent(out Movement movement))
-            {
+            if (CheckAccess(hitColliders[i]))
                 return true;
-            }
         }
         
         return false;
@@ -98,7 +115,7 @@ public class PressurePlate : Interactable
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position, colliderSize);
+        Gizmos.DrawWireCube(transform.position+Vector3.up*colliderSize.y/2, colliderSize);
     }
 
 }

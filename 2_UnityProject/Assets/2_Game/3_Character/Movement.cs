@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -21,6 +22,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     private Animator animator;
 
     public Coroutine coroutine;
+    public Coroutine lerpRoutine;
 
     [SerializeField] private float lerpValue = 0.2f;
     [SerializeField] private float movementSpeed = 25f;
@@ -34,7 +36,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     public Interactable interactable;
 
     public CharacterType characterType;
-
 
     private void Awake()
     {
@@ -50,6 +51,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         }
     }
 
+    #region FogStuff
     public Vector4 GetSphereInformation()
     {
         return VectorHelper.Convert3To4(transform.position,2);
@@ -60,6 +62,12 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         return gameObject;
     }
 
+    public float GetIntersectionRadius()
+    {
+        return smokeIntersectionRadius;
+    }
+    #endregion
+
     #region Movement
     private void Update()
     {
@@ -67,7 +75,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
         if (!characterController.isGrounded)
         {
-            float gravityFallDistance = 9.81f * timeFalling * timeFalling;
+            float gravityFallDistance = gravity * timeFalling * timeFalling;
             characterController.Move(Vector3.down * gravityFallDistance);
             timeFalling += Time.deltaTime;
         }
@@ -170,7 +178,8 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         return (dir2 - proj).normalized;
     }
     #endregion
-    
+
+    #region Traversing
     public void StartTraversing(Interactable crawl,TraversalType traversalType,float traversalDuration = 1)
     {
         string animationName="";
@@ -233,10 +242,53 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
         return crawlDir * scalar;
     }
+    #endregion
 
-    public float GetIntersectionRadius()
+    public void LerpPlayerTo(Transform target, bool keepYPos, float speed = 1)
     {
-        return smokeIntersectionRadius;
+        if (lerpRoutine != null)
+        {
+            StopCoroutine(lerpRoutine);
+        }
+        lerpRoutine = StartCoroutine(LerpPlayer(target, keepYPos, speed));
+    }
+
+    public void StopLerp()
+    {
+        if (lerpRoutine != null)
+        {
+            StopCoroutine(lerpRoutine);
+        }
+    }
+
+    private IEnumerator LerpPlayer(Transform targetTransform, bool keepYPos, float speed)
+    {
+        Vector3 postion = targetTransform.position;
+        Quaternion rotation = targetTransform.rotation;
+        Vector3 origin = transform.position;
+        Quaternion originalRotation = transform.rotation;
+        float timeElapsed = 0;
+
+        while (timeElapsed <= 1)
+        {
+            postion = targetTransform.position;
+            postion.y = keepYPos ? transform.position.y : postion.y;
+            rotation = targetTransform.rotation;
+            Vector3 targetPosition = Vector3.Lerp(origin, postion, timeElapsed);
+            Quaternion targetRotation = Quaternion.Lerp(originalRotation, rotation, timeElapsed);
+
+            transform.position = targetPosition;
+            transform.rotation = targetRotation;
+
+            timeElapsed += Time.deltaTime / speed;
+
+            yield return null;
+        }
+
+        transform.position = postion;
+        transform.rotation = rotation;
+
+        lerpRoutine = null;
     }
 }
 

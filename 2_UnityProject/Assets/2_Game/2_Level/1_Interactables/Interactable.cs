@@ -18,23 +18,27 @@ public abstract class Interactable : MonoBehaviour
     Interactable prevTriggeredBy;
     [SerializeField] public Interactable triggeredBy;
     [SerializeField] Interactable triggering;
+    [SerializeField]bool active = true;
     public CharacterType specificCharacterAccess;
     Interactable prevTriggering;
     Action triggerAction;
-
     Action untriggerAction;
+
+
     /// <summary>
     /// Called when another object exits the collider of this interactable.
     /// </summary>
     /// <param name="other">The collider of the other object.</param>
-    protected virtual void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
-            if (specificCharacterAccess == CharacterType.None||specificCharacterAccess ==movementComp.characterType)
+            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
+            {
                 movementComp.interactable = this;
+                Highlight();
+            }
         }
-            
     }
 
     /// <summary>
@@ -43,7 +47,12 @@ public abstract class Interactable : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent<Movement>(out Movement movementComp))
-            movementComp.interactable = null;
+        {
+            if (movementComp.interactable == this)
+            {
+                movementComp.interactable = null;
+            }
+        }
     }
 
     void  OnTriggerStay(Collider other)
@@ -58,15 +67,18 @@ public abstract class Interactable : MonoBehaviour
     public void TriggerByPlayer()
     {
         if (triggeredBy==null)
-            triggerAction.Invoke();
+            Trigger();
     }
 
     public void Trigger()
     {
-        if (triggering==null)
-            triggerAction?.Invoke();
-        else if (triggering!=null)
-            triggering.Trigger();
+        if (active)
+        {
+            if (triggering==null)
+                triggerAction?.Invoke();
+            else if (triggering!=null)
+                triggering.Trigger();
+        }
     }
 
     public void Untrigger()
@@ -87,6 +99,10 @@ public abstract class Interactable : MonoBehaviour
         this.untriggerAction = action;
     }
 
+    public void SetTriggering(bool active)
+    {
+        this.active = active;
+    }
 
     /// <summary>
     /// Highlights the interactable object.
