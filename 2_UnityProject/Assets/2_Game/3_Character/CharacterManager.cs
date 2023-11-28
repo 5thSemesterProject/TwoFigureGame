@@ -481,7 +481,8 @@ class MoveObjectState : CharacterState
         }
 
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
-        float moveDir = movableObject.MoveWithObject(inputVector);
+        Vector2 gameWorldVector = VectorHelper.Convert3To2(Camera.main.transform.forward).normalized * inputVector.y + VectorHelper.Convert3To2(Camera.main.transform.right).normalized * inputVector.x;
+        float moveDir = movableObject.MoveWithObject(gameWorldVector);
         switch (moveDir)
         {
             case -1:

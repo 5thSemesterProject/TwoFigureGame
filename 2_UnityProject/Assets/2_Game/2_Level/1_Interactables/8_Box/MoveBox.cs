@@ -59,10 +59,10 @@ public class MoveBox : Interactable
 
     private float DetermineMoveDirection(Vector2 moveVector)
     {
-        Vector2 objectForward = VectorHelper.Convert3To2(transform.forward);
+        Vector2 objectForward = VectorHelper.Convert3To2(transform.forward).normalized;
         float scalar = Vector2.Dot(moveVector, objectForward);
 
-        return scalar > 0 ? -1 : scalar < 0 ? 1 : 0;
+        return scalar > 0 ? 1 : scalar < 0 ? -1 : 0;
     }
     #endregion
 
