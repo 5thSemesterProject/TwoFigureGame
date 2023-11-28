@@ -85,7 +85,7 @@ public class PressurePlate : Interactable
         {
             if (collider.gameObject.TryGetComponent(out Movement movement)&&activationMode == ActivationMode.Player)
                 return true;
-            else if (collider.gameObject.TryGetComponent(out MoveObject moveObject)&&activationMode == ActivationMode.Box)
+            else if (collider.gameObject.TryGetComponent(out MoveBox moveObject)&&activationMode == ActivationMode.Box)
                 return true;
         }
         return false;

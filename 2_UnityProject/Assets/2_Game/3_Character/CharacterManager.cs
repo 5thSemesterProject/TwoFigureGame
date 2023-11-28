@@ -10,7 +10,7 @@ public class OxygenData
     public float currentOxygen;
     public float fallOfRate;
 
-    public OxygenData(float maxOxygen,float fallOfRate)
+    public OxygenData(float maxOxygen, float fallOfRate)
     {
         this.maxOxygen = maxOxygen;
         currentOxygen = maxOxygen;
@@ -19,13 +19,13 @@ public class OxygenData
 
     public void FallOff()
     {
-        currentOxygen -=fallOfRate*Time.deltaTime;
+        currentOxygen -= fallOfRate * Time.deltaTime;
     }
 
     public void InreaseOxygen(float amount)
     {
-        if (currentOxygen<=maxOxygen)
-            currentOxygen+=amount;
+        if (currentOxygen <= maxOxygen)
+            currentOxygen += amount;
     }
 }
 
@@ -56,16 +56,16 @@ public class CharacterData
     public GameObject roomFadeRigidBody;
 }
 
-public class WomanData: CharacterData
+public class WomanData : CharacterData
 {
-    public WomanData(GameObject obj):base(obj)
+    public WomanData(GameObject obj) : base(obj)
     {
     }
 }
 
-public class ManData: CharacterData
+public class ManData : CharacterData
 {
-    public ManData(GameObject obj):base(obj)
+    public ManData(GameObject obj) : base(obj)
     {
     }
 }
@@ -90,7 +90,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private static CharacterData manData, womanData;
     [SerializeField] private GameObject cameraPrefab;
 
-    [Header ("Debugging")]
+    [Header("Debugging")]
     [SerializeField] TextMeshProUGUI debuggingCharacterStateMachines;
     [SerializeField] TextMeshProUGUI debuggingOxygenCharacters;
 
@@ -125,8 +125,8 @@ public class CharacterManager : MonoBehaviour
         manData.currentState = manData.currentState.UpdateState();
         womanData.currentState = womanData.currentState.UpdateState();
 
-        debuggingCharacterStateMachines.text = "Woman: "+womanData.currentState.GetType() +"\n Man: "+ manData.currentState.GetType();
-        debuggingOxygenCharacters.text = "WomanOxy: "+womanData.oxygenData.currentOxygen+ "\n ManOxy: "+manData.oxygenData.currentOxygen;
+        debuggingCharacterStateMachines.text = "Woman: " + womanData.currentState.GetType() + "\n Man: " + manData.currentState.GetType();
+        debuggingOxygenCharacters.text = "WomanOxy: " + womanData.oxygenData.currentOxygen + "\n ManOxy: " + manData.oxygenData.currentOxygen;
     }
 
     GameObject GetActiveCharacter()
@@ -140,9 +140,9 @@ public class CharacterManager : MonoBehaviour
     void SpawnCharacters()
     {
         //Prefab Setup
-        GameObject spawnedMan = Instantiate(manPrefab,Vector3.forward,Quaternion.identity);
+        GameObject spawnedMan = Instantiate(manPrefab, Vector3.forward, Quaternion.identity);
         spawnedMan.name = "SpawnedMan";
-        GameObject spawnedWoman = Instantiate(womanPrefab,Vector3.forward*2,Quaternion.identity);
+        GameObject spawnedWoman = Instantiate(womanPrefab, Vector3.forward * 2, Quaternion.identity);
         spawnedMan.name = "SpawnedWoman";
         womanData = new WomanData(spawnedWoman);
         womanData.movement.characterType = CharacterType.Woman;
@@ -150,8 +150,8 @@ public class CharacterManager : MonoBehaviour
         manData.movement.characterType = CharacterType.Man;
 
         //Oxygen Setup
-        womanData.oxygenData = new OxygenData(100,1f);
-        manData.oxygenData = new OxygenData(100,1f);
+        womanData.oxygenData = new OxygenData(100, 1f);
+        manData.oxygenData = new OxygenData(100, 1f);
 
         //Cam Setup
         CamManager.SetCamPrefab(cameraPrefab);
@@ -213,7 +213,7 @@ public abstract class CharacterState
 
     public CharacterData characterData;
     public CharacterState UpdateState() //Update Method that every State checks everytime
-    {   
+    {
         if (!(characterData.currentState is AIState))
             CamManager.FindOccludingObjects(characterData.gameObject.transform);
 
@@ -236,8 +236,6 @@ public abstract class CharacterState
         
         for (int i = 0; i < hitColliders.Length; i++)
         {
-            Debug.Log (hitColliders[i].name);
-
             if (hitColliders[i].TryGetComponent(out VolumetricFogHandler volumetricFogHandler))
             {
                 characterData.oxygenData.FallOff();
@@ -269,37 +267,37 @@ public abstract class CharacterState
     {
         updatedState = null;
 
-        if (characterData.movement.interactable !=null
+        if (characterData.movement.interactable != null
         && CharacterManager.customInputMaps.InGame.Action.triggered)
         {
-            switch(characterData.movement.interactable)
+            switch (characterData.movement.interactable)
             {
                 default:
                     characterData.movement.interactable.TriggerByPlayer();
                     characterData.movement.interactable = null;
-                    break;     
+                    break;
                 case Crawl:
                     updatedState = new CrawlState(characterData);
                     break;
                 case JumpOver:
                     updatedState = new JumpOverState(characterData);
-                break;
-                case MoveObject:
+                    break;
+                case MoveBox:
                     updatedState = new MoveObjectState(characterData);
                     break;
             }
         }
 
-        
+
     }
 
     public abstract CharacterState SpecificStateUpdate(); //Specifically for a certain state designed actions
 
-    protected  CharacterState SwitchState(CharacterState updatedState)
+    protected CharacterState SwitchState(CharacterState updatedState)
     {
         return updatedState;
     }
-    
+
 }
 
 class SetUpState : CharacterState
@@ -307,7 +305,7 @@ class SetUpState : CharacterState
     public SetUpState(CharacterData characterData) : base(characterData) { }
 
     public override CharacterState SpecificStateUpdate()
-    {   
+    {
         if (characterData is ManData)
             return new AIState(characterData);
         return new IdleState(characterData);
@@ -318,7 +316,7 @@ class AIState : CharacterState
 {
     public AIState(CharacterData data) : base(data)
     {
-        if (characterData.virtualCamera!=null)
+        if (characterData.virtualCamera != null)
             characterData.virtualCamera.gameObject.SetActive(false);
 
         characterData.movement.MovePlayer(Vector2.zero, 0);
@@ -330,7 +328,7 @@ class AIState : CharacterState
     {
         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
         {
-            if (characterData.virtualCamera==null)
+            if (characterData.virtualCamera == null)
                 CamManager.SpawnCamera(characterData.gameObject.transform, out characterData.virtualCamera);
             else
                 characterData.virtualCamera.gameObject.SetActive(true);
@@ -348,7 +346,7 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-        characterData.movement.MovePlayer(Vector2.zero,0);
+        characterData.movement.MovePlayer(Vector2.zero, 0);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -360,8 +358,8 @@ class IdleState : CharacterState
         if (inputVector.magnitude > 0)
             return SwitchState(new MoveState(characterData));
 
-        
-        if (characterData.movement.interactable !=null && CharacterManager.customInputMaps.InGame.Action.triggered)
+
+        if (characterData.movement.interactable != null && CharacterManager.customInputMaps.InGame.Action.triggered)
             characterData.movement.interactable.TriggerByPlayer();
 
         return this;
@@ -372,15 +370,15 @@ class MoveState : CharacterState
 {
     public MoveState(CharacterData data) : base(data)
     {
- 
+
     }
 
     public override CharacterState SpecificStateUpdate()
     {
-         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
+        if (CharacterManager.customInputMaps.InGame.Switch.triggered)
             return new AIState(characterData);
 
-        if (characterData.movement.interactable !=null && CharacterManager.customInputMaps.InGame.Action.triggered)
+        if (characterData.movement.interactable != null && CharacterManager.customInputMaps.InGame.Action.triggered)
             characterData.movement.interactable.Trigger();
 
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
@@ -398,7 +396,7 @@ class CrawlState : CharacterState
 {
     public CrawlState(CharacterData data) : base(data)
     {
-        characterData.movement.StartTraversing(characterData.movement.interactable,TraversalType.Crawl,2);
+        characterData.movement.StartTraversing(characterData.movement.interactable, TraversalType.Crawl, 2);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -406,7 +404,7 @@ class CrawlState : CharacterState
         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
             return new AIState(characterData);
 
-        if (characterData.movement.coroutine==null)
+        if (characterData.movement.coroutine == null)
             return new IdleState(characterData);
 
         return this;
@@ -418,7 +416,7 @@ class JumpOverState : CharacterState
 {
     public JumpOverState(CharacterData data) : base(data)
     {
-        characterData.movement.StartTraversing(characterData.movement.interactable,TraversalType.JumpOver,2);
+        characterData.movement.StartTraversing(characterData.movement.interactable, TraversalType.JumpOver, 2);
 
         handleInteractables = false;
     }
@@ -428,7 +426,7 @@ class JumpOverState : CharacterState
         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
             return new AIState(characterData);
 
-        if (characterData.movement.coroutine==null)
+        if (characterData.movement.coroutine == null)
             return new IdleState(characterData);
 
         return this;
@@ -438,7 +436,7 @@ class JumpOverState : CharacterState
 
 class MoveObjectState : CharacterState
 {
-    private MoveObject movableObject;
+    private MoveBox movableObject;
     private Transform previousParent;
 
     public MoveObjectState(CharacterData data) : base(data)
@@ -447,9 +445,9 @@ class MoveObjectState : CharacterState
         handleInteractables = false;
 
         //Get the NoveObject Script if it exists
-        if (data.movement.interactable.GetType() == typeof(MoveObject))
+        if (data.movement.interactable.GetType() == typeof(MoveBox))
         {
-            movableObject = (MoveObject)data.movement.interactable;
+            movableObject = (MoveBox)data.movement.interactable;
         }
         else
         {
@@ -459,6 +457,9 @@ class MoveObjectState : CharacterState
         //Parent Character To Box
         previousParent = characterData.gameObject.transform.parent;
         characterData.gameObject.transform.parent = movableObject.transform;
+
+        //Lerp Player to handle
+        characterData.movement.LerpPlayerTo(movableObject.playerHandlePosition, true, 0.2f);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -473,11 +474,29 @@ class MoveObjectState : CharacterState
             //Unparent Character
             characterData.gameObject.transform.parent = previousParent;
 
+            //Stop lerp to handle
+            characterData.movement.StopLerp();
+
             return new IdleState(characterData);
         }
 
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
-        movableObject.MoveWithObject(inputVector);
+        float moveDir = movableObject.MoveWithObject(inputVector);
+        switch (moveDir)
+        {
+            case -1:
+                //Trigger Backwards Movement
+                break;
+            case 0:
+                //Trigger Idle
+                break;
+            case 1:
+                //Trigger Forward Movement
+                break;
+            default:
+                Debug.LogWarning("Something went wrong!");
+                break;
+        }
 
         return this;
     }
