@@ -19,7 +19,7 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     {
         if (TryGetComponent(out SphereCollider sphereCollider))
         {
-            sphereCollider.radius = chargeRate;
+            sphereCollider.radius = smokeIntersectionRadius;
         }   
     }
 
@@ -56,6 +56,7 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
+            movementComp.oxygenstation = this;
             amountOfCharacters++;
         }
     }

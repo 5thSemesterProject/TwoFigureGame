@@ -46,7 +46,7 @@ public class Interactable : MonoBehaviour
                 return;
         }
 
-        Debug.LogWarning("No Trigger Collider added. Make sure there is a Trigger Collider. Setting one automatically...");
+        Debug.LogWarning("No Trigger Collider added. Make sure there is a Trigger Collider. Setting one automatically to "+gameObject.name);
         colliders[0].isTrigger = true;
     }
 
