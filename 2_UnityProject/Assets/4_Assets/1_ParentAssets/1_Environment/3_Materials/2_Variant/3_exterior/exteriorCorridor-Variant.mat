@@ -23,7 +23,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: exteriorRoom_3
+  m_Name: exteriorCorridor-Variant
   m_Shader: {fileID: -6465566751694194690, guid: 0fb8ebeb9fb004acb84a0fe53c613f25, type: 3}
   m_Parent: {fileID: 2100000, guid: d366db112c3889a40be8087fd0d1322f, type: 2}
   m_ModifiedSerializedProperties: 0
@@ -49,6 +49,9 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _Radius: 50
+    - _ShouldFade: 0
+    m_Colors:
+    - _Epicenter: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
