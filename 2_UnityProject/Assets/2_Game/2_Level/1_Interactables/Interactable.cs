@@ -12,91 +12,86 @@ public enum CharacterType
     None, Woman, Man
 }
 
-
-public abstract class Interactable : MonoBehaviour
+[RequireComponent(typeof(Collider))]
+public class Interactable : MonoBehaviour
 {
-    Interactable prevTriggeredBy;
-    [SerializeField] public Interactable triggeredBy;
-    [SerializeField] Interactable triggering;
     [SerializeField]bool active = true;
     public CharacterType specificCharacterAccess;
-    Interactable prevTriggering;
-    Action triggerAction;
-    Action untriggerAction;
 
+    public delegate void ActionDel(Movement movement);
 
-    /// <summary>
-    /// Called when another object exits the collider of this interactable.
-    /// </summary>
-    /// <param name="other">The collider of the other object.</param>
+    public delegate bool Condition(Movement movement);
+
+    public event ActionDel enterEvent;
+     public event ActionDel untriggerEvent;
+     public event ActionDel triggerEvent;
+
+    public Condition exitCond;
+    public Condition enterCond;
+
+    void Awake()
+    {
+        enterCond = DefaultEnterCond;
+        exitCond = DefaultExitCond;
+
+        AssureColliders();
+    }
+
+    void AssureColliders()
+    {
+        var colliders = GetComponents<Collider>();
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].isTrigger)
+                return;
+        }
+
+        Debug.LogWarning("No Trigger Collider added. Make sure there is a Trigger Collider. Setting one automatically...");
+        colliders[0].isTrigger = true;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
             if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
             {
-                movementComp.interactable = this;
-                Highlight();
+
+                if (enterCond(movementComp) && active)
+                    enterEvent?.Invoke(movementComp);
             }
         }
     }
 
-    /// <summary>
-    /// Triggers the interaction behavior of this interactable.
-    /// </summary>
     void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent<Movement>(out Movement movementComp))
+        if (other.TryGetComponent(out Movement movementComp))
         {
-            if (movementComp.interactable == this)
-            {
-                movementComp.interactable = null;
-            }
+                if (exitCond(movementComp))
+                   untriggerEvent?.Invoke(movementComp);
         }
     }
 
     void  OnTriggerStay(Collider other)
     {
-        if (other.TryGetComponent<Movement>(out Movement movementComp))
+        if (other.TryGetComponent(out Movement movementComp))
         {
-            if (specificCharacterAccess == CharacterType.None||specificCharacterAccess ==movementComp.characterType)
-                movementComp.interactable = this;
+            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
+            {
+                if (enterCond(movementComp))
+                    enterEvent?.Invoke(movementComp);
+            }
         }
     }
 
-    public void TriggerByPlayer()
+    public void Trigger(Movement movement)
     {
-        if (triggeredBy==null)
-            Trigger();
+        triggerEvent?.Invoke(movement);
     }
 
-    public void Trigger()
-    {
-        if (active)
-        {
-            if (triggering==null)
-                triggerAction?.Invoke();
-            else if (triggering!=null)
-                triggering.Trigger();
-        }
-    }
-
-    public void Untrigger()
-{        
-        if (triggering==null)
-            untriggerAction?.Invoke();
-        else if (triggering!=null)
-            triggering.Untrigger();
-    }
-
-    public void AddTriggerAction(Action action)
-    {
-        this.triggerAction = action;
-    }
-
-    public void AddUntriggerAction(Action action)
-    {
-        this.untriggerAction = action;
+    public void Untrigger(Movement movement)
+    {        
+        untriggerEvent?.Invoke(movement);
     }
 
     public void SetTriggering(bool active)
@@ -104,12 +99,21 @@ public abstract class Interactable : MonoBehaviour
         this.active = active;
     }
 
+    public bool DefaultEnterCond(Movement movement)
+    {
+        return true;
+    }
+
+    public bool DefaultExitCond(Movement movement)
+    {
+        return true;
+    }
+
     /// <summary>
     /// Highlights the interactable object.
     /// </summary>
-    protected virtual void Highlight(){}
 
-#region Running in Editor
+/*#region Running in Editor
 
     void OnValidate()
     {
@@ -207,7 +211,7 @@ public abstract class Interactable : MonoBehaviour
     {
        DrawLines();
     }
-    #endregion
+    #endregion*/
 }
 
 

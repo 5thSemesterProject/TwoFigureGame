@@ -3,29 +3,28 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Interactable))]
 public class Door : Interactable
 {
     Animator animator;
+    Interactable interactable;
 
-    void  Start()
+    void Start()
     {
         animator = GetComponentInChildren<Animator>();
-        AddTriggerAction(()=>OpenDoor());
-        AddUntriggerAction(()=>CloseDoor());
+        interactable = GetComponent<Interactable>();
+
+        interactable.triggerEvent+=OpenDoor;
+        interactable.untriggerEvent+=CloseDoor;
     }
-    public void OpenDoor()
+    public void OpenDoor(Movement movement)
     {
         animator.SetBool("Open",true);
     }
 
-    public void CloseDoor()
+    public void CloseDoor(Movement movement)
     {
         animator.SetBool("Open",false);
-    }
-
-    protected override void Highlight()
-    {
-        
     }
 
 

@@ -9,32 +9,69 @@ public enum ActivationMode
     Player, Box
 }
 
-public class PressurePlate : Interactable
+[RequireComponent(typeof(PassOnTrigger),typeof(TriggerOnEnter),typeof(Interactable)) ]
+public class PressurePlate : MonoBehaviour
 {
-    [SerializeField] float scaleColliderFactor = 0.8f;
-    [SerializeField] int maxColliders = 100;
     [SerializeField] GameObject button;
     [SerializeField] float pressAmount = 0.05f;
     [SerializeField] float pressSpeed = 0.1f;
     [SerializeField] ActivationMode activationMode;
 
     Vector3 initialButtonPos;
-
-    Vector3 colliderSize;
-    Collider[] hitColliders;
-
     Vector3 targetPos;
     Coroutine coroutine;
+
+    Interactable interactable;
 
     bool pressed;
 
     void Start()
-    {
-        colliderSize = transform.localScale * scaleColliderFactor;
-        colliderSize.y = 2;
-        hitColliders = new Collider[maxColliders];
-        coroutine  = StartCoroutine(PressDownAnim());
+    {   
+        interactable = GetComponent<Interactable>();
+
+        if (interactable==null)
+            Debug.Log ("Test");
+
+        //Add Actions
+        interactable.triggerEvent+=TriggerAction;
+        interactable.untriggerEvent+=UntriggerAction;
+
+        //Set Conditions
+        interactable.exitCond = UntriggerCondition;
+
+        //Only Trigger when button is not pressed
+        GetComponent<TriggerOnEnter>().AddTriggerCond(CheckPressed);
+
+        if (button == null)
+            Debug.LogError("Missing buton. Add a button to the Pressure Plate on "+ gameObject.name);
+
+
+        targetPos = button.transform.position;
         initialButtonPos = button.transform.position;
+
+        coroutine = StartCoroutine(PressDownAnim());
+    }
+
+    bool CheckPressed (Movement movement)
+    {
+        return !pressed;
+    }
+
+    void TriggerAction(Movement movement)
+    {
+        targetPos = initialButtonPos+Vector3.down*pressAmount;
+        pressed = true;
+    }
+
+    bool UntriggerCondition(Movement movement)
+    {
+        return pressed;
+    }
+
+    void UntriggerAction(Movement movement)
+    {
+        targetPos = initialButtonPos;
+        pressed = false;
     }
 
     IEnumerator PressDownAnim()
@@ -49,73 +86,6 @@ public class PressurePlate : Interactable
             t+=Time.deltaTime*pressSpeed;
             yield return null;
         }
-    }
-
-    protected override void Highlight()
-    {
-        Debug.Log("Highlighted");
-    }
-
-    private void OnValidate()
-    {
-        colliderSize = transform.localScale * scaleColliderFactor;
-        colliderSize.y = 2;
-    }
-
-    void CheckActivation()
-    {
-        if (SteppedOn() && pressed==false)
-        {
-            targetPos = initialButtonPos+Vector3.down*pressAmount;
-            pressed = true;
-            Trigger();
-        }
-        else if (!SteppedOn()&&pressed==true)
-        {
-             targetPos = initialButtonPos;
-             Untrigger();
-             pressed = false;
-        }
-            
-    }
-
-    bool CheckAccess(Collider collider)
-    {
-        if (collider!=null)
-        {
-            if (collider.gameObject.TryGetComponent(out Movement movement)&&activationMode == ActivationMode.Player)
-                return true;
-            else if (collider.gameObject.TryGetComponent(out MoveBox moveObject)&&activationMode == ActivationMode.Box)
-                return true;
-        }
-        return false;
-    }
-
-    public bool SteppedOn()
-    {   
-        System.Array.Clear(hitColliders, 0, hitColliders.Length);
-        Physics.OverlapBoxNonAlloc(transform.position+Vector3.up*colliderSize.y/2,colliderSize, hitColliders, Quaternion.identity);
-
-        for (int i = 0; i < hitColliders.Length; i++)
-        {  
-            //Check if player is in collider
-            if (CheckAccess(hitColliders[i]))
-                return true;
-        }
-        
-        return false;
-    }
-
-
-    private void Update()
-    {
-        CheckActivation();
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position+Vector3.up*colliderSize.y/2, colliderSize);
     }
 
 }

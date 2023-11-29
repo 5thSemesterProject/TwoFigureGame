@@ -65,9 +65,4 @@ public class MoveBox : Interactable
         return scalar > 0 ? 1 : scalar < 0 ? -1 : 0;
     }
     #endregion
-
-    protected override void Highlight()
-    {
-        base.Highlight();
-    }
 }

@@ -2,38 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Interactable),typeof(PassOnTrigger),typeof(TriggerByCharacter))]
 public class Lever : Interactable
 {
     [SerializeField]float activationTimeInSeconds = 2;
 
-    bool interactable = true;
+    Interactable interactable;
+    bool usable = true;
 
-    [SerializeField]Interactable activatable;
-
-    void Awake()
+    void Start()
     {
-        AddTriggerAction(()=>ActivateSwitch());
+        interactable = GetComponent<Interactable>();
+        interactable.triggerEvent+=ActivateSwitch;
+        
+        //Wait for switch to reactivate
+        GetComponent<PassOnTrigger>().AddTriggerCond(CheckActive);
     }
 
-    void ActivateSwitch()
+    bool CheckActive(Movement movement)
     {
-        //Debug.Log ("Test");
-        if (activatable)
+        return usable;
+    }
+
+    void ActivateSwitch(Movement movement)
+    {
+        if (usable)
         {
-            interactable = false;
-            StartCoroutine(ActivationCoroutine());
+            usable = false;
+            StartCoroutine(ActivationCoroutine(movement));
         }
             
     }
 
-    IEnumerator ActivationCoroutine()
+    IEnumerator ActivationCoroutine(Movement movement)
     {
-        Debug.Log ("Triggered");
-        activatable.Trigger();
         yield return new WaitForSeconds(activationTimeInSeconds);
-        Debug.Log ("Untriggered");
-        activatable.Untrigger();
-        interactable = true;
+        interactable.Untrigger(movement);
+        usable = true;
     }
 
 }

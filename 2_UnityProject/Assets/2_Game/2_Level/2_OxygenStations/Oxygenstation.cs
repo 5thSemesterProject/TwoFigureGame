@@ -8,12 +8,19 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
    [SerializeField]float chargeRate = 5.0f;
    [SerializeField] float smokeIntersectionRadius;
 
-
    int amountOfCharacters;
 
     void  Awake()
     {
         oxygenData = new OxygenData(200,0.1f);
+    }
+
+    void  OnValidate()
+    {
+        if (TryGetComponent(out SphereCollider sphereCollider))
+        {
+            sphereCollider.radius = chargeRate;
+        }   
     }
 
     public float ChargePlayer()
@@ -25,7 +32,6 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
         }
         
         return 0;
-
     }
 
     public float GetIntersectionRadius()
@@ -33,18 +39,41 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
         return smokeIntersectionRadius;
     }
 
-    public void AddCharacter()
-    {
-        amountOfCharacters++;
-    }
-
     public int GetAmountOfCharacters()
     {
         return amountOfCharacters;
     }
 
-    public void RemoveCharacter()
+
+    void OnDrawGizmos()
     {
-        amountOfCharacters--;
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position,smokeIntersectionRadius);
+        
+    }
+
+    void  OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Movement movementComp))
+        {
+            amountOfCharacters++;
+        }
+    }
+
+    void  OnTriggerStay(Collider other)
+    {   
+        if (other.TryGetComponent(out Movement movementComp))
+        {
+            movementComp.oxygenstation = this;
+        }
+    }
+
+    void  OnTriggerExit(Collider other)
+    {   
+        if (other.TryGetComponent(out Movement movementComp))
+        {
+            movementComp.oxygenstation = null;
+            amountOfCharacters--;
+        }
     }
 }

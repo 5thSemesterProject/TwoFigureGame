@@ -231,36 +231,16 @@ public abstract class CharacterState
 
     public void HandleOxygen()
     {   
-        Collider[] hitColliders = Physics.OverlapBox(characterData.gameObject.transform.position, Vector3.one);
-        bool oxygenStationActive = false;
-        
-        for (int i = 0; i < hitColliders.Length; i++)
+        Oxygenstation oxygenstation  = characterData.movement.oxygenstation;
+        if (oxygenstation!=null)
         {
-            if (hitColliders[i].TryGetComponent(out VolumetricFogHandler volumetricFogHandler))
-            {
-                characterData.oxygenData.FallOff();
-            }
-            else if (hitColliders[i].TryGetComponent(out Oxygenstation oxygenstation) 
-                    &&characterData.oxygenData.currentOxygen<=characterData.oxygenData.maxOxygen )
-            {   
+            if (characterData.oxygenData.currentOxygen<=characterData.oxygenData.maxOxygen)
                 characterData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
-
-                if (lastOxyggenStation!=oxygenstation)
-                {
-                    lastOxyggenStation = oxygenstation;
-                    lastOxyggenStation.AddCharacter();
-                    oxygenStationActive = true;
-                }
-
-            }
         }
-
-        if (lastOxyggenStation!=null && !oxygenStationActive)
+        else
         {
-            lastOxyggenStation.RemoveCharacter();
-            lastOxyggenStation = null;
-        }
-            
+            characterData.oxygenData.FallOff();
+        }    
     }
 
     public void HandleInteractable(out CharacterState updatedState)
@@ -269,23 +249,37 @@ public abstract class CharacterState
 
         if (characterData.movement.interactable != null
         && CharacterManager.customInputMaps.InGame.Action.triggered)
-        {
-            switch (characterData.movement.interactable)
+        {   
+
+            //Check if there a Player Action Type
+            if (characterData.movement.interactable.TryGetComponent(out PlayerActionType playerActionType))
             {
-                default:
-                    characterData.movement.interactable.TriggerByPlayer();
-                    characterData.movement.interactable = null;
-                    break;
-                case Crawl:
-                    updatedState = new CrawlState(characterData);
-                    break;
-                case JumpOver:
-                    updatedState = new JumpOverState(characterData);
-                    break;
-                case MoveBox:
-                    updatedState = new MoveObjectState(characterData);
-                    break;
+            
+                switch (playerActionType)
+                {
+                    default:
+                        break;
+                    case Crawl:
+                        updatedState = new CrawlState(characterData);
+                        break;
+                    case JumpOver:
+                        updatedState = new JumpOverState(characterData);
+                        break;
+                // case MoveBox:
+                    //  updatedState = new MoveObjectState(characterData);
+                    //  break;
+                }
             }
+
+            ////Interact with Object without switching state
+            else
+            {
+                        Movement movement = characterData.movement;
+                        movement.interactable.Trigger(movement);
+                        characterData.movement.interactable = null;
+            }
+
+           
         }
 
 
@@ -360,7 +354,8 @@ class IdleState : CharacterState
 
 
         if (characterData.movement.interactable != null && CharacterManager.customInputMaps.InGame.Action.triggered)
-            characterData.movement.interactable.TriggerByPlayer();
+            //characterData.movement.interactable.TriggerByPlayer();
+            Debug.Log ("");
 
         return this;
     }
@@ -379,7 +374,7 @@ class MoveState : CharacterState
             return new AIState(characterData);
 
         if (characterData.movement.interactable != null && CharacterManager.customInputMaps.InGame.Action.triggered)
-            characterData.movement.interactable.Trigger();
+            characterData.movement.interactable.Trigger(characterData.movement);
 
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
         Vector2 MovementVector = characterData.movement.MovePlayer(inputVector);

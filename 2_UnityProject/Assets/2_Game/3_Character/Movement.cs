@@ -34,6 +34,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     private float timeFalling;
 
     public Interactable interactable;
+    public Oxygenstation oxygenstation;
 
     public CharacterType characterType;
 

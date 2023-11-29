@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 [RequireComponent(typeof(Oxygenstation))]
 public class OxygenStationTrigger : Interactable
@@ -27,4 +28,6 @@ public class OxygenStationTrigger : Interactable
         }
             
     }
+
+
 }
