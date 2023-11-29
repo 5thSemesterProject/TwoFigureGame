@@ -12,10 +12,9 @@ public enum CharacterType
     None, Woman, Man
 }
 
-[RequireComponent(typeof(Collider))]
 public class Interactable : MonoBehaviour
 {
-    [SerializeField]bool active = true;
+    [SerializeField]bool activated = true;
     public CharacterType specificCharacterAccess;
 
     public delegate void ActionDel(Movement movement);
@@ -34,7 +33,7 @@ public class Interactable : MonoBehaviour
         enterCond = DefaultEnterCond;
         exitCond = DefaultExitCond;
 
-        AssureColliders();
+        //AssureColliders();
     }
 
     void AssureColliders()
@@ -57,7 +56,7 @@ public class Interactable : MonoBehaviour
             if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
             {
 
-                if (enterCond(movementComp) && active)
+                if (enterCond(movementComp) && activated)
                     enterEvent?.Invoke(movementComp);
             }
         }
@@ -96,7 +95,7 @@ public class Interactable : MonoBehaviour
 
     public void SetTriggering(bool active)
     {
-        this.active = active;
+        this.activated = active;
     }
 
     public bool DefaultEnterCond(Movement movement)
