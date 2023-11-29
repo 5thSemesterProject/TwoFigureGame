@@ -8,6 +8,8 @@ public class Lever : Interactable
 
     bool interactable = true;
 
+    [SerializeField]Interactable activatable;
+
     void Awake()
     {
         AddTriggerAction(()=>ActivateSwitch());
@@ -16,7 +18,7 @@ public class Lever : Interactable
     void ActivateSwitch()
     {
         //Debug.Log ("Test");
-        if (interactable)
+        if (activatable)
         {
             interactable = false;
             StartCoroutine(ActivationCoroutine());
@@ -27,9 +29,10 @@ public class Lever : Interactable
     IEnumerator ActivationCoroutine()
     {
         Debug.Log ("Triggered");
+        activatable.Trigger();
         yield return new WaitForSeconds(activationTimeInSeconds);
         Debug.Log ("Untriggered");
-        Untrigger();
+        activatable.Untrigger();
         interactable = true;
     }
 
