@@ -13,6 +13,20 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     void  Awake()
     {
         oxygenData = new OxygenData(200,0.1f);
+
+        gameObject.layer = 3;
+
+        if (TryGetComponent(out SphereCollider sphereCollider))
+        {
+            sphereCollider.radius = smokeIntersectionRadius;
+            //sphereCollider.layerOverridePriority = 0;
+            sphereCollider.includeLayers = Physics.AllLayers;
+        }
+        else
+        {
+           Debug.LogWarning("Missing Sphere Collider. Pls add a sphere collider with on trigger on "+gameObject.name);
+        }
+        
     }
 
     void  OnValidate()
@@ -20,7 +34,7 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
         if (TryGetComponent(out SphereCollider sphereCollider))
         {
             sphereCollider.radius = smokeIntersectionRadius;
-        }   
+        }
     }
 
     public float ChargePlayer()

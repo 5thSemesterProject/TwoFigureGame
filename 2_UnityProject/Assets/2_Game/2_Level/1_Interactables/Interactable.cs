@@ -22,8 +22,9 @@ public class Interactable : MonoBehaviour
     public delegate bool Condition(Movement movement);
 
     public event ActionDel enterEvent;
-     public event ActionDel untriggerEvent;
+     public event ActionDel exitEvent;
      public event ActionDel triggerEvent;
+    public event ActionDel untriggerEvent;
 
     public Condition exitCond;
     public Condition enterCond;
@@ -33,7 +34,7 @@ public class Interactable : MonoBehaviour
         enterCond = DefaultEnterCond;
         exitCond = DefaultExitCond;
 
-        //AssureColliders();
+        AssureColliders();
     }
 
     void AssureColliders()
@@ -45,8 +46,8 @@ public class Interactable : MonoBehaviour
                 return;
         }
 
-        Debug.LogWarning("No Trigger Collider added. Make sure there is a Trigger Collider. Setting one automatically to "+gameObject.name);
-        colliders[0].isTrigger = true;
+        if (!TryGetComponent(out WaitForTriggers waitForTriggers))
+            Debug.LogWarning("No Trigger Collider added. Make sure there is a Trigger Collider on "+ gameObject.name);
     }
 
     void OnTriggerEnter(Collider other)
@@ -67,7 +68,7 @@ public class Interactable : MonoBehaviour
         if (other.TryGetComponent(out Movement movementComp))
         {
                 if (exitCond(movementComp))
-                   untriggerEvent?.Invoke(movementComp);
+                   exitEvent?.Invoke(movementComp);
         }
     }
 

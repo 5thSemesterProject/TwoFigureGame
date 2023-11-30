@@ -7,12 +7,19 @@ public class TriggerOnEnter : MonoBehaviour
 {
     Interactable interactable;
     Interactable.Condition additionalTriggerCond;
+    Interactable.Condition additionalUntriggerCond;
 
     void  Start()
     {
         interactable = GetComponent<Interactable>();
         interactable.enterEvent += TriggerAction;
+        interactable.exitEvent+=UntriggerAction;
     }
+
+    public void AddUntriggerCond(Interactable.Condition condition)
+    {
+        additionalUntriggerCond = condition;
+    }   
 
    public void AddTriggerCond(Interactable.Condition condition)
     {
@@ -24,4 +31,11 @@ public class TriggerOnEnter : MonoBehaviour
         if (additionalTriggerCond !=null && additionalTriggerCond(movement))
             interactable.Trigger(movement);
     }
+
+    void UntriggerAction(Movement movement)
+    {
+        if (additionalUntriggerCond !=null && additionalUntriggerCond(movement))
+            interactable.Untrigger(movement);
+    }
+    
 }

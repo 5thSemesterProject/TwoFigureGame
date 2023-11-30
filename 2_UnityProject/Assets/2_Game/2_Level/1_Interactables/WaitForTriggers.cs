@@ -6,9 +6,7 @@ using UnityEngine;
 public class WaitForTriggers : MonoBehaviour
 {
 
-    [SerializeField] PassOnTrigger[] triggersToConsider;
-
-    int amountOfTriggers;
+    [SerializeField]int requiredTriggers;
     int loggedInTrigggers;
     Interactable interactable;
 
@@ -18,24 +16,8 @@ public class WaitForTriggers : MonoBehaviour
         interactable = GetComponent<Interactable>();
         interactable.triggerEvent +=Trigger;
         interactable.untriggerEvent +=Untrigger;
-        
-        amountOfTriggers = triggersToConsider.Length;
-        
-        for (int i = 0; i < triggersToConsider.Length; i++)
-        {
-            triggersToConsider[i].OverwriteTriggering(interactable);
-        }
 
         GetComponent<PassOnTrigger>().AddTriggerCond(CompareTriggers);
-    }
-
-    void  OnValidate()
-    {
-        for (int i = 0; i < triggersToConsider.Length; i++)
-        {
-            if (triggersToConsider[i]!=null &&triggersToConsider[i].GetTriggering()!=null)
-                Debug.LogError("Pls dont map anything to the triggering item with the name" + triggersToConsider[i].name);
-        }
     }
 
     void Trigger(Movement movement)
@@ -51,6 +33,6 @@ public class WaitForTriggers : MonoBehaviour
 
     bool CompareTriggers(Movement movement)
     {
-        return loggedInTrigggers>=amountOfTriggers;
+        return loggedInTrigggers>=requiredTriggers;
     }
 }

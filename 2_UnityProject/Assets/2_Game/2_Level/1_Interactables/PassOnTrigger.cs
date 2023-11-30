@@ -10,6 +10,7 @@ public class PassOnTrigger : MonoBehaviour
     Interactable interactable;
 
     Interactable.Condition additionalTriggerCond;
+    Interactable.Condition additionalUntriggerCond;
     
 
     void Start() 
@@ -24,7 +25,6 @@ public class PassOnTrigger : MonoBehaviour
             Debug.LogError("Item can't trigger itself! Set a differen trigger on "+ gameObject.name);
 
     }
-
     public Interactable GetTriggering()
     {
         return triggering;
@@ -35,6 +35,11 @@ public class PassOnTrigger : MonoBehaviour
         additionalTriggerCond=condition;
     }
 
+    public void AddUntriggerCond(Interactable.Condition condition)
+    {
+        additionalUntriggerCond=condition;
+    }
+
     void TriggerOtherInteractable(Movement movement)
     {
         if (additionalTriggerCond!=null && additionalTriggerCond(movement)||additionalTriggerCond==null)
@@ -43,15 +48,8 @@ public class PassOnTrigger : MonoBehaviour
 
     void UntriggerOtherInteractable(Movement movement)
     {
-        triggering?.Untrigger(movement);
-    }
-
-    public void OverwriteTriggering(Interactable triggering)
-    {
-        if (triggering!=null)
-            Debug.LogWarning("Overwriting trigger and Conditons on "+gameObject.name);
-
-        this.triggering = triggering;
+        if (additionalUntriggerCond!=null && additionalUntriggerCond(movement)||additionalUntriggerCond==null)
+            triggering?.Untrigger(movement);
     }
 
 

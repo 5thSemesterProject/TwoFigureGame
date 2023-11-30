@@ -9,6 +9,7 @@ public enum ActivationMode
     Player, Box
 }
 
+[ExecuteInEditMode]
 [RequireComponent(typeof(PassOnTrigger),typeof(TriggerOnEnter),typeof(Interactable)) ]
 public class PressurePlate : MonoBehaviour
 {
@@ -36,20 +37,24 @@ public class PressurePlate : MonoBehaviour
         interactable.triggerEvent+=TriggerAction;
         interactable.untriggerEvent+=UntriggerAction;
 
+
         //Set Conditions
-        interactable.exitCond = UntriggerCondition;
-
-        //Only Trigger when button is not pressed
         GetComponent<TriggerOnEnter>().AddTriggerCond(CheckPressed);
+        GetComponent<TriggerOnEnter>().AddUntriggerCond(UntriggerCondition);
 
+        if (button!=null)
+        {
+            targetPos = button.transform.position;
+            initialButtonPos = button.transform.position;
+            coroutine = StartCoroutine(PressDownAnim());
+        }
+
+    }
+
+    void  OnValidate()
+    {
         if (button == null)
-            Debug.LogError("Missing buton. Add a button to the Pressure Plate on "+ gameObject.name);
-
-
-        targetPos = button.transform.position;
-        initialButtonPos = button.transform.position;
-
-        coroutine = StartCoroutine(PressDownAnim());
+            Debug.LogWarning("Missing buton. Add a button to the Pressure Plate on "+ gameObject.name);
     }
 
     bool CheckPressed (Movement movement)
