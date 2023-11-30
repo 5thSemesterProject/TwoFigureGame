@@ -55,12 +55,14 @@ Material:
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
+    - _DensityFallOff: 0
     - _DepthOffsetEnable: 0
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
     - _EnableFogOnTransparent: 1
+    - _FallOffStrength: 15
     - _OpaqueCullMode: 2
     - _RenderQueueType: 1
     - _Softness: 0.2
@@ -84,8 +86,10 @@ Material:
     - _Color_2: {r: 2.0907834, g: 1.2436528, b: 0.28929055, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Sphere01: {r: 0, g: -0.019050062, b: 1, a: 2}
-    - _Sphere02: {r: 4.351406, g: -0.019050121, b: -4.1451, a: 2}
+    - _Epicenter: {r: 0, g: 0, b: 0, a: 0}
+    - _FallOffEpicenter: {r: -58.97, g: 7.1099997, b: 10.29, a: 0}
+    - _Sphere01: {r: 0, g: 0, b: 1, a: 2}
+    - _Sphere02: {r: 0, g: 0, b: 2, a: 2}
     - _Sphere03: {r: 0, g: 0, b: 0, a: 0}
     - _Sphere04: {r: 0, g: 0, b: 0, a: 0}
     - _Sphere05: {r: 0, g: 0, b: 0, a: 0}

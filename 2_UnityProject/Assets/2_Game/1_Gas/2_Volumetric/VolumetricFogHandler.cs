@@ -7,6 +7,7 @@ using UnityEngine.Rendering.HighDefinition;
 public class VolumetricFogHandler : MonoBehaviour
 {   
     [SerializeField] LayerMask layerMask;
+    [SerializeField] Transform fallOffEpicenter;
     List<Transform> intersectSmokeTransforms  = new List<Transform>();
     int maxMasks = 6;
 
@@ -20,6 +21,9 @@ public class VolumetricFogHandler : MonoBehaviour
 
     void LateUpdate()
     {
+        //Update Epicenter
+        localVolumetricFog.parameters.materialMask.SetVector($"_FallOffEpicenter", fallOffEpicenter.transform.position);
+
         UpdateSpheres(intersectSmokeTransforms.ToArray());
         CheckColliders();
     }
