@@ -4,7 +4,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Interactable))]
-public class Door : Interactable
+public class Door : MonoBehaviour
+
 {
     Animator animator;
     Interactable interactable;
