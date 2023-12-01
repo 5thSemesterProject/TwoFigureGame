@@ -274,10 +274,14 @@ public abstract class CharacterState
             ////Interact with Object without switching state
             else
             {
-                        Movement movement = characterData.movement;
-                        movement.interactable.Trigger(movement);
-                        characterData.movement.interactable = null;
-            }
+                Movement movement = characterData.movement;
+                if (movement.interactable.TryGetComponent(out TriggerByCharacter triggerByCharacter))
+                {
+                    triggerByCharacter.Activate(movement);
+                    characterData.movement.interactable = null;
+                }
+                
+    }
 
            
         }
@@ -392,6 +396,7 @@ class CrawlState : CharacterState
     public CrawlState(CharacterData data) : base(data)
     {
         characterData.movement.StartTraversing(characterData.movement.interactable, TraversalType.Crawl, 2);
+        handleInteractables = false;
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -412,7 +417,6 @@ class JumpOverState : CharacterState
     public JumpOverState(CharacterData data) : base(data)
     {
         characterData.movement.StartTraversing(characterData.movement.interactable, TraversalType.JumpOver, 2);
-
         handleInteractables = false;
     }
 

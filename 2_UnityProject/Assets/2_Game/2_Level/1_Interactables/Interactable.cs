@@ -14,7 +14,6 @@ public enum CharacterType
 
 public class Interactable : MonoBehaviour
 {
-    [SerializeField]bool activated = true;
     public CharacterType specificCharacterAccess;
 
     public delegate void ActionDel(Movement movement);
@@ -43,8 +42,7 @@ public class Interactable : MonoBehaviour
                 return;
         }
 
-        if (!TryGetComponent(out WaitForTriggers waitForTriggers))
-            Debug.LogWarning("No Trigger Collider added. Make sure there is a Trigger Collider on "+ gameObject.name);
+        Debug.LogWarning("No Trigger Collider added. Make sure there is a Trigger Collider on "+ gameObject.name);
     }
 
     void OnTriggerEnter(Collider other)
@@ -54,7 +52,7 @@ public class Interactable : MonoBehaviour
             if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
             {
 
-                if (triggerCond!=null && triggerCond(movementComp) && activated||triggerCond==null)
+                if (triggerCond!=null && triggerCond(movementComp)||triggerCond==null)
                     enterEvent?.Invoke(movementComp);
             }
         }
@@ -93,10 +91,6 @@ public class Interactable : MonoBehaviour
             untriggerEvent?.Invoke(movement);
     }
 
-    public void SetTriggering(bool active)
-    {
-        this.activated = active;
-    }
 
     /// <summary>
     /// Highlights the interactable object.

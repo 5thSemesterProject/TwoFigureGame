@@ -19,8 +19,9 @@ public class Lever : MonoBehaviour
         interactable.triggerEvent+=ActivateSwitch;
         
         //Wait for switch to reactivate
-        GetComponent<PassOnTrigger>().AddTriggerCond(CheckUsable);
+        interactable.triggerCond = CheckUsable;
     }
+
 
     bool CheckUsable(Movement movement)
     {
@@ -36,8 +37,8 @@ public class Lever : MonoBehaviour
     IEnumerator ActivationCoroutine(Movement movement)
     {
         yield return new WaitForSeconds(activationTimeInSeconds);
-        interactable.Untrigger(movement);
         usable = true;
+        interactable.Untrigger(movement);
     }
 }
 
