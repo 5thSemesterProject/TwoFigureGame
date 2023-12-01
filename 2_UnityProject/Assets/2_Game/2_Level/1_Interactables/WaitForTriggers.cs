@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof(Interactable),typeof(PassOnTrigger))]
+[RequireComponent (typeof(Interactable)/*,typeof(PassOnTrigger)*/)]
 public class WaitForTriggers : MonoBehaviour
 {
 
@@ -14,16 +14,11 @@ public class WaitForTriggers : MonoBehaviour
     void Start()
     {
         interactable = GetComponent<Interactable>();
-        interactable.triggerEvent +=Trigger;
         interactable.untriggerEvent +=Untrigger;
 
-        GetComponent<PassOnTrigger>().AddTriggerCond(CompareTriggers);
-    }
+        interactable.triggerCond =CompareTriggers;
 
-    void Trigger(Movement movement)
-    {
-        loggedInTrigggers++;
-
+        interactable.exitEvent +=Untrigger;
     }
 
     void Untrigger(Movement movement)
@@ -33,6 +28,7 @@ public class WaitForTriggers : MonoBehaviour
 
     bool CompareTriggers(Movement movement)
     {
+        loggedInTrigggers++;
         return loggedInTrigggers>=requiredTriggers;
     }
 }

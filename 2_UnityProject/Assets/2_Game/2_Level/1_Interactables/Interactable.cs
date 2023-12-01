@@ -26,14 +26,11 @@ public class Interactable : MonoBehaviour
      public event ActionDel triggerEvent;
     public event ActionDel untriggerEvent;
 
-    public Condition exitCond;
-    public Condition enterCond;
+    public Condition untriggerCond;
+    public Condition triggerCond;
 
     void Awake()
     {
-        enterCond = DefaultEnterCond;
-        exitCond = DefaultExitCond;
-
         AssureColliders();
     }
 
@@ -57,7 +54,7 @@ public class Interactable : MonoBehaviour
             if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
             {
 
-                if (enterCond(movementComp) && activated)
+                if (triggerCond!=null && triggerCond(movementComp) && activated||triggerCond==null)
                     enterEvent?.Invoke(movementComp);
             }
         }
@@ -67,7 +64,7 @@ public class Interactable : MonoBehaviour
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
-                if (exitCond(movementComp))
+                if (untriggerCond!=null&&untriggerCond(movementComp)||untriggerCond==null)
                    exitEvent?.Invoke(movementComp);
         }
     }
@@ -76,9 +73,9 @@ public class Interactable : MonoBehaviour
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
-            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
+            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType||triggerCond==null)
             {
-                if (enterCond(movementComp))
+                if (triggerCond!=null &&triggerCond(movementComp)||triggerCond==null)
                     enterEvent?.Invoke(movementComp);
             }
         }
@@ -86,27 +83,19 @@ public class Interactable : MonoBehaviour
 
     public void Trigger(Movement movement)
     {
-        triggerEvent?.Invoke(movement);
+        if (triggerCond!=null &&triggerCond(movement)||triggerCond==null)
+            triggerEvent?.Invoke(movement);
     }
 
     public void Untrigger(Movement movement)
-    {        
-        untriggerEvent?.Invoke(movement);
+    {      
+        if (untriggerCond!=null &&untriggerCond(movement)||untriggerCond==null)
+            untriggerEvent?.Invoke(movement);
     }
 
     public void SetTriggering(bool active)
     {
         this.activated = active;
-    }
-
-    public bool DefaultEnterCond(Movement movement)
-    {
-        return true;
-    }
-
-    public bool DefaultExitCond(Movement movement)
-    {
-        return true;
     }
 
     /// <summary>

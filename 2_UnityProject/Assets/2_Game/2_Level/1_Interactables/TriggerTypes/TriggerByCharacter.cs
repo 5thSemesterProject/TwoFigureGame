@@ -10,7 +10,7 @@ public class TriggerByCharacter : MonoBehaviour
     void  Start()
     {
         interactable = GetComponent<Interactable>();
-        interactable.enterEvent+= AddInteractable;
+        interactable.triggerEvent+= AddInteractable;
         interactable.untriggerEvent+= RemoveInteractable;
     }
 
