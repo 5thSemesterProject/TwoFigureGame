@@ -122,4 +122,9 @@ public class VolumetricFogHandler : MonoBehaviour
         UpdateSpheres(intersectSmokeTransforms.ToArray());
     }
 
+     private void OnApplicationQuit()
+    {
+        ResetSpheres();
+    }
+
 }
