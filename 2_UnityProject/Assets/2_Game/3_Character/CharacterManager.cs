@@ -265,9 +265,10 @@ public abstract class CharacterState
                     case JumpOver:
                         updatedState = new JumpOverState(characterData);
                         break;
-                // case MoveBox:
-                    //  updatedState = new MoveObjectState(characterData);
-                    //  break;
+                    case MoveBox:
+                        updatedState = new MoveObjectState(characterData);
+                        Debug.Log(characterData.movement.interactable.GetComponent<MoveBox>());
+                      break;
                 }
             }
 
@@ -280,13 +281,8 @@ public abstract class CharacterState
                     triggerByCharacter.Activate(movement);
                     characterData.movement.interactable = null;
                 }
-                
-    }
-
-           
+            }
         }
-
-
     }
 
     public abstract CharacterState SpecificStateUpdate(); //Specifically for a certain state designed actions
@@ -444,9 +440,10 @@ class MoveObjectState : CharacterState
         handleInteractables = false;
 
         //Get the NoveObject Script if it exists
-        if (data.movement.interactable.GetType() == typeof(MoveBox))
+        if (data.movement.interactable.GetComponent<MoveBox>() != null)
         {
-            movableObject = (MoveBox)data.movement.interactable;
+            movableObject = data.movement.interactable.GetComponent<MoveBox>();
+            Debug.Log(movableObject);
         }
         else
         {
