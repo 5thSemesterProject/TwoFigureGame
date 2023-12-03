@@ -55,9 +55,10 @@ class OccludingObject:MonoBehaviour
         if (renderer!=null)
         {
             Material material = renderer.materials[0];
-            Vector4 color = material.GetVector("_BaseColor");
+            /*Vector4 color = material.GetVector("_BaseColor");
             color.w = inputAlpha;
-            material.SetVector("_BaseColor", color);
+            material.SetVector("_BaseColor", color);*/
+            material.SetFloat("Alpha",inputAlpha);
         }
 
     }
@@ -67,8 +68,8 @@ class OccludingObject:MonoBehaviour
         if (renderer != null)
         {
             Material material = renderer.materials[0];
-            Vector4 color = material.GetVector("_BaseColor");
-            return color.w;
+            //Vector4 color = material.GetVector("_BaseColor");
+            return material.GetFloat("Alpha");
         }
         else
             Debug.Log("Renderer is null on+ "+ gameObject.name);
