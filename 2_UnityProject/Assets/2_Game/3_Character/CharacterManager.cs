@@ -267,7 +267,6 @@ public abstract class CharacterState
                         break;
                     case MoveBox:
                         updatedState = new MoveObjectState(characterData);
-                        Debug.Log(characterData.movement.interactable.GetComponent<MoveBox>());
                       break;
                 }
             }
@@ -462,7 +461,12 @@ class MoveObjectState : CharacterState
     {
         //Enter AI State if triggered
         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
+        {
+            //Unparent Character
+            characterData.gameObject.transform.parent = previousParent;
+
             return new AIState(characterData);
+        }
 
         //Return to idle if player released the input
         if (CharacterManager.customInputMaps.InGame.Action.phase == InputActionPhase.Waiting)
