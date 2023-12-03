@@ -9,7 +9,7 @@ public class MoveBox : PlayerActionType
 
     private void Start()
     {
-        boxCollider = GetComponent<BoxCollider>();
+        boxCollider = GetComponents<BoxCollider>()[1];
     }
 
     public bool CheckIfBlocked(bool bForward, out float distance)
