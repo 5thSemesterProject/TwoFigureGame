@@ -10,6 +10,16 @@ public class Lever : MonoBehaviour
 {
     [SerializeField]float activationTimeInSeconds = 2;
 
+    [Header ("Handle")]
+    [SerializeField] GameObject handle;
+    [SerializeField] float rotateSpeed = 0.1f;
+    [SerializeField] float rotationAngle = 120;
+
+    Quaternion initialHandleRot;
+    Quaternion targetRot;
+
+    
+
     Interactable interactable;
     bool usable = true;
 
@@ -19,8 +29,12 @@ public class Lever : MonoBehaviour
         interactable.triggerEvent+=ActivateSwitch;
         
         //Wait for switch to reactivate
-        GetComponent<PassOnTrigger>().AddTriggerCond(CheckUsable);
+        interactable.triggerCond = CheckUsable;
+
+        initialHandleRot = handle.transform.rotation;
+        StartCoroutine(RotateHandle());
     }
+
 
     bool CheckUsable(Movement movement)
     {
@@ -35,9 +49,25 @@ public class Lever : MonoBehaviour
 
     IEnumerator ActivationCoroutine(Movement movement)
     {
+        targetRot = Quaternion.Euler(new Vector3(-rotationAngle,0,0));
         yield return new WaitForSeconds(activationTimeInSeconds);
-        interactable.Untrigger(movement);
         usable = true;
+        interactable.Untrigger(movement);
+        targetRot = initialHandleRot;
+    }
+
+    IEnumerator RotateHandle()
+    {
+        targetRot = handle.transform.rotation;
+        float t = 0;
+
+        while (true)
+        {
+            Quaternion currenRot = Quaternion.Lerp(handle.transform.rotation,targetRot,t);
+            handle.transform.rotation = currenRot;
+            t+=Time.deltaTime*rotateSpeed*0.01f;
+            yield return null;
+        }
     }
 }
 

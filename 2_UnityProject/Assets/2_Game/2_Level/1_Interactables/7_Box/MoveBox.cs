@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MoveBox : Interactable
+public class MoveBox : PlayerActionType
 {
     [SerializeField] public Transform playerHandlePosition;
     [SerializeField] private LayerMask blockingLayers;

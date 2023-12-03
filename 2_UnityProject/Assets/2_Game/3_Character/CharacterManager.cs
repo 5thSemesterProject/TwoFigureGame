@@ -265,24 +265,24 @@ public abstract class CharacterState
                     case JumpOver:
                         updatedState = new JumpOverState(characterData);
                         break;
-                // case MoveBox:
-                    //  updatedState = new MoveObjectState(characterData);
-                    //  break;
+                    case MoveBox:
+                        updatedState = new MoveObjectState(characterData);
+                        Debug.Log(characterData.movement.interactable.GetComponent<MoveBox>());
+                      break;
                 }
             }
 
             ////Interact with Object without switching state
             else
             {
-                        Movement movement = characterData.movement;
-                        movement.interactable.Trigger(movement);
-                        characterData.movement.interactable = null;
+                Movement movement = characterData.movement;
+                if (movement.interactable.TryGetComponent(out TriggerByCharacter triggerByCharacter))
+                {
+                    triggerByCharacter.Activate(movement);
+                    characterData.movement.interactable = null;
+                }
             }
-
-           
         }
-
-
     }
 
     public abstract CharacterState SpecificStateUpdate(); //Specifically for a certain state designed actions
@@ -392,6 +392,7 @@ class CrawlState : CharacterState
     public CrawlState(CharacterData data) : base(data)
     {
         characterData.movement.StartTraversing(characterData.movement.interactable, TraversalType.Crawl, 2);
+        handleInteractables = false;
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -412,7 +413,6 @@ class JumpOverState : CharacterState
     public JumpOverState(CharacterData data) : base(data)
     {
         characterData.movement.StartTraversing(characterData.movement.interactable, TraversalType.JumpOver, 2);
-
         handleInteractables = false;
     }
 
@@ -440,9 +440,10 @@ class MoveObjectState : CharacterState
         handleInteractables = false;
 
         //Get the NoveObject Script if it exists
-        if (data.movement.interactable.GetType() == typeof(MoveBox))
+        if (data.movement.interactable.GetComponent<MoveBox>() != null)
         {
-            movableObject = (MoveBox)data.movement.interactable;
+            movableObject = data.movement.interactable.GetComponent<MoveBox>();
+            Debug.Log(movableObject);
         }
         else
         {

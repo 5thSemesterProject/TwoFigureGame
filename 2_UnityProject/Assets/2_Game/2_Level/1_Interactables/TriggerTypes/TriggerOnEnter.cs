@@ -28,13 +28,16 @@ public class TriggerOnEnter : MonoBehaviour
 
     void TriggerAction(Movement movement)
     {
-        if (additionalTriggerCond !=null && additionalTriggerCond(movement))
+        if (additionalTriggerCond !=null && additionalTriggerCond(movement)||additionalTriggerCond==null)
+        {
             interactable.Trigger(movement);
+        }
+            
     }
 
     void UntriggerAction(Movement movement)
     {
-        if (additionalUntriggerCond !=null && additionalUntriggerCond(movement))
+        if (additionalUntriggerCond !=null && additionalUntriggerCond(movement)||additionalUntriggerCond==null)
             interactable.Untrigger(movement);
     }
     

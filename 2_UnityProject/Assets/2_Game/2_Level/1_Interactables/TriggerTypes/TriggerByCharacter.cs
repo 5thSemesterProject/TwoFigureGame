@@ -6,22 +6,35 @@ using UnityEngine;
 public class TriggerByCharacter : MonoBehaviour
 {
     Interactable interactable;
+
+    bool triggered;
     
     void  Start()
     {
         interactable = GetComponent<Interactable>();
         interactable.enterEvent+= AddInteractable;
-        interactable.untriggerEvent+= RemoveInteractable;
+        interactable.exitEvent+=RemoveInteractable;
     }
 
     void AddInteractable(Movement movement)
     {
-        movement.interactable = interactable;
+        if (movement.interactable!=interactable)
+            movement.interactable = interactable;
     }
 
     void RemoveInteractable (Movement movement)
     {
         movement.interactable = null;
+    }
+
+    public void Activate(Movement movement)
+    {
+        if (triggered)
+            interactable.Untrigger(movement);
+        else
+            interactable.Trigger(movement);
+
+        triggered = !triggered;
     }
 }
 
