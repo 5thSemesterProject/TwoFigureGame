@@ -2443,7 +2443,7 @@ MonoBehaviour:
           data1: 0
           data2: 0
       bufferClearing:
-        clearColorMode: 2
+        clearColorMode: 0
         backgroundColorHDR: {r: 0.023529412, g: 0.07058824, b: 0.1882353, a: 0}
         clearDepth: 1
       volumes:
@@ -6053,6 +6053,10 @@ PrefabInstance:
     - target: {fileID: 1287216991412604807, guid: 30d9053138ccbdf43b21036464e292c6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2583478619735268216, guid: 30d9053138ccbdf43b21036464e292c6, type: 3}
+      propertyPath: specificCharacterAccess
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11372,6 +11376,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6059710402578339280}
     m_Modifications:
+    - target: {fileID: 3356661534467235815, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
+      propertyPath: specificCharacterAccess
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4976925026321240174, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
       propertyPath: m_Name
       value: woodTable_Int-Variant
@@ -26399,6 +26407,10 @@ PrefabInstance:
     - target: {fileID: 1287216991412604807, guid: 30d9053138ccbdf43b21036464e292c6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2583478619735268216, guid: 30d9053138ccbdf43b21036464e292c6, type: 3}
+      propertyPath: specificCharacterAccess
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -62797,6 +62809,10 @@ PrefabInstance:
     - target: {fileID: 2175871644213631018, guid: e48f469c632e4f1498ccc8a328235676, type: 3}
       propertyPath: m_Name
       value: chemicalDesk_Int-Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7906556041998527388, guid: e48f469c632e4f1498ccc8a328235676, type: 3}
+      propertyPath: specificCharacterAccess
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
