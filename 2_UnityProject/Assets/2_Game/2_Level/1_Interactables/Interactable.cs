@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -24,9 +25,13 @@ public class Interactable : MonoBehaviour
      public event ActionDel exitEvent;
      public event ActionDel triggerEvent;
     public event ActionDel untriggerEvent;
+    public event ActionDel highlightEvent;
+    public event ActionDel unhiglightEvent;
 
-    public Condition untriggerCond;
-    public Condition triggerCond;
+    public Condition exitCond;
+    public Condition enterCond;
+    public Condition highlightCond; 
+    public Condition unhighlightCond;
 
     void Awake()
     {
@@ -52,8 +57,11 @@ public class Interactable : MonoBehaviour
             if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
             {
 
-                if (triggerCond!=null && triggerCond(movementComp)||triggerCond==null)
+                if (enterCond!=null && enterCond(movementComp)||enterCond==null)
                     enterEvent?.Invoke(movementComp);
+
+                if (highlightCond!=null && highlightCond(movementComp)||highlightCond==null)
+                    highlightEvent?.Invoke(movementComp);
             }
         }
     }
@@ -62,8 +70,11 @@ public class Interactable : MonoBehaviour
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
-                if (untriggerCond!=null&&untriggerCond(movementComp)||untriggerCond==null)
+                if (exitCond!=null&&exitCond(movementComp)||exitCond==null)
                    exitEvent?.Invoke(movementComp);
+
+                if (unhighlightCond!=null && unhighlightCond(movementComp)||unhighlightCond==null)
+                    unhiglightEvent?.Invoke(movementComp);
         }
     }
 
@@ -71,23 +82,26 @@ public class Interactable : MonoBehaviour
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
-            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType||triggerCond==null)
+            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType||enterCond==null)
             {
-                if (triggerCond!=null &&triggerCond(movementComp)||triggerCond==null)
+                if (enterCond!=null &&enterCond(movementComp)||enterCond==null)
                     enterEvent?.Invoke(movementComp);
+ 
+                if (highlightCond!=null && highlightCond(movementComp)||highlightCond==null)
+                    highlightEvent?.Invoke(movementComp);
             }
         }
     }
 
     public void Trigger(Movement movement)
     {
-        if (triggerCond!=null &&triggerCond(movement)||triggerCond==null)
+        if (enterCond!=null &&enterCond(movement)||enterCond==null)
             triggerEvent?.Invoke(movement);
     }
 
     public void Untrigger(Movement movement)
     {      
-        if (untriggerCond!=null &&untriggerCond(movement)||untriggerCond==null)
+        if (exitCond!=null &&exitCond(movement)||exitCond==null)
             untriggerEvent?.Invoke(movement);
     }
 

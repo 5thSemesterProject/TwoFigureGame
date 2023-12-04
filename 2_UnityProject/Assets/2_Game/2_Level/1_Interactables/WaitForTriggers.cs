@@ -16,7 +16,7 @@ public class WaitForTriggers : MonoBehaviour
         interactable = GetComponent<Interactable>();
         interactable.untriggerEvent +=Untrigger;
 
-        interactable.triggerCond =CompareTriggers;
+        interactable.enterCond =CompareTriggers;
 
         interactable.exitEvent +=Untrigger;
     }
