@@ -1,24 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TwineStoryData : SaveData
+[Serializable]
+public struct TwineStoryData
 {
     public string title;
     public string thumbnailPath;
-    public string qrCodePath;
-
+    public string link;
     public bool unlocked;
 
-    public TwineStoryData(string title,string thumbnailPath,string qrCodePath)
+    public TwineStoryData(string title,string thumbnailPath,string link)
     {
         this.title = title;
         this.thumbnailPath = thumbnailPath;
-        this.qrCodePath = qrCodePath;
+        this.link = link;
+        unlocked = false;
     }
 
-    public override void LoadDefaultValues()
-    {
-        throw new System.NotImplementedException();
-    }
 }
