@@ -29,7 +29,7 @@ public class Lever : MonoBehaviour
         interactable.triggerEvent+=ActivateSwitch;
         
         //Wait for switch to reactivate
-        interactable.triggerCond = CheckUsable;
+        interactable.enterCond = CheckUsable;
 
         initialHandleRot = handle.transform.rotation;
         StartCoroutine(RotateHandle());

@@ -17,10 +17,10 @@ public class OxyStatInteractableBlocker : MonoBehaviour
         oxygenstation = GetComponent<Oxygenstation>();
         
         //Block all Interaction
-        blockedTriggerCond = interactableToBlock.triggerCond;
-        interactableToBlock.triggerCond = BlockInteractable;
-        blockedUntriggerCond = interactableToBlock.untriggerCond;
-        interactableToBlock.untriggerCond = BlockInteractable;
+        blockedTriggerCond = interactableToBlock.enterCond;
+        interactableToBlock.enterCond = BlockInteractable;
+        blockedUntriggerCond = interactableToBlock.exitCond;
+        interactableToBlock.exitCond = BlockInteractable;
     }
 
     bool BlockInteractable(Movement movement)
@@ -37,8 +37,8 @@ public class OxyStatInteractableBlocker : MonoBehaviour
     {
         if (oxygenstation?.GetAmountOfCharacters()>1)
         {
-            interactableToBlock.triggerCond = blockedTriggerCond;
-            interactableToBlock.untriggerCond = blockedUntriggerCond;
+            interactableToBlock.enterCond = blockedTriggerCond;
+            interactableToBlock.exitCond = blockedUntriggerCond;
             Destroy (this);
         }
             
