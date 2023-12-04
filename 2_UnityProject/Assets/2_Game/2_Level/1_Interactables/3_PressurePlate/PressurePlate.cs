@@ -26,17 +26,13 @@ public class PressurePlate : MonoBehaviour
 
     bool pressed;
 
-    void Start()
+    void Awake()
     {   
         interactable = GetComponent<Interactable>();
-
-        if (interactable==null)
-            Debug.Log ("Test");
 
         //Add Actions
         interactable.triggerEvent+=TriggerAction;
         interactable.untriggerEvent+=UntriggerAction;
-
 
         //Set Conditions
         GetComponent<TriggerOnEnter>().AddTriggerCond(CheckPressed);
@@ -49,6 +45,26 @@ public class PressurePlate : MonoBehaviour
             coroutine = StartCoroutine(PressDownAnim());
         }
 
+        if (activationMode==ActivationMode.Box)
+        {
+            Destroy(GetComponent<TriggerOnEnter>());
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out MoveBox movementComp) && activationMode == ActivationMode.Box)
+        {
+            interactable.Trigger(null);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out MoveBox movementComp)&& activationMode == ActivationMode.Box)
+        {
+            interactable.Untrigger(null);
+        }
     }
 
     void  OnValidate()
