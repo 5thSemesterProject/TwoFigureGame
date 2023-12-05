@@ -85,10 +85,17 @@ public class CharacterManager : MonoBehaviour
     private static CharacterData[] characterDatas;
     private static int characterIndex = 0;
 
+    private static CharacterData manData, womanData;
+    
+
     //Character Prefab
-    [SerializeField] private GameObject manPrefab, womanPrefab;
-    [SerializeField] private static CharacterData manData, womanData;
-    [SerializeField] private GameObject cameraPrefab;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject manPrefab;
+    [SerializeField] private GameObject womanPrefab;
+    [SerializeField]private GameObject cameraPrefab;
+    
+
 
     [Header("Debugging")]
     [SerializeField] TextMeshProUGUI debuggingCharacterStateMachines;
