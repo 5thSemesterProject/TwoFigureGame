@@ -148,7 +148,7 @@ public class EnumGenerator : EditorWindow
         excludedFiles.Clear();
     }
 
-    private void GenerateEnum()
+    public void GenerateEnum()
     {
         if (string.IsNullOrEmpty(folderPath))
         {
