@@ -14,6 +14,9 @@ public class ButtonActivateGameObjects : CustomButtonFunctionality
 
     private void Start()
     {
+        if (objectToActivate == null)
+            return;
+
         AddFunctionToEvent(() => objectToActivate.SetActive(true), activeTriggerMoment);
 
         if (activeTriggerMoment == inActiveTriggerMoment)
