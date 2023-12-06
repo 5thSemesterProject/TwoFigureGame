@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
+#region Structs
 public enum ButtonState
 {
     None,
@@ -23,16 +24,44 @@ public enum ButtonEventType
     NoHover,
 }
 
-public delegate void ButtonEvent();
-
-public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, ISubmitHandler
+[Serializable]
+public struct NavigationButtons
 {
+    public CustomButton up;
+    public CustomButton right;
+    public CustomButton down;
+    public CustomButton left;
+    private CustomButton self;
+
+    public NavigationButtons(CustomButton selfButton)
+    {
+        up = null;
+        right = null;
+        down = null;
+        left = null;
+        self = selfButton;
+    }
+}
+
+public delegate void ButtonEvent();
+#endregion
+
+public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+{
+    //Events
     public event ButtonEvent clickEvent;
     public event ButtonEvent hoverEvent;
     public event ButtonEvent hoverEndEvent;
 
+    //Public Attributes
     [ReadOnly]
     public ButtonState state;
+    public bool holdsPointer = false;
+    public bool isDefaultButton = false;
+
+    //Navigation
+    [Header("Navigation")]
+    public NavigationButtons navigation = new NavigationButtons();
 
     #region Default Logic
     private void RaiseClick()
@@ -53,41 +82,59 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         if (eventData.button == PointerEventData.InputButton.Right)
             return;
 
-        state = ButtonState.Selected;
-        RaiseClick();
+        ClickLogic();
     }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
+        holdsPointer = true;
+
+        HoverLogic();
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        holdsPointer = false;
+
+        if (CustomEventSystem.hoveredButton == this && CustomEventSystem.selectedButton == null)
+            return;
+
+        NoHoverLogic();
+    }
+
+    public void ClickLogic()
+    {
+        state = ButtonState.Selected;
+        CustomEventSystem.UpdateSelectedButton(this);
+        RaiseClick();
+    }
+    public void HoverLogic()
+    {
+        if (CustomEventSystem.hoveredButton != null)
+        {
+            CustomEventSystem.hoveredButton.NoHoverLogic();
+            CustomEventSystem.hoveredButton = null;
+        }
+
         if (state.Equals(ButtonState.Selected))
         {
             //Soft Hover can be added here
             return;
         }
 
+        CustomEventSystem.hoveredButton = this;
+
         state = ButtonState.Hovered;
         RaiseHover();
     }
-
-    public void OnPointerExit(PointerEventData eventData)
+    public void NoHoverLogic()
     {
-        if (state.Equals(ButtonState.Selected))
+        if (state == ButtonState.Selected)
             return;
+
+        if (CustomEventSystem.hoveredButton == this)
+            CustomEventSystem.hoveredButton = null;
 
         state = ButtonState.None;
         RaiseHoverEnd();
-    }
-
-    public void OnSubmit(BaseEventData eventData)
-    {
-        if (state.Equals(ButtonState.Selected))
-        {
-            //Soft Hover can be added here
-            return;
-        }
-
-        state = ButtonState.Hovered;
-        RaiseHover();
     }
     #endregion
 }

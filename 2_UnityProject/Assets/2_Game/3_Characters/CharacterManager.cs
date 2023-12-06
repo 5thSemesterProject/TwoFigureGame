@@ -1,6 +1,5 @@
 using Cinemachine;
 using TMPro;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -81,12 +80,9 @@ public class CharacterManager : MonoBehaviour
     //Inputs
     public static CustomInputs customInputMaps;
 
-    //State Machine
-    private static CharacterData[] characterDatas;
-    private static int characterIndex = 0;
-
     private static CharacterData manData, womanData;
     
+
 
     //Character Prefab
 
@@ -117,8 +113,8 @@ public class CharacterManager : MonoBehaviour
     private void Start()
     {
         //Set Up Inputs
-        customInputMaps = new CustomInputs();
-        SwitchControlScheme(customInputMaps.InGame);
+        customInputMaps = CustomEventSystem.GetInputMapping;
+        CustomEventSystem.SwitchControlScheme(customInputMaps.InGame);
 
         //Spawn Characters
         SpawnCharacters();
@@ -135,12 +131,6 @@ public class CharacterManager : MonoBehaviour
         debuggingCharacterStateMachines.text = "Woman: " + womanData.currentState.GetType() + "\n Man: " + manData.currentState.GetType();
         debuggingOxygenCharacters.text = "WomanOxy: " + womanData.oxygenData.currentOxygen + "\n ManOxy: " + manData.oxygenData.currentOxygen;
     }
-
-    GameObject GetActiveCharacter()
-    {
-        return characterDatas[characterIndex].gameObject;
-    }
-
 
     #region Setup
 
@@ -178,32 +168,6 @@ public class CharacterManager : MonoBehaviour
         if (characters == null)
             return new GameObject[0];
         return characters;
-    }
-    #endregion
-
-    #region Input
-    public static void SwitchControlScheme(InputActionMap actionMap)
-    {
-        var customInputMaps = CharacterManager.customInputMaps.asset.actionMaps;
-        for (int i = 0; i < customInputMaps.Count; i++)
-        {
-            if (customInputMaps[i].name == actionMap.name)
-            {
-                DisableControlSchemes();
-                actionMap.Enable();
-            }
-        }
-    }
-
-    public static void DisableControlSchemes()
-    {
-        foreach (var actionMaps in customInputMaps.asset.actionMaps)
-        {
-            if (actionMaps.enabled)
-            {
-                //actionMaps.Disable();
-            }
-        }
     }
     #endregion
 }
