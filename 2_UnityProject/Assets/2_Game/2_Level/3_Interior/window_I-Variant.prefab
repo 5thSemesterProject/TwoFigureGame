@@ -1,5 +1,73 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7106993183485586446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280443999229792434}
+  - component: {fileID: 2136165013183203044}
+  m_Layer: 0
+  m_Name: GodRays
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280443999229792434
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7106993183485586446}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.17973368, y: -0, z: -0, w: 0.98371536}
+  m_LocalPosition: {x: -0.0969999, y: -0.07441892, z: -3.3890874}
+  m_LocalScale: {x: 1, y: 0.045178328, z: 0.45687115}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6809061250707889423}
+  m_LocalEulerAnglesHint: {x: -20.708, y: 0, z: 0}
+--- !u!114 &2136165013183203044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7106993183485586446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1fbb15bf92b84f40a1eb030765b5afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameters:
+    albedo: {r: 0.4554408, g: 0.83579737, b: 0.9528302, a: 1}
+    meanFreePath: 3
+    blendingMode: 1
+    priority: 0
+    anisotropy: 0
+    volumeMask: {fileID: 11700000, guid: 12191a686cf63a04b8a2cc2eaf175539, type: 3}
+    textureScrollingSpeed: {x: 0, y: 0.05, z: 0}
+    textureTiling: {x: 1, y: 1, z: 1}
+    positiveFade: {x: 0.5, y: 0.43110234, z: 0.1303238}
+    negativeFade: {x: 0.5, y: 0.43110234, z: 0.1303238}
+    m_EditorUniformFade: 1
+    m_EditorPositiveFade: {x: 0.25, y: 0.7586615, z: 0.16942085}
+    m_EditorNegativeFade: {x: 0.2, y: 0.24133849, z: 0.026064763}
+    m_EditorAdvancedFade: 0
+    size: {x: 2, y: 2.319635, z: 7.6731954}
+    invertFade: 0
+    distanceFadeStart: 50
+    distanceFadeEnd: 60
+    textureOffset: {x: 0, y: 0, z: 0}
+    falloffMode: 0
+    maskMode: 0
+    materialMask: {fileID: 2100000, guid: f034ef93a4c1c1640957af19f45a3983, type: 2}
+  m_Version: 2
 --- !u!1001 &3727541542595252521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -90,7 +158,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2079739182670145825, guid: 4f137a104d4693940bc59e3a9075cabf, type: 3}
       propertyPath: m_Intensity
-      value: 16
+      value: 16.26
       objectReference: {fileID: 0}
     - target: {fileID: 2215911619575295002, guid: 4f137a104d4693940bc59e3a9075cabf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -166,7 +234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4708977887081010823, guid: 4f137a104d4693940bc59e3a9075cabf, type: 3}
       propertyPath: m_Intensity
-      value: 8192
+      value: 9809.747
       objectReference: {fileID: 0}
     - target: {fileID: 7363789147856806527, guid: 4f137a104d4693940bc59e3a9075cabf, type: 3}
       propertyPath: m_Name
@@ -174,11 +242,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7363789147856806527, guid: 4f137a104d4693940bc59e3a9075cabf, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2215911619575295002, guid: 4f137a104d4693940bc59e3a9075cabf, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 4280443999229792434}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f137a104d4693940bc59e3a9075cabf, type: 3}
 --- !u!4 &6809061250707889423 stripped
@@ -292,7 +363,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7363789147856806527, guid: 4f137a104d4693940bc59e3a9075cabf, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
