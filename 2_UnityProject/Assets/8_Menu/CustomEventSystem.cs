@@ -78,7 +78,6 @@ public class CustomEventSystem : MonoBehaviour
         if (startWithDefaultHovered)
         {
             defaultButton.HoverLogic();
-            Debug.Log("DOING");
         }
     }
 
