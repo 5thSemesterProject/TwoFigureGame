@@ -8,9 +8,9 @@ public class StartMenuManager : MonoBehaviour
 {
     private Coroutine transition;
 
-    private IEnumerator Start()
+    private void Start()
     {
-        yield return null;
+        CustomEventSystem.SwitchControlScheme(CustomEventSystem.GetInputMapping.InUI);
     }
 
     public void MenuAction(string actionName)
