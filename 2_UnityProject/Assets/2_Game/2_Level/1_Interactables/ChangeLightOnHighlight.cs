@@ -1,37 +1,80 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Interactable))]
 public class ChangeLightOnHighlight : MonoBehaviour
 {
-    Color normal;
-    [SerializeField] Color highlight;
-    [SerializeField] Light lightInput;
-    [SerializeField] float colorSwitchDuration = 0.2f;
-    Color targetColor;
+    [SerializeField] float highlightIntensity;
+    [SerializeField] Light mainLight;
+    [SerializeField] Light[] bounceLights;
+    [SerializeField] float switchDuration = 0.2f;
+    
+    HighlightLight mainHighlight;
+    HighlightLight []bounceHighlights;
+
 
     Interactable interactable;
-    Coroutine coroutine;
     bool highlighted = false;
 
 
     void Start()
     {
-        interactable = GetComponent<Interactable>();
-        
-        if (lightInput!=null)
+        if (mainLight!=null)
         {
-            //Setup for light color changing
-            targetColor = lightInput.color;
-            normal = targetColor;
-            
+            //Subscribe Events         
+            interactable = GetComponent<Interactable>();
             interactable.highlightEvent+= Highlight;
             interactable.highlightCond = CheckHighlighted;
             interactable.unhiglightEvent+=Unhighlight;
+
+            //Setup MainHighlight
+            mainHighlight = mainLight.AddComponent<HighlightLight>();
+            mainHighlight.SetHighlightIntensity(highlightIntensity);
+            float highlightRise = mainHighlight.GetHighlightRiseInPercent();
+
+
+            //Setup BounceLights
+            bounceHighlights = new HighlightLight[bounceLights.Length];
+            for (int i = 0; i < bounceLights.Length; i++)
+            {
+                if (bounceLights!=null)
+                {
+                    bounceHighlights[i] = bounceLights[i].AddComponent<HighlightLight>();
+                    bounceHighlights[i].SetHighlightIntensityInPercent(Mathf.Sqrt(highlightRise));
+                }    
+                else
+                    Debug.LogWarning("Bounce Light is null!");
+            }
+
         }
         else
             Debug.LogWarning("Missing light on "+gameObject.name);
+
+
+        
+    }
+
+     void Highlight(Movement movement)
+    {
+        highlighted = true;
+        
+        mainHighlight.Highlight();
+        for (int i = 0; i < bounceHighlights.Length; i++)
+            bounceHighlights[i].Highlight();
+
+    }
+
+    void Unhighlight(Movement movement)
+    {
+        highlighted = false;
+
+        mainHighlight.Unhighlight();
+        
+        for (int i = 0; i < bounceHighlights.Length; i++)
+            bounceHighlights[i].Unhighlight();
+
     }
 
     bool CheckHighlighted(Movement movement)
@@ -39,62 +82,5 @@ public class ChangeLightOnHighlight : MonoBehaviour
         return !highlighted;
     }
 
-    void Highlight(Movement movement)
-    {
-        highlighted = true;
-        targetColor = highlight;
-
-        if (coroutine==null)
-            coroutine = StartCoroutine(_LerpColor());
-    }
-
-    void Unhighlight(Movement movement)
-    {
-        highlighted = false;
-        targetColor = normal;
-
-        if (coroutine==null)
-            coroutine = StartCoroutine(_LerpColor());
-    }
-
-
-    IEnumerator _LerpColor()
-    {
-        Color currentColor = GetColor();
-        float smoothTime = colorSwitchDuration;
-        float velocity = 0;
-
-        while (true)
-        {
-            currentColor.r = Mathf.SmoothDamp(currentColor.r, targetColor.r, ref velocity, smoothTime);
-            currentColor.g = Mathf.SmoothDamp(currentColor.g, targetColor.g, ref velocity, smoothTime);
-            currentColor.b = Mathf.SmoothDamp(currentColor.b, targetColor.b, ref velocity, smoothTime);
-
-            if (Mathf.Abs(currentColor.r - targetColor.r) < 0.01f
-                &&Mathf.Abs(currentColor.g - targetColor.g) < 0.01f
-                &&Mathf.Abs(currentColor.b - targetColor.b) < 0.01f)
-            {
-                currentColor = targetColor;
-                SetColor(targetColor);
-                break;
-            }
-
-            SetColor(currentColor);
-
-            yield return null;
-        }
-
-        coroutine = null;
-        
-    }
-
-    Color GetColor()
-    {
-        return lightInput.color;
-    }
-
-    void SetColor(Color color)
-    {
-        lightInput.color = color;
-    }
+   
 }

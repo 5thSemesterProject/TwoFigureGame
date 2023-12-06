@@ -130,11 +130,11 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
-  m_Intensity: 6861055.5
-  m_Range: 0.7364735
-  m_SpotAngle: 73.594925
-  m_InnerSpotAngle: 21.80208
+  m_Color: {r: 0.8207547, g: 0.5173087, b: 0.37682444, a: 1}
+  m_Intensity: 1034139.6
+  m_Range: 0.7255326
+  m_SpotAngle: 66.6
+  m_InnerSpotAngle: 15.323099
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -174,12 +174,12 @@ Light:
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 0
-  m_ColorTemperature: 3474
-  m_UseColorTemperature: 1
+  m_ColorTemperature: 2693
+  m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 6.110749}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
+  m_ShadowRadius: 0.05
   m_ShadowAngle: 0
 --- !u!114 &3559358287483370546
 MonoBehaviour:
@@ -193,10 +193,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 25.71
+  m_Intensity: 22.98
   m_EnableSpotReflector: 1
-  m_LuxAtDistance: 1
-  m_InnerSpotPercent: 38.8
+  m_LuxAtDistance: 1.39
+  m_InnerSpotPercent: 100
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
@@ -209,10 +209,10 @@ MonoBehaviour:
   m_ShapeWidth: 0.5
   m_ShapeHeight: 0.5
   m_AspectRatio: 1
-  m_ShapeRadius: 0.025
+  m_ShapeRadius: 0.05
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
-  m_CustomSpotLightShadowCone: 30
+  m_CustomSpotLightShadowCone: 23.7
   m_MaxSmoothness: 0.99
   m_ApplyRangeAttenuation: 1
   m_DisplayAreaLightEmissiveMesh: 0
@@ -330,7 +330,7 @@ Transform:
   m_GameObject: {fileID: 5427525821971518730}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.203, y: 0.532, z: 0}
+  m_LocalPosition: {x: -0.203, y: 0.494, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -347,8 +347,8 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.6320754, g: 0.40614757, b: 0.22460538, a: 1}
-  m_Intensity: 318309.88
+  m_Color: {r: 0.6981132, g: 0.38287297, b: 0.12293812, a: 1}
+  m_Intensity: 31830.988
   m_Range: 6.110749
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -410,7 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 4000000
+  m_Intensity: 400000
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
