@@ -13,6 +13,8 @@ public class EnumGenerator : EditorWindow
 
     private bool addEnumPrefix = true;
 
+    private bool ignoreMetaFiles = true;
+
     private string excludedFile = "";
     private List<string> excludedFiles = new List<string>();
 
@@ -68,6 +70,9 @@ public class EnumGenerator : EditorWindow
 
         //Bool AddEnumToName
         addEnumPrefix = EditorGUILayout.Toggle("Add Enum Prefix", addEnumPrefix);
+
+        //ignoreMetaFiles
+        ignoreMetaFiles = EditorGUILayout.Toggle("Ignore Meta Files",ignoreMetaFiles);
 
         //Handle Drag and Drop
         Event currentEvent = Event.current;
@@ -187,6 +192,9 @@ public class EnumGenerator : EditorWindow
             //    .Select(MakeValidCSharpIdentifier)
             //    .ToArray();
 
+            if (ignoreMetaFiles)
+                fileNames = RemoveMetaFiles(fileNames);
+
             for (int i = 0; i < fileNames.Length; i++)
             {
                 fileNames[i] = Path.GetFileNameWithoutExtension(fileNames[i]);
@@ -194,6 +202,8 @@ public class EnumGenerator : EditorWindow
             }
             
             fileNames = RemoveDuplicatesAndExcluded(fileNames);
+
+
 
             for (int i = 0; i < fileNames.Length; i++)
             {
@@ -209,6 +219,7 @@ public class EnumGenerator : EditorWindow
 
     private string[] RemoveDuplicatesAndExcluded(string[] fileNames)
     {
+        //Removes Duplicates
         for (int i = 0; i < fileNames.Length; i++)
         {
             if (fileNames[i] == null)
@@ -243,6 +254,29 @@ public class EnumGenerator : EditorWindow
 
         return names.ToArray();
     }
+
+    private string[] RemoveMetaFiles(string[] fileNames)
+    {
+        //Removes Duplicates
+        for (int i = 0; i < fileNames.Length; i++)
+        {
+            if (fileNames[i].Contains(".meta"))
+            {
+                fileNames[i] = null;
+            }
+
+        }
+
+        List<string> names = new List<string>();
+        for (int i = 0; i < fileNames.Length; i++)
+        {
+           if (fileNames[i]!=null)
+            names.Add(fileNames[i]);
+        }
+
+        return names.ToArray();
+    }
+
 
     private string MakeValidCSharpIdentifier(string input)
     {
