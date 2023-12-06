@@ -75,7 +75,7 @@ public class CustomEventSystem : MonoBehaviour
     private void Start()
     {
         //Hover Default button if enabled
-        if (startWithDefaultHovered)
+        if (startWithDefaultHovered && defaultButton != null)
         {
             defaultButton.HoverLogic();
         }
@@ -85,6 +85,12 @@ public class CustomEventSystem : MonoBehaviour
     {
         CustomButton[] customButtons = GameObject.FindObjectsOfType<CustomButton>();
 
+        if (customButtons == null || customButtons.Length <= 0 || customButtons[0] == null)
+        {
+            Debug.LogWarning("No Buttons Existent");
+            return null;
+        }
+
         for (int i = 0; i < customButtons.Length; i++)
         {
             if (customButtons[i].isDefaultButton)
@@ -93,11 +99,6 @@ public class CustomEventSystem : MonoBehaviour
             }
         }
 
-        if (customButtons == null || customButtons[0] == null)
-        {
-            Debug.LogWarning("No Buttons Existent");
-            return null;
-        }
         return customButtons[0];
     }
 
