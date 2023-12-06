@@ -52,7 +52,7 @@ public class StartMenuManager : MonoBehaviour
     {
         yield return null;
         transition = null;
-        SceneManager.LoadScene("Scene");
+        SceneManager.LoadScene("LevelScene");
     }
 
     private IEnumerator Options()

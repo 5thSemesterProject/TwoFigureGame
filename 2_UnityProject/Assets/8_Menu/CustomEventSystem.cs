@@ -68,12 +68,18 @@ public class CustomEventSystem : MonoBehaviour
         inputMapping = new CustomInputs(); //Custom
         defaultButton = GetDefaultButton();
 
-        //Hover Default button if enabled
-            if (startWithDefaultHovered)
-                defaultButton.HoverLogic();
-
         //Register Navigation Callbacks
         SubscribeCallbacks();
+    }
+
+    private void Start()
+    {
+        //Hover Default button if enabled
+        if (startWithDefaultHovered)
+        {
+            defaultButton.HoverLogic();
+            Debug.Log("DOING");
+        }
     }
 
     private static CustomButton GetDefaultButton()
