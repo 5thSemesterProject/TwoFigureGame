@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+#region Data
 public class OxygenData
 {
     public float maxOxygen;
@@ -74,6 +75,7 @@ public enum Characters
     Man,
     Woman
 }
+#endregion
 
 public class CharacterManager : MonoBehaviour
 {
