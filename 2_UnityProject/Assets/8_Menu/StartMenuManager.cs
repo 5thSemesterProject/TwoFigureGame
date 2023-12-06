@@ -7,27 +7,17 @@ using Cinemachine;
 public class StartMenuManager : MonoBehaviour
 {
     private Coroutine transition;
-    [SerializeField] private MainMenuCameraManager cameraManager;
 
-    private IEnumerator Start()
+    private void Start()
     {
-        yield return null;
-        cameraManager.ActivateCamera("MainMenuCamera");
-    }
-
-    private void DoMenuTransition(IEnumerator enumerator)
-    {
-        if (transition != null)
-        {
-            Debug.LogWarning("Previous transition did not yet end!");
-        }
-        StartCoroutine(enumerator);
+        CustomEventSystem.SwitchControlScheme(CustomEventSystem.GetInputMapping.InUI);
     }
 
     public void MenuAction(string actionName)
     {
         IEnumerator coroutine = null;
 
+        //Switch Logics
         switch (actionName)
         {
             case "Start":
@@ -43,29 +33,26 @@ public class StartMenuManager : MonoBehaviour
                 break;
         }
 
+        //Catch Typos
         if (coroutine == null)
         {
             return;
         }
 
-        DoMenuTransition(coroutine);
+        //Do Menu Transition
+        if (transition != null)
+        {
+            Debug.LogWarning("Previous transition did not yet end!");
+        }
+        transition = StartCoroutine(coroutine);
     }
 
     #region Button Logics
     private IEnumerator StartGame()
     {
-        CinemachineVirtualCamera camera =  cameraManager.ActivateCamera("GameStartCam");
-        CinemachineTrackedDolly path = camera.GetCinemachineComponent<CinemachineTrackedDolly>();
-
-        float i = 0;
-        while (i<2)
-        {
-            i += Time.deltaTime/1.5f;
-            path.m_PathPosition = i;
-            yield return null;
-        }
+        yield return null;
         transition = null;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("LevelScene");
     }
 
     private IEnumerator Options()
