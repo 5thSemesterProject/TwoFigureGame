@@ -1073,7 +1073,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1684218427273238665}
   m_Layer: 0
-  m_Name: woodCrate_3
+  m_Name: WoodCrate_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1538,7 +1538,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1463350623337984346}
   m_Layer: 0
-  m_Name: crateStack
+  m_Name: CrateStack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2989,7 +2989,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8135248907740523339}
   - {fileID: 6040287202186482411}
   - {fileID: 6810100131229970607}
   m_Father: {fileID: 4977034291948872258}
@@ -3584,8 +3583,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5555866800927232866}
-  - {fileID: 2253432967092344251}
-  - {fileID: 5785583578011788620}
   m_Father: {fileID: 127743409523159019}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2891243788552775620
@@ -4355,37 +4352,6 @@ Transform:
   - {fileID: 5790669621369095638}
   m_Father: {fileID: 8634199916283800359}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3375973326466866864
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8135248907740523339}
-  m_Layer: 0
-  m_Name: Floor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8135248907740523339
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3375973326466866864}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 734876321671088942}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3458662441874449450
 GameObject:
   m_ObjectHideFlags: 0
@@ -4447,9 +4413,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8732142783764283189}
   - {fileID: 1463350623337984346}
   - {fileID: 4118936618303206399}
-  - {fileID: 8732142783764283189}
   m_Father: {fileID: 2362321246171288270}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3533573064430718392
@@ -5056,8 +5022,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6232387660306555323}
-  - {fileID: 4536125062032185027}
   - {fileID: 1749388396866349489}
+  - {fileID: 4536125062032185027}
   - {fileID: 6554752792004045105}
   m_Father: {fileID: 7462507937822748489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6833,37 +6799,6 @@ Transform:
   - {fileID: 7998217011783233487}
   m_Father: {fileID: 3413605784439749138}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4683399130292973967
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7359435563759695003}
-  m_Layer: 0
-  m_Name: Row_5
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7359435563759695003
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4683399130292973967}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 851032742203273682}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4735967469502669795
 GameObject:
   m_ObjectHideFlags: 0
@@ -7114,7 +7049,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6810100131229970607}
   m_Layer: 0
-  m_Name: topWall
+  m_Name: TopWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7210,37 +7145,6 @@ Transform:
   - {fileID: 7864922924487233978}
   - {fileID: 3866539017670618822}
   m_Father: {fileID: 258987255442110574}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5127730201777843644
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2253432967092344251}
-  m_Layer: 0
-  m_Name: boxes&Buckets
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2253432967092344251
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5127730201777843644}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7835410318886914736}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5137107371460401575
 GameObject:
@@ -9847,37 +9751,6 @@ MonoBehaviour:
   m_PointlightHDType: 1
   m_SpotLightShape: 0
   m_AreaLightShape: 0
---- !u!1 &7148154463591625585
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8333352699099548128}
-  m_Layer: 0
-  m_Name: Row_2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8333352699099548128
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7148154463591625585}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7462507937822748489}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7160789270616423381
 GameObject:
   m_ObjectHideFlags: 0
@@ -10130,37 +10003,6 @@ MonoBehaviour:
   m_PointlightHDType: 1
   m_SpotLightShape: 1
   m_AreaLightShape: 0
---- !u!1 &7245432257607877358
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2068446795964950597}
-  m_Layer: 0
-  m_Name: Row_2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2068446795964950597
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7245432257607877358}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 851032742203273682}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7331082099392523424
 GameObject:
   m_ObjectHideFlags: 0
@@ -11157,37 +10999,6 @@ Transform:
   - {fileID: 4319906242693822799}
   m_Father: {fileID: 7583827878001313081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7679295713160811495
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5785583578011788620}
-  m_Layer: 0
-  m_Name: glassDomes
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5785583578011788620
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7679295713160811495}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7835410318886914736}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7709628915356619866
 GameObject:
   m_ObjectHideFlags: 0
@@ -11333,7 +11144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5906666195536418660}
   m_Layer: 0
-  m_Name: woodCrate_1
+  m_Name: WoodCrate_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11390,7 +11201,6 @@ Transform:
   m_Children:
   - {fileID: 8646382374231699312}
   - {fileID: 7280099596965413391}
-  - {fileID: 8333352699099548128}
   - {fileID: 6316197968739414772}
   - {fileID: 3756899049837670329}
   - {fileID: 5116242612988701431}
@@ -12247,7 +12057,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6040287202186482411}
   m_Layer: 0
-  m_Name: rightWall
+  m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12308,37 +12118,6 @@ Transform:
   - {fileID: 6653350381092443176}
   - {fileID: 5538072765248795340}
   m_Father: {fileID: 8402512799947750985}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8271948875889030838
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5039270771010233454}
-  m_Layer: 0
-  m_Name: Row_4
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5039270771010233454
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8271948875889030838}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 851032742203273682}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8286882108745904470
 GameObject:
@@ -12925,10 +12704,7 @@ Transform:
   m_Children:
   - {fileID: 7185148188747159640}
   - {fileID: 8289635352409306250}
-  - {fileID: 2068446795964950597}
   - {fileID: 6666857909843519398}
-  - {fileID: 5039270771010233454}
-  - {fileID: 7359435563759695003}
   - {fileID: 7553881775841347473}
   m_Father: {fileID: 7583827878001313081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17903,7 +17679,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8288521259754438917, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_Name
-      value: woodChair (3)
+      value: woodChair
       objectReference: {fileID: 0}
     - target: {fileID: 8668706384971275199, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34291,7 +34067,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8288521259754438917, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_Name
-      value: woodChair (2)
+      value: woodChair
       objectReference: {fileID: 0}
     - target: {fileID: 8668706384971275199, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -37227,7 +37003,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8288521259754438917, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_Name
-      value: woodChair (16)
+      value: woodChair
       objectReference: {fileID: 0}
     - target: {fileID: 8668706384971275199, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -43344,7 +43120,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8288521259754438917, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_Name
-      value: woodChair (1)
+      value: woodChair
       objectReference: {fileID: 0}
     - target: {fileID: 8668706384971275199, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -43840,7 +43616,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8288521259754438917, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_Name
-      value: woodChair (17)
+      value: woodChair
       objectReference: {fileID: 0}
     - target: {fileID: 8668706384971275199, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -57616,7 +57392,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8288521259754438917, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_Name
-      value: woodChair (8)
+      value: woodChair
       objectReference: {fileID: 0}
     - target: {fileID: 8668706384971275199, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -58294,7 +58070,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2175871644213631018, guid: f0e824b593f0a0348a38200aedbbb5b1, type: 3}
       propertyPath: m_Name
-      value: chemicalDesk (2)
+      value: chemicalDesk
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -60596,7 +60372,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8288521259754438917, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_Name
-      value: woodChair (4)
+      value: woodChair
       objectReference: {fileID: 0}
     - target: {fileID: 8668706384971275199, guid: a2c8999e17a2e984294af4ca5040779c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -69194,7 +68970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2175871644213631018, guid: f0e824b593f0a0348a38200aedbbb5b1, type: 3}
       propertyPath: m_Name
-      value: chemicalDesk (1)
+      value: chemicalDesk
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -78103,7 +77879,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7741752401135761251, guid: 8da85b8a239ed5b4a81f207807058a35, type: 3}
       propertyPath: m_Name
-      value: paperBlueprint-Variant (1)
+      value: paperBlueprint
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
