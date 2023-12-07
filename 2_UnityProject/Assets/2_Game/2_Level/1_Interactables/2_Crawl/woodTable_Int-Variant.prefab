@@ -52,6 +52,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5935459232670435502, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
+      propertyPath: mainLight
+      value: 
+      objectReference: {fileID: 5636065631644746269}
+    - target: {fileID: 5935459232670435502, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
+      propertyPath: highlightIntensity
+      value: 100000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5935459232670435502, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
+      propertyPath: bounceLights.Array.data[0]
+      value: 
+      objectReference: {fileID: 1325025123940578560}
+    - target: {fileID: 5935459232670435502, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
+      propertyPath: bounceLights.Array.data[1]
+      value: 
+      objectReference: {fileID: 3452757389315955330}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -60,20 +76,8 @@ PrefabInstance:
       addedObject: {fileID: 7734506637693917968}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4941799233852079641, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
-      insertIndex: -1
+      insertIndex: 4
       addedObject: {fileID: 3183113947155928801}
-    - targetCorrespondingSourceObject: {fileID: 4941799233852079641, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 204303000951709746}
-    - targetCorrespondingSourceObject: {fileID: 4941799233852079641, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3356661534467235815}
-    - targetCorrespondingSourceObject: {fileID: 4941799233852079641, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7460369338953857244}
-    - targetCorrespondingSourceObject: {fileID: 4941799233852079641, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6042606327707969241}
   m_SourcePrefab: {fileID: 100100000, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
 --- !u!1 &4976925026321240174 stripped
 GameObject:
@@ -101,63 +105,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.7132835, y: 0.8923268, z: 2.5211883}
   m_Center: {x: -0.0009355247, y: -0.42495212, z: 0.018630743}
---- !u!114 &204303000951709746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4976925026321240174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48f96624face08a4f9623af59d705c03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3356661534467235815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4976925026321240174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68c1cc48e6d740e41b02af8060caf0f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  specificCharacterAccess: 0
---- !u!114 &7460369338953857244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4976925026321240174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5386fa12d7ca8ef47869b2b966cf0fc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6042606327707969241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4976925026321240174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d345f89b9e8e044dac27821cc3092a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  highlightIntensity: 0
-  mainLight: {fileID: 5636065631644746269}
-  bounceLights:
-  - {fileID: 1325025123940578560}
-  - {fileID: 3452757389315955330}
-  - {fileID: 0}
-  - {fileID: 0}
-  switchDuration: 0.2
 --- !u!4 &5645902451615812308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5755350274939856035, guid: 1506c15e7efc2bb48b0ddc1f6361a9c7, type: 3}
