@@ -10,4 +10,4 @@
 | TickingClock  | when walking past a clock | 
 | WoodenDebris  | when walking past wooden planks or wooden debris falls down |
 | 1.0_SteamHiss  | when interacting with safe station | 
-| 1.1 SteamHiss  | when interacting with safe station |
+| 1.1 SteamHiss  | when interacting with safe station | 
