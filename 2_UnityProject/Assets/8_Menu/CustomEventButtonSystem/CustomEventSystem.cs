@@ -62,8 +62,6 @@ public class CustomEventSystem : MonoBehaviour
         else
             Destroy(this);
 
-        DontDestroyOnLoad(this);
-
         //Set up custom inputs and default button
         inputMapping = new CustomInputs(); //Custom
         defaultButton = GetDefaultButton();
@@ -135,6 +133,8 @@ public class CustomEventSystem : MonoBehaviour
                 Debug.Log("Enabled" + actionMap.name);
             }
         }
+
+        current.defaultButton = GetDefaultButton();
     }
 
     public static void DisableControlSchemes()
@@ -193,6 +193,9 @@ public class CustomEventSystem : MonoBehaviour
     #region Navigation
     private void TriggerNavigation(InputAction.CallbackContext context)
     {
+        if (currentSelection == null)
+            return;
+
         //If Canceled
         if (context.phase == InputActionPhase.Canceled)
         {
