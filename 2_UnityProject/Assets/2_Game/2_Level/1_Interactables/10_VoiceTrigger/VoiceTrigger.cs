@@ -23,9 +23,15 @@ public class MyScriptEditor : Editor
     voiceTrigger.triggerType = (TriggerType)EditorGUILayout.EnumPopup("TriggerType",voiceTrigger.triggerType);
 
     if (voiceTrigger.randomizeVoicelines)
+    {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("randomVoicelines"),true);
+        voiceTrigger.playOnceBeforeRandom = EditorGUILayout.Toggle("Play Once Before Random", voiceTrigger.playOnceBeforeRandom);
+    }    
     else
         voiceTrigger.voiceLine = (E_1_Voicelines)EditorGUILayout.EnumPopup("Voiceline",voiceTrigger.voiceLine);
+
+    if (voiceTrigger.playOnceBeforeRandom)
+        voiceTrigger.voiceLine = (E_1_Voicelines)EditorGUILayout.EnumPopup("Voiceline before Random",voiceTrigger.voiceLine);
 
     serializedObject.ApplyModifiedProperties();
 
@@ -46,6 +52,7 @@ public class VoiceTrigger : MonoBehaviour
     
     public float extraWaitTimeBetweenClips = 1f;
     public bool playOnce = false;
+    public bool playOnceBeforeRandom;
     public E_1_Voicelines voiceLine;
     public bool randomizeVoicelines;
     public E_1_Voicelines[] randomVoicelines;
@@ -85,6 +92,12 @@ public class VoiceTrigger : MonoBehaviour
             else  
                 voicelineToPlay = voiceLine;
 
+            if (playOnceBeforeRandom)
+            {   
+                playOnceBeforeRandom = false;
+                voicelineToPlay = voiceLine;
+            }    
+
             string fileName = Enum.GetName(typeof(E_1_Voicelines),voicelineToPlay);
             fileName = RemoveFirstUnderscore(fileName);
             AsyncOperationHandle<AudioClip> asyncOperationHandle =  Addressables.LoadAssetAsync<AudioClip>("Assets/4_Assets/2_Sound/1_Voicelines/"+fileName+".wav");
@@ -112,9 +125,9 @@ public class VoiceTrigger : MonoBehaviour
 
     E_1_Voicelines RandomVoiceLine()
     {
-        int random = lastRandom;
-        while(random==lastRandom)
-            random = UnityEngine.Random.Range(0,randomVoicelines.Length-1);
+        int random = UnityEngine.Random.Range(0,randomVoicelines.Length-1);
+        if(random==lastRandom)
+            random = (random + 1) % randomVoicelines.Length;
         lastRandom = random;
         return randomVoicelines[random];
     }
@@ -147,3 +160,5 @@ public class VoiceTrigger : MonoBehaviour
 
     }
 }
+
+
