@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2295553456605658001, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6363533021429603890, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
       propertyPath: m_Height
       value: 3
@@ -78,12 +82,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 350029272784165444, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2414866501838605197}
-    - targetCorrespondingSourceObject: {fileID: 350029272784165444, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -1909660411297253938}
-    - targetCorrespondingSourceObject: {fileID: 350029272784165444, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -5472118277889755908}
   m_SourcePrefab: {fileID: 100100000, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
 --- !u!1 &2264721179031268113 stripped
 GameObject:
@@ -125,29 +123,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chargeRate: 5
   smokeIntersectionRadius: 3
---- !u!114 &-1909660411297253938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2264721179031268113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68c1cc48e6d740e41b02af8060caf0f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  specificCharacterAccess: 0
---- !u!114 &-5472118277889755908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2264721179031268113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fbccccaee74cd241b5efc8f15b10657, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactableToBlock: {fileID: 0}
