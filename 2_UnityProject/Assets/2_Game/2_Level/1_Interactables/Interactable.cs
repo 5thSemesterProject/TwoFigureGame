@@ -13,6 +13,11 @@ public enum CharacterType
     None, Woman, Man
 }
 
+public enum TriggerType
+{
+    OnHighlight,OnTrigger
+}
+
 public class Interactable : MonoBehaviour
 {
     public CharacterType specificCharacterAccess;
