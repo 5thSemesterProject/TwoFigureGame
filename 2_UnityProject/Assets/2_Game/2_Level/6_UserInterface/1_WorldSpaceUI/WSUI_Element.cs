@@ -12,8 +12,7 @@ public class WSUI_Element : MonoBehaviour
     RectTransform rectTransform;
     Vector2 offset = new Vector2(0,0);
 
-
-    void  Start()
+    private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
     }
@@ -35,6 +34,14 @@ public class WSUI_Element : MonoBehaviour
         this.canvas = canvas;
         rectTransform.SetParent(canvas.GetComponent<RectTransform>());
    }
+
+    public void SetScaleWithScreen()
+    {
+        rectTransform.anchoredPosition = Vector3.zero;
+        rectTransform.sizeDelta = Vector2.zero;
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+    }
 
     IEnumerator FollowTransform(Vector2 offset)
    {
