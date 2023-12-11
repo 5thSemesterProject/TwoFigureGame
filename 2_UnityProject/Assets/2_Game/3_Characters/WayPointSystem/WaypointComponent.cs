@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -279,21 +278,21 @@ public class WaypointSystemEditor : Editor
         }
 
         // Draw the first Bézier curve
-        Vector3 startTanget = points[0] + VectorHelper.FromTo(points[0], points[1]) * bezierInfluence.floatValue * 0.1f * Vector3.Distance(points[0], points[1]);
-        Vector3 endTangent = points[1] - VectorHelper.FromTo(points[0], points[2]) * bezierInfluence.floatValue * 0.1f * Vector3.Distance(points[0], points[1]);
+        Vector3 startTanget = points[0] + VectorHelper.FromTo(points[0], points[1]) * bezierInfluence.floatValue * (1f / 3f) * Vector3.Distance(points[0], points[1]);
+        Vector3 endTangent = points[1] - VectorHelper.FromTo(points[0], points[2]) * bezierInfluence.floatValue * (1f / 3f) * Vector3.Distance(points[0], points[1]);
         //Handles.DrawBezier(points[0], points[1], startTanget, endTangent, Color.cyan, null, 5f);
 
         // Draw subsequent Bézier curves
         for (int i = 0; i < numWaypoints - 2; i++)
         {
-            startTanget = points[i] + VectorHelper.FromTo(points[Mathf.Max(i-1,0)], points[i+1]) * bezierInfluence.floatValue * 0.1f * Vector3.Distance(points[i], points[i+1]);
-            endTangent = points[i +1] - VectorHelper.FromTo(points[i], points[i+2]) * bezierInfluence.floatValue * 0.1f * Vector3.Distance(points[ equalBezierHandles ? i + 1 : i], points[equalBezierHandles ? i + 2 : i + 1]);
+            startTanget = points[i] + VectorHelper.FromTo(points[Mathf.Max(i-1,0)], points[i+1]) * bezierInfluence.floatValue * (1f / 3f) * Vector3.Distance(points[i], points[i+1]);
+            endTangent = points[i +1] - VectorHelper.FromTo(points[i], points[i+2]) * bezierInfluence.floatValue * (1f / 3f) * Vector3.Distance(points[ equalBezierHandles ? i + 1 : i], points[equalBezierHandles ? i + 2 : i + 1]);
             Handles.DrawBezier(points[i], points[i+1], startTanget, endTangent, Color.cyan, null, 5f);
         }
 
         // Draw the last Bézier curve
-        startTanget = points[numWaypoints - 2] + VectorHelper.FromTo(points[numWaypoints - 3], points[numWaypoints - 1]) * bezierInfluence.floatValue * 0.1f * Vector3.Distance(points[equalBezierHandles ? numWaypoints - 3 : numWaypoints - 2], points[equalBezierHandles ? numWaypoints - 2 : numWaypoints - 1]);
-        endTangent = points[numWaypoints - 1] - VectorHelper.FromTo(points[numWaypoints - 2], points[numWaypoints - 1]) * bezierInfluence.floatValue * 0.1f * Vector3.Distance(points[numWaypoints - 2], points[numWaypoints - 1]);
+        startTanget = points[numWaypoints - 2] + VectorHelper.FromTo(points[numWaypoints - 3], points[numWaypoints - 1]) * bezierInfluence.floatValue * (1f / 3f) * Vector3.Distance(points[equalBezierHandles ? numWaypoints - 3 : numWaypoints - 2], points[equalBezierHandles ? numWaypoints - 2 : numWaypoints - 1]);
+        endTangent = points[numWaypoints - 1] - VectorHelper.FromTo(points[numWaypoints - 2], points[numWaypoints - 1]) * bezierInfluence.floatValue * (1f / 3f) * Vector3.Distance(points[numWaypoints - 2], points[numWaypoints - 1]);
         Handles.DrawBezier(points[numWaypoints-2], points[numWaypoints -1], startTanget, endTangent, Color.cyan, null, 5f);
     }
 }
@@ -315,9 +314,58 @@ public class WaypointComponent : MonoBehaviour
         Debug.Log(bezierLength);
     }
 
+    #region Narrative Walk
     private void StartNarrativeWalk(Movement movement)
     {
 
+    }
+    #endregion
+
+    #region Bezier Logic
+    public Vector3 GetPointOnBezierCurve(float t)
+    {
+        t = t % 1;
+
+        int numWaypoints = waypoints.Count;
+
+        if (numWaypoints < 2)
+        {
+            Debug.LogError("Not enough waypoints to form a Bézier curve.");
+            return Vector3.zero;
+        }
+
+        int startIndex = GetStartIndex(t, out float remainingLength);
+
+        t = remainingLength / waypoints[startIndex].w;
+
+        Vector3 pStart = waypoints[startIndex];
+        Vector3 pEnd = waypoints[startIndex + 1];
+        Vector3 pStartTangent = GetTangentVector(startIndex, true);
+        Vector3 pEndTangent = GetTangentVector(startIndex + 1, false);
+
+        return BezierCurvePoint(t, pStart, pStartTangent, pEndTangent, pEnd) + transform.position;
+    }
+
+    private Vector3 BezierCurvePoint(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
+    {
+        //p1 = new Vector3(10f/3f,0,0);
+        //p2 = new Vector3(10 - 10f / 3f, 0, 0);
+
+        float u = 1f - t;//0.9
+        float tt = t * t; //0.01
+        float uu = u * u; //0.81
+        float uuu = uu * u; //0.729
+        float ttt = tt * t; //0.001
+
+        Vector3 p = uuu * p0; // (1-t)^3 * P0 // 0
+        p += 3f * uu * t * p1; // 3 * (1-t)^2 * t * P1 //0.081
+        p += 3f * u * tt * p2; // 3 * (1-t) * t^2 * P2 //0.018
+        p += ttt * p3; // t^3 * P3 // 0.001
+
+        Debug.Log($"{p0} --- {p1} --- {p2} --- {p3}");
+        Debug.Log($"{t} --- {p.x / 10}");
+
+        return p;
     }
 
     private void CalculateLength()
@@ -363,7 +411,7 @@ public class WaypointComponent : MonoBehaviour
     {
         Vector3 baseVector = (Vector3)waypoints[index];
         Vector3 tangentNormalized = VectorHelper.FromTo(waypoints[Mathf.Max(index - 1, 0)], waypoints[index + 1 >= waypoints.Count ? index : index + 1]);
-        Vector3 addition = tangentNormalized * bezierInfluence * 0.1f * Vector3.Distance(waypoints[index], waypoints[index + (startPoint ? 1 : -1)]);
+        Vector3 addition = tangentNormalized * bezierInfluence * Vector3.Distance(waypoints[index], waypoints[index + (startPoint ? 1 : -1)]) * 1f/3f;
         return baseVector + addition * (startPoint ? 1 : -1);
     }
 
@@ -388,47 +436,9 @@ public class WaypointComponent : MonoBehaviour
         remainingLength = 0;
         return 0;
     }
+    #endregion
 
-    public Vector3 GetPointOnBezierCurve(float t)
-    {
-        t = t % 1;
-
-        int numWaypoints = waypoints.Count;
-
-        if (numWaypoints < 2)
-        {
-            Debug.LogError("Not enough waypoints to form a Bézier curve.");
-            return Vector3.zero;
-        }
-
-        int startIndex = GetStartIndex(t, out float remainingLength);
-
-        t = remainingLength / waypoints[startIndex].w;
-
-        Vector3 pStart = waypoints[startIndex];
-        Vector3 pEnd = waypoints[startIndex + 1];
-        Vector3 pStartTangent = GetTangentVector(startIndex, true);
-        Vector3 pEndTangent = GetTangentVector(startIndex + 1, false);
-
-        return BezierCurvePoint(t, pStart, pStartTangent, pEndTangent, pEnd) + transform.position;
-    }
-
-    private Vector3 BezierCurvePoint(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
-    {
-        float u = 1f - t;
-        float tt = t * t;
-        float uu = u * u;
-        float uuu = uu * u;
-        float ttt = tt * t;
-
-        Vector3 p = uuu * p0; // (1-t)^3 * P0
-        p += 3f * uu * t * p1; // 3 * (1-t)^2 * t * P1
-        p += 3f * u * tt * p2; // 3 * (1-t) * t^2 * P2
-        p += ttt * p3; // t^3 * P3
-
-        return p;
-    }
-
+    #region Debug
     private Vector3 pos;
     private Vector3 posd;
 
@@ -444,12 +454,14 @@ public class WaypointComponent : MonoBehaviour
         }
     }
 
-    private float ti = 0;
+    private float time = 0;
+    public float point = 0.1f;
 
     private void Update()
     {
-        pos = GetPointOnBezierCurve(ti / 10);
-        posd = new Vector3(ti % 10,0, 0);
-        ti += Time.deltaTime;
+        pos = GetPointOnBezierCurve(time/10);
+        posd = new Vector3(time%10,0,0);
+        time += Time.deltaTime;
     }
+    #endregion
 }
