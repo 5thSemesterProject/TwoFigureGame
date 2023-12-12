@@ -1644,6 +1644,14 @@ PrefabInstance:
       propertyPath: m_RenderingLayerMask
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 4373002532036113164, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      propertyPath: m_Range
+      value: 6.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4373002532036113164, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      propertyPath: m_ShadowRadius
+      value: 0.025
+      objectReference: {fileID: 0}
     - target: {fileID: 4410650778971533947, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 13
@@ -1727,6 +1735,10 @@ PrefabInstance:
     - target: {fileID: 4772274498807531079, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830988672898691669, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4846773737530580015, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_RenderingLayerMask
@@ -2097,8 +2109,16 @@ PrefabInstance:
       value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6609723398755374910, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      propertyPath: m_Range
+      value: 6.012276
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609723398755374910, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609723398755374910, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 6.012276
       objectReference: {fileID: 0}
     - target: {fileID: 6615058950250589531, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_Color.a
@@ -2765,20 +2785,9 @@ PrefabInstance:
     - {fileID: 126136215076113615, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
     - {fileID: 5310503384192454682, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
     - {fileID: 5345995307173267643, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+    - {fileID: 5684234558690211671, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6925529185165722728, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 643871698}
-    - targetCorrespondingSourceObject: {fileID: 6925529185165722728, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 643871697}
-    - targetCorrespondingSourceObject: {fileID: 6925529185165722728, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 643871696}
-    - targetCorrespondingSourceObject: {fileID: 6925529185165722728, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 643871695}
     - targetCorrespondingSourceObject: {fileID: 4246683268054401459, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1452971405}
@@ -2812,64 +2821,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5272757339849091941, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
   m_PrefabInstance: {fileID: 643871692}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &643871694 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6925529185165722728, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
-  m_PrefabInstance: {fileID: 643871692}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &643871695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 643871694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d345f89b9e8e044dac27821cc3092a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  highlightIntensity: 10000
-  mainLight: {fileID: 0}
-  bounceLights: []
-  switchDuration: 0.2
---- !u!114 &643871696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 643871694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48f96624face08a4f9623af59d705c03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &643871697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 643871694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5386fa12d7ca8ef47869b2b966cf0fc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &643871698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 643871694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68c1cc48e6d740e41b02af8060caf0f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  specificCharacterAccess: 0
 --- !u!1 &659163455
 GameObject:
   m_ObjectHideFlags: 0
@@ -3021,6 +2972,7 @@ GameObject:
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
   - component: {fileID: 963194231}
+  - component: {fileID: 963194232}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3277,7 +3229,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31d1b00acb0028744bea93040bfcbbe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camParent: {fileID: 0}
+  camParent: {fileID: 554791173}
+--- !u!114 &963194232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fca8f3f8b37c04e368ba91320d0d2295, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SFXDefaultVolume: 1
+  musicDefaultVolume: 0.2
 --- !u!1 &1036269932
 GameObject:
   m_ObjectHideFlags: 0
