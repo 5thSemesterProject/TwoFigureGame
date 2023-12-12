@@ -53,15 +53,6 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Pause"",
-                    ""type"": ""Button"",
-                    ""id"": ""99863f0c-cca4-458a-8bbf-6236442224fc"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -141,327 +132,6 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""35f023e5-2610-4e54-a0f2-4fbc644fc279"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f32f0416-5914-43e0-8640-1feb45bf27c4"",
-                    ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""InUI"",
-            ""id"": ""76564c9f-e045-45ea-af01-83d0eac943e5"",
-            ""actions"": [
-                {
-                    ""name"": ""Submit"",
-                    ""type"": ""Button"",
-                    ""id"": ""16934c31-7862-4941-9b4f-b6d073ea3578"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Navigate"",
-                    ""type"": ""Value"",
-                    ""id"": ""8e3d6263-66e5-4cfa-948b-e38cb293e16f"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Escape"",
-                    ""type"": ""Button"",
-                    ""id"": ""3651833d-f75d-423a-ad8f-bb8abf19093e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""4bf1f012-7683-4419-a4e9-afdb43fea198"",
-                    ""path"": ""<Keyboard>/enter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Submit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d6cf3684-4f0f-4a5b-863c-bb363195ab18"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Submit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f50ce622-2ed6-4ba1-be34-64e969146d9a"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Submit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Arrows"",
-                    ""id"": ""31d82ff7-bef0-4172-9bd1-819782dae394"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""29064774-bcd3-49ad-82c9-d72a043b1c42"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""f8d55502-ec99-4b3f-bf5c-8d3883e03b85"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""aea9f595-4256-4cac-9074-7ae18c43fcb2"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""f36aacc4-4e39-4541-9127-90ffaa10b705"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""WASD"",
-                    ""id"": ""36a4746a-f444-425e-9174-123018d7f21b"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""83da2d4a-e625-4b4b-852d-d1743fd940d9"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""25027a5d-ac42-4c61-a25b-50be3c3e5301"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""aae556c8-fc97-422a-95b1-c49233d9a73d"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""80f28f7a-5b29-4aa8-bd72-5c1d9cea83ad"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""D-Pad"",
-                    ""id"": ""5015e768-d964-4242-a672-90ba8367e7b7"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""eb275c63-62ad-46c1-b590-ac8952cdcab1"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""fd82bee3-22f2-4c1f-972c-000190530712"",
-                    ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""b4d38b18-b5e7-4940-863c-563b453a030d"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""7ec7b8e1-cee7-4733-a68b-6955aad37577"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Joystick"",
-                    ""id"": ""d2d298a5-b041-404f-8f2e-61f540129d35"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""04ce5406-8740-4c78-8f5c-addd44ec2f9d"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""eb16f915-5ee0-45c6-a459-8fbae3f15e9c"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""b9c40d0c-e507-4c1d-8004-de82e4cda37e"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""2ac95040-557b-4c58-8c29-e17c625d2064"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2d8b7c6b-f595-44ba-adcd-cd2f892511b4"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Escape"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -473,12 +143,6 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
         m_InGame_Movement = m_InGame.FindAction("Movement", throwIfNotFound: true);
         m_InGame_Action = m_InGame.FindAction("Action", throwIfNotFound: true);
         m_InGame_Switch = m_InGame.FindAction("Switch", throwIfNotFound: true);
-        m_InGame_Pause = m_InGame.FindAction("Pause", throwIfNotFound: true);
-        // InUI
-        m_InUI = asset.FindActionMap("InUI", throwIfNotFound: true);
-        m_InUI_Submit = m_InUI.FindAction("Submit", throwIfNotFound: true);
-        m_InUI_Navigate = m_InUI.FindAction("Navigate", throwIfNotFound: true);
-        m_InUI_Escape = m_InUI.FindAction("Escape", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -543,7 +207,6 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_Movement;
     private readonly InputAction m_InGame_Action;
     private readonly InputAction m_InGame_Switch;
-    private readonly InputAction m_InGame_Pause;
     public struct InGameActions
     {
         private @CustomInputs m_Wrapper;
@@ -551,7 +214,6 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_InGame_Movement;
         public InputAction @Action => m_Wrapper.m_InGame_Action;
         public InputAction @Switch => m_Wrapper.m_InGame_Switch;
-        public InputAction @Pause => m_Wrapper.m_InGame_Pause;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -570,9 +232,6 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
             @Switch.started += instance.OnSwitch;
             @Switch.performed += instance.OnSwitch;
             @Switch.canceled += instance.OnSwitch;
-            @Pause.started += instance.OnPause;
-            @Pause.performed += instance.OnPause;
-            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -586,9 +245,6 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
             @Switch.started -= instance.OnSwitch;
             @Switch.performed -= instance.OnSwitch;
             @Switch.canceled -= instance.OnSwitch;
-            @Pause.started -= instance.OnPause;
-            @Pause.performed -= instance.OnPause;
-            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -606,79 +262,10 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
         }
     }
     public InGameActions @InGame => new InGameActions(this);
-
-    // InUI
-    private readonly InputActionMap m_InUI;
-    private List<IInUIActions> m_InUIActionsCallbackInterfaces = new List<IInUIActions>();
-    private readonly InputAction m_InUI_Submit;
-    private readonly InputAction m_InUI_Navigate;
-    private readonly InputAction m_InUI_Escape;
-    public struct InUIActions
-    {
-        private @CustomInputs m_Wrapper;
-        public InUIActions(@CustomInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Submit => m_Wrapper.m_InUI_Submit;
-        public InputAction @Navigate => m_Wrapper.m_InUI_Navigate;
-        public InputAction @Escape => m_Wrapper.m_InUI_Escape;
-        public InputActionMap Get() { return m_Wrapper.m_InUI; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(InUIActions set) { return set.Get(); }
-        public void AddCallbacks(IInUIActions instance)
-        {
-            if (instance == null || m_Wrapper.m_InUIActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_InUIActionsCallbackInterfaces.Add(instance);
-            @Submit.started += instance.OnSubmit;
-            @Submit.performed += instance.OnSubmit;
-            @Submit.canceled += instance.OnSubmit;
-            @Navigate.started += instance.OnNavigate;
-            @Navigate.performed += instance.OnNavigate;
-            @Navigate.canceled += instance.OnNavigate;
-            @Escape.started += instance.OnEscape;
-            @Escape.performed += instance.OnEscape;
-            @Escape.canceled += instance.OnEscape;
-        }
-
-        private void UnregisterCallbacks(IInUIActions instance)
-        {
-            @Submit.started -= instance.OnSubmit;
-            @Submit.performed -= instance.OnSubmit;
-            @Submit.canceled -= instance.OnSubmit;
-            @Navigate.started -= instance.OnNavigate;
-            @Navigate.performed -= instance.OnNavigate;
-            @Navigate.canceled -= instance.OnNavigate;
-            @Escape.started -= instance.OnEscape;
-            @Escape.performed -= instance.OnEscape;
-            @Escape.canceled -= instance.OnEscape;
-        }
-
-        public void RemoveCallbacks(IInUIActions instance)
-        {
-            if (m_Wrapper.m_InUIActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IInUIActions instance)
-        {
-            foreach (var item in m_Wrapper.m_InUIActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_InUIActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public InUIActions @InUI => new InUIActions(this);
     public interface IInGameActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnAction(InputAction.CallbackContext context);
         void OnSwitch(InputAction.CallbackContext context);
-        void OnPause(InputAction.CallbackContext context);
-    }
-    public interface IInUIActions
-    {
-        void OnSubmit(InputAction.CallbackContext context);
-        void OnNavigate(InputAction.CallbackContext context);
-        void OnEscape(InputAction.CallbackContext context);
     }
 }
