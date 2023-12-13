@@ -28,7 +28,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     [SerializeField] private float movementSpeed = 25f;
     [SerializeField] private float rotationSpeed = 50f;
 
-    [SerializeField] private float smokeIntersectionRadius = 2;
+    [SerializeField] private float smokeIntersectionRadius = 1;
     [SerializeField] private float gravity = 9.81f;
     private float minWallDistance = 0.7f;
     private float timeFalling;
@@ -55,7 +55,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     #region FogStuff
     public Vector4 GetSphereInformation()
     {
-        return VectorHelper.Convert3To4(transform.position,2);
+        return VectorHelper.Convert3To4(transform.position,2f);
     }
 
     public GameObject GetGameObject()
