@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
@@ -17,6 +18,14 @@ public class VolumetricFogHandler : MonoBehaviour
     {   
         localVolumetricFog = GetComponent<LocalVolumetricFog>();
         ResetSmokeMasks();
+    }
+
+    void  OnDrawGizmos()
+    {
+        //Update Epicenter
+        //if (fallOffEpicenter!=null)
+           //localVolumetricFog.parameters.materialMask.SetVector($"_FallOffEpicenter", new Vector4(0,0,0,0));
+        
     }
 
     void LateUpdate()
