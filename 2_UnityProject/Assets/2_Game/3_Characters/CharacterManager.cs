@@ -82,7 +82,7 @@ public class CharacterManager : MonoBehaviour
     //Inputs
     public static CustomInputs customInputMaps;
 
-    private static CharacterData manData, womanData;
+    static CharacterData manData, womanData;
     
 
 
@@ -104,11 +104,24 @@ public class CharacterManager : MonoBehaviour
     {
         get
         {
-            if (manData.currentState.GetType() == typeof(AIState))
+            if (CheckAIState(manData))
             {
                 return womanData.roomFadeRigidBody;
             }
             return manData.roomFadeRigidBody;
+        }
+    }
+
+    
+    public static CharacterData ActiveCharacterData
+    {
+        get
+        {
+            if (CheckAIState(manData))
+            {
+                return womanData;
+            }
+            return manData;
         }
     }
 
@@ -125,6 +138,12 @@ public class CharacterManager : MonoBehaviour
         CamManager.SetCamPrefab(cameraPrefab);
     }
 
+    static bool CheckAIState(CharacterData characterData)
+    {
+        return characterData.currentState.GetType() == typeof(AIState);
+    }
+
+
     private void Update()
     {
         manData.currentState = manData.currentState.UpdateState();
@@ -133,6 +152,7 @@ public class CharacterManager : MonoBehaviour
         debuggingCharacterStateMachines.text = "Woman: " + womanData.currentState.GetType() + "\n Man: " + manData.currentState.GetType();
         debuggingOxygenCharacters.text = "WomanOxy: " + womanData.oxygenData.currentOxygen + "\n ManOxy: " + manData.oxygenData.currentOxygen;
     }
+
 
     #region Setup
 
