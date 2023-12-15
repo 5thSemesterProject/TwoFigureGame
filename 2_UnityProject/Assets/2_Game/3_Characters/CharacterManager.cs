@@ -1,5 +1,6 @@
 using Cinemachine;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -54,6 +55,10 @@ public class CharacterData
     public CinemachineVirtualCamera virtualCamera;
     public OxygenData oxygenData;
     public GameObject roomFadeRigidBody;
+
+    public static bool startCutScene;
+    public static CutsceneTrigger cutsceneTrigger;
+
 }
 
 public class WomanData : CharacterData
@@ -223,6 +228,10 @@ public abstract class CharacterState
                 return interactableState;
         }
 
+        //Handle Cutscene
+        if (CharacterData.cutsceneTrigger!=null && ! (characterData.currentState is WalkTowards)&& ! (characterData.currentState is CutsceneState))
+            return new WalkTowards(characterData,CharacterData.cutsceneTrigger);
+
         return SpecificStateUpdate();
     }
 
@@ -265,6 +274,11 @@ public abstract class CharacterState
                     case MoveBox:
                         updatedState = new MoveObjectState(characterData);
                       break;
+                    case CutsceneTrigger:
+                        var cutsceneTrigger = playerActionType as CutsceneTrigger;
+                        CharacterData.cutsceneTrigger = cutsceneTrigger;
+                        updatedState = new WalkTowards(characterData,cutsceneTrigger);
+                    break;
                 }
             }
 
@@ -496,6 +510,136 @@ class MoveObjectState : CharacterState
                 break;
         }
 
+        return this;
+    }
+ 
+}
+
+
+class WalkTowards : CharacterState
+{   
+    Vector2 targetDir;
+    Vector2 targetPos;
+    CutsceneTrigger cutsceneTrigger;
+    float intitialTargetDistance;
+    float tolerance = 0.05f;
+    public WalkTowards(CharacterData data, CutsceneTrigger cutsceneTrigger) : base(data)
+    {
+        handleInteractables = false;
+        targetPos = VectorHelper.Convert3To2(cutsceneTrigger.GetTargetPos(characterData.movement.characterType));
+        targetDir = cutsceneTrigger.GetCharacter(characterData.movement.characterType).transform.forward;
+        this.cutsceneTrigger = cutsceneTrigger;
+        intitialTargetDistance = Vector2.Distance(VectorHelper.Convert3To2(characterData.gameObject.transform.position),targetPos)-tolerance;
+
+        characterData.gameObject.GetComponent<CharacterController>().detectCollisions = false;
+    }
+
+
+    public override CharacterState SpecificStateUpdate()
+    {    
+        Vector2 playerPos = VectorHelper.Convert3To2(characterData.gameObject.transform.position);
+        float distanceToTarget = Vector2.Distance(playerPos,targetPos);
+        
+        if (distanceToTarget>tolerance)
+        {
+            Vector2 moveDirection = GetMoveDirection(targetPos,playerPos);
+
+            //Slowly Lerp Player into Direction
+            moveDirection = Vector2.Lerp(moveDirection,targetDir,1-distanceToTarget/intitialTargetDistance);
+            moveDirection = moveDirection.normalized;
+
+            characterData.movement.MovePlayer(moveDirection);
+        }
+            
+        else
+            return new CutsceneState(characterData,cutsceneTrigger);
+        
+        return this;
+    }
+
+    Vector2 GetMoveDirection(Vector2 targetPos, Vector2 playerPos)
+    {
+        Vector2 direction =  playerPos-targetPos;
+        direction = direction.normalized;
+        return  direction;
+    }
+}
+
+class CutsceneState : CharacterState
+{
+    CutsceneTrigger cutsceneTrigger;
+    public CutsceneState(CharacterData data, CutsceneTrigger cutsceneTrigger) : base(data)
+    {
+        handleInteractables = false;
+        
+        //Sync Characters
+
+        //Copy Animator StateInfos
+        Animator playerAnimator = characterData.animator;
+        var animatorStateInfos = new AnimatorStateInfo[playerAnimator.layerCount];
+        for (int i = 0; i < playerAnimator.layerCount; i++)
+        {
+            playerAnimator.GetCurrentAnimatorStateInfo(i);
+        }
+
+        //Insert Data into cutSceneModel
+        GameObject cutSceneModel = cutsceneTrigger.GetCharacter(characterData.movement.characterType);
+        Animator cutsceneAnimator = cutSceneModel.GetComponent<Animator>();  
+
+        CopyAnimatorParameters(playerAnimator,cutsceneAnimator);
+        cutsceneAnimator.Play (animatorStateInfos[0].fullPathHash,0,animatorStateInfos[0].normalizedTime);
+
+        characterData.gameObject.transform.position = cutSceneModel.transform.position;
+        characterData.gameObject.transform.rotation = cutSceneModel.transform.rotation;
+
+        //Switch Model visibility
+        characterData.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+        cutSceneModel.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+
+        this.cutsceneTrigger = cutsceneTrigger;
+
+        cutsceneTrigger.playableDirector.Play();
+
+    }
+
+
+    
+    void CopyAnimatorParameters(Animator source, Animator target)
+    {
+        // Get all parameters from the source animator
+        int parameterCount = source.parameterCount;
+        for (int i = 0; i < parameterCount; i++)
+        {
+            AnimatorControllerParameter parameter = source.GetParameter(i);
+
+            // Copy the parameter value to the target animator
+            switch (parameter.type)
+            {
+                case AnimatorControllerParameterType.Float:
+                    target.SetFloat(parameter.name, source.GetFloat(parameter.name));
+                    break;
+
+                case AnimatorControllerParameterType.Int:
+                    target.SetInteger(parameter.name, source.GetInteger(parameter.name));
+                    break;
+
+                case AnimatorControllerParameterType.Bool:
+                    target.SetBool(parameter.name, source.GetBool(parameter.name));
+                    break;
+
+                case AnimatorControllerParameterType.Trigger:
+                    // Optionally handle triggers if needed
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
+
+    public override CharacterState SpecificStateUpdate()
+    {
         return this;
     }
 }
