@@ -171,18 +171,9 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
             ""id"": ""76564c9f-e045-45ea-af01-83d0eac943e5"",
             ""actions"": [
                 {
-                    ""name"": ""Submit"",
-                    ""type"": ""Button"",
-                    ""id"": ""16934c31-7862-4941-9b4f-b6d073ea3578"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Navigate"",
                     ""type"": ""Value"",
-                    ""id"": ""8e3d6263-66e5-4cfa-948b-e38cb293e16f"",
+                    ""id"": ""d7cc41d8-5e9b-49c6-b830-7db375621dd8"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -196,12 +187,21 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""16934c31-7862-4941-9b4f-b6d073ea3578"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""4bf1f012-7683-4419-a4e9-afdb43fea198"",
+                    ""id"": ""4af4d263-d30e-47c8-9dd0-4d520dd5d9d5"",
                     ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -212,7 +212,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""d6cf3684-4f0f-4a5b-863c-bb363195ab18"",
+                    ""id"": ""1901e54e-9075-48a1-85d3-0b4f40ff67c6"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -223,7 +223,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f50ce622-2ed6-4ba1-be34-64e969146d9a"",
+                    ""id"": ""1bbcfe00-8a9c-43cf-95a4-efc51646f6e9"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -234,7 +234,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Arrows"",
-                    ""id"": ""31d82ff7-bef0-4172-9bd1-819782dae394"",
+                    ""id"": ""1cdb0dda-9ef3-4bb4-ab4f-d9fe42c2c080"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -245,7 +245,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""up"",
-                    ""id"": ""29064774-bcd3-49ad-82c9-d72a043b1c42"",
+                    ""id"": ""748195ed-b227-4fe9-8d18-43dc824d7277"",
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -256,7 +256,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""down"",
-                    ""id"": ""f8d55502-ec99-4b3f-bf5c-8d3883e03b85"",
+                    ""id"": ""498354da-6d08-42c8-985a-df2fb447c348"",
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -267,7 +267,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""left"",
-                    ""id"": ""aea9f595-4256-4cac-9074-7ae18c43fcb2"",
+                    ""id"": ""99ec0972-f6d1-4d60-aeb7-4780e31f2c6b"",
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -278,7 +278,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""f36aacc4-4e39-4541-9127-90ffaa10b705"",
+                    ""id"": ""3e062491-b0b5-4d51-b1ec-c2229f5df787"",
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -289,7 +289,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""WASD"",
-                    ""id"": ""36a4746a-f444-425e-9174-123018d7f21b"",
+                    ""id"": ""3f089f37-5996-4166-b3cc-9f7cbf71dc5d"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -300,7 +300,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""up"",
-                    ""id"": ""83da2d4a-e625-4b4b-852d-d1743fd940d9"",
+                    ""id"": ""184e5ea9-69cc-4319-9cf4-482b8a2f46cd"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -311,7 +311,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""down"",
-                    ""id"": ""25027a5d-ac42-4c61-a25b-50be3c3e5301"",
+                    ""id"": ""dcb1af22-ec05-4e2c-a2da-0f40ed4f3214"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -322,7 +322,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""left"",
-                    ""id"": ""aae556c8-fc97-422a-95b1-c49233d9a73d"",
+                    ""id"": ""ddf99fa5-1ad3-448c-954f-00caaf852028"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -333,7 +333,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""80f28f7a-5b29-4aa8-bd72-5c1d9cea83ad"",
+                    ""id"": ""47bb1979-dc3a-4c43-b813-fe151214c230"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -344,7 +344,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""D-Pad"",
-                    ""id"": ""5015e768-d964-4242-a672-90ba8367e7b7"",
+                    ""id"": ""2d05a64a-2adb-4b72-9a14-ccc9064e7603"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -355,7 +355,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""up"",
-                    ""id"": ""eb275c63-62ad-46c1-b590-ac8952cdcab1"",
+                    ""id"": ""a4e77b7c-eecf-4aea-bfd6-daf413cde362"",
                     ""path"": ""<Gamepad>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -366,7 +366,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""down"",
-                    ""id"": ""fd82bee3-22f2-4c1f-972c-000190530712"",
+                    ""id"": ""500813a9-63a2-44f4-95a2-f6027a768734"",
                     ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -377,7 +377,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""left"",
-                    ""id"": ""b4d38b18-b5e7-4940-863c-563b453a030d"",
+                    ""id"": ""46952973-f785-4678-a344-6dac71247df6"",
                     ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -388,7 +388,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""7ec7b8e1-cee7-4733-a68b-6955aad37577"",
+                    ""id"": ""ec272f1c-6298-4fe8-9ac0-03abc1e3a9ad"",
                     ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -399,7 +399,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Joystick"",
-                    ""id"": ""d2d298a5-b041-404f-8f2e-61f540129d35"",
+                    ""id"": ""104d57a7-5611-404e-9732-d7f8be718932"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -410,7 +410,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""up"",
-                    ""id"": ""04ce5406-8740-4c78-8f5c-addd44ec2f9d"",
+                    ""id"": ""9d3b75cf-a136-41fd-bab7-5df7a4840057"",
                     ""path"": ""<Gamepad>/leftStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -421,7 +421,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""down"",
-                    ""id"": ""eb16f915-5ee0-45c6-a459-8fbae3f15e9c"",
+                    ""id"": ""7daeeaf5-2515-4a46-ae83-db801f9876b8"",
                     ""path"": ""<Gamepad>/leftStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -432,7 +432,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""left"",
-                    ""id"": ""b9c40d0c-e507-4c1d-8004-de82e4cda37e"",
+                    ""id"": ""febaa370-7be8-4afd-a596-41c1da71fa9e"",
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -443,7 +443,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""2ac95040-557b-4c58-8c29-e17c625d2064"",
+                    ""id"": ""2b95128a-dcaf-4d9c-b191-cbe098515a97"",
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -476,9 +476,9 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
         m_InGame_Pause = m_InGame.FindAction("Pause", throwIfNotFound: true);
         // InUI
         m_InUI = asset.FindActionMap("InUI", throwIfNotFound: true);
-        m_InUI_Submit = m_InUI.FindAction("Submit", throwIfNotFound: true);
         m_InUI_Navigate = m_InUI.FindAction("Navigate", throwIfNotFound: true);
         m_InUI_Escape = m_InUI.FindAction("Escape", throwIfNotFound: true);
+        m_InUI_Submit = m_InUI.FindAction("Submit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -610,16 +610,16 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
     // InUI
     private readonly InputActionMap m_InUI;
     private List<IInUIActions> m_InUIActionsCallbackInterfaces = new List<IInUIActions>();
-    private readonly InputAction m_InUI_Submit;
     private readonly InputAction m_InUI_Navigate;
     private readonly InputAction m_InUI_Escape;
+    private readonly InputAction m_InUI_Submit;
     public struct InUIActions
     {
         private @CustomInputs m_Wrapper;
         public InUIActions(@CustomInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Submit => m_Wrapper.m_InUI_Submit;
         public InputAction @Navigate => m_Wrapper.m_InUI_Navigate;
         public InputAction @Escape => m_Wrapper.m_InUI_Escape;
+        public InputAction @Submit => m_Wrapper.m_InUI_Submit;
         public InputActionMap Get() { return m_Wrapper.m_InUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -629,28 +629,28 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_InUIActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_InUIActionsCallbackInterfaces.Add(instance);
-            @Submit.started += instance.OnSubmit;
-            @Submit.performed += instance.OnSubmit;
-            @Submit.canceled += instance.OnSubmit;
             @Navigate.started += instance.OnNavigate;
             @Navigate.performed += instance.OnNavigate;
             @Navigate.canceled += instance.OnNavigate;
             @Escape.started += instance.OnEscape;
             @Escape.performed += instance.OnEscape;
             @Escape.canceled += instance.OnEscape;
+            @Submit.started += instance.OnSubmit;
+            @Submit.performed += instance.OnSubmit;
+            @Submit.canceled += instance.OnSubmit;
         }
 
         private void UnregisterCallbacks(IInUIActions instance)
         {
-            @Submit.started -= instance.OnSubmit;
-            @Submit.performed -= instance.OnSubmit;
-            @Submit.canceled -= instance.OnSubmit;
             @Navigate.started -= instance.OnNavigate;
             @Navigate.performed -= instance.OnNavigate;
             @Navigate.canceled -= instance.OnNavigate;
             @Escape.started -= instance.OnEscape;
             @Escape.performed -= instance.OnEscape;
             @Escape.canceled -= instance.OnEscape;
+            @Submit.started -= instance.OnSubmit;
+            @Submit.performed -= instance.OnSubmit;
+            @Submit.canceled -= instance.OnSubmit;
         }
 
         public void RemoveCallbacks(IInUIActions instance)
@@ -677,8 +677,8 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
     }
     public interface IInUIActions
     {
-        void OnSubmit(InputAction.CallbackContext context);
         void OnNavigate(InputAction.CallbackContext context);
         void OnEscape(InputAction.CallbackContext context);
+        void OnSubmit(InputAction.CallbackContext context);
     }
 }
