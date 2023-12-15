@@ -87,7 +87,7 @@ public class Interactable : MonoBehaviour
     {
         if (other.TryGetComponent(out Movement movementComp)&& CharacterManager.ActiveCharacterData.currentState.GetType() != typeof(AIState))
         {
-            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
+            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType||enterCond==null)
             {
                 if (enterCond!=null &&enterCond(movementComp)||enterCond==null)
                     enterEvent?.Invoke(movementComp);

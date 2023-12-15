@@ -6,10 +6,8 @@ using Unity.VisualScripting;
 public class RenderCubemapWizard : ScriptableWizard
 {
     public Transform renderFromPosition;
-    public Camera camera;
     public Cubemap cubemap;
-
-    public bool useCameraPos = false;
+    public Camera camera;
 
 
 
@@ -21,15 +19,12 @@ public class RenderCubemapWizard : ScriptableWizard
 
     void OnWizardCreate()
     {
-        if (useCameraPos)
-            renderFromPosition = camera.transform;
-
         GameObject go;
         if (camera==null)
         {
-            // create temporary camera for rendering
-            go = new GameObject("CubemapCamera");
-            go.AddComponent<Camera>();
+                    // create temporary camera for rendering
+                    go = new GameObject("CubemapCamera");
+                    go.AddComponent<Camera>();
         }
         else
             go = GameObject.Instantiate(camera.gameObject);
