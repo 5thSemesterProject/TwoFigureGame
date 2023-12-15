@@ -82,33 +82,50 @@ public class CharacterManager : MonoBehaviour
     //Inputs
     public static CustomInputs customInputMaps;
 
-    private static CharacterData manData, womanData;
+    static CharacterData manData, womanData;
     
-
-
     //Character Prefab
 
     [Header("Prefabs")]
     [SerializeField] private GameObject manPrefab;
     [SerializeField] private GameObject womanPrefab;
     [SerializeField]private GameObject cameraPrefab;
+
     
+    [Header ("Other")]
+    [SerializeField] Transform spawnPointMan;
+    [SerializeField] Transform spawnPointWoman;
 
 
     [Header("Debugging")]
     [SerializeField] TextMeshProUGUI debuggingCharacterStateMachines;
     [SerializeField] TextMeshProUGUI debuggingOxygenCharacters;
 
+
+
     //Active Character
     public static GameObject ActiveCharacterRigidbody
     {
         get
         {
-            if (manData.currentState.GetType() == typeof(AIState))
+            if (CheckAIState(manData))
             {
                 return womanData.roomFadeRigidBody;
             }
             return manData.roomFadeRigidBody;
+        }
+    }
+
+    
+    public static CharacterData ActiveCharacterData
+    {
+        get
+        {
+            if (CheckAIState(manData))
+            {
+                return womanData;
+            }
+            return manData;
         }
     }
 
@@ -125,6 +142,12 @@ public class CharacterManager : MonoBehaviour
         CamManager.SetCamPrefab(cameraPrefab);
     }
 
+    static bool CheckAIState(CharacterData characterData)
+    {
+        return characterData.currentState.GetType() == typeof(AIState);
+    }
+
+
     private void Update()
     {
         manData.currentState = manData.currentState.UpdateState();
@@ -134,15 +157,16 @@ public class CharacterManager : MonoBehaviour
         debuggingOxygenCharacters.text = "WomanOxy: " + womanData.oxygenData.currentOxygen + "\n ManOxy: " + manData.oxygenData.currentOxygen;
     }
 
+
     #region Setup
 
     void SpawnCharacters()
     {
         //Prefab Setup
-        GameObject spawnedMan = Instantiate(manPrefab, Vector3.forward, Quaternion.identity);
+        GameObject spawnedMan = Instantiate(manPrefab, spawnPointMan?spawnPointMan.position:Vector3.forward, Quaternion.identity);
         spawnedMan.name = "SpawnedMan";
-        GameObject spawnedWoman = Instantiate(womanPrefab, Vector3.forward * 2, Quaternion.identity);
-        spawnedMan.name = "SpawnedWoman";
+        GameObject spawnedWoman = Instantiate(womanPrefab, spawnPointWoman?spawnPointWoman.position:Vector3.forward*2, Quaternion.identity);
+        spawnedWoman.name = "SpawnedWoman";
         womanData = new WomanData(spawnedWoman);
         womanData.movement.characterType = CharacterType.Woman;
         manData = new ManData(spawnedMan);
