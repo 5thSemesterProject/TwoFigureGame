@@ -19,4 +19,9 @@ public class VectorHelper
         return new(value.x, 0, value.y);
     }
 
+    public static Vector3 FromTo(Vector3 start, Vector3 end)
+    {
+        return (end - start).normalized;
+    }
+
 }
