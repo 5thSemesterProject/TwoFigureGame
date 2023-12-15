@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
@@ -19,6 +21,14 @@ public class VolumetricFogHandler : MonoBehaviour
         ResetSmokeMasks();
     }
 
+    void  OnDrawGizmos()
+    {
+        //Update Epicenter
+        //if (fallOffEpicenter!=null)
+           //localVolumetricFog.parameters.materialMask.SetVector($"_FallOffEpicenter", new Vector4(0,0,0,0));
+        
+    }
+
     void LateUpdate()
     {
         //Update Epicenter
@@ -31,9 +41,12 @@ public class VolumetricFogHandler : MonoBehaviour
     void UpdateSpheres(Transform [] transforms) 
     {
         List<Vector4> sphereInfos  = new List<Vector4>();
+        var isPlayer = new List<bool>();
         foreach(Transform transformItem in transforms)
         {
             float radius = 2;
+
+            bool _isPlayer = false;
             
             //Get all monobehvaiours
             MonoBehaviour[] allMonoBehaviours = transformItem.GetComponents<MonoBehaviour>();
@@ -44,11 +57,20 @@ public class VolumetricFogHandler : MonoBehaviour
                     IIntersectSmoke component = allMonoBehaviours[i] as IIntersectSmoke;
                     radius = component.GetIntersectionRadius();
                 }
+
+                if (allMonoBehaviours[i] is Movement)
+                {
+                    _isPlayer  = true;
+                }
+
             }
-                
+
+            isPlayer.Add(_isPlayer);        
             sphereInfos.Add(VectorHelper.Convert3To4(transformItem.position,radius));
+
         }
-        SetSpheres(sphereInfos.ToArray());
+        
+        SetSpheres(PutPlayersToFront(sphereInfos.ToArray(),isPlayer.ToArray()));
     }
 
     void SetSpheres(Vector4[] sphereInfos)
@@ -120,6 +142,27 @@ public class VolumetricFogHandler : MonoBehaviour
 
         ResetSpheres();
         UpdateSpheres(intersectSmokeTransforms.ToArray());
+    }
+
+    public Vector4[] PutPlayersToFront(Vector4[] sphereInfos, bool[] isPlayer)
+    {
+        var output = new List<Vector4>();
+
+        //Add players first
+        for (int i = 0; i < sphereInfos.Length; i++)
+        {
+            if (isPlayer[i])
+                output.Add(sphereInfos[i]);
+        }
+
+        for (int i = 0; i < sphereInfos.Length; i++)
+        {
+            if (!isPlayer[i])
+                output.Add(sphereInfos[i]);
+        }
+        
+
+        return output.ToArray();
     }
 
      private void OnApplicationQuit()
