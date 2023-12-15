@@ -18,18 +18,7 @@ public class MyScriptEditor : Editor
     
     voiceTrigger.randomizeVoicelines = EditorGUILayout.Toggle("Randomize Voicelines", voiceTrigger.randomizeVoicelines);
 
-    //Gender Specific Voices
-    Interactable interactable = voiceTrigger.GetComponent<Interactable>();
-    if (interactable && interactable.specificCharacterAccess==CharacterType.None)
-    {
-        voiceTrigger.characterType = (CharacterType)EditorGUILayout.EnumPopup("Character",voiceTrigger.characterType);
-    }
-    else
-    {
-        voiceTrigger.characterType = CharacterType.None;
-    }
-
-    voiceTrigger.extraWaitTimeAfterClip = EditorGUILayout.FloatField("Wait Time Between Clips", voiceTrigger.extraWaitTimeAfterClip);
+    voiceTrigger.extraWaitTimeBetweenClips = EditorGUILayout.FloatField("Wait Time Between Clips", voiceTrigger.extraWaitTimeBetweenClips);
 
     voiceTrigger.triggerType = (TriggerType)EditorGUILayout.EnumPopup("TriggerType",voiceTrigger.triggerType);
 
@@ -58,22 +47,17 @@ public class VoiceTrigger : MonoBehaviour
     Interactable interactable;
     AudioClip voiceClip;
     bool triggered = false;
-
+    Coroutine coroutine;
     int lastRandom = 500;
-
-    VoiceTrigger[] otherVoiceTriggers;
     
-    public Coroutine coroutine;
-    public float extraWaitTimeAfterClip = 1f;
+    public float extraWaitTimeBetweenClips = 1f;
     public bool playOnce = false;
     public bool playOnceBeforeRandom;
     public E_1_Voicelines voiceLine;
     public bool randomizeVoicelines;
     public E_1_Voicelines[] randomVoicelines;
+
     public TriggerType triggerType;
-
-    public CharacterType characterType = CharacterType.None;
-
 
 
 
@@ -85,28 +69,19 @@ public class VoiceTrigger : MonoBehaviour
         if (triggerType== TriggerType.OnTrigger)
         {
             interactable.triggerEvent+=LoadVoiceLine;
-
-            if (!playOnce)
-                interactable.untriggerEvent+=Untrigger;
+            interactable.untriggerEvent+=Untrigger;
         }
         else if (triggerType == TriggerType.OnHighlight)
         {
             interactable.highlightEvent+=LoadVoiceLine;
-            
-            if (!playOnce)
-                interactable.unhiglightEvent+=Untrigger;
+            interactable.unhiglightEvent+=Untrigger;
         }
-
-
-        otherVoiceTriggers = GetComponents<VoiceTrigger>();
             
     }
 
     void LoadVoiceLine(Movement movement)
     {
-        if (coroutine==null && !triggered 
-        && (CheckCharacterTypes(movement))
-        && CheckOtherVoicelines())
+        if (coroutine==null && !triggered)
         {
             triggered = true;
 
@@ -139,9 +114,13 @@ public class VoiceTrigger : MonoBehaviour
     IEnumerator _PlayVoiceLine()
     {
         SoundSystem.PlaySound(voiceClip);
-        yield return new WaitForSeconds(voiceClip.length+extraWaitTimeAfterClip);
+        yield return new WaitForSeconds(voiceClip.length+extraWaitTimeBetweenClips);
 
-        coroutine = null;
+        if (!playOnce)
+        {
+            coroutine = null;
+        }
+
     }
 
     E_1_Voicelines RandomVoiceLine()
@@ -156,8 +135,7 @@ public class VoiceTrigger : MonoBehaviour
 
     void Untrigger(Movement movement)
     {
-        if (CheckCharacterTypes(movement))
-            triggered = false;
+        triggered = false;
     }
 
 
@@ -180,23 +158,6 @@ public class VoiceTrigger : MonoBehaviour
 
         return textWithoutUnderscore;
 
-    }
-
-    bool CheckOtherVoicelines()
-    {
-        for (int i = 0; i < otherVoiceTriggers.Length; i++)
-        {
-            if (otherVoiceTriggers[i].coroutine !=null)
-                return false;
-        }
-        return true;
-    }
-
-    bool CheckCharacterTypes(Movement movement)
-    {
-        return interactable.specificCharacterAccess == CharacterType.None && movement.characterType == characterType && characterType!=CharacterType.None
-         ||interactable.specificCharacterAccess!= CharacterType.None
-         ||characterType==CharacterType.None;
     }
 }
 

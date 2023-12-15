@@ -61,6 +61,7 @@ public class Interactable : MonoBehaviour
         {
             if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
             {
+
                 if (enterCond!=null && enterCond(movementComp)||enterCond==null)
                     enterEvent?.Invoke(movementComp);
 
@@ -86,7 +87,7 @@ public class Interactable : MonoBehaviour
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
-            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
+            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType||enterCond==null)
             {
                 if (enterCond!=null &&enterCond(movementComp)||enterCond==null)
                     enterEvent?.Invoke(movementComp);
@@ -99,7 +100,7 @@ public class Interactable : MonoBehaviour
 
     public void Trigger(Movement movement)
     {
-        if (enterCond!=null &&enterCond(movement))
+        if (enterCond!=null &&enterCond(movement)||enterCond==null)
             triggerEvent?.Invoke(movement);
     }
 
