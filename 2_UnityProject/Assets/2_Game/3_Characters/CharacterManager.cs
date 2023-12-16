@@ -37,7 +37,7 @@ public class CharacterData
     {
         gameObject = obj;
         movement = gameObject.GetComponent<Movement>();
-        animator = gameObject.GetComponent<Animator>();
+        animator = gameObject.GetComponentInChildren<Animator>();
 
         var rigidbodysOnCharacter = gameObject.GetComponentsInChildren<Rigidbody>();
         foreach (var rigidbody in rigidbodysOnCharacter)

@@ -105,7 +105,7 @@ class PlayCutsceneState : CutsceneState
         handleInteractables = false;
         updateLastState = false;
         
-        cutsceneTrigger.SyncToCutsceneModel(characterData.gameObject,characterData.movement.characterType);
+        cutsceneTrigger.ToCutsceneModel(characterData.gameObject,characterData.movement.characterType);
 
         if (cutsceneTrigger.playableDirector.state != PlayState.Playing)
             cutsceneTrigger.StartCutscene();
@@ -116,9 +116,9 @@ class PlayCutsceneState : CutsceneState
     {
         if (cutsceneTrigger.playableDirector.state == PlayState.Paused || cutsceneTrigger.playableDirector.time>=cutsceneTrigger.playableDirector.duration)
         {
-            cutsceneTrigger.SyncToPlayModel(characterData.gameObject,characterData.movement.characterType);
+            cutsceneTrigger.ToPlayModel(characterData.gameObject,characterData.movement.characterType);
             characterData.gameObject.GetComponent<CharacterController>().detectCollisions = true;
-
+                Debug.Log(characterData.gameObject.transform.position);
             if (characterData.lastState is AIState)
                 return new AIState(characterData);
             else

@@ -6,6 +6,8 @@ using UnityEngine.Playables;
 public class CutsceneTrigger : PlayerActionType
 {
     [SerializeField] GameObject maleModel,femaleModel;
+
+    [SerializeField] Transform malePos, femalePos;
     public PlayableDirector playableDirector;
 
     public void  Awake()
@@ -22,6 +24,12 @@ public class CutsceneTrigger : PlayerActionType
         TurnOffAllCollliders(maleModel);
 
     }
+
+    void Update()
+    {
+       // Debug.Log(CharacterManager.ActiveCharacterData.gameObject.transform.position);
+    }
+
 
     void TurnOffAllCollliders(GameObject input)
     {
@@ -51,33 +59,45 @@ public class CutsceneTrigger : PlayerActionType
         playableDirector.Play();
     }
 
-    public void SyncToPlayModel(GameObject playModel, CharacterType characterType)
+    public void ToPlayModel(GameObject playModel, CharacterType characterType)
     {
-        SyncCharacterModels(GetCharacter(characterType),playModel);
+        if (characterType == CharacterType.Man)
+            SyncCharacterModels(GetCharacter(characterType),playModel,true,malePos.position);
+        if (characterType == CharacterType.Woman)
+            SyncCharacterModels(GetCharacter(characterType),playModel,true,femalePos.position);
     }
 
-    public void SyncToCutsceneModel(GameObject playModel, CharacterType characterType)
+    public void ToCutsceneModel(GameObject playModel, CharacterType characterType)
     {
-        SyncCharacterModels(playModel,GetCharacter(characterType),true,GetCharacter(characterType).transform.Find("Geometry").position);
+        if (characterType == CharacterType.Man)
+            SyncCharacterModels(playModel,GetCharacter(characterType));
+        if (characterType == CharacterType.Woman)
+            SyncCharacterModels(playModel,GetCharacter(characterType));
     }
 
     void SyncCharacterModels(GameObject source, GameObject target, bool overwritePosition=false,Vector3 overwitePos = default)
     {
         //Set up variables
-        Animator playerAnimator = source.GetComponent<Animator>();
-        AnimatorStateInfo  animatorStateInfo = playerAnimator.GetCurrentAnimatorStateInfo(0);
-        Animator cutsceneAnimator = target.GetComponent<Animator>();  
+        Animator sourceAnimator = source.GetComponentInChildren<Animator>();
+        AnimatorStateInfo  animatorStateInfo = sourceAnimator.GetCurrentAnimatorStateInfo(0);
+        Animator targetAnimator = target.GetComponentInChildren<Animator>();  
 
         //Set up Cutscene Animator
-        CopyAnimatorParameters(playerAnimator,cutsceneAnimator);
-        cutsceneAnimator.Play (animatorStateInfo.fullPathHash,0,animatorStateInfo.normalizedTime);
+        CopyAnimatorParameters(sourceAnimator,targetAnimator);
+        targetAnimator.Play (animatorStateInfo.fullPathHash,0,animatorStateInfo.normalizedTime);
 
+        Debug.Log("Original pos = "+target.transform.position);
         //Set exact positions
-        Vector3 position = overwritePosition?overwitePos:target.transform.position;
+        Vector3 position = overwritePosition ? overwitePos : target.transform.position;
+        if (overwritePosition)
+        {
+        Debug.Log(overwitePos);
+        Debug.Log(CharacterManager.ActiveCharacterData.gameObject.name + "---" + target.gameObject.name);
+        target.transform.position = position;
+        Debug.Log(target.transform.position);
+        }
 
-        source.transform.position = position;
-        source.transform.rotation = target.transform.rotation;
-
+        target.transform.rotation = source.transform.rotation;
         //Switch Model visibility
         source.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
         target.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;

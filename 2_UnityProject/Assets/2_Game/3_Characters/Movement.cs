@@ -50,6 +50,8 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         {
             Debug.LogWarning("No animator found on the character!");
         }
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     #region FogStuff
@@ -83,6 +85,11 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         else
         {
             timeFalling = 0;
+        }
+
+                if (characterType == CharacterType.Man)
+        {
+                Debug.Log(transform.position);
         }
     }
 
