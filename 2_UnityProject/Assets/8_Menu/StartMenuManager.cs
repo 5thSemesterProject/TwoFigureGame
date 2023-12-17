@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cinemachine;
+using System;
 
 public class StartMenuManager : MonoBehaviour
 {
     private Coroutine transition;
+
+    [SerializeField] private CanvasGroup mainMenuGroup;
+    [SerializeField] private CanvasGroup archiveGroup;
 
     private void Start()
     {
@@ -29,6 +33,9 @@ public class StartMenuManager : MonoBehaviour
             case "Quit":
                 coroutine = QuitGame();
                 break;
+            case "Archive":
+                coroutine = Archive();
+                break;
             default:
                 break;
         }
@@ -50,11 +57,45 @@ public class StartMenuManager : MonoBehaviour
     #region Button Logics
     private IEnumerator StartGame()
     {
-        yield return null;
+        CustomEventSystem.DisableUIInputs();
+
+        float alpha = 1;
+
+        while (alpha > 0)
+        {
+            alpha -= Time.deltaTime;
+            mainMenuGroup.alpha = Mathf.Clamp01(alpha);
+            yield return null;
+        }
+
+        CustomEventSystem.EnableUIInputs();
         transition = null;
         SceneManager.LoadScene("LevelScene");
     }
+    private IEnumerator Archive()
+    {
+        CustomEventSystem.DisableUIInputs();
 
+        float alpha = 1;
+
+        while (alpha > 0)
+        {
+            alpha -= Time.deltaTime * 2;
+            mainMenuGroup.alpha = Mathf.Clamp01(alpha);
+            yield return null;
+        }
+
+        alpha = 0;
+
+        while (alpha < 1)
+        {
+            alpha += Time.deltaTime * 2;
+            archiveGroup.alpha = Mathf.Clamp01(alpha);
+            yield return null;
+        }
+
+        CustomEventSystem.EnableUIInputs();
+    }
     private IEnumerator Options()
     {
         yield return null;
