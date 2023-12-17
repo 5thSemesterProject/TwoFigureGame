@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         inputMapping = CustomEventSystem.GetInputMapping;
         gamePause += TogglePause;
         inputMapping.InGame.Pause.performed += gamePause;
-        inputMapping.InUI.Escape.performed += gamePause;
+        inputMapping.InUI.Back.performed += gamePause;
     }
 
     #region PauseMenu
