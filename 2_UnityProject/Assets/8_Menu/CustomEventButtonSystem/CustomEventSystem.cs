@@ -22,6 +22,7 @@ public class CustomEventSystem : MonoBehaviour
 {
     //Internal
     public static CustomEventSystem current;
+    public static event ButtonEvent allNoHover;
     public bool startWithDefaultHovered = true;
     public bool recieveUIInput = true;
     public static bool InputEnabled { get => current.recieveUIInput; }
@@ -31,7 +32,7 @@ public class CustomEventSystem : MonoBehaviour
     public static CustomButton hoveredButton;
     private CustomButton backButton;
     private CustomButton defaultButton;
-    private CustomButton activeButton
+    public CustomButton activeButton
     {
         get 
         {
@@ -46,8 +47,8 @@ public class CustomEventSystem : MonoBehaviour
             return hoveredButton;
         }
     }
-    public static CustomButton BackButton { get => current.backButton; set => current.backButton = value; }
-    public static CustomButton DefaultButton { get => current.defaultButton; set => current.defaultButton = value; }
+    public static CustomButton BackButton { get => current != null ? current.backButton : null; set => current.backButton = value; }
+    public static CustomButton DefaultButton { get => current != null ? current.defaultButton : null; set => current.defaultButton = value; }
 
     //Custom Input
     public static CustomInputs GetInputMapping { get => current.inputMapping; }
@@ -77,11 +78,8 @@ public class CustomEventSystem : MonoBehaviour
 
     private void Start()
     {
-        //Hover Default button if enabled
-        if (startWithDefaultHovered && defaultButton != null)
-        {
-            defaultButton.HoverLogic();
-        }
+        //Reset Selection and Hover Default if enabled
+        ResetSelectedButtons();
     }
 
     private static CustomButton GetDefaultButton()
@@ -96,13 +94,33 @@ public class CustomEventSystem : MonoBehaviour
 
         for (int i = 0; i < customButtons.Length; i++)
         {
-            if (customButtons[i].isDefaultButton)
+            if (customButtons[i].IsDefault && customButtons[i].IsInteractable)
             {
                 return customButtons[i];
             }
         }
 
         return customButtons[0];
+    }
+    private static CustomButton GetBackButton()
+    {
+        CustomButton[] customButtons = GameObject.FindObjectsOfType<CustomButton>();
+
+        if (customButtons == null || customButtons.Length <= 0 || customButtons[0] == null)
+        {
+            Debug.LogWarning("No Buttons Existent");
+            return null;
+        }
+
+        for (int i = 0; i < customButtons.Length; i++)
+        {
+            if (customButtons[i].IsBack && customButtons[i].IsInteractable)
+            {
+                return customButtons[i];
+            }
+        }
+
+        return null;
     }
 
     private void SubscribeCallbacks() //Custom
@@ -141,8 +159,8 @@ public class CustomEventSystem : MonoBehaviour
             }
         }
 
-        current.defaultButton = GetDefaultButton();
         EnableUIInputs();
+        ResetSelectedButtons();
     }
 
     public static void DisableControlSchemes()
@@ -168,6 +186,30 @@ public class CustomEventSystem : MonoBehaviour
     {
         current.recieveUIInput = true;
         Debug.Log("UI Inputs are Enabled");
+    }
+    public static void ResetSelectedButtons()
+    {
+        //if (selectedButton != null)
+        //{
+        //    selectedButton.NoHoverLogic();
+        //    selectedButton = null;
+        //}
+        //if (hoveredButton != null)
+        //{
+        //    hoveredButton.NoHoverLogic();
+        //    hoveredButton = null;
+        //}
+
+        allNoHover.Invoke();
+
+        current.defaultButton = GetDefaultButton();
+        current.backButton = GetBackButton();
+
+        //Hover Default button if enabled
+        if (current.startWithDefaultHovered && current.defaultButton != null)
+        {
+            current.defaultButton.HoverLogic();
+        }
     }
     #endregion
 
@@ -214,7 +256,7 @@ public class CustomEventSystem : MonoBehaviour
         }
 
         //Return if button is not interactable or the eventsystem is disabled
-        if (!hoveredButton.interactable || !InputEnabled)
+        if (!hoveredButton.IsInteractable || !InputEnabled)
         {
             Debug.LogWarning("Hovered button is not interactable or Input is disabled.");
             return;
@@ -233,7 +275,7 @@ public class CustomEventSystem : MonoBehaviour
         }
 
         //Return if button is not interactable or the eventsystem is disabled
-        if (!backButton.interactable || !InputEnabled)
+        if (!backButton.IsInteractable || !InputEnabled)
         {
             Debug.LogWarning("Back button is not interactable or Input is disabled.");
             return;
@@ -329,7 +371,7 @@ public class CustomEventSystem : MonoBehaviour
         if (nextButton == null || recursionCount > 100)
             return null;
 
-        return nextButton.interactable ? nextButton : GetNextActiveButton(nextButton, direction, ++recursionCount);
+        return nextButton.IsInteractable ? nextButton : GetNextActiveButton(nextButton, direction, ++recursionCount);
     }
 
     private NavigateDirections GetNavigateDirection(Vector2 navigateVector)

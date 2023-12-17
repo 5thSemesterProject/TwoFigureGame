@@ -24,6 +24,12 @@ public enum ButtonEventType
     NoHover,
 }
 
+public enum ButtonClickType
+{
+    Select,
+    Click
+}
+
 [Serializable]
 public struct NavigationButtons
 {
@@ -54,38 +60,44 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public event ButtonEvent hoverEndEvent;
 
     //Public Attributes
-    [ReadOnly]
+    [Header("Debug")] [Space]
     public ButtonState state;
     public bool holdsPointer = false;
-    public bool isDefaultButton = false;
-    public bool isBackButton = false;
-    public bool interactable = true;
+
+    [Header("Settings")] [Space]
+    [SerializeField] private ButtonClickType ButtonClickType = ButtonClickType.Click;
+    [SerializeField] private bool isDefaultButton = false;
+    [SerializeField] private bool isBackButton = false;
+    [SerializeField] private bool interactable = true;
+    public bool IsDefault { get => isDefaultButton; }
+    public bool IsBack { get => isBackButton; }
+    public bool IsInteractable
+    {
+        get
+        {
+            ButtonEnabler enabler = GetComponentInParent<ButtonEnabler>();
+            if (enabler == null)
+            {
+                return interactable;
+            }
+            return interactable && enabler.interactable;
+        }
+    }
 
     //Navigation
-    [Header("Navigation")]
+    [Header("Navigation")] [Space]
     public NavigationButtons navigation = new NavigationButtons();
 
-    #region Enable/Disable
+    #region Default Logic
     private void OnEnable()
     {
-        if (isBackButton)
-            CustomEventSystem.BackButton = this;
-
-        if (isDefaultButton)
-            CustomEventSystem.DefaultButton = this;
+        CustomEventSystem.allNoHover += NoHoverLogic;
     }
-
-    private void OnDisable()
+    private void OnDestroy()
     {
-        if (isBackButton && CustomEventSystem.BackButton == this)
-            CustomEventSystem.BackButton = null;
-
-        if (isDefaultButton && CustomEventSystem.DefaultButton == this)
-            CustomEventSystem.DefaultButton = null;
+        CustomEventSystem.allNoHover -= NoHoverLogic;
     }
-    #endregion
 
-    #region Default Logic
     private void RaiseClick()
     {
         clickEvent?.Invoke();
@@ -126,17 +138,21 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public void ClickLogic()
     {
         //Return if button is not interactable or the eventsystem is disabled
-        if (!interactable || !CustomEventSystem.InputEnabled)
+        if (!IsInteractable || !CustomEventSystem.InputEnabled)
             return;
 
-        state = ButtonState.Selected;
-        CustomEventSystem.UpdateSelectedButton(this);
+        if (ButtonClickType == ButtonClickType.Select)
+        {
+            state = ButtonState.Selected;
+            CustomEventSystem.UpdateSelectedButton(this);
+        }
+
         RaiseClick();
     }
     public void HoverLogic()
     {
         //Return if button is not interactable or the eventsystem is disabled
-        if (!interactable || !CustomEventSystem.InputEnabled)
+        if (!IsInteractable || !CustomEventSystem.InputEnabled)
             return;
 
         if (CustomEventSystem.hoveredButton != null)
@@ -158,10 +174,6 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
     public void NoHoverLogic()
     {
-        //Return if button is not interactable or the eventsystem is disabled
-        if (!interactable || !CustomEventSystem.InputEnabled)
-            return;
-
         if (state == ButtonState.Selected)
             return;
 

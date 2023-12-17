@@ -9,8 +9,8 @@ public class StartMenuManager : MonoBehaviour
 {
     private Coroutine transition;
 
-    [SerializeField] private CanvasGroup mainMenuGroup;
-    [SerializeField] private CanvasGroup archiveGroup;
+    [SerializeField] private ButtonEnabler mainMenuGroup;
+    [SerializeField] private ButtonEnabler archiveGroup;
 
     private void Start()
     {
@@ -35,6 +35,9 @@ public class StartMenuManager : MonoBehaviour
                 break;
             case "Archive":
                 coroutine = Archive();
+                break;
+            case "Menu":
+                coroutine = Menu();
                 break;
             default:
                 break;
@@ -64,7 +67,7 @@ public class StartMenuManager : MonoBehaviour
         while (alpha > 0)
         {
             alpha -= Time.deltaTime;
-            mainMenuGroup.alpha = Mathf.Clamp01(alpha);
+            mainMenuGroup.canvasGroup.alpha = Mathf.Clamp01(alpha);
             yield return null;
         }
 
@@ -74,27 +77,44 @@ public class StartMenuManager : MonoBehaviour
     }
     private IEnumerator Archive()
     {
+        yield return TransitionBetweenCanvasGroups(mainMenuGroup, archiveGroup);
+    }
+    private IEnumerator Menu()
+    {
+        yield return TransitionBetweenCanvasGroups(archiveGroup,mainMenuGroup);
+    }
+    private IEnumerator TransitionBetweenCanvasGroups(ButtonEnabler startGroup, ButtonEnabler endGroup)
+    {
         CustomEventSystem.DisableUIInputs();
 
-        float alpha = 1;
+        float alpha = startGroup.canvasGroup.alpha;
 
         while (alpha > 0)
         {
             alpha -= Time.deltaTime * 2;
-            mainMenuGroup.alpha = Mathf.Clamp01(alpha);
+            startGroup.canvasGroup.alpha = Mathf.Clamp01(alpha);
             yield return null;
         }
 
-        alpha = 0;
+        startGroup.canvasGroup.blocksRaycasts = false;
+        startGroup.interactable = false;
+
+        alpha = endGroup.canvasGroup.alpha;
 
         while (alpha < 1)
         {
             alpha += Time.deltaTime * 2;
-            archiveGroup.alpha = Mathf.Clamp01(alpha);
+            endGroup.canvasGroup.alpha = Mathf.Clamp01(alpha);
             yield return null;
         }
 
+        endGroup.canvasGroup.blocksRaycasts = true;
+        endGroup.interactable = true;
+
         CustomEventSystem.EnableUIInputs();
+        CustomEventSystem.ResetSelectedButtons();
+
+        transition = null;
     }
     private IEnumerator Options()
     {
