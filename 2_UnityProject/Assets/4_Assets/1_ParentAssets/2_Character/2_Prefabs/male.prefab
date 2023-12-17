@@ -63,7 +63,114 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8818194238794709845}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &358413512488087282
+--- !u!137 &8718573780501592616
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541223715258370695}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 16
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -7805965318761107941, guid: a6e6acb255f934441b1773cfd05a8b4d, type: 3}
+  - {fileID: -2187265229662706308, guid: a6e6acb255f934441b1773cfd05a8b4d, type: 3}
+  - {fileID: -3846018093981099296, guid: a6e6acb255f934441b1773cfd05a8b4d, type: 3}
+  - {fileID: -6478536213147159724, guid: a6e6acb255f934441b1773cfd05a8b4d, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: -3698807912602399571, guid: a6e6acb255f934441b1773cfd05a8b4d, type: 3}
+  m_Bones:
+  - {fileID: 1087113948513309706}
+  - {fileID: 6497210100655331944}
+  - {fileID: 7046368623736524401}
+  - {fileID: 2286800857678698686}
+  - {fileID: 1196316985711258068}
+  - {fileID: 4553477104553784452}
+  - {fileID: 9072191650914004769}
+  - {fileID: 776565725068058645}
+  - {fileID: 8627281866049222831}
+  - {fileID: 8384112288393444883}
+  - {fileID: 8107528309072572889}
+  - {fileID: 5335307879431603620}
+  - {fileID: 7381276880473602760}
+  - {fileID: 2394098285530211555}
+  - {fileID: 5692628434813029517}
+  - {fileID: 5686716664874720182}
+  - {fileID: 5491571273406541242}
+  - {fileID: 8190517035930371627}
+  - {fileID: 1023583152023035489}
+  - {fileID: 2253869958589169810}
+  - {fileID: 1853351231532190499}
+  - {fileID: 2346193306513050791}
+  - {fileID: 401448742530256149}
+  - {fileID: 5489618301724485694}
+  - {fileID: 587469551212399328}
+  - {fileID: 5827113023656335715}
+  - {fileID: 6249776894037448569}
+  - {fileID: 5608673635890992067}
+  - {fileID: 8824668156480597184}
+  - {fileID: 4334491217398338267}
+  - {fileID: 1494665615886241260}
+  - {fileID: 7777480793578773298}
+  - {fileID: 4380574702678125242}
+  - {fileID: 8443049709271484461}
+  - {fileID: 3586371576340041612}
+  - {fileID: 3568973944532060000}
+  - {fileID: 2045343648383229421}
+  - {fileID: 9219523520486119130}
+  - {fileID: 7713546368371276913}
+  - {fileID: 1827695670333894159}
+  - {fileID: 8659120604516124786}
+  - {fileID: 7539523685872505970}
+  - {fileID: 8582556205805092515}
+  - {fileID: 8079107775413421071}
+  - {fileID: 6033557863834593445}
+  - {fileID: 1364830511630760242}
+  - {fileID: 3938093055867135133}
+  - {fileID: 8751458246126620276}
+  - {fileID: 7199864566305954022}
+  - {fileID: 114877246572915021}
+  - {fileID: 7000950503460213789}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 1087113948513309706}
+  m_AABB:
+    m_Center: {x: -0.0000000027939677, y: -0.0009411499, z: -0.0000074311392}
+    m_Extent: {x: 0.008894438, y: 0.010147655, z: 0.0021585417}
+  m_DirtyAABB: 0
+--- !u!1 &991459826313054439
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1122,7 +1229,7 @@ MonoBehaviour:
   lerpValue: 0.2
   movementSpeed: 10
   rotationSpeed: 50
-  smokeIntersectionRadius: 2
+  smokeIntersectionRadius: 0.1
   gravity: 9.81
   interactable: {fileID: 0}
   characterType: 2

@@ -48,11 +48,6 @@ public class GameManager : MonoBehaviour
             instance = null;
         }
     }
-
-    //private void Awake()
-    //{
-    //    DontDestroyOnLoad(this.gameObject);
-    //}
     #endregion
 
     private void Start()

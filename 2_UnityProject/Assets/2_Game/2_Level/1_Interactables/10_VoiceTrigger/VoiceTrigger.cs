@@ -49,6 +49,8 @@ public class VoiceTrigger : MonoBehaviour
     bool triggered = false;
     Coroutine coroutine;
     int lastRandom = 500;
+
+    static List<VoiceTrigger>otherVoiceTriggers = new List<VoiceTrigger>();
     
     public float extraWaitTimeBetweenClips = 1f;
     public bool playOnce = false;
@@ -58,7 +60,6 @@ public class VoiceTrigger : MonoBehaviour
     public E_1_Voicelines[] randomVoicelines;
 
     public TriggerType triggerType;
-
 
 
     // Start is called before the first frame update
@@ -76,12 +77,16 @@ public class VoiceTrigger : MonoBehaviour
             interactable.highlightEvent+=LoadVoiceLine;
             interactable.unhiglightEvent+=Untrigger;
         }
-            
+
+        AddOtherVoiceTriggerRange(GetComponents<VoiceTrigger>());
+
     }
 
     void LoadVoiceLine(Movement movement)
     {
-        if (coroutine==null && !triggered)
+        if (coroutine==null && !triggered 
+        && CheckCharacterTypes(movement)
+        && CheckOtherVoicelines())
         {
             triggered = true;
 
@@ -158,6 +163,40 @@ public class VoiceTrigger : MonoBehaviour
 
         return textWithoutUnderscore;
 
+    }
+
+    bool CheckOtherVoicelines()
+    {
+        for (int i = 0; i < otherVoiceTriggers.Count; i++)
+        {
+            if (otherVoiceTriggers[i].coroutine !=null)
+                return false;
+        }
+        return true;
+    }
+
+    bool CheckCharacterTypes(Movement movement)
+    {
+        return interactable.specificCharacterAccess == CharacterType.None && movement.characterType == characterType && characterType!=CharacterType.None
+         ||interactable.specificCharacterAccess!= CharacterType.None
+         ||characterType==CharacterType.None;
+    }
+
+    void AddOtherVoiceTriggerRange(VoiceTrigger[] voiceTriggers)
+    {
+        for (int i = 0; i < voiceTriggers.Length; i++)
+        {
+            TryAddOtherVoiceTrigger(voiceTriggers[i]);
+        }
+    }
+
+    bool TryAddOtherVoiceTrigger(VoiceTrigger voiceTrigger)
+    {
+        if (otherVoiceTriggers.Contains(voiceTrigger))
+            return false;
+
+        otherVoiceTriggers.Add(voiceTrigger);
+        return true;
     }
 }
 

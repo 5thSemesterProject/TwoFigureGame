@@ -57,7 +57,7 @@ public class Interactable : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Movement movementComp))
+        if (other.TryGetComponent(out Movement movementComp) && CharacterManager.ActiveCharacterData.currentState.GetType() != typeof(AIState))
         {
             if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
             {
@@ -85,7 +85,7 @@ public class Interactable : MonoBehaviour
 
     void  OnTriggerStay(Collider other)
     {
-        if (other.TryGetComponent(out Movement movementComp))
+        if (other.TryGetComponent(out Movement movementComp)&& CharacterManager.ActiveCharacterData.currentState.GetType() != typeof(AIState))
         {
             if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType||enterCond==null)
             {
