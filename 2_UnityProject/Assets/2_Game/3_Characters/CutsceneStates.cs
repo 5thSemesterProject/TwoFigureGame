@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Playables;
@@ -42,6 +43,9 @@ class WalkTowards : CutsceneState
 
     public override CharacterState SpecificStateUpdate()
     {    
+        if (characterData.other.currentState is WaitForOtherState)
+            characterData.virtualCamera.gameObject.SetActive(true);
+
         Vector2 playerPos = VectorHelper.Convert3To2(characterData.gameObject.transform.position);
         float distanceToTarget = Vector2.Distance(playerPos,targetPos);
         
@@ -66,7 +70,7 @@ class WalkTowards : CutsceneState
             characterData.gameObject.transform.position = targetPos;
             characterData.gameObject.transform.rotation = cutsceneHandler.GetActorData(characterData.movement.characterType).actor.transform.rotation;
             
-            //Wait For Other Character to reach the cutscee pos
+            //Wait For Other Character to reach the cutscene Pos
             return new WaitForOtherState(characterData,cutsceneHandler);
         }
             
@@ -98,11 +102,19 @@ class WaitForOtherState : CutsceneState
 
     public override CharacterState SpecificStateUpdate()
     {
+        if (characterData.other.currentState is WalkTowards)
+        {
+            characterData.virtualCamera.gameObject.SetActive (false);
+        }
+            
+
         if (characterData.other.currentState is WaitForOtherState ||characterData.other.currentState is PlayCutsceneState )
+        {   
             return new PlayCutsceneState(characterData,cutsceneHandler);
+        }
+            
 
         return this;
-
     }
 }
 
@@ -137,12 +149,44 @@ class PlayCutsceneState : CutsceneState
             characterData.gameObject.GetComponent<CharacterController>().detectCollisions = true;
 
             //Return to previous States
-            if (characterData.lastState is AIState)
-                return new AIState(characterData);
-            else
-               return new IdleState(characterData);
+            return new RecoverLastState(characterData,cutsceneHandler);
         }
+
+        //Turn off player camera
+        if (characterData.virtualCamera.gameObject.activeInHierarchy == true &&!Camera.main.GetComponent<CinemachineBrain>().IsBlending &&
+            Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera != characterData.other.virtualCamera as ICinemachineCamera)
+            characterData.other.virtualCamera.gameObject.SetActive(false);
 
         return this;
     }
+
+    
+}
+
+
+class RecoverLastState : CutsceneState
+{
+    public RecoverLastState(CharacterData data, CutsceneHandler cutsceneHandler) : base(data,cutsceneHandler)
+    {
+        handleInteractables = false;
+        updateLastState = false;
+    }
+
+    public override CharacterState SpecificStateUpdate()
+    {
+        //Return to previous States
+        if (characterData.lastState is AIState)
+        {
+            return new AIState(characterData);
+        }
+            
+        else
+        {
+            characterData.virtualCamera.gameObject.SetActive(true);
+            return new IdleState(characterData);
+        }
+            
+    }
+
+    
 }

@@ -79,9 +79,9 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
         if (!characterController.isGrounded)
         {
-            float gravityFallDistance = gravity * timeFalling * timeFalling;
+           /* float gravityFallDistance = gravity * timeFalling * timeFalling;
             characterController.Move(Vector3.down * gravityFallDistance);
-            timeFalling += Time.deltaTime;
+            timeFalling += Time.deltaTime;*/
         }
         else
         {
@@ -96,16 +96,19 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
     public Vector2 MovePlayer(Vector2 axis, float speed = 1)
     {
+
+        Vector3 movement=default;
+        Vector3 movementDir=default;
+
         //float yValue = transform.position.y;
         axis = axis.magnitude >= 1 ? axis.normalized : axis;
 
         Vector3 characterForward = Camera.main.transform.forward;
         Vector3 characterRight = Camera.main.transform.right;
-        Vector3 movementDir = characterForward * axis.y + characterRight * axis.x;
-        Vector3 movement = movementDir * movementSpeed * speed * Time.deltaTime * Time.timeScale / 3;
+        movementDir = characterForward * axis.y + characterRight * axis.x;
+        movement = movementDir * movementSpeed * speed * Time.deltaTime * Time.timeScale / 3;
         movement = VectorHelper.Convert2To3(OptimizeMovement(transform.position, VectorHelper.Convert3To2(movement)));
-        movement = VectorHelper.Convert2To3(AssureMovement(transform.position, VectorHelper.Convert3To2(movement)));
-
+ 
         characterController.Move(movement);
 
         if (movement.magnitude >= 0.001)
@@ -121,13 +124,11 @@ public class Movement : MonoBehaviour, IIntersectSmoke
                 transform.rotation = targetRotation;
             }
         }
-
+  
         //transform.position = new Vector3(transform.position.x, yValue, transform.position.z);
-
-        float animationSpeed = movementDir.magnitude * 3;
         animator.SetBool("Grounded", true);
         animator.SetFloat("MotionSpeed", 1);
-        animator.SetFloat("Speed", movement.magnitude / Time.deltaTime * 3);
+        animator.SetFloat("Speed", speed>0? (movement.magnitude / Time.deltaTime * 3):0);
         return VectorHelper.Convert3To2(movement);
     }
 
