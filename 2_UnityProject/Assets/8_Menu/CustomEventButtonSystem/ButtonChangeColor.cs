@@ -16,7 +16,7 @@ public class ButtonChangeColor : CustomButtonFunctionality
     [SerializeField]
     private Color buttonColorSelected = Color.yellow;
 
-    private void Start()
+    protected override void OnAwake()
     {
         textToChange = GetComponentInChildren<TextMeshProUGUI>();
         textToChange.color = buttonColorNormal;

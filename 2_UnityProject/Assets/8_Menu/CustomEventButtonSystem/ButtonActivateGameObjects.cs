@@ -12,7 +12,7 @@ public class ButtonActivateGameObjects : CustomButtonFunctionality
     [SerializeField]
     private ButtonEventType inActiveTriggerMoment = ButtonEventType.NoHover;
 
-    private void Start()
+    protected override void OnAwake()
     {
         if (objectToActivate == null)
             return;

@@ -15,7 +15,7 @@ public class ButtonCallOn : CustomButtonFunctionality
     [SerializeField]
     private ButtonUnityEvent buttonEvent;
 
-    private void Start()
+    protected override void OnAwake()
     {
         AddFunctionToEvent(buttonEvent.Invoke ,activeTriggerMoment);
     }

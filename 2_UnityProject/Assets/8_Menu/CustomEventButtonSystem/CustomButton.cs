@@ -144,10 +144,19 @@ public class CustomButtonFunctionality : MonoBehaviour
 {
     protected CustomButton button;
 
+    #region Awake
     private void Awake()
     {
         button = GetComponent<CustomButton>();
+        OnAwake();
     }
+
+    //To be overridden by children to access the awake method
+    protected virtual void OnAwake()
+    {
+
+    }
+    #endregion
 
     protected void AddFunctionToEvent(ButtonEvent action, ButtonEventType triggerMoment)
     {
