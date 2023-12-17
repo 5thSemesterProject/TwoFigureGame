@@ -23,12 +23,15 @@ public class CustomEventSystem : MonoBehaviour
     //Internal
     public static CustomEventSystem current;
     public bool startWithDefaultHovered = true;
+    public bool recieveUIInput = true;
+    public static bool InputEnabled { get => current.recieveUIInput; }
 
     //Important Buttons
     public static CustomButton selectedButton;
     public static CustomButton hoveredButton;
+    private CustomButton backButton;
     private CustomButton defaultButton;
-    private CustomButton currentSelection
+    private CustomButton activeButton
     {
         get 
         {
@@ -43,6 +46,8 @@ public class CustomEventSystem : MonoBehaviour
             return hoveredButton;
         }
     }
+    public static CustomButton BackButton { get => current.backButton; set => current.backButton = value; }
+    public static CustomButton DefaultButton { get => current.defaultButton; set => current.defaultButton = value; }
 
     //Custom Input
     public static CustomInputs GetInputMapping { get => current.inputMapping; }
@@ -63,9 +68,8 @@ public class CustomEventSystem : MonoBehaviour
         else
             Destroy(this);
 
-        //Set up custom inputs and default button
+        //Set up custom inputs
         inputMapping = new CustomInputs(); //Custom
-        defaultButton = GetDefaultButton();
 
         //Register Navigation Callbacks
         SubscribeCallbacks();
@@ -104,6 +108,7 @@ public class CustomEventSystem : MonoBehaviour
     private void SubscribeCallbacks() //Custom
     {
         inputMapping.InUI.Submit.performed += OnSubmit;
+        inputMapping.InUI.Back.performed += OnBack;
         inputMapping.InUI.Navigate.performed += TriggerNavigation;
         inputMapping.InUI.Navigate.canceled += TriggerNavigation;
     }
@@ -116,6 +121,7 @@ public class CustomEventSystem : MonoBehaviour
         }
 
         inputMapping.InUI.Submit.performed -= OnSubmit;
+        inputMapping.InUI.Back.performed -= OnBack;
         inputMapping.InUI.Navigate.performed -= TriggerNavigation;
         inputMapping.InUI.Navigate.canceled -= TriggerNavigation;
     }
@@ -136,6 +142,7 @@ public class CustomEventSystem : MonoBehaviour
         }
 
         current.defaultButton = GetDefaultButton();
+        EnableUIInputs();
     }
 
     public static void DisableControlSchemes()
@@ -148,6 +155,19 @@ public class CustomEventSystem : MonoBehaviour
                 Debug.Log("Disabled" + actionMap.name);
             }
         }
+    }
+    #endregion
+
+    #region Enable/Disable UI Events
+    public static void DisableUIInputs()
+    {
+        current.recieveUIInput = false;
+        Debug.Log("UI Inputs are Disabled");
+    }
+    public static void EnableUIInputs()
+    {
+        current.recieveUIInput = true;
+        Debug.Log("UI Inputs are Enabled");
     }
     #endregion
 
@@ -183,18 +203,51 @@ public class CustomEventSystem : MonoBehaviour
         }
     }
 
+    #region Common Triggers
     public void OnSubmit(InputAction.CallbackContext context)
     {
+        //Return if null
         if (hoveredButton == null)
+        {
+            Debug.LogWarning("No hovered button found.");
             return;
+        }
+
+        //Return if button is not interactable or the eventsystem is disabled
+        if (!hoveredButton.interactable || !InputEnabled)
+        {
+            Debug.LogWarning("Hovered button is not interactable or Input is disabled.");
+            return;
+        }
 
         hoveredButton.ClickLogic();
     }
 
+    public void OnBack(InputAction.CallbackContext context)
+    {
+        //Return if null
+        if (backButton == null)
+        {
+            Debug.LogWarning("No back button found.");
+            return;
+        }
+
+        //Return if button is not interactable or the eventsystem is disabled
+        if (!backButton.interactable || !InputEnabled)
+        {
+            Debug.LogWarning("Back button is not interactable or Input is disabled.");
+            return;
+        }
+
+        backButton.HoverLogic();
+        backButton.ClickLogic();
+    }
+    #endregion
+
     #region Navigation
     private void TriggerNavigation(InputAction.CallbackContext context)
     {
-        if (currentSelection == null)
+        if (activeButton == null)
             return;
 
         //If Canceled
@@ -244,29 +297,39 @@ public class CustomEventSystem : MonoBehaviour
 
     public void Navigate(NavigateDirections direction)
     {
-        CustomButton nextButton = null;
-        switch (direction)
-        {
-            case NavigateDirections.Up:
-                nextButton = currentSelection.navigation.up;
-                break;
-            case NavigateDirections.Down:
-                nextButton = currentSelection.navigation.down;
-                break;
-            case NavigateDirections.Left:
-                nextButton = currentSelection.navigation.left;
-                break;
-            case NavigateDirections.Right:
-                nextButton = currentSelection.navigation.right;
-                break;
-            default:
-                break;
-        }
+        CustomButton nextButton = GetNextActiveButton(activeButton, direction);
 
         if (nextButton == null)
             return;
 
         nextButton.HoverLogic();
+    }
+
+    private CustomButton GetNextActiveButton(CustomButton currentButton, NavigateDirections direction, int recursionCount = 0)
+    {
+        CustomButton nextButton = null;
+        switch (direction)
+        {
+            case NavigateDirections.Up:
+                nextButton = currentButton.navigation.up;
+                break;
+            case NavigateDirections.Down:
+                nextButton = currentButton.navigation.down;
+                break;
+            case NavigateDirections.Left:
+                nextButton = currentButton.navigation.left;
+                break;
+            case NavigateDirections.Right:
+                nextButton = currentButton.navigation.right;
+                break;
+            default:
+                break;
+        }
+
+        if (nextButton == null || recursionCount > 100)
+            return null;
+
+        return nextButton.interactable ? nextButton : GetNextActiveButton(nextButton, direction, ++recursionCount);
     }
 
     private NavigateDirections GetNavigateDirection(Vector2 navigateVector)

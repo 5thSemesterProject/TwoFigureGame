@@ -58,10 +58,32 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public ButtonState state;
     public bool holdsPointer = false;
     public bool isDefaultButton = false;
+    public bool isBackButton = false;
+    public bool interactable = true;
 
     //Navigation
     [Header("Navigation")]
     public NavigationButtons navigation = new NavigationButtons();
+
+    #region Enable/Disable
+    private void OnEnable()
+    {
+        if (isBackButton)
+            CustomEventSystem.BackButton = this;
+
+        if (isDefaultButton)
+            CustomEventSystem.DefaultButton = this;
+    }
+
+    private void OnDisable()
+    {
+        if (isBackButton && CustomEventSystem.BackButton == this)
+            CustomEventSystem.BackButton = null;
+
+        if (isDefaultButton && CustomEventSystem.DefaultButton == this)
+            CustomEventSystem.DefaultButton = null;
+    }
+    #endregion
 
     #region Default Logic
     private void RaiseClick()
@@ -79,6 +101,7 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        //Return if rightclicked
         if (eventData.button == PointerEventData.InputButton.Right)
             return;
 
@@ -102,12 +125,20 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void ClickLogic()
     {
+        //Return if button is not interactable or the eventsystem is disabled
+        if (!interactable || !CustomEventSystem.InputEnabled)
+            return;
+
         state = ButtonState.Selected;
         CustomEventSystem.UpdateSelectedButton(this);
         RaiseClick();
     }
     public void HoverLogic()
     {
+        //Return if button is not interactable or the eventsystem is disabled
+        if (!interactable || !CustomEventSystem.InputEnabled)
+            return;
+
         if (CustomEventSystem.hoveredButton != null)
         {
             CustomEventSystem.hoveredButton.NoHoverLogic();
@@ -127,6 +158,10 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
     public void NoHoverLogic()
     {
+        //Return if button is not interactable or the eventsystem is disabled
+        if (!interactable || !CustomEventSystem.InputEnabled)
+            return;
+
         if (state == ButtonState.Selected)
             return;
 
