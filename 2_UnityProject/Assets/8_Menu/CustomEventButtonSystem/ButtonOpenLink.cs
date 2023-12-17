@@ -20,8 +20,19 @@ public class ButtonOpenLink : CustomButtonFunctionality
     {
         if (URL == null || string.IsNullOrEmpty(URL))
         {
-            URL = "https://pin.it/204aGVT";
+            URL = RandomLink();
         }
         Application.OpenURL(URL);
+    }
+
+    private string RandomLink()
+    {
+        string[] links = new string[]
+        {
+            "https://pin.it/204aGVT",
+            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        };
+
+        return links[Random.Range(0, links.Length)];
     }
 }
