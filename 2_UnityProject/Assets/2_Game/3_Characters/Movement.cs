@@ -104,6 +104,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         Vector3 movement = movementDir * movementSpeed * speed * Time.deltaTime * Time.timeScale / 3;
         movement = VectorHelper.Convert2To3(OptimizeMovement(transform.position, VectorHelper.Convert3To2(movement)));
         movement = VectorHelper.Convert2To3(AssureMovement(transform.position, VectorHelper.Convert3To2(movement)));
+
         characterController.Move(movement);
 
         if (movement.magnitude >= 0.001)

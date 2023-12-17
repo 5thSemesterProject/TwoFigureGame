@@ -5,11 +5,11 @@ using UnityEngine.Playables;
 
 abstract class CutsceneState : CharacterState
 {
-    protected CutsceneTrigger cutsceneTrigger;
+    protected CutsceneHandler cutsceneHandler;
 
-    protected  CutsceneState(CharacterData data, CutsceneTrigger cutsceneTrigger) : base(data)
+    protected  CutsceneState(CharacterData data, CutsceneHandler cutsceneHandler) : base(data)
     {
-        this.cutsceneTrigger = cutsceneTrigger;
+        this.cutsceneHandler = cutsceneHandler;
     }
 
     public override abstract CharacterState SpecificStateUpdate();
@@ -23,16 +23,18 @@ class WalkTowards : CutsceneState
     Vector2 targetPos;
     float intitialTargetDistance;
     float tolerance = 0.05f;
-    public WalkTowards(CharacterData data, CutsceneTrigger cutsceneTrigger) : base(data, cutsceneTrigger)
+    public WalkTowards(CharacterData data, CutsceneHandler cutsceneHandler) : base(data, cutsceneHandler)
     {
         updateLastState = false;
         handleInteractables = false;
         characterData.gameObject.GetComponent<CharacterController>().detectCollisions = false;
 
-        targetPos = VectorHelper.Convert3To2(cutsceneTrigger.GetTargetPos(characterData.movement.characterType));
-        targetDir = cutsceneTrigger.GetCharacter(characterData.movement.characterType).transform.forward;
-        intitialTargetDistance = Vector2.Distance(VectorHelper.Convert3To2(characterData.gameObject.transform.position),targetPos)-tolerance;
+        GameObject actor = cutsceneHandler.GetActorData(characterData.movement.characterType).actor;
 
+        targetPos = VectorHelper.Convert3To2(actor.transform.position);
+        targetDir = actor.transform.forward;
+
+        intitialTargetDistance = Vector2.Distance(VectorHelper.Convert3To2(characterData.gameObject.transform.position),targetPos)-tolerance;
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -55,12 +57,14 @@ class WalkTowards : CutsceneState
             
         else
         {
+            //Set Positions and Rotation exactly
             characterData.gameObject.transform.position = targetPos;
-            characterData.gameObject.transform.rotation = cutsceneTrigger.GetCharacter(characterData.movement.characterType).transform.rotation;
-            return new WaitForOtherState(characterData,cutsceneTrigger);
+            characterData.gameObject.transform.rotation = cutsceneHandler.GetActorData(characterData.movement.characterType).actor.transform.rotation;
+            
+            //Wait For Other Character to reach the cutscee pos
+            return new WaitForOtherState(characterData,cutsceneHandler);
         }
             
-        
     }
 
     Vector2 GetMoveDirection(Vector2 targetPos, Vector2 playerPos)
@@ -70,28 +74,27 @@ class WalkTowards : CutsceneState
         return  direction;
     }
 
-    public CutsceneTrigger GetCutsceneTrigger()
+    public CutsceneHandler GetCutSceneHandler()
     {
-        return cutsceneTrigger;
+        return cutsceneHandler;
     }
 }
 
 class WaitForOtherState : CutsceneState
 {
-    public WaitForOtherState(CharacterData data,CutsceneTrigger cutsceneTrigger) : base(data,cutsceneTrigger)
+    public WaitForOtherState(CharacterData data,CutsceneHandler cutsceneHandler) : base(data,cutsceneHandler)
     {
         updateLastState = false;
         handleInteractables = false;
 
-        Vector2 moveDir = VectorHelper.Convert3To2(cutsceneTrigger.GetCharacter(characterData.movement.characterType).transform.forward);
-
+        Vector2 moveDir = VectorHelper.Convert3To2(cutsceneHandler.GetActorData(characterData.movement.characterType).actor.transform.forward);
         characterData.movement.MovePlayer(moveDir,0);
     }
 
     public override CharacterState SpecificStateUpdate()
     {
         if (characterData.other.currentState is WaitForOtherState ||characterData.other.currentState is PlayCutsceneState )
-            return new PlayCutsceneState(characterData,cutsceneTrigger);
+            return new PlayCutsceneState(characterData,cutsceneHandler);
 
         return this;
 
@@ -100,29 +103,39 @@ class WaitForOtherState : CutsceneState
 
 class PlayCutsceneState : CutsceneState
 {
-    public PlayCutsceneState(CharacterData data, CutsceneTrigger cutsceneTrigger) : base(data,cutsceneTrigger)
+    PlayableDirector playableDirector;
+
+    public PlayCutsceneState(CharacterData data, CutsceneHandler cutsceneHandler) : base(data,cutsceneHandler)
     {
         handleInteractables = false;
         updateLastState = false;
-        
-        cutsceneTrigger.ToCutsceneModel(characterData.gameObject,characterData.movement.characterType);
 
-        if (cutsceneTrigger.playableDirector.state != PlayState.Playing)
-            cutsceneTrigger.StartCutscene();
+        playableDirector = cutsceneHandler.GetPlayableDirector();
+        
+        //Swap To Actor Model
+        cutsceneHandler.SwapToActorModel(characterData.gameObject,characterData.movement.characterType);
+
+        //Start Cutscene if not already playing
+        if (playableDirector.state != PlayState.Playing)
+            playableDirector.Play();
 
     }
 
     public override CharacterState SpecificStateUpdate()
     {
-        if (cutsceneTrigger.playableDirector.state == PlayState.Paused || cutsceneTrigger.playableDirector.time>=cutsceneTrigger.playableDirector.duration)
-        {
-            cutsceneTrigger.ToPlayModel(characterData.gameObject,characterData.movement.characterType);
+        if (playableDirector.state == PlayState.Paused || playableDirector.time>=playableDirector.duration)
+        {   
+            //Activate Play Model Again
+            cutsceneHandler.SwapToPlayModel(characterData.gameObject,characterData.movement.characterType);
+            
+            //Activate Collisions again
             characterData.gameObject.GetComponent<CharacterController>().detectCollisions = true;
-                Debug.Log(characterData.gameObject.transform.position);
+
+            //Return to previous States
             if (characterData.lastState is AIState)
                 return new AIState(characterData);
             else
-                return new IdleState(characterData);
+               return new IdleState(characterData);
         }
 
         return this;

@@ -238,7 +238,7 @@ public abstract class CharacterState
         if (characterData.other.currentState is WalkTowards && !(characterData.currentState is CutsceneState))
         {
             WalkTowards walkTowards = characterData.other.currentState as WalkTowards;
-            return new WalkTowards(characterData,walkTowards.GetCutsceneTrigger());
+            return new WalkTowards(characterData,walkTowards.GetCutSceneHandler());
         }
            
         return SpecificStateUpdate();
@@ -255,7 +255,8 @@ public abstract class CharacterState
         else
         {
             characterData.oxygenData.FallOff();
-        }    
+        }
+
     }
 
     public void HandleInteractable(out CharacterState updatedState)
@@ -285,7 +286,7 @@ public abstract class CharacterState
                       break;
                     case CutsceneTrigger:
                         var cutsceneTrigger = playerActionType as CutsceneTrigger;
-                        updatedState = new WalkTowards(characterData,cutsceneTrigger);
+                        updatedState = new WalkTowards(characterData,cutsceneTrigger.GetCutsceneHandler());
                     break;
                 }
             }
@@ -358,7 +359,7 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-        characterData.movement.MovePlayer(Vector2.zero, 0);
+       // characterData.movement.MovePlayer(Vector2.zero, 0);
     }
 
     public override CharacterState SpecificStateUpdate()
