@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Playables;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
@@ -89,7 +90,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
                 if (characterType == CharacterType.Man)
         {
-                Debug.Log(transform.position);
+                //Debug.Log(transform.position);
         }
     }
 
@@ -128,6 +129,20 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         animator.SetFloat("MotionSpeed", 1);
         animator.SetFloat("Speed", movement.magnitude / Time.deltaTime * 3);
         return VectorHelper.Convert3To2(movement);
+    }
+
+    public void MovePlayerToPos(Vector3 position,float speed=1)
+    {
+        var navMeshAgent = GetComponentInChildren<NavMeshAgent>();
+
+        if (position!=navMeshAgent.destination)
+        {
+            Debug.Log ("New Destination");
+            navMeshAgent.SetDestination(position);
+            animator.SetBool("Grounded", true);
+            animator.SetFloat("MotionSpeed", 1);
+            animator.SetFloat("Speed", speed / Time.deltaTime * 3);
+        }      
     }
 
     private Vector2 AssureMovement(Vector3 position, Vector2 input)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Playables;
 
 abstract class CutsceneState : CharacterState
@@ -35,6 +36,8 @@ class WalkTowards : CutsceneState
         targetDir = actor.transform.forward;
 
         intitialTargetDistance = Vector2.Distance(VectorHelper.Convert3To2(characterData.gameObject.transform.position),targetPos)-tolerance;
+
+        characterData.movement.MovePlayerToPos(actor.transform.position);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -50,13 +53,15 @@ class WalkTowards : CutsceneState
             moveDirection = Vector2.Lerp(moveDirection,targetDir,1-distanceToTarget/intitialTargetDistance);
             moveDirection = moveDirection.normalized;
 
-            characterData.movement.MovePlayer(moveDirection);
+            //characterData.movement.MovePlayer(moveDirection);
 
             return this;
         }
             
         else
-        {
+        {   
+            characterData.gameObject.GetComponentInChildren<NavMeshAgent>().speed = 0;
+
             //Set Positions and Rotation exactly
             characterData.gameObject.transform.position = targetPos;
             characterData.gameObject.transform.rotation = cutsceneHandler.GetActorData(characterData.movement.characterType).actor.transform.rotation;
