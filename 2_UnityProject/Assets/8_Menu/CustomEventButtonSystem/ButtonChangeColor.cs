@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor;
 
 public enum ColorChangeType
 {
@@ -13,6 +14,7 @@ public enum ColorChangeType
     Both
 }
 
+[ExecuteInEditMode]
 public class ButtonChangeColor : CustomButtonFunctionality
 {
     [Header("To Change")]
@@ -26,14 +28,26 @@ public class ButtonChangeColor : CustomButtonFunctionality
     [SerializeField] private Color buttonColorHighlighted = Color.white;
     [SerializeField] private Color buttonColorSelected = Color.yellow;
 
+    #region Editor Stuff
+    private void OnValidate()
+    {
+        ChangeColorNormal();
+    }
+
+    private void OnEnable()
+    {
+        ChangeColorNormal();
+    }
+    #endregion
+
     protected override void OnAwake()
     {
-        if (textToChange != null)
+        if (textToChange == null || textToChange.Length <= 0)
         {
             textToChange = GetComponentsInChildren<TextMeshProUGUI>();
         }
 
-        if (imageToChange != null)
+        if (imageToChange == null || textToChange.Length <= 0)
         {
             imageToChange = GetComponentsInChildren<Image>();
         }

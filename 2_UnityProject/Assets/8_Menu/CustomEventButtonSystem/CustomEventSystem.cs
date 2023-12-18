@@ -180,27 +180,25 @@ public class CustomEventSystem : MonoBehaviour
     public static void DisableUIInputs()
     {
         current.recieveUIInput = false;
-        Debug.Log("UI Inputs are Disabled");
+        //Debug.Log("UI Inputs are Disabled");
     }
     public static void EnableUIInputs()
     {
         current.recieveUIInput = true;
-        Debug.Log("UI Inputs are Enabled");
+        //Debug.Log("UI Inputs are Enabled");
     }
     public static void ResetSelectedButtons()
     {
-        //if (selectedButton != null)
-        //{
-        //    selectedButton.NoHoverLogic();
-        //    selectedButton = null;
-        //}
-        //if (hoveredButton != null)
-        //{
-        //    hoveredButton.NoHoverLogic();
-        //    hoveredButton = null;
-        //}
-
-        allNoHover.Invoke();
+        if (selectedButton != null)
+        {
+            selectedButton.ForceNoHoverLogic();
+            selectedButton = null;
+        }
+        if (hoveredButton != null)
+        {
+            hoveredButton.ForceNoHoverLogic();
+            hoveredButton = null;
+        }
 
         current.defaultButton = GetDefaultButton();
         current.backButton = GetBackButton();
@@ -210,6 +208,11 @@ public class CustomEventSystem : MonoBehaviour
         {
             current.defaultButton.HoverLogic();
         }
+    }
+    public static void DehoverAll()
+    {
+        allNoHover.Invoke();
+        Debug.LogWarning("All buttons DeHovered!");
     }
     #endregion
 

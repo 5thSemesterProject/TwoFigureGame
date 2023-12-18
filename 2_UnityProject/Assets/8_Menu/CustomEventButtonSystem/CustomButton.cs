@@ -177,6 +177,10 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         if (state == ButtonState.Selected)
             return;
 
+        ForceNoHoverLogic();
+    }
+    public void ForceNoHoverLogic()
+    {
         if (CustomEventSystem.hoveredButton == this)
             CustomEventSystem.hoveredButton = null;
 

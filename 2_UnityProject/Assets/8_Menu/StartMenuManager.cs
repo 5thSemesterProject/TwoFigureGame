@@ -11,6 +11,7 @@ public class StartMenuManager : MonoBehaviour
 
     [SerializeField] private ButtonEnabler mainMenuGroup;
     [SerializeField] private ButtonEnabler archiveGroup;
+    [SerializeField] private ButtonEnabler startGroup;
 
     private void Start()
     {
@@ -38,6 +39,9 @@ public class StartMenuManager : MonoBehaviour
                 break;
             case "Menu":
                 coroutine = Menu();
+                break;
+            case "Enter":
+                coroutine = Enter();
                 break;
             default:
                 break;
@@ -82,6 +86,10 @@ public class StartMenuManager : MonoBehaviour
     private IEnumerator Menu()
     {
         yield return TransitionBetweenCanvasGroups(archiveGroup,mainMenuGroup);
+    }
+    private IEnumerator Enter()
+    {
+        yield return TransitionBetweenCanvasGroups(startGroup, mainMenuGroup);
     }
     private IEnumerator TransitionBetweenCanvasGroups(ButtonEnabler startGroup, ButtonEnabler endGroup)
     {

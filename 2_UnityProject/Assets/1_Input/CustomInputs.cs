@@ -196,6 +196,15 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AnyKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6d7d6ef-c209-4b18-9a41-debe062e8295"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -462,6 +471,17 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dfab337c-ab0e-4ab0-8035-0be7df23c414"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnyKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -479,6 +499,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
         m_InUI_Navigate = m_InUI.FindAction("Navigate", throwIfNotFound: true);
         m_InUI_Back = m_InUI.FindAction("Back", throwIfNotFound: true);
         m_InUI_Submit = m_InUI.FindAction("Submit", throwIfNotFound: true);
+        m_InUI_AnyKey = m_InUI.FindAction("AnyKey", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -613,6 +634,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_InUI_Navigate;
     private readonly InputAction m_InUI_Back;
     private readonly InputAction m_InUI_Submit;
+    private readonly InputAction m_InUI_AnyKey;
     public struct InUIActions
     {
         private @CustomInputs m_Wrapper;
@@ -620,6 +642,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
         public InputAction @Navigate => m_Wrapper.m_InUI_Navigate;
         public InputAction @Back => m_Wrapper.m_InUI_Back;
         public InputAction @Submit => m_Wrapper.m_InUI_Submit;
+        public InputAction @AnyKey => m_Wrapper.m_InUI_AnyKey;
         public InputActionMap Get() { return m_Wrapper.m_InUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -638,6 +661,9 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
             @Submit.started += instance.OnSubmit;
             @Submit.performed += instance.OnSubmit;
             @Submit.canceled += instance.OnSubmit;
+            @AnyKey.started += instance.OnAnyKey;
+            @AnyKey.performed += instance.OnAnyKey;
+            @AnyKey.canceled += instance.OnAnyKey;
         }
 
         private void UnregisterCallbacks(IInUIActions instance)
@@ -651,6 +677,9 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
             @Submit.started -= instance.OnSubmit;
             @Submit.performed -= instance.OnSubmit;
             @Submit.canceled -= instance.OnSubmit;
+            @AnyKey.started -= instance.OnAnyKey;
+            @AnyKey.performed -= instance.OnAnyKey;
+            @AnyKey.canceled -= instance.OnAnyKey;
         }
 
         public void RemoveCallbacks(IInUIActions instance)
@@ -680,5 +709,6 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
         void OnNavigate(InputAction.CallbackContext context);
         void OnBack(InputAction.CallbackContext context);
         void OnSubmit(InputAction.CallbackContext context);
+        void OnAnyKey(InputAction.CallbackContext context);
     }
 }
