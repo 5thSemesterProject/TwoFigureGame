@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Interactable), typeof(TriggerByCharacter))]
 public class MoveBox : PlayerActionType
 {
     [SerializeField] public Transform playerHandlePosition;
