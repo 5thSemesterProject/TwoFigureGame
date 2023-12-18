@@ -22,6 +22,8 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     private CharacterController characterController;
     private Animator animator;
 
+    private NavMeshAgent navMeshAgent;
+
     public Coroutine coroutine;
     public Coroutine lerpRoutine;
 
@@ -47,12 +49,14 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             characterController.slopeLimit = characterController.stepOffset = 0;
         }
 
-        if (!TryGetComponent(out animator))
-        {
-            Debug.LogWarning("No animator found on the character!");
-        }
-
         animator = GetComponentInChildren<Animator>();
+
+        if (!TryGetComponent(out navMeshAgent))
+        {
+            Debug.LogError("Missing Navmesh Agent on character prefab");
+        }
+        else
+            navMeshAgent.enabled = false;
     }
 
     #region FogStuff
@@ -134,16 +138,19 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
     public void MovePlayerToPos(Vector3 position,float speed=1)
     {
-        var navMeshAgent = GetComponentInChildren<NavMeshAgent>();
-
+        navMeshAgent.enabled = true;
         if (position!=navMeshAgent.destination)
         {
-            Debug.Log ("New Destination");
             navMeshAgent.SetDestination(position);
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
             animator.SetFloat("Speed", speed / Time.deltaTime * 3);
         }      
+    }
+
+    public void DisableNavMesh()
+    {
+        navMeshAgent.enabled = false;
     }
 
     private Vector2 AssureMovement(Vector3 position, Vector2 input)

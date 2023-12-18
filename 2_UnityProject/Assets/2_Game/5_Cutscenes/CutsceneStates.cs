@@ -174,6 +174,8 @@ class RecoverLastState : CutsceneState
 
     public override CharacterState SpecificStateUpdate()
     {
+        characterData.movement.DisableNavMesh();
+
         //Return to previous States
         if (characterData.lastState is AIState)
         {
