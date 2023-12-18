@@ -1,7 +1,9 @@
 using Cinemachine;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
 #region Data
 public class OxygenData
@@ -35,7 +37,7 @@ public class CharacterData
     {
         gameObject = obj;
         movement = gameObject.GetComponent<Movement>();
-        animator = gameObject.GetComponent<Animator>();
+        animator = gameObject.GetComponentInChildren<Animator>();
 
         var rigidbodysOnCharacter = gameObject.GetComponentsInChildren<Rigidbody>();
         foreach (var rigidbody in rigidbodysOnCharacter)
@@ -54,6 +56,9 @@ public class CharacterData
     public CinemachineVirtualCamera virtualCamera;
     public OxygenData oxygenData;
     public GameObject roomFadeRigidBody;
+    public CharacterData other;
+    public CharacterState lastState;
+
 }
 
 public class WomanData : CharacterData
@@ -171,6 +176,8 @@ public class CharacterManager : MonoBehaviour
         womanData.movement.characterType = CharacterType.Woman;
         manData = new ManData(spawnedMan);
         manData.movement.characterType = CharacterType.Man;
+        manData.other = womanData;
+        womanData.other   = manData;
 
         //Oxygen Setup
         womanData.oxygenData = new OxygenData(100, 1f);
@@ -201,6 +208,7 @@ public class CharacterManager : MonoBehaviour
 public abstract class CharacterState
 {
     protected bool handleInteractables = true;
+    protected bool updateLastState = true;
     protected Oxygenstation lastOxyggenStation;
 
     public CharacterState(CharacterData data)
@@ -211,6 +219,9 @@ public abstract class CharacterState
     public CharacterData characterData;
     public CharacterState UpdateState() //Update Method that every State checks everytime
     {
+        if (updateLastState)
+            characterData.lastState = characterData.currentState;
+
         if (!(characterData.currentState is AIState))
             CamManager.FindOccludingObjects(characterData.gameObject.transform);
 
@@ -223,6 +234,13 @@ public abstract class CharacterState
                 return interactableState;
         }
 
+        //Handle Cutscene
+        if (characterData.other.currentState is WalkTowards && !(characterData.currentState is CutsceneState))
+        {
+            WalkTowards walkTowards = characterData.other.currentState as WalkTowards;
+            return new WalkTowards(characterData,walkTowards.GetCutSceneHandler());
+        }
+           
         return SpecificStateUpdate();
     }
 
@@ -237,7 +255,8 @@ public abstract class CharacterState
         else
         {
             characterData.oxygenData.FallOff();
-        }    
+        }
+
     }
 
     public void HandleInteractable(out CharacterState updatedState)
@@ -265,6 +284,10 @@ public abstract class CharacterState
                     case MoveBox:
                         updatedState = new MoveObjectState(characterData);
                       break;
+                    case CutsceneTrigger:
+                        var cutsceneTrigger = playerActionType as CutsceneTrigger;
+                        updatedState = new WalkTowards(characterData,cutsceneTrigger.GetCutsceneHandler());
+                    break;
                 }
             }
 
@@ -336,7 +359,7 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-        characterData.movement.MovePlayer(Vector2.zero, 0);
+       // characterData.movement.MovePlayer(Vector2.zero, 0);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -498,4 +521,7 @@ class MoveObjectState : CharacterState
 
         return this;
     }
+ 
 }
+
+
