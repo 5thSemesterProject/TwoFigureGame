@@ -882,7 +882,7 @@ CanvasGroup:
   m_GameObject: {fileID: 158616611}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 1
+  m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &894456225
@@ -916,8 +916,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddbfc8861421a4d2e9876dd0520d128a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxObjects: 9
-  ownedObjects: 2
+  maxObjects: 2
+  ownedObjects: 0
 --- !u!1 &1093705912 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9091937064561730978, guid: d44e4de2ade682847be1c03325f38445, type: 3}
@@ -1457,6 +1457,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1369143163}
     m_Modifications:
+    - target: {fileID: 52313552356370046, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 52313552356370046, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 52313552356370046, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5019608
+      objectReference: {fileID: 0}
     - target: {fileID: 975751011323193424, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1601,17 +1613,33 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3394346779826946116, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394346779826946116, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394346779826946116, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3828123934831409122, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
+      propertyPath: m_Color.a
+      value: 0.39215687
+      objectReference: {fileID: 0}
     - target: {fileID: 3828123934831409122, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
       propertyPath: m_Color.b
-      value: 0.3490566
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3828123934831409122, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
       propertyPath: m_Color.g
-      value: 0.3490566
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3828123934831409122, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
       propertyPath: m_Color.r
-      value: 0.3490566
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5012159060833106882, guid: 97af02f4016ce0e4ea81b839710ceb97, type: 3}
       propertyPath: isBackButton
