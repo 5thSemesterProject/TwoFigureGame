@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1262.3136, g: 842.818, b: 553.9985, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -663,10 +663,6 @@ PrefabInstance:
     - target: {fileID: 37558273780348169, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_LightlayersMask
       value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 50926050235289433, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
-      propertyPath: specificCharacterAccess
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 73827945275434897, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4526,7 +4522,7 @@ MonoBehaviour:
     invertFade: 0
     distanceFadeStart: 50
     distanceFadeEnd: 60
-    textureOffset: {x: -0, y: -59.969143, z: -0}
+    textureOffset: {x: -0, y: -1.8487263, z: -0}
     falloffMode: 0
     maskMode: 0
     materialMask: {fileID: 2100000, guid: f034ef93a4c1c1640957af19f45a3983, type: 2}
