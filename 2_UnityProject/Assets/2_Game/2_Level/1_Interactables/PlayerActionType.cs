@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-[RequireComponent(typeof(Interactable), typeof(TriggerByCharacter))]
+[RequireComponent(typeof(Interactable))]
 public class PlayerActionType : MonoBehaviour
 {
    
