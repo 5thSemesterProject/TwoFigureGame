@@ -180,7 +180,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Escape"",
+                    ""name"": ""Back"",
                     ""type"": ""Button"",
                     ""id"": ""3651833d-f75d-423a-ad8f-bb8abf19093e"",
                     ""expectedControlType"": ""Button"",
@@ -192,6 +192,15 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                     ""name"": ""Submit"",
                     ""type"": ""Button"",
                     ""id"": ""16934c31-7862-4941-9b4f-b6d073ea3578"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AnyKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6d7d6ef-c209-4b18-9a41-debe062e8295"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -459,7 +468,18 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Escape"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dfab337c-ab0e-4ab0-8035-0be7df23c414"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnyKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -477,8 +497,9 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
         // InUI
         m_InUI = asset.FindActionMap("InUI", throwIfNotFound: true);
         m_InUI_Navigate = m_InUI.FindAction("Navigate", throwIfNotFound: true);
-        m_InUI_Escape = m_InUI.FindAction("Escape", throwIfNotFound: true);
+        m_InUI_Back = m_InUI.FindAction("Back", throwIfNotFound: true);
         m_InUI_Submit = m_InUI.FindAction("Submit", throwIfNotFound: true);
+        m_InUI_AnyKey = m_InUI.FindAction("AnyKey", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -611,15 +632,17 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_InUI;
     private List<IInUIActions> m_InUIActionsCallbackInterfaces = new List<IInUIActions>();
     private readonly InputAction m_InUI_Navigate;
-    private readonly InputAction m_InUI_Escape;
+    private readonly InputAction m_InUI_Back;
     private readonly InputAction m_InUI_Submit;
+    private readonly InputAction m_InUI_AnyKey;
     public struct InUIActions
     {
         private @CustomInputs m_Wrapper;
         public InUIActions(@CustomInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Navigate => m_Wrapper.m_InUI_Navigate;
-        public InputAction @Escape => m_Wrapper.m_InUI_Escape;
+        public InputAction @Back => m_Wrapper.m_InUI_Back;
         public InputAction @Submit => m_Wrapper.m_InUI_Submit;
+        public InputAction @AnyKey => m_Wrapper.m_InUI_AnyKey;
         public InputActionMap Get() { return m_Wrapper.m_InUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -632,12 +655,15 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
             @Navigate.started += instance.OnNavigate;
             @Navigate.performed += instance.OnNavigate;
             @Navigate.canceled += instance.OnNavigate;
-            @Escape.started += instance.OnEscape;
-            @Escape.performed += instance.OnEscape;
-            @Escape.canceled += instance.OnEscape;
+            @Back.started += instance.OnBack;
+            @Back.performed += instance.OnBack;
+            @Back.canceled += instance.OnBack;
             @Submit.started += instance.OnSubmit;
             @Submit.performed += instance.OnSubmit;
             @Submit.canceled += instance.OnSubmit;
+            @AnyKey.started += instance.OnAnyKey;
+            @AnyKey.performed += instance.OnAnyKey;
+            @AnyKey.canceled += instance.OnAnyKey;
         }
 
         private void UnregisterCallbacks(IInUIActions instance)
@@ -645,12 +671,15 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
             @Navigate.started -= instance.OnNavigate;
             @Navigate.performed -= instance.OnNavigate;
             @Navigate.canceled -= instance.OnNavigate;
-            @Escape.started -= instance.OnEscape;
-            @Escape.performed -= instance.OnEscape;
-            @Escape.canceled -= instance.OnEscape;
+            @Back.started -= instance.OnBack;
+            @Back.performed -= instance.OnBack;
+            @Back.canceled -= instance.OnBack;
             @Submit.started -= instance.OnSubmit;
             @Submit.performed -= instance.OnSubmit;
             @Submit.canceled -= instance.OnSubmit;
+            @AnyKey.started -= instance.OnAnyKey;
+            @AnyKey.performed -= instance.OnAnyKey;
+            @AnyKey.canceled -= instance.OnAnyKey;
         }
 
         public void RemoveCallbacks(IInUIActions instance)
@@ -678,7 +707,8 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
     public interface IInUIActions
     {
         void OnNavigate(InputAction.CallbackContext context);
-        void OnEscape(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
         void OnSubmit(InputAction.CallbackContext context);
+        void OnAnyKey(InputAction.CallbackContext context);
     }
 }

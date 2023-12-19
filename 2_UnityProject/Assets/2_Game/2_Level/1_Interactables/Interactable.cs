@@ -99,7 +99,7 @@ public class Interactable : MonoBehaviour
 
     public void Trigger(Movement movement)
     {
-        if (enterCond!=null &&enterCond(movement)||enterCond==null)
+        if (enterCond!=null &&enterCond(movement))
             triggerEvent?.Invoke(movement);
     }
 
