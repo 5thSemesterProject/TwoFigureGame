@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: safeStation-Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 350029272784165444, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1121499010553184510, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -55,6 +59,22 @@ PrefabInstance:
     - target: {fileID: 2295553456605658001, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
       propertyPath: m_StaticShadowCaster
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295553456605658001, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295553456605658001, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 77cb9a6e607ed6c49925231e35e04404, type: 2}
+    - target: {fileID: 5197783484045133279, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197783484045133279, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 6363533021429603890, guid: 0c13a59eb7a19194cb8a037dd95d5956, type: 3}
       propertyPath: m_Height
@@ -107,7 +127,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 3
+  m_Radius: 4
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2414866501838605197
 MonoBehaviour:
@@ -122,4 +142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chargeRate: 5
-  smokeIntersectionRadius: 3
+  smokeIntersectionRadius: 4
+  fluidMaterial: {fileID: 2100000, guid: adb66d7a8f35d244b80f767cba244311, type: 2}
+  maxEmission: 7

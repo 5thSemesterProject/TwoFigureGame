@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class WSUI_Element : MonoBehaviour
 {
 
@@ -11,10 +13,20 @@ public class WSUI_Element : MonoBehaviour
     Canvas canvas;
     RectTransform rectTransform;
     Vector2 offset = new Vector2(0,0);
+    bool removed = false;
+
+    CanvasGroup canvasGroup;
+
+     [Header ("AlphaHandling")]
+     private Coroutine alphaCoroutine;
+     private float targetAlpha=0;
+     private float initialAlpha;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        initialAlpha = canvasGroup.alpha;
     }
 
    public void SetTarget(Transform transformToFollow)
@@ -67,6 +79,73 @@ public class WSUI_Element : MonoBehaviour
         //Set position
         rectTransform.anchoredPosition = newPos;
    }
+
+   public bool GetRemoved()
+   {
+        return removed;
+   }
+
+   public void SetRemoved(bool removed)
+   {
+        this.removed = removed;
+   }
+
+
+
+    #region Alpha Handling
+
+    public void LerpAlphaToInitial(float smoothTime = 0.33f)
+    {
+          LerpAlpha(initialAlpha,smoothTime);
+    }
+    public void LerpAlpha(float alpha, float smoothTime = 0.33f)
+    {
+          
+          targetAlpha = alpha;
+        if (alphaCoroutine == null)
+        {
+            alphaCoroutine = StartCoroutine(_LerpAlpha(smoothTime));
+        }
+  
+    }
+    IEnumerator _LerpAlpha(float smoothTime)
+    {
+        float currentAlpha = GetAlpha();
+        float velocity = 0;
+
+        while (true)
+        {
+            targetAlpha = 
+
+               currentAlpha = Mathf.SmoothDamp(currentAlpha, targetAlpha, ref velocity, smoothTime);
+
+          if (Mathf.Abs(targetAlpha-currentAlpha)<0.01f)
+          {
+                currentAlpha = targetAlpha;
+                SetAlpha(currentAlpha);
+
+                break;
+          }
+
+            SetAlpha(currentAlpha);
+
+            yield return null;
+        }
+
+        alphaCoroutine = null; 
+    }
+
+    public void SetAlpha(float inputAlpha)
+    {
+
+        canvasGroup.alpha = inputAlpha;
+    }
+
+    public float GetAlpha()
+    {
+        return canvasGroup.alpha;
+    }
+    #endregion
    
 
 
