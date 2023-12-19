@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
+using UnityEngine.UI;
 
 #region Data
 public class OxygenData
@@ -31,49 +32,6 @@ public class OxygenData
     }
 }
 
-public class CharacterData
-{
-    public CharacterData(GameObject obj)
-    {
-        gameObject = obj;
-        movement = gameObject.GetComponent<Movement>();
-        animator = gameObject.GetComponentInChildren<Animator>();
-
-        var rigidbodysOnCharacter = gameObject.GetComponentsInChildren<Rigidbody>();
-        foreach (var rigidbody in rigidbodysOnCharacter)
-        {
-            if (rigidbody.gameObject.layer == 9)
-            {
-                roomFadeRigidBody = rigidbody.gameObject;
-            }
-        }
-    }
-
-    public GameObject gameObject;
-    public Movement movement;
-    public Animator animator;
-    public CharacterState currentState;
-    public CinemachineVirtualCamera virtualCamera;
-    public OxygenData oxygenData;
-    public GameObject roomFadeRigidBody;
-    public CharacterData other;
-    public CharacterState lastState;
-
-}
-
-public class WomanData : CharacterData
-{
-    public WomanData(GameObject obj) : base(obj)
-    {
-    }
-}
-
-public class ManData : CharacterData
-{
-    public ManData(GameObject obj) : base(obj)
-    {
-    }
-}
 
 public enum Characters
 {
@@ -88,6 +46,19 @@ public class CharacterManager : MonoBehaviour
     public static CustomInputs customInputMaps;
 
     static CharacterData manData, womanData;
+
+    public static bool IsGameOver
+    {
+        get => (IsManDead || IsWomanDead);
+    }
+    public static bool IsManDead
+    {
+        get => manData.oxygenData.currentOxygen <= 0;
+    }
+    public static bool IsWomanDead
+    {
+        get => womanData.oxygenData.currentOxygen <= 0;
+    }
     
     //Character Prefab
 
@@ -96,7 +67,6 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private GameObject womanPrefab;
     [SerializeField]private GameObject cameraPrefab;
 
-    
     [Header ("Other")]
     [SerializeField] Transform spawnPointMan;
     [SerializeField] Transform spawnPointWoman;
@@ -155,7 +125,7 @@ public class CharacterManager : MonoBehaviour
 
     private void Update()
     {
-        if (Time.timeScale<=0)
+        if (Time.timeScale>=0)
         {
             manData.currentState = manData.currentState.UpdateState();
             womanData.currentState = womanData.currentState.UpdateState();
@@ -208,113 +178,6 @@ public class CharacterManager : MonoBehaviour
     #endregion
 }
 
-public abstract class CharacterState
-{
-    protected bool handleInteractables = true;
-    protected bool updateLastState = true;
-    protected Oxygenstation lastOxyggenStation;
-
-    public CharacterState(CharacterData data)
-    {
-        characterData = data;
-    }
-
-    public CharacterData characterData;
-    public CharacterState UpdateState() //Update Method that every State checks everytime
-    {
-        if (updateLastState)
-            characterData.lastState = characterData.currentState;
-
-        if (!(characterData.currentState is AIState))
-            CamManager.FindOccludingObjects(characterData.gameObject.transform);
-
-        HandleOxygen();
-
-        if (handleInteractables)
-        {
-            HandleInteractable(out CharacterState interactableState);
-            if (interactableState != null)
-                return interactableState;
-        }
-
-        //Handle Cutscene
-        if (characterData.other.currentState is WalkTowards && !(characterData.currentState is CutsceneState))
-        {
-            WalkTowards walkTowards = characterData.other.currentState as WalkTowards;
-            return new WalkTowards(characterData,walkTowards.GetCutSceneHandler());
-        }
-           
-        return SpecificStateUpdate();
-    }
-
-    public void HandleOxygen()
-    {   
-        Oxygenstation oxygenstation  = characterData.movement.oxygenstation;
-        if (oxygenstation!=null)
-        {
-            if (characterData.oxygenData.currentOxygen<=characterData.oxygenData.maxOxygen)
-                characterData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
-        }
-        else
-        {
-            characterData.oxygenData.FallOff();
-        }
-
-    }
-
-    public void HandleInteractable(out CharacterState updatedState)
-    {
-        updatedState = null;
-
-        if (characterData.movement.interactable != null
-        && CharacterManager.customInputMaps.InGame.Action.triggered)
-        {   
-
-            //Check if there a Player Action Type
-            if (characterData.movement.interactable.TryGetComponent(out PlayerActionType playerActionType))
-            {
-            
-                switch (playerActionType)
-                {
-                    default:
-                        break;
-                    case Crawl:
-                        updatedState = new CrawlState(characterData);
-                        break;
-                    case JumpOver:
-                        updatedState = new JumpOverState(characterData);
-                        break;
-                    case MoveBox:
-                        updatedState = new MoveObjectState(characterData);
-                      break;
-                    case CutsceneTrigger:
-                        var cutsceneTrigger = playerActionType as CutsceneTrigger;
-                        updatedState = new WalkTowards(characterData,cutsceneTrigger.GetCutsceneHandler());
-                    break;
-                }
-            }
-
-            //Interact with Object without switching state
-            else
-            {
-                Movement movement = characterData.movement;
-                if (movement.interactable.TryGetComponent(out TriggerByCharacter triggerByCharacter))
-                {
-                    triggerByCharacter.Activate(movement);
-                    characterData.movement.interactable = null;
-                }
-            }
-        }
-    }
-
-    public abstract CharacterState SpecificStateUpdate(); //Specifically for a certain state designed actions
-
-    protected CharacterState SwitchState(CharacterState updatedState)
-    {
-        return updatedState;
-    }
-
-}
 
 class SetUpState : CharacterState
 {
