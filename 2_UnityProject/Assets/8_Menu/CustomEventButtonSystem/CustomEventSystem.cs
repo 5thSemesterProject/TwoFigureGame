@@ -329,14 +329,13 @@ public class CustomEventSystem : MonoBehaviour
     private IEnumerator SuccessionNavigation(NavigateDirections direction)
     {
         Navigate(direction);
-
-        yield return new WaitForSeconds(firstClickDelay);
+        yield return new WaitForSecondsRealtime(firstClickDelay);
 
         while (true)
         {
             Navigate(direction);
 
-            yield return new WaitForSeconds(minimumClickDelay);
+            yield return new WaitForSecondsRealtime(minimumClickDelay);
         }
     }
 
