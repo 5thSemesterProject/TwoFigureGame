@@ -47,7 +47,7 @@ public class ButtonChangeColor : CustomButtonFunctionality
             textToChange = GetComponentsInChildren<TextMeshProUGUI>();
         }
 
-        if (imageToChange == null || textToChange.Length <= 0)
+        if (imageToChange == null || imageToChange.Length <= 0)
         {
             imageToChange = GetComponentsInChildren<Image>();
         }

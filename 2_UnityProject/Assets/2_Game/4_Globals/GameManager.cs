@@ -26,8 +26,10 @@ public class GameManager : MonoBehaviour
     //Game Events
     public event System.Action<InputAction.CallbackContext> gamePause;
 
+    //EndGame
     public delegate void EndGame(EndCondition endCondition);
     public event EndGame gameEnd;
+    public GameObject endScreenPrefab;
     public bool hasGameEnded = false;
 
     #region Startup
@@ -129,36 +131,12 @@ public class GameManager : MonoBehaviour
 
     public static void EndGameLogic(EndCondition endCondition)
     {
-        instance.StartCoroutine(_EndGame(endCondition));
-    }
-
-    private static IEnumerator _EndGame(EndCondition endCondition)
-    {
         UnSubscribeEvents();
 
-        switch (endCondition)
-        {
-            case EndCondition.Win:
-                Debug.Log("YOU WIN!");
-                yield return new WaitForSecondsRealtime(2);
-                SceneManager.LoadScene("MainMenu");
-                yield break;
-            case EndCondition.OxygenMan:
-                Debug.Log("Man Died!");
-                break;
-            case EndCondition.OxygenWoman:
-                Debug.Log("Woman Died!");
-                break;
-            case EndCondition.Misc:
-            default:
-                Debug.Log("The game designers have no clue why you died... sorry.");
-                break;
-        }
+        GameObject endPrefab = Instantiate(instance.endScreenPrefab);
 
-        yield return new WaitForSecondsRealtime(2);
-        SceneManager.LoadScene("LevelScene");
-
-        yield return null;
+        EndGameManager endGameManager = endPrefab.GetComponent<EndGameManager>();
+        endGameManager.EndGame(endCondition);
     }
     #endregion
 }
