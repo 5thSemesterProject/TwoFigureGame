@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class RoomFadeLogic : MonoBehaviour
     [SerializeField] private float maxFadeRadius = 50;
     [SerializeField] private float fadeTime = 1;
     [SerializeField] private float CharacterRadius = 5;
+
+    [Header("Activation")]
+    [SerializeField] private GameObject rootObject;
 
     private Coroutine fadeRoutine;
     private BoxCollider[] roomColliders;
@@ -26,6 +30,11 @@ public class RoomFadeLogic : MonoBehaviour
     #region Enter / Exit
     void Start()
     {
+        if (rootObject == null)
+        {
+            Debug.LogWarning("No Room root object assigned! Room will not be toggled!");
+        }
+
         if (materials == null || materials.Length == 0)
         {
             Debug.LogWarning("Something went wrong. No material assigned.");
@@ -54,6 +63,15 @@ public class RoomFadeLogic : MonoBehaviour
     {
         SetMaterialInt(nameShouldFade, visible ? 0 : 1);
         SetMaterialFloat(nameRadius, visible ? maxFadeRadius : 0);
+        SetRoomActive(visible);
+    }
+
+    private void SetRoomActive(bool visible)
+    {
+        if (rootObject != null)
+        {
+            rootObject.SetActive(visible);
+        }
     }
     #endregion
 
@@ -154,6 +172,7 @@ public class RoomFadeLogic : MonoBehaviour
 
         //Make Fadable
         SetMaterialInt(nameShouldFade, 1);
+        SetRoomActive(true);
 
         //Set Radius Over Time
         while (bFadeIn ? currentRadius < targetRadius : targetRadius < currentRadius)

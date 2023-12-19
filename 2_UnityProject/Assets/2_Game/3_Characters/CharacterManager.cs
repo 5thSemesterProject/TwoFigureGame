@@ -1,7 +1,9 @@
 using Cinemachine;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
 #region Data
 public class OxygenData
@@ -35,7 +37,7 @@ public class CharacterData
     {
         gameObject = obj;
         movement = gameObject.GetComponent<Movement>();
-        animator = gameObject.GetComponent<Animator>();
+        animator = gameObject.GetComponentInChildren<Animator>();
 
         var rigidbodysOnCharacter = gameObject.GetComponentsInChildren<Rigidbody>();
         foreach (var rigidbody in rigidbodysOnCharacter)
@@ -54,6 +56,9 @@ public class CharacterData
     public CinemachineVirtualCamera virtualCamera;
     public OxygenData oxygenData;
     public GameObject roomFadeRigidBody;
+    public CharacterData other;
+    public CharacterState lastState;
+
 }
 
 public class WomanData : CharacterData
@@ -82,33 +87,50 @@ public class CharacterManager : MonoBehaviour
     //Inputs
     public static CustomInputs customInputMaps;
 
-    private static CharacterData manData, womanData;
+    static CharacterData manData, womanData;
     
-
-
     //Character Prefab
 
     [Header("Prefabs")]
     [SerializeField] private GameObject manPrefab;
     [SerializeField] private GameObject womanPrefab;
     [SerializeField]private GameObject cameraPrefab;
+
     
+    [Header ("Other")]
+    [SerializeField] Transform spawnPointMan;
+    [SerializeField] Transform spawnPointWoman;
 
 
     [Header("Debugging")]
     [SerializeField] TextMeshProUGUI debuggingCharacterStateMachines;
     [SerializeField] TextMeshProUGUI debuggingOxygenCharacters;
 
+
+
     //Active Character
     public static GameObject ActiveCharacterRigidbody
     {
         get
         {
-            if (manData.currentState.GetType() == typeof(AIState))
+            if (CheckAIState(manData))
             {
                 return womanData.roomFadeRigidBody;
             }
             return manData.roomFadeRigidBody;
+        }
+    }
+
+    
+    public static CharacterData ActiveCharacterData
+    {
+        get
+        {
+            if (CheckAIState(manData))
+            {
+                return womanData;
+            }
+            return manData;
         }
     }
 
@@ -125,28 +147,40 @@ public class CharacterManager : MonoBehaviour
         CamManager.SetCamPrefab(cameraPrefab);
     }
 
+    static bool CheckAIState(CharacterData characterData)
+    {
+        return characterData.currentState.GetType() == typeof(AIState);
+    }
+
+
     private void Update()
     {
-        manData.currentState = manData.currentState.UpdateState();
-        womanData.currentState = womanData.currentState.UpdateState();
+        if (Time.timeScale<=0)
+        {
+            manData.currentState = manData.currentState.UpdateState();
+            womanData.currentState = womanData.currentState.UpdateState();
 
-        debuggingCharacterStateMachines.text = "Woman: " + womanData.currentState.GetType() + "\n Man: " + manData.currentState.GetType();
-        debuggingOxygenCharacters.text = "WomanOxy: " + womanData.oxygenData.currentOxygen + "\n ManOxy: " + manData.oxygenData.currentOxygen;
+            debuggingCharacterStateMachines.text = "Woman: " + womanData.currentState.GetType() + "\n Man: " + manData.currentState.GetType();
+            debuggingOxygenCharacters.text = "WomanOxy: " + womanData.oxygenData.currentOxygen + "\n ManOxy: " + manData.oxygenData.currentOxygen;
+        }
     }
+
 
     #region Setup
 
     void SpawnCharacters()
     {
         //Prefab Setup
-        GameObject spawnedMan = Instantiate(manPrefab, Vector3.forward, Quaternion.identity);
+        GameObject spawnedMan = Instantiate(manPrefab, spawnPointMan?spawnPointMan.position:Vector3.forward, Quaternion.identity);
         spawnedMan.name = "SpawnedMan";
-        GameObject spawnedWoman = Instantiate(womanPrefab, Vector3.forward * 2, Quaternion.identity);
-        spawnedMan.name = "SpawnedWoman";
+        GameObject spawnedWoman = Instantiate(womanPrefab, spawnPointWoman?spawnPointWoman.position:Vector3.forward*2, Quaternion.identity);
+        spawnedWoman.name = "SpawnedWoman";
         womanData = new WomanData(spawnedWoman);
         womanData.movement.characterType = CharacterType.Woman;
         manData = new ManData(spawnedMan);
         manData.movement.characterType = CharacterType.Man;
+        manData.other = womanData;
+        womanData.other   = manData;
 
         //Oxygen Setup
         womanData.oxygenData = new OxygenData(100, 1f);
@@ -177,6 +211,7 @@ public class CharacterManager : MonoBehaviour
 public abstract class CharacterState
 {
     protected bool handleInteractables = true;
+    protected bool updateLastState = true;
     protected Oxygenstation lastOxyggenStation;
 
     public CharacterState(CharacterData data)
@@ -187,6 +222,9 @@ public abstract class CharacterState
     public CharacterData characterData;
     public CharacterState UpdateState() //Update Method that every State checks everytime
     {
+        if (updateLastState)
+            characterData.lastState = characterData.currentState;
+
         if (!(characterData.currentState is AIState))
             CamManager.FindOccludingObjects(characterData.gameObject.transform);
 
@@ -199,6 +237,13 @@ public abstract class CharacterState
                 return interactableState;
         }
 
+        //Handle Cutscene
+        if (characterData.other.currentState is WalkTowards && !(characterData.currentState is CutsceneState))
+        {
+            WalkTowards walkTowards = characterData.other.currentState as WalkTowards;
+            return new WalkTowards(characterData,walkTowards.GetCutSceneHandler());
+        }
+           
         return SpecificStateUpdate();
     }
 
@@ -213,7 +258,8 @@ public abstract class CharacterState
         else
         {
             characterData.oxygenData.FallOff();
-        }    
+        }
+
     }
 
     public void HandleInteractable(out CharacterState updatedState)
@@ -241,10 +287,14 @@ public abstract class CharacterState
                     case MoveBox:
                         updatedState = new MoveObjectState(characterData);
                       break;
+                    case CutsceneTrigger:
+                        var cutsceneTrigger = playerActionType as CutsceneTrigger;
+                        updatedState = new WalkTowards(characterData,cutsceneTrigger.GetCutsceneHandler());
+                    break;
                 }
             }
 
-            ////Interact with Object without switching state
+            //Interact with Object without switching state
             else
             {
                 Movement movement = characterData.movement;
@@ -312,7 +362,7 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-        characterData.movement.MovePlayer(Vector2.zero, 0);
+       // characterData.movement.MovePlayer(Vector2.zero, 0);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -474,4 +524,7 @@ class MoveObjectState : CharacterState
 
         return this;
     }
+ 
 }
+
+

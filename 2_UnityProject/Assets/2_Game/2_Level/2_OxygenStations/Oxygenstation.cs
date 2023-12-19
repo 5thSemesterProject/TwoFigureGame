@@ -7,6 +7,14 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
    OxygenData oxygenData;
    [SerializeField]float chargeRate = 5.0f;
    [SerializeField] float smokeIntersectionRadius;
+   [SerializeField] Material fluidMaterial;
+
+    [SerializeField]float maxEmission = 20;
+   float targetEmission;
+   float initialEmission = 0;
+   Coroutine emissionCoroutine;
+
+   bool isCharging;
 
    int amountOfCharacters;
 
@@ -19,13 +27,15 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
         if (TryGetComponent(out SphereCollider sphereCollider))
         {
             sphereCollider.radius = smokeIntersectionRadius;
-            //sphereCollider.layerOverridePriority = 0;
             sphereCollider.includeLayers = Physics.AllLayers;
         }
         else
         {
            Debug.LogWarning("Missing Sphere Collider. Pls add a sphere collider with on trigger on "+gameObject.name);
         }
+
+        initialEmission = GetEmission();
+        SetFluidLevel();
         
     }
 
@@ -41,12 +51,23 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     {
         if (oxygenData.currentOxygen>0)
         {
+            isCharging = true;
             oxygenData.currentOxygen-=chargeRate*Time.deltaTime;
+            SetFluidLevel();
+            LerpEmission();
             return chargeRate*Time.deltaTime;
         }
         
         return 0;
     }
+
+    void SetFluidLevel()
+    {
+        float fluidLevel = (oxygenData.maxOxygen-oxygenData.currentOxygen)/oxygenData.maxOxygen;
+        fluidMaterial.SetFloat("_Cutoff",fluidLevel);
+    }
+
+    
 
     public float GetIntersectionRadius()
     {
@@ -91,4 +112,56 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
             amountOfCharacters--;
         }
     }
+
+
+    #region Emission Handling
+
+    public void LerpEmission()
+    {
+        if (emissionCoroutine == null)
+        {
+            emissionCoroutine = StartCoroutine(_LerpEmission());
+        }
+  
+    }
+    IEnumerator _LerpEmission()
+    {
+        float currentEmission = GetEmission();
+        float smoothTime = 0.33f;
+        float velocity = 0;
+
+        while (true)
+        {
+            targetEmission = isCharging?maxEmission:initialEmission;
+
+            currentEmission = Mathf.SmoothDamp(currentEmission, targetEmission, ref velocity, smoothTime);
+
+            if (currentEmission<=initialEmission)
+            {
+                currentEmission = targetEmission;
+                SetEmission(currentEmission);
+                break;
+            }
+
+            SetEmission(currentEmission);
+            isCharging = false;
+
+            yield return null;
+        }
+
+        emissionCoroutine = null; 
+    }
+
+    public void SetEmission(float inputAlpha)
+    {
+
+        fluidMaterial.SetFloat("_Emission",inputAlpha);
+    }
+
+    public float GetEmission()
+    {
+        return fluidMaterial.GetFloat("_Emission");
+    }
+    #endregion
+
 }

@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 public enum EndCondition
 {
     Win,
-    Oxygen,
+    OxygenMan,
+    OxygenWoman,
     Misc,
 }
 
@@ -15,9 +16,9 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
 
-    private Canvas canvas;
     private CustomInputs inputMapping;
 
+    //Pause
     public GameObject pauseMenuPrefab;
     private WSUI_Element pauseMenu;
     private bool pause;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     public delegate void EndGame(EndCondition endCondition);
     public event EndGame gameEnd;
+    public bool hasGameEnded = false;
 
     #region Startup
     private void OnEnable()
@@ -48,31 +50,55 @@ public class GameManager : MonoBehaviour
             instance = null;
         }
     }
-
-    //private void Awake()
-    //{
-    //    DontDestroyOnLoad(this.gameObject);
-    //}
     #endregion
 
+    #region Event Subscbscription
     private void Start()
     {
-        //Subscribe End Game Events
-        gameEnd += EndGameLogic;
-
-        //Subscribe Pause Menu Events
-        inputMapping = CustomEventSystem.GetInputMapping;
-        gamePause += TogglePause;
-        inputMapping.InGame.Pause.performed += gamePause;
-        inputMapping.InUI.Escape.performed += gamePause;
+        UnSubscribeEvents();
+        SubscribeEvents();
     }
 
+    public static void SubscribeEvents()
+    {
+        //Subscribe End Game Events
+        instance.gameEnd += EndGameLogic;
+
+        //Subscribe Pause Menu Events
+        if (instance.inputMapping == null)
+        {
+            instance.inputMapping = CustomEventSystem.GetInputMapping;
+        }
+        instance.gamePause += instance.TogglePause;
+        instance.inputMapping.InGame.Pause.performed += instance.gamePause;
+    }
+
+    public static void UnSubscribeEvents()
+    {
+        //UnSubscribe End Game Events
+        instance.gameEnd -= EndGameLogic;
+
+        //UnSubscribe Pause Menu Events
+        if (instance.inputMapping == null)
+        {
+            instance.inputMapping = CustomEventSystem.GetInputMapping;
+        }
+        instance.gamePause -= instance.TogglePause;
+        instance.inputMapping.InGame.Pause.performed -= instance.gamePause;
+    }
+    #endregion
+
     #region PauseMenu
+    public static void TogglePauseManual()
+    {
+        InputAction.CallbackContext t = new InputAction.CallbackContext();
+        instance.TogglePause(t);
+    }
+
     public void TogglePause(InputAction.CallbackContext context)
     {
-
-        Debug.Log("HY");
         pause = !pause;
+        Debug.Log(pause);
         if (pause)
         {
             pauseMenu = WSUI.AddOverlay(pauseMenuPrefab);
@@ -89,6 +115,18 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region EndGame
+    private void Update()
+    {
+        if (CharacterManager.IsGameOver && !hasGameEnded)
+        {
+            if (CharacterManager.IsWomanDead)
+                gameEnd.Invoke(EndCondition.OxygenWoman);
+            else
+                gameEnd.Invoke(EndCondition.OxygenMan);
+            hasGameEnded = true;
+        }
+    }
+
     public static void EndGameLogic(EndCondition endCondition)
     {
         instance.StartCoroutine(_EndGame(endCondition));
@@ -96,12 +134,31 @@ public class GameManager : MonoBehaviour
 
     private static IEnumerator _EndGame(EndCondition endCondition)
     {
+        UnSubscribeEvents();
+
+        switch (endCondition)
+        {
+            case EndCondition.Win:
+                Debug.Log("YOU WIN!");
+                yield return new WaitForSecondsRealtime(2);
+                SceneManager.LoadScene("MainMenu");
+                yield break;
+            case EndCondition.OxygenMan:
+                Debug.Log("Man Died!");
+                break;
+            case EndCondition.OxygenWoman:
+                Debug.Log("Woman Died!");
+                break;
+            case EndCondition.Misc:
+            default:
+                Debug.Log("The game designers have no clue why you died... sorry.");
+                break;
+        }
+
+        yield return new WaitForSecondsRealtime(2);
+        SceneManager.LoadScene("LevelScene");
+
         yield return null;
     }
     #endregion
-
-    public static void SoftPauseGame()
-    {
-
-    }
 }
