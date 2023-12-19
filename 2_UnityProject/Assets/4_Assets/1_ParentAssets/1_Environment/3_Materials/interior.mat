@@ -29,12 +29,18 @@ Material:
   - TransparentBackface
   - RayTracingPrepass
   - TransparentDepthPostpass
-  m_LockedProperties: :m_EnableInstancingVariants _Animate _AnimationSpeed _Color
-    _Emission _MainTexture _Metalic _NoiseInfluence _NoiseScale _NormalMap _Roughness
-    _Tint _UseMetallicMap _UseNormalMap _UseRoughnessMap
+  m_LockedProperties: :m_LightmapFlags :m_EnableInstancingVariants :m_CustomRenderQueue
+    _AddPrecomputedVelocity _AlphaCutoffEnable _AlphaMap _Animate _AnimationSpeed
+    _Color _DoubleSidedEnable _DoubleSidedGIMode _Emission _MainTexture _Metalic
+    _NoiseInfluence _NoiseScale _NormalMap _OpaqueCullMode _RayTracing _ReceivesSSR
+    _Roughness _SupportDecals _SurfaceType _Tint _UseMetallicMap _UseNormalMap _UseRoughnessMap
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AlphaMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -178,6 +184,7 @@ Material:
     - _ATDistance: 1
     - _AddPrecomputedVelocity: 0
     - _AlbedoAffectEmissive: 0
+    - _Alpha: 1
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 1
     - _AlphaCutoffPostpass: 0.5
