@@ -91,7 +91,18 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    
+    public static Characters ActiveCharacter
+    {
+        get
+        {
+            if (CheckAIState(manData))
+            {
+                return Characters.Woman;
+            }
+            return Characters.Man;
+        }
+    }
+
     public static CharacterData ActiveCharacterData
     {
         get
