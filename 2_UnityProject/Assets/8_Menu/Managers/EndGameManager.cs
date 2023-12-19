@@ -67,7 +67,7 @@ public class EndGameManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(1);
         
 
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(1);
 
         //WSUI.AddOverlay(LoseScreenTransition);
 
