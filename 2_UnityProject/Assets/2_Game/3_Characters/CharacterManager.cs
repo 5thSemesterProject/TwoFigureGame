@@ -155,11 +155,14 @@ public class CharacterManager : MonoBehaviour
 
     private void Update()
     {
-        manData.currentState = manData.currentState.UpdateState();
-        womanData.currentState = womanData.currentState.UpdateState();
+        if (Time.timeScale<=0)
+        {
+            manData.currentState = manData.currentState.UpdateState();
+            womanData.currentState = womanData.currentState.UpdateState();
 
-        debuggingCharacterStateMachines.text = "Woman: " + womanData.currentState.GetType() + "\n Man: " + manData.currentState.GetType();
-        debuggingOxygenCharacters.text = "WomanOxy: " + womanData.oxygenData.currentOxygen + "\n ManOxy: " + manData.oxygenData.currentOxygen;
+            debuggingCharacterStateMachines.text = "Woman: " + womanData.currentState.GetType() + "\n Man: " + manData.currentState.GetType();
+            debuggingOxygenCharacters.text = "WomanOxy: " + womanData.oxygenData.currentOxygen + "\n ManOxy: " + manData.oxygenData.currentOxygen;
+        }
     }
 
 
@@ -291,7 +294,7 @@ public abstract class CharacterState
                 }
             }
 
-            ////Interact with Object without switching state
+            //Interact with Object without switching state
             else
             {
                 Movement movement = characterData.movement;
