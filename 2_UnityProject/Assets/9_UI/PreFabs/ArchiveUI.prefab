@@ -270,7 +270,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
+  ButtonClickType: 1
   isDefaultButton: 0
+  isBackButton: 0
+  interactable: 1
   navigation:
     up: {fileID: 0}
     right: {fileID: 0}
@@ -288,6 +291,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange: []
+  imageToChange: []
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
@@ -1098,7 +1104,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &846571311823499898
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1294,7 +1300,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
+  ButtonClickType: 1
   isDefaultButton: 0
+  isBackButton: 0
+  interactable: 1
   navigation:
     up: {fileID: 0}
     right: {fileID: 0}
@@ -1312,6 +1321,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange: []
+  imageToChange: []
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
@@ -1376,7 +1388,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
+  ButtonClickType: 1
   isDefaultButton: 0
+  isBackButton: 0
+  interactable: 1
   navigation:
     up: {fileID: 0}
     right: {fileID: 0}
@@ -1394,6 +1409,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange: []
+  imageToChange: []
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
