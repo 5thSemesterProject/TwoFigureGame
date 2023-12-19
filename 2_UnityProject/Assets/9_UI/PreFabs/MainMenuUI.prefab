@@ -1268,7 +1268,7 @@ MonoBehaviour:
   holdsPointer: 0
   ButtonClickType: 1
   isDefaultButton: 0
-  isBackButton: 0
+  isBackButton: 1
   interactable: 1
   navigation:
     up: {fileID: 3169372979874542562}
@@ -1369,6 +1369,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 975751011323193424}
+  - component: {fileID: 8169472470946610783}
+  - component: {fileID: 1809136361501592103}
   m_Layer: 5
   m_Name: MainMenuUI
   m_TagString: Untagged
@@ -1398,6 +1400,32 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &8169472470946610783
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5210106685311136825}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &1809136361501592103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5210106685311136825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aed86d87f810a46078c10a376fee85d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 0}
+  interactable: 0
 --- !u!1 &5604138108836391758
 GameObject:
   m_ObjectHideFlags: 0
