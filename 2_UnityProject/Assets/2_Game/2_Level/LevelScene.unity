@@ -4420,7 +4420,7 @@ MonoBehaviour:
   m_TileSize: 256
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.06666667
-  m_MinRegionArea: 20
+  m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 7fb47b3f86c4f6b4ca814ddc38dcda88, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &1405552172
@@ -4452,8 +4452,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1143289052}
   - {fileID: 702504986}
+  - {fileID: 1143289052}
   m_Father: {fileID: 1667880893}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1462179987
@@ -5007,7 +5007,7 @@ PrefabInstance:
     - target: {fileID: 6820310742034594229, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
       propertyPath: spawnPointMan
       value: 
-      objectReference: {fileID: 1143289052}
+      objectReference: {fileID: 702504986}
     - target: {fileID: 6820310742034594229, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
       propertyPath: spawnPointWoman
       value: 
