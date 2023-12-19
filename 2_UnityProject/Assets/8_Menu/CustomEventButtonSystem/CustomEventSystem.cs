@@ -25,6 +25,7 @@ public class CustomEventSystem : MonoBehaviour
     public static event ButtonEvent allNoHover;
     public bool startWithDefaultHovered = true;
     public bool recieveUIInput = true;
+    public bool debug = false;
     public static bool InputEnabled { get => current.recieveUIInput; }
 
     //Important Buttons
@@ -88,7 +89,7 @@ public class CustomEventSystem : MonoBehaviour
 
         if (customButtons == null || customButtons.Length <= 0 || customButtons[0] == null)
         {
-            Debug.LogWarning("No Buttons Existent");
+            LogWarning("No Buttons Existent");
             return null;
         }
 
@@ -108,7 +109,7 @@ public class CustomEventSystem : MonoBehaviour
 
         if (customButtons == null || customButtons.Length <= 0 || customButtons[0] == null)
         {
-            Debug.LogWarning("No Buttons Existent");
+            LogWarning("No Buttons Existent");
             return null;
         }
 
@@ -155,7 +156,7 @@ public class CustomEventSystem : MonoBehaviour
             {
                 DisableControlSchemes();
                 actionMap.Enable();
-                Debug.Log("Enabled" + actionMap.name);
+                Log("Enabled" + actionMap.name);
             }
         }
 
@@ -170,7 +171,7 @@ public class CustomEventSystem : MonoBehaviour
             if (actionMap.enabled)
             {
                 actionMap.Disable();
-                Debug.Log("Disabled" + actionMap.name);
+                Log("Disabled" + actionMap.name);
             }
         }
     }
@@ -180,12 +181,12 @@ public class CustomEventSystem : MonoBehaviour
     public static void DisableUIInputs()
     {
         current.recieveUIInput = false;
-        //Debug.Log("UI Inputs are Disabled");
+        Log("UI Inputs are Disabled");
     }
     public static void EnableUIInputs()
     {
         current.recieveUIInput = true;
-        //Debug.Log("UI Inputs are Enabled");
+        Log("UI Inputs are Enabled");
     }
     public static void ResetSelectedButtons()
     {
@@ -212,7 +213,7 @@ public class CustomEventSystem : MonoBehaviour
     public static void DehoverAll()
     {
         allNoHover.Invoke();
-        Debug.LogWarning("All buttons DeHovered!");
+        LogWarning("All buttons DeHovered!");
     }
     #endregion
 
@@ -223,7 +224,7 @@ public class CustomEventSystem : MonoBehaviour
 
         if (newSelect.state != ButtonState.Selected)
         {
-            Debug.LogWarning("Selected button was not in the selected state!");
+            LogWarning("Selected button was not in the selected state!");
         }
 
         if (selectedButton != null)
@@ -254,14 +255,14 @@ public class CustomEventSystem : MonoBehaviour
         //Return if null
         if (hoveredButton == null)
         {
-            Debug.LogWarning("No hovered button found.");
+            LogWarning("No hovered button found.");
             return;
         }
 
         //Return if button is not interactable or the eventsystem is disabled
         if (!hoveredButton.IsInteractable || !InputEnabled)
         {
-            Debug.LogWarning("Hovered button is not interactable or Input is disabled.");
+            LogWarning("Hovered button is not interactable or Input is disabled.");
             return;
         }
 
@@ -273,14 +274,14 @@ public class CustomEventSystem : MonoBehaviour
         //Return if null
         if (backButton == null)
         {
-            Debug.LogWarning("No back button found.");
+            LogWarning("No back button found.");
             return;
         }
 
         //Return if button is not interactable or the eventsystem is disabled
         if (!backButton.IsInteractable || !InputEnabled)
         {
-            Debug.LogWarning("Back button is not interactable or Input is disabled.");
+            LogWarning("Back button is not interactable or Input is disabled.");
             return;
         }
 
@@ -391,6 +392,24 @@ public class CustomEventSystem : MonoBehaviour
             return NavigateDirections.Down;
         }
         return NavigateDirections.Up;
+    }
+    #endregion
+
+    #region Debug
+    private static void Log(object message)
+    {
+        if (current.debug)
+            Debug.Log(message);
+    }
+    private static void LogWarning(object message)
+    {
+        if (current.debug)
+            Debug.LogWarning(message);
+    }
+    private static void LogError(object message)
+    {
+        if (current.debug)
+            Debug.LogError(message);
     }
     #endregion
 }
