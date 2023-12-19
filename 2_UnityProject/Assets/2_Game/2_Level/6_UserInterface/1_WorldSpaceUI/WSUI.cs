@@ -20,10 +20,10 @@ public class WSUI : MonoBehaviour
          canvas = GetComponent<Canvas>();
     }
 
-    public static WSUI_Element ShowPrompt (GameObject prefab,Transform transformToFollow,out GameObject spawnedElement)
+    public static WSUI_Element ShowPrompt (GameObject prefab,Transform transformToFollow,out WSUI_Element spawnedElement)
     {
         WSUI_Element element = SpawnIUElement(prefab);
-        spawnedElement = element.gameObject;
+        spawnedElement = element;
 
         element.SetTarget(transformToFollow);
 
@@ -61,6 +61,20 @@ public class WSUI : MonoBehaviour
       Destroy(element.gameObject);
       elements.Remove(element);
     }
+
+    public static void RemoveAndFadeOutPrompt(WSUI_Element element, float smoothTime = 0.33f)
+    {
+        element.StartCoroutine( _RemoveAndFadeOutPrompt(element,smoothTime));
+    }
+
+    static IEnumerator _RemoveAndFadeOutPrompt(WSUI_Element element, float smoothTime = 0.33f)
+    {
+        element.LerpAlpha(0,smoothTime);
+        yield return new WaitUntil(()=>element.GetAlpha()<=0);
+        elements.Remove(element);
+        element.SetRemoved(true);
+    }
+
 
     public static WSUI_Element AddOverlay(GameObject overlayPrefab)
     {

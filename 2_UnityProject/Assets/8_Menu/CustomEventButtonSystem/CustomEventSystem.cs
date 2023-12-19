@@ -15,19 +15,25 @@ public enum NavigateDirections
     Right,
 }
 
+
 [Tooltip("Trash but better than Unitys")]
 [RequireComponent(typeof(EventSystem))]
 public class CustomEventSystem : MonoBehaviour
 {
     //Internal
     public static CustomEventSystem current;
+    public static event ButtonEvent allNoHover;
     public bool startWithDefaultHovered = true;
+    public bool recieveUIInput = true;
+    public bool debug = false;
+    public static bool InputEnabled { get => current.recieveUIInput; }
 
     //Important Buttons
     public static CustomButton selectedButton;
     public static CustomButton hoveredButton;
+    private CustomButton backButton;
     private CustomButton defaultButton;
-    private CustomButton currentSelection
+    public CustomButton activeButton
     {
         get 
         {
@@ -42,6 +48,8 @@ public class CustomEventSystem : MonoBehaviour
             return hoveredButton;
         }
     }
+    public static CustomButton BackButton { get => current != null ? current.backButton : null; set => current.backButton = value; }
+    public static CustomButton DefaultButton { get => current != null ? current.defaultButton : null; set => current.defaultButton = value; }
 
     //Custom Input
     public static CustomInputs GetInputMapping { get => current.inputMapping; }
@@ -62,9 +70,8 @@ public class CustomEventSystem : MonoBehaviour
         else
             Destroy(this);
 
-        //Set up custom inputs and default button
+        //Set up custom inputs
         inputMapping = new CustomInputs(); //Custom
-        defaultButton = GetDefaultButton();
 
         //Register Navigation Callbacks
         SubscribeCallbacks();
@@ -72,11 +79,8 @@ public class CustomEventSystem : MonoBehaviour
 
     private void Start()
     {
-        //Hover Default button if enabled
-        if (startWithDefaultHovered && defaultButton != null)
-        {
-            defaultButton.HoverLogic();
-        }
+        //Reset Selection and Hover Default if enabled
+        ResetSelectedButtons();
     }
 
     private static CustomButton GetDefaultButton()
@@ -85,13 +89,13 @@ public class CustomEventSystem : MonoBehaviour
 
         if (customButtons == null || customButtons.Length <= 0 || customButtons[0] == null)
         {
-            Debug.LogWarning("No Buttons Existent");
+            LogWarning("No Buttons Existent");
             return null;
         }
 
         for (int i = 0; i < customButtons.Length; i++)
         {
-            if (customButtons[i].isDefaultButton)
+            if (customButtons[i].IsDefault && customButtons[i].IsInteractable)
             {
                 return customButtons[i];
             }
@@ -99,10 +103,31 @@ public class CustomEventSystem : MonoBehaviour
 
         return customButtons[0];
     }
+    private static CustomButton GetBackButton()
+    {
+        CustomButton[] customButtons = GameObject.FindObjectsOfType<CustomButton>();
+
+        if (customButtons == null || customButtons.Length <= 0 || customButtons[0] == null)
+        {
+            LogWarning("No Buttons Existent");
+            return null;
+        }
+
+        for (int i = 0; i < customButtons.Length; i++)
+        {
+            if (customButtons[i].IsBack && customButtons[i].IsInteractable)
+            {
+                return customButtons[i];
+            }
+        }
+
+        return null;
+    }
 
     private void SubscribeCallbacks() //Custom
     {
         inputMapping.InUI.Submit.performed += OnSubmit;
+        inputMapping.InUI.Back.performed += OnBack;
         inputMapping.InUI.Navigate.performed += TriggerNavigation;
         inputMapping.InUI.Navigate.canceled += TriggerNavigation;
     }
@@ -115,6 +140,7 @@ public class CustomEventSystem : MonoBehaviour
         }
 
         inputMapping.InUI.Submit.performed -= OnSubmit;
+        inputMapping.InUI.Back.performed -= OnBack;
         inputMapping.InUI.Navigate.performed -= TriggerNavigation;
         inputMapping.InUI.Navigate.canceled -= TriggerNavigation;
     }
@@ -130,11 +156,12 @@ public class CustomEventSystem : MonoBehaviour
             {
                 DisableControlSchemes();
                 actionMap.Enable();
-                Debug.Log("Enabled" + actionMap.name);
+                Log("Enabled" + actionMap.name);
             }
         }
 
-        current.defaultButton = GetDefaultButton();
+        EnableUIInputs();
+        ResetSelectedButtons();
     }
 
     public static void DisableControlSchemes()
@@ -144,9 +171,49 @@ public class CustomEventSystem : MonoBehaviour
             if (actionMap.enabled)
             {
                 actionMap.Disable();
-                Debug.Log("Disabled" + actionMap.name);
+                Log("Disabled" + actionMap.name);
             }
         }
+    }
+    #endregion
+
+    #region Enable/Disable UI Events
+    public static void DisableUIInputs()
+    {
+        current.recieveUIInput = false;
+        Log("UI Inputs are Disabled");
+    }
+    public static void EnableUIInputs()
+    {
+        current.recieveUIInput = true;
+        Log("UI Inputs are Enabled");
+    }
+    public static void ResetSelectedButtons()
+    {
+        if (selectedButton != null)
+        {
+            selectedButton.ForceNoHoverLogic();
+            selectedButton = null;
+        }
+        if (hoveredButton != null)
+        {
+            hoveredButton.ForceNoHoverLogic();
+            hoveredButton = null;
+        }
+
+        current.defaultButton = GetDefaultButton();
+        current.backButton = GetBackButton();
+
+        //Hover Default button if enabled
+        if (current.startWithDefaultHovered && current.defaultButton != null)
+        {
+            current.defaultButton.HoverLogic();
+        }
+    }
+    public static void DehoverAll()
+    {
+        allNoHover.Invoke();
+        LogWarning("All buttons DeHovered!");
     }
     #endregion
 
@@ -157,7 +224,7 @@ public class CustomEventSystem : MonoBehaviour
 
         if (newSelect.state != ButtonState.Selected)
         {
-            Debug.LogWarning("Selected button was not in the selected state!");
+            LogWarning("Selected button was not in the selected state!");
         }
 
         if (selectedButton != null)
@@ -182,18 +249,51 @@ public class CustomEventSystem : MonoBehaviour
         }
     }
 
+    #region Common Triggers
     public void OnSubmit(InputAction.CallbackContext context)
     {
+        //Return if null
         if (hoveredButton == null)
+        {
+            LogWarning("No hovered button found.");
             return;
+        }
+
+        //Return if button is not interactable or the eventsystem is disabled
+        if (!hoveredButton.IsInteractable || !InputEnabled)
+        {
+            LogWarning("Hovered button is not interactable or Input is disabled.");
+            return;
+        }
 
         hoveredButton.ClickLogic();
     }
 
+    public void OnBack(InputAction.CallbackContext context)
+    {
+        //Return if null
+        if (backButton == null)
+        {
+            LogWarning("No back button found.");
+            return;
+        }
+
+        //Return if button is not interactable or the eventsystem is disabled
+        if (!backButton.IsInteractable || !InputEnabled)
+        {
+            LogWarning("Back button is not interactable or Input is disabled.");
+            return;
+        }
+
+        backButton.HoverLogic();
+        backButton.ClickLogic();
+    }
+    #endregion
+
     #region Navigation
     private void TriggerNavigation(InputAction.CallbackContext context)
     {
-        if (currentSelection == null)
+        if (activeButton == null)
             return;
 
         //If Canceled
@@ -230,42 +330,51 @@ public class CustomEventSystem : MonoBehaviour
     private IEnumerator SuccessionNavigation(NavigateDirections direction)
     {
         Navigate(direction);
-
-        yield return new WaitForSeconds(firstClickDelay);
+        yield return new WaitForSecondsRealtime(firstClickDelay);
 
         while (true)
         {
             Navigate(direction);
 
-            yield return new WaitForSeconds(minimumClickDelay);
+            yield return new WaitForSecondsRealtime(minimumClickDelay);
         }
     }
 
     public void Navigate(NavigateDirections direction)
     {
-        CustomButton nextButton = null;
-        switch (direction)
-        {
-            case NavigateDirections.Up:
-                nextButton = currentSelection.navigation.up;
-                break;
-            case NavigateDirections.Down:
-                nextButton = currentSelection.navigation.down;
-                break;
-            case NavigateDirections.Left:
-                nextButton = currentSelection.navigation.left;
-                break;
-            case NavigateDirections.Right:
-                nextButton = currentSelection.navigation.right;
-                break;
-            default:
-                break;
-        }
+        CustomButton nextButton = GetNextActiveButton(activeButton, direction);
 
         if (nextButton == null)
             return;
 
         nextButton.HoverLogic();
+    }
+
+    private CustomButton GetNextActiveButton(CustomButton currentButton, NavigateDirections direction, int recursionCount = 0)
+    {
+        CustomButton nextButton = null;
+        switch (direction)
+        {
+            case NavigateDirections.Up:
+                nextButton = currentButton.navigation.up;
+                break;
+            case NavigateDirections.Down:
+                nextButton = currentButton.navigation.down;
+                break;
+            case NavigateDirections.Left:
+                nextButton = currentButton.navigation.left;
+                break;
+            case NavigateDirections.Right:
+                nextButton = currentButton.navigation.right;
+                break;
+            default:
+                break;
+        }
+
+        if (nextButton == null || recursionCount > 100)
+            return null;
+
+        return nextButton.IsInteractable ? nextButton : GetNextActiveButton(nextButton, direction, ++recursionCount);
     }
 
     private NavigateDirections GetNavigateDirection(Vector2 navigateVector)
@@ -283,6 +392,24 @@ public class CustomEventSystem : MonoBehaviour
             return NavigateDirections.Down;
         }
         return NavigateDirections.Up;
+    }
+    #endregion
+
+    #region Debug
+    private static void Log(object message)
+    {
+        if (current.debug)
+            Debug.Log(message);
+    }
+    private static void LogWarning(object message)
+    {
+        if (current.debug)
+            Debug.LogWarning(message);
+    }
+    private static void LogError(object message)
+    {
+        if (current.debug)
+            Debug.LogError(message);
     }
     #endregion
 }

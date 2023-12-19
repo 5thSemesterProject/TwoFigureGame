@@ -158,7 +158,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Escape",
+                    "name": "Back",
                     "type": "Button",
                     "id": "3651833d-f75d-423a-ad8f-bb8abf19093e",
                     "expectedControlType": "Button",
@@ -170,6 +170,15 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "16934c31-7862-4941-9b4f-b6d073ea3578",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AnyKey",
+                    "type": "Button",
+                    "id": "c6d7d6ef-c209-4b18-9a41-debe062e8295",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -437,7 +446,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Escape",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dfab337c-ab0e-4ab0-8035-0be7df23c414",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AnyKey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
