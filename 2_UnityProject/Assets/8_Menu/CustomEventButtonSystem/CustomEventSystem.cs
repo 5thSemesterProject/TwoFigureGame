@@ -15,6 +15,7 @@ public enum NavigateDirections
     Right,
 }
 
+
 [Tooltip("Trash but better than Unitys")]
 [RequireComponent(typeof(EventSystem))]
 public class CustomEventSystem : MonoBehaviour
