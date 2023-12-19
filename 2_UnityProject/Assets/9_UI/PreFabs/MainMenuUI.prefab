@@ -192,7 +192,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
+  ButtonClickType: 1
   isDefaultButton: 0
+  isBackButton: 0
+  interactable: 1
   navigation:
     up: {fileID: 555646661742923081}
     right: {fileID: 0}
@@ -225,6 +228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange: []
+  imageToChange: []
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
@@ -608,7 +614,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1260,7 +1266,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
+  ButtonClickType: 1
   isDefaultButton: 0
+  isBackButton: 0
+  interactable: 1
   navigation:
     up: {fileID: 3169372979874542562}
     right: {fileID: 0}
@@ -1293,6 +1302,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange: []
+  imageToChange: []
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
@@ -1600,7 +1612,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
+  ButtonClickType: 1
   isDefaultButton: 1
+  isBackButton: 0
+  interactable: 1
   navigation:
     up: {fileID: 0}
     right: {fileID: 0}
@@ -1633,6 +1648,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange: []
+  imageToChange: []
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
@@ -1794,6 +1812,7 @@ GameObject:
   - component: {fileID: 6067020452113417898}
   - component: {fileID: 6533673260649685231}
   - component: {fileID: 8366792787789933769}
+  - component: {fileID: 5424538783928436070}
   m_Layer: 5
   m_Name: ArchiveButton
   m_TagString: Untagged
@@ -1844,7 +1863,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
+  ButtonClickType: 1
   isDefaultButton: 0
+  isBackButton: 0
+  interactable: 1
   navigation:
     up: {fileID: 1131708709587932099}
     right: {fileID: 0}
@@ -1877,6 +1899,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange:
+  - {fileID: 3394346779826946116}
+  imageToChange:
+  - {fileID: 52313552356370046}
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
@@ -1896,6 +1923,26 @@ MonoBehaviour:
   buttonEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5424538783928436070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6495169342771608764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToChange:
+  - {fileID: 3394346779826946116}
+  imageToChange:
+  - {fileID: 3828123934831409122}
+  ToChangeType: 1
+  buttonColorNormal: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 0.39215687}
+  buttonColorHighlighted: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 0.39215687}
+  buttonColorSelected: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 0.39215687}
 --- !u!1 &6777594452856837291
 GameObject:
   m_ObjectHideFlags: 0
@@ -2088,7 +2135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2350,7 +2397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
+  m_Color: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 0.39215687}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
