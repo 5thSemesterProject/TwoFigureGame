@@ -13,6 +13,7 @@ public class WSUI_Element : MonoBehaviour
     Canvas canvas;
     RectTransform rectTransform;
     Vector2 offset = new Vector2(0,0);
+    bool removed = false;
 
     CanvasGroup canvasGroup;
 
@@ -77,6 +78,16 @@ public class WSUI_Element : MonoBehaviour
         
         //Set position
         rectTransform.anchoredPosition = newPos;
+   }
+
+   public bool GetRemoved()
+   {
+        return removed;
+   }
+
+   public void SetRemoved(bool removed)
+   {
+        this.removed = removed;
    }
 
 

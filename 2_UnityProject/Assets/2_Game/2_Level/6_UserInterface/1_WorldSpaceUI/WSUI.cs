@@ -64,7 +64,6 @@ public class WSUI : MonoBehaviour
 
     public static void RemoveAndFadeOutPrompt(WSUI_Element element, float smoothTime = 0.33f)
     {
-        elements.Remove(element);
         element.StartCoroutine( _RemoveAndFadeOutPrompt(element,smoothTime));
     }
 
@@ -73,7 +72,9 @@ public class WSUI : MonoBehaviour
         element.LerpAlpha(0,smoothTime);
         yield return new WaitUntil(()=>element.GetAlpha()<=0);
         elements.Remove(element);
+        element.SetRemoved(true);
     }
+
 
     public static WSUI_Element AddOverlay(GameObject overlayPrefab)
     {

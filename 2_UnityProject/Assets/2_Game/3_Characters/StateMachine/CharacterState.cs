@@ -50,14 +50,25 @@ public abstract class CharacterState
 
     public void HandleOxygenBar()
     {
+        WSUI_Element oxygenBar = characterData.oxygenBar;
+
+        if (oxygenBar != null && oxygenBar.GetRemoved())
+        {
+            GameObject.Destroy(oxygenBar.gameObject);
+            oxygenBar = null;
+        }
+                
         float currentOxygen = characterData.oxygenData.currentOxygen;
 
         if (currentOxygen<=characterData.oxygenData.maxOxygen)
         {   
-            if (characterData.oxygenBar == null)
+            if (oxygenBar == null)
                 WSUI.ShowPrompt(characterData.gameObject.GetComponentInChildren<CharacterUI>().GetOxygenBar().gameObject,characterData.gameObject.transform,out characterData.oxygenBar);
+            
+            oxygenBar = characterData.oxygenBar;
 
-            characterData.oxygenBar.GetComponent<OxygenBar>().SetValue(currentOxygen);    
+            oxygenBar.LerpAlphaToInitial();
+            oxygenBar.GetComponent<OxygenBar>().SetValue(currentOxygen);    
         }
         else
         {
@@ -69,7 +80,7 @@ public abstract class CharacterState
     {
         if (characterData.oxygenBar !=null)
         {
-            WSUI.RemovePrompt(characterData.oxygenBar);
+            WSUI.RemoveAndFadeOutPrompt(characterData.oxygenBar);
             characterData.oxygenBar = null;
         }
     }
