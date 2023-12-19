@@ -57,6 +57,8 @@ public class RoomFadeLogic : MonoBehaviour
         SetMaterialVector(nameEpicenter, Vector2.zero);
         SetMaterialVector(nameInactiveChar, Vector2.zero);
         SetMaterialFloat(nameCharRadius, 0);
+
+        CustomEvents.characterSwitch -= ReevaluateActiveCharacter;
     }
 
     private void SetVisible(bool visible)
