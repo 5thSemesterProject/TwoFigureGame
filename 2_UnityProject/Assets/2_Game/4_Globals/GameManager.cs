@@ -32,6 +32,14 @@ public class GameManager : MonoBehaviour
     public GameObject endScreenPrefab;
     public bool hasGameEnded = false;
 
+    private void OnGUI()
+    {
+        if (GUILayout.Button("End Game"))
+        {
+            gameEnd.Invoke(EndCondition.OxygenWoman);
+        }
+    }
+
     #region Startup
     private void OnEnable()
     {
