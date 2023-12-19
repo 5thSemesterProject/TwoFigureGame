@@ -76,8 +76,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291019715
-  m_fontColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    rgba: 4286611584
+  m_fontColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -145,6 +145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3598499884565931284}
+  - component: {fileID: 5608288736205374824}
   m_Layer: 5
   m_Name: PauseScreenUI Temp
   m_TagString: Untagged
@@ -175,6 +176,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5608288736205374824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189521557001687654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51cd963c5a5e44b56895840336c7251d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4759578228413236166
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,8 +471,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291019715
-  m_fontColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    rgba: 4286611584
+  m_fontColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -569,6 +582,7 @@ GameObject:
   - component: {fileID: 8207765134251110877}
   - component: {fileID: 8328339444845686908}
   - component: {fileID: 3617116855415733155}
+  - component: {fileID: 8226790933609210741}
   m_Layer: 5
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -618,7 +632,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
-  isDefaultButton: 0
+  ButtonClickType: 1
+  isDefaultButton: 1
+  isBackButton: 0
+  interactable: 1
   navigation:
     up: {fileID: 2202884158487756153}
     right: {fileID: 0}
@@ -636,9 +653,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange:
+  - {fileID: 1892493722231172311}
+  imageToChange: []
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &8226790933609210741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5455508994937547276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae6d8bf47cdb45cc82829a1453381d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTriggerMoment: 1
+  buttonEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5608288736205374824}
+        m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
+        m_MethodName: PauseMenuLogic
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Resume
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5545795963174137189
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,8 +762,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291019715
-  m_fontColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    rgba: 4286611584
+  m_fontColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -876,6 +925,7 @@ GameObject:
   - component: {fileID: 7901860844850805288}
   - component: {fileID: 4769138210653333866}
   - component: {fileID: 9143820983211228917}
+  - component: {fileID: 136623187765548189}
   m_Layer: 5
   m_Name: MainMenuButton
   m_TagString: Untagged
@@ -925,7 +975,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
+  ButtonClickType: 1
   isDefaultButton: 0
+  isBackButton: 0
+  interactable: 1
   navigation:
     up: {fileID: 8328339444845686908}
     right: {fileID: 0}
@@ -943,9 +996,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange:
+  - {fileID: 2233326181744319617}
+  imageToChange: []
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &136623187765548189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7340609320699158615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae6d8bf47cdb45cc82829a1453381d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTriggerMoment: 1
+  buttonEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5608288736205374824}
+        m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
+        m_MethodName: PauseMenuLogic
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Menu
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7390662615372261821
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,8 +1105,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291019715
-  m_fontColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    rgba: 4286611584
+  m_fontColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1092,6 +1177,7 @@ GameObject:
   - component: {fileID: 1372150048934193115}
   - component: {fileID: 1214051433335954031}
   - component: {fileID: 6674769325528485762}
+  - component: {fileID: 1705967936204520583}
   m_Layer: 5
   m_Name: OptionsButton
   m_TagString: Untagged
@@ -1141,7 +1227,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
+  ButtonClickType: 1
   isDefaultButton: 0
+  isBackButton: 0
+  interactable: 1
   navigation:
     up: {fileID: 4769138210653333866}
     right: {fileID: 0}
@@ -1159,9 +1248,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange:
+  - {fileID: 5912851516967977836}
+  imageToChange: []
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &1705967936204520583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7638095719132472314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae6d8bf47cdb45cc82829a1453381d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTriggerMoment: 1
+  buttonEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5608288736205374824}
+        m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
+        m_MethodName: PauseMenuLogic
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Options
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9014368093061726995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,6 +1295,7 @@ GameObject:
   - component: {fileID: 2774315988836946345}
   - component: {fileID: 2202884158487756153}
   - component: {fileID: 1763693648608679211}
+  - component: {fileID: 716704561849859743}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -1223,7 +1345,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   holdsPointer: 0
+  ButtonClickType: 1
   isDefaultButton: 0
+  isBackButton: 1
+  interactable: 1
   navigation:
     up: {fileID: 1214051433335954031}
     right: {fileID: 0}
@@ -1241,6 +1366,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textToChange:
+  - {fileID: 2125487511201649681}
+  imageToChange: []
+  ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &716704561849859743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9014368093061726995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae6d8bf47cdb45cc82829a1453381d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTriggerMoment: 1
+  buttonEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5608288736205374824}
+        m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
+        m_MethodName: PauseMenuLogic
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Quit
+          m_BoolArgument: 0
+        m_CallState: 2

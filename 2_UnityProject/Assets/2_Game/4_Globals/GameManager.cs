@@ -15,9 +15,9 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
 
-    private Canvas canvas;
     private CustomInputs inputMapping;
 
+    //Pause
     public GameObject pauseMenuPrefab;
     private WSUI_Element pauseMenu;
     private bool pause;
@@ -59,14 +59,18 @@ public class GameManager : MonoBehaviour
         inputMapping = CustomEventSystem.GetInputMapping;
         gamePause += TogglePause;
         inputMapping.InGame.Pause.performed += gamePause;
-        inputMapping.InUI.Back.performed += gamePause;
+        //inputMapping.InUI.Back.performed += gamePause;
     }
 
     #region PauseMenu
+    public static void TogglePauseManual()
+    {
+        InputAction.CallbackContext t = new InputAction.CallbackContext();
+        instance.gamePause.Invoke(t);
+    }
+
     public void TogglePause(InputAction.CallbackContext context)
     {
-
-        Debug.Log("HY");
         pause = !pause;
         if (pause)
         {
