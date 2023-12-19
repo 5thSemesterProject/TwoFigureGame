@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class OxygenData
+public struct OxygenData
 {
     public float maxOxygen;
     [HideInInspector]public float currentOxygen;
