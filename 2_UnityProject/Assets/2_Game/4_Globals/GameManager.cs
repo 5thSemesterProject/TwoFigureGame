@@ -94,9 +94,4 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
     #endregion
-
-    public static void SoftPauseGame()
-    {
-
-    }
 }
