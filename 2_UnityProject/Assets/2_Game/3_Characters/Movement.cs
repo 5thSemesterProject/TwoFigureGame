@@ -144,13 +144,30 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             navMeshAgent.SetDestination(position);
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
-            animator.SetFloat("Speed", speed / Time.deltaTime * 3);
         }      
+        animator.SetFloat("Speed", navMeshAgent.velocity.magnitude / Time.deltaTime * 0.05f);
+    }
+
+    public bool GetPossiblePath(Vector3 targetPos)
+    {
+        navMeshAgent.enabled = true;
+        NavMeshPath navMeshPath = new NavMeshPath();
+
+        navMeshAgent.CalculatePath(targetPos,navMeshPath);
+
+        return navMeshPath.status == NavMeshPathStatus.PathComplete;
     }
 
     public void DisableNavMesh()
     {
         navMeshAgent.enabled = false;
+    }
+
+    public void EnableIdleAnim()
+    {
+        animator.SetBool("Grounded", true);
+        animator.SetFloat("MotionSpeed", 1);
+        animator.SetFloat("Speed", 0);
     }
 
     private Vector2 AssureMovement(Vector3 position, Vector2 input)
