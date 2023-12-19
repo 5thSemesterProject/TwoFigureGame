@@ -32,13 +32,14 @@ Material:
   m_LockedProperties: :m_LightmapFlags :m_EnableInstancingVariants :m_CustomRenderQueue
     _AddPrecomputedVelocity _AlphaCutoffEnable _AlphaMap _Animate _AnimationSpeed
     _Color _DoubleSidedEnable _DoubleSidedGIMode _Emission _MainTexture _Metalic
-    _NoiseInfluence _NoiseScale _NormalMap _OpaqueCullMode _RayTracing _ReceivesSSR
-    _Roughness _SupportDecals _SurfaceType _Tint _UseMetallicMap _UseNormalMap _UseRoughnessMap
+    _NoiseInfluence _NoiseScale _NormalMap _NormalStrength _OpaqueCullMode _RayTracing
+    _ReceivesSSR _Roughness _SupportDecals _SurfaceType _Tint _UseMetallicMap _UseNormalMap
+    _UseRoughnessMap
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _AlphaMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 10307, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -259,7 +260,7 @@ Material:
     - _PPDMinSamples: 5
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
-    - _Radius: 0
+    - _Radius: 50
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
