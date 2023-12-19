@@ -83,18 +83,13 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
         if (!characterController.isGrounded)
         {
-           /* float gravityFallDistance = gravity * timeFalling * timeFalling;
+            float gravityFallDistance = gravity * timeFalling * timeFalling;
             characterController.Move(Vector3.down * gravityFallDistance);
-            timeFalling += Time.deltaTime;*/
+            timeFalling += Time.deltaTime;
         }
         else
         {
             timeFalling = 0;
-        }
-
-                if (characterType == CharacterType.Man)
-        {
-                //Debug.Log(transform.position);
         }
     }
 
