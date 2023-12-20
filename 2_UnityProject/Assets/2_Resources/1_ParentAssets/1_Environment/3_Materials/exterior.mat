@@ -45,9 +45,11 @@ Material:
   - TransparentBackface
   - RayTracingPrepass
   - TransparentDepthPrepass
-  m_LockedProperties: :m_EnableInstancingVariants _Animate _AnimationSpeed _Emission
-    _MainTexture _Metalic _NoiseInfluence _NoiseScale _NormalMap _NormalStrength
-    _Roughness _Tint
+  m_LockedProperties: :m_LightmapFlags :m_EnableInstancingVariants :m_CustomRenderQueue
+    _AddPrecomputedVelocity _AlphaCutoffEnable _AlphaMap _Animate _AnimationSpeed
+    _DoubleSidedEnable _DoubleSidedGIMode _Emission _MainTexture _Metalic _NoiseInfluence
+    _NoiseScale _NormalMap _NormalStrength _OpaqueCullMode _RayTracing _ReceivesSSR
+    _Roughness _SupportDecals _SurfaceType _Tint
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -267,7 +269,7 @@ Material:
     - _PPDMinSamples: 5
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
-    - _Radius: 0
+    - _Radius: 50
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
