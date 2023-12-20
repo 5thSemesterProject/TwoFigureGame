@@ -108,7 +108,6 @@ public class GameManager : MonoBehaviour
     public void TogglePause(InputAction.CallbackContext context)
     {
         pause = !pause;
-        Debug.Log(pause);
         if (pause)
         {
             pauseMenu = WSUI.AddOverlay(pauseMenuPrefab);
