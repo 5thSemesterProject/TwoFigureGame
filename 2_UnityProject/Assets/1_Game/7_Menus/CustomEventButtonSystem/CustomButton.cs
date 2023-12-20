@@ -64,6 +64,11 @@ public class CustomButtonEditor : Editor
 {
     private bool isVisualized;
 
+    private void OnEnable()
+    {
+        SceneView.duringSceneGui += SceneGUI;
+    }
+
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -71,11 +76,14 @@ public class CustomButtonEditor : Editor
         if (GUILayout.Button("Visualize"))
             isVisualized = !isVisualized;
 
-        if (isVisualized)
-            VisualizeNavigation();
-
         //if (GUILayout.Button("Generate"))
         //    GenerateNavigation();
+    }
+
+    private void SceneGUI(SceneView sceneView)
+    {
+        if (isVisualized)
+            VisualizeNavigation();
     }
 
     private void VisualizeNavigation()
@@ -86,7 +94,7 @@ public class CustomButtonEditor : Editor
         foreach (var button in navigations.GetAsArray())
         {
             if (button != null)
-                DrawArrow(self.transform.position, button.transform.position);
+                DrawArrow(self.gameObject.transform.position, button.gameObject.transform.position);
         }
     }
 
@@ -97,17 +105,21 @@ public class CustomButtonEditor : Editor
 
     private void DrawArrow(Vector3 startPos, Vector3 endPos)
     {
-        Vector3 direction = endPos - startPos;
-        float arrowSize = 0.2f;
-        float arrowAngle = 20f;
+        Handles.color = Color.green;
 
-        Handles.DrawLine(startPos, endPos);
+        Vector3 direction = endPos - startPos;
+        float arrowSize = 1f;
+        float arrowAngle = 20f;
+        float arrowThickness = 3;
+
+        Handles.DrawLine(startPos, endPos, arrowThickness);
 
         Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowAngle, 0) * Vector3.forward;
         Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowAngle, 0) * Vector3.forward;
+        float distance = direction.magnitude;
 
-        Handles.DrawLine(endPos, endPos + right * arrowSize);
-        Handles.DrawLine(endPos, endPos + left * arrowSize);
+        Handles.DrawLine(endPos, endPos + right * arrowSize * distance * 0.2f, arrowThickness);
+        Handles.DrawLine(endPos, endPos + left * arrowSize * distance * 0.2f, arrowThickness);
     }
 }
 #endregion
