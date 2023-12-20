@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using TMPro;
 using Unity.VisualScripting;
@@ -7,31 +8,6 @@ using UnityEngine.Playables;
 using UnityEngine.UI;
 
 #region Data
-public class OxygenData
-{
-    public float maxOxygen;
-    public float currentOxygen;
-    public float fallOfRate;
-
-    public OxygenData(float maxOxygen, float fallOfRate)
-    {
-        this.maxOxygen = maxOxygen;
-        currentOxygen = maxOxygen;
-        this.fallOfRate = fallOfRate;
-    }
-
-    public void FallOff()
-    {
-        currentOxygen -= fallOfRate * Time.deltaTime;
-    }
-
-    public void InreaseOxygen(float amount)
-    {
-        if (currentOxygen <= maxOxygen)
-            currentOxygen += amount;
-    }
-}
-
 
 public enum Characters
 {
@@ -91,6 +67,7 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
+    
     public static CharacterData ActiveCharacterData
     {
         get
@@ -152,8 +129,8 @@ public class CharacterManager : MonoBehaviour
         womanData.other   = manData;
 
         //Oxygen Setup
-        womanData.oxygenData = new OxygenData(100, 1f);
-        manData.oxygenData = new OxygenData(100, 1f);
+        womanData.oxygenData = GameStats.instance.characterOxy;
+        manData.oxygenData = GameStats.instance.characterOxy;
 
         //Cam Setup
         CamManager.SetCamPrefab(cameraPrefab);
@@ -213,10 +190,33 @@ class AIState : CharacterState
 
             CustomEvents.RaiseCharacterSwitch(characterData.roomFadeRigidBody);
 
+            characterData.movement.DisableNavMesh();
             return new IdleState(characterData);
         }
 
+        //Follow Partner
+        FollowPartner();
+
+
         return this;
+    }
+
+    void FollowPartner()
+    {   
+        Vector3 otherCharacterPos = characterData.other.gameObject.transform.position;
+        Vector3 pos = characterData.gameObject.transform.position;
+        if (characterData.movement.GetPossiblePath(otherCharacterPos) && Vector3.Distance(otherCharacterPos,pos)>GameStats.instance.inactiveFollowDistance)
+        {
+            characterData.movement.MovePlayerToPos(otherCharacterPos);
+        }
+            
+        else
+        {
+            characterData.movement.DisableNavMesh();
+            characterData.movement.EnableIdleAnim();
+        }
+            
+
     }
 }
 
