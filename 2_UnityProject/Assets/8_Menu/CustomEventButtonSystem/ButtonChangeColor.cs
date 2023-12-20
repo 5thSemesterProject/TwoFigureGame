@@ -14,7 +14,6 @@ public enum ColorChangeType
     Both
 }
 
-[ExecuteInEditMode]
 public class ButtonChangeColor : CustomButtonFunctionality
 {
     [Header("To Change")]
@@ -27,20 +26,43 @@ public class ButtonChangeColor : CustomButtonFunctionality
     [SerializeField] private Color buttonColorNormal = Color.gray;
     [SerializeField] private Color buttonColorHighlighted = Color.white;
     [SerializeField] private Color buttonColorSelected = Color.yellow;
+    [SerializeField] private ButtonState stateToDisplay = ButtonState.None;
 
     #region Editor Stuff
     private void OnValidate()
     {
-        ChangeColorNormal();
+        switch (stateToDisplay)
+        {
+            case ButtonState.None:
+                ChangeColorNormal();
+                break;
+            case ButtonState.Hovered:
+                ChangeColorHighlighted();
+                break;
+            case ButtonState.Selected:
+                ChangeColorSelected();
+                break;
+        }
     }
 
     private void OnEnable()
     {
-        ChangeColorNormal();
+        switch (stateToDisplay)
+        {
+            case ButtonState.None:
+                ChangeColorNormal();
+                break;
+            case ButtonState.Hovered:
+                ChangeColorHighlighted();
+                break;
+            case ButtonState.Selected:
+                ChangeColorSelected();
+                break;
+        }
     }
     #endregion
 
-    protected override void OnAwake()
+    protected override void OnAwakeAlways()
     {
         if (textToChange == null || textToChange.Length <= 0)
         {

@@ -190,6 +190,7 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     #endregion
 }
 
+[ExecuteInEditMode]
 [RequireComponent(typeof(CustomButton))]
 public class CustomButtonFunctionality : MonoBehaviour
 {
@@ -199,11 +200,25 @@ public class CustomButtonFunctionality : MonoBehaviour
     private void Awake()
     {
         button = GetComponent<CustomButton>();
-        OnAwake();
+        if (Application.isPlaying)
+            OnAwake();
+        else
+            OnAwakeEditor();
+        OnAwakeAlways();
     }
 
     //To be overridden by children to access the awake method
     protected virtual void OnAwake()
+    {
+
+    }
+    //To be overridden by children to access the awake method
+    protected virtual void OnAwakeAlways()
+    {
+
+    }
+    //To be overridden by children to access the awake method
+    protected virtual void OnAwakeEditor()
     {
 
     }
