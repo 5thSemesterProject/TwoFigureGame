@@ -1,12 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 #region Structs
 public enum ButtonState
@@ -16,7 +11,7 @@ public enum ButtonState
     Selected,
 }
 
-public enum ButtonEventType 
+public enum ButtonEventType
 {
     None,
     Click,
@@ -47,11 +42,77 @@ public struct NavigationButtons
         left = null;
         self = selfButton;
     }
+
+    public CustomButton[] GetAsArray()
+    {
+        return new CustomButton[4]
+        {
+            up,
+            right,
+            down,
+            left,
+        };
+    }
 }
 
 public delegate void ButtonEvent();
 #endregion
 
+#region Editor
+[CustomEditor(typeof(CustomButton))]
+public class CustomButtonEditor : Editor
+{
+    private bool isVisualized;
+
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        if (GUILayout.Button("Visualize"))
+            isVisualized = !isVisualized;
+
+        if (isVisualized)
+            VisualizeNavigation();
+
+        //if (GUILayout.Button("Generate"))
+        //    GenerateNavigation();
+    }
+
+    private void VisualizeNavigation()
+    {
+        CustomButton self = (CustomButton)target;
+        NavigationButtons navigations = self.navigation;
+
+        foreach (var button in navigations.GetAsArray())
+        {
+            if (button != null)
+                DrawArrow(self.transform.position, button.transform.position);
+        }
+    }
+
+    //private void GenerateNavigation()
+    //{
+
+    //}
+
+    private void DrawArrow(Vector3 startPos, Vector3 endPos)
+    {
+        Vector3 direction = endPos - startPos;
+        float arrowSize = 0.2f;
+        float arrowAngle = 20f;
+
+        Handles.DrawLine(startPos, endPos);
+
+        Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowAngle, 0) * Vector3.forward;
+        Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowAngle, 0) * Vector3.forward;
+
+        Handles.DrawLine(endPos, endPos + right * arrowSize);
+        Handles.DrawLine(endPos, endPos + left * arrowSize);
+    }
+}
+#endregion
+
+#region Custom Button Core
 public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     //Events
@@ -60,11 +121,13 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public event ButtonEvent hoverEndEvent;
 
     //Public Attributes
-    [Header("Debug")] [Space]
+    [Header("Debug")]
+    [Space]
     public ButtonState state;
     public bool holdsPointer = false;
 
-    [Header("Settings")] [Space]
+    [Header("Settings")]
+    [Space]
     [SerializeField] private ButtonClickType ButtonClickType = ButtonClickType.Click;
     [SerializeField] private bool isDefaultButton = false;
     [SerializeField] private bool isBackButton = false;
@@ -85,7 +148,8 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
 
     //Navigation
-    [Header("Navigation")] [Space]
+    [Header("Navigation")]
+    [Space]
     public NavigationButtons navigation = new NavigationButtons();
 
     #region Default Logic
@@ -189,7 +253,9 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
     #endregion
 }
+#endregion
 
+#region Component Base Class
 [ExecuteInEditMode]
 [RequireComponent(typeof(CustomButton))]
 public class CustomButtonFunctionality : MonoBehaviour
@@ -242,3 +308,4 @@ public class CustomButtonFunctionality : MonoBehaviour
         }
     }
 }
+#endregion
