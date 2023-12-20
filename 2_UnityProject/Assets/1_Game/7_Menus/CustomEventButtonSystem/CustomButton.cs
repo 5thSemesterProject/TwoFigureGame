@@ -1,12 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 #region Structs
 public enum ButtonState
@@ -16,7 +11,7 @@ public enum ButtonState
     Selected,
 }
 
-public enum ButtonEventType 
+public enum ButtonEventType
 {
     None,
     Click,
@@ -47,11 +42,89 @@ public struct NavigationButtons
         left = null;
         self = selfButton;
     }
+
+    public CustomButton[] GetAsArray()
+    {
+        return new CustomButton[4]
+        {
+            up,
+            right,
+            down,
+            left,
+        };
+    }
 }
 
 public delegate void ButtonEvent();
 #endregion
 
+#region Editor
+[CustomEditor(typeof(CustomButton))]
+public class CustomButtonEditor : Editor
+{
+    private bool isVisualized;
+
+    private void OnEnable()
+    {
+        SceneView.duringSceneGui += SceneGUI;
+    }
+
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        if (GUILayout.Button("Visualize"))
+            isVisualized = !isVisualized;
+
+        //if (GUILayout.Button("Generate"))
+        //    GenerateNavigation();
+    }
+
+    private void SceneGUI(SceneView sceneView)
+    {
+        if (isVisualized)
+            VisualizeNavigation();
+    }
+
+    private void VisualizeNavigation()
+    {
+        CustomButton self = (CustomButton)target;
+        NavigationButtons navigations = self.navigation;
+
+        foreach (var button in navigations.GetAsArray())
+        {
+            if (button != null)
+                DrawArrow(self.gameObject.transform.position, button.gameObject.transform.position);
+        }
+    }
+
+    //private void GenerateNavigation()
+    //{
+
+    //}
+
+    private void DrawArrow(Vector3 startPos, Vector3 endPos)
+    {
+        Handles.color = Color.green;
+
+        Vector3 direction = endPos - startPos;
+        float arrowSize = 1f;
+        float arrowAngle = 20f;
+        float arrowThickness = 3;
+
+        Handles.DrawLine(startPos, endPos, arrowThickness);
+
+        Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowAngle, 0) * Vector3.forward;
+        Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowAngle, 0) * Vector3.forward;
+        float distance = direction.magnitude;
+
+        Handles.DrawLine(endPos, endPos + right * arrowSize * distance * 0.2f, arrowThickness);
+        Handles.DrawLine(endPos, endPos + left * arrowSize * distance * 0.2f, arrowThickness);
+    }
+}
+#endregion
+
+#region Custom Button Core
 public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     //Events
@@ -60,11 +133,13 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public event ButtonEvent hoverEndEvent;
 
     //Public Attributes
-    [Header("Debug")] [Space]
+    [Header("Debug")]
+    [Space]
     public ButtonState state;
     public bool holdsPointer = false;
 
-    [Header("Settings")] [Space]
+    [Header("Settings")]
+    [Space]
     [SerializeField] private ButtonClickType ButtonClickType = ButtonClickType.Click;
     [SerializeField] private bool isDefaultButton = false;
     [SerializeField] private bool isBackButton = false;
@@ -85,7 +160,8 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
 
     //Navigation
-    [Header("Navigation")] [Space]
+    [Header("Navigation")]
+    [Space]
     public NavigationButtons navigation = new NavigationButtons();
 
     #region Default Logic
@@ -189,7 +265,9 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
     #endregion
 }
+#endregion
 
+#region Component Base Class
 [ExecuteInEditMode]
 [RequireComponent(typeof(CustomButton))]
 public class CustomButtonFunctionality : MonoBehaviour
@@ -242,3 +320,4 @@ public class CustomButtonFunctionality : MonoBehaviour
         }
     }
 }
+#endregion
