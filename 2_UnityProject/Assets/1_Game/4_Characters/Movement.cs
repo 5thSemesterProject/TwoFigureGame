@@ -17,16 +17,17 @@ public enum TraversalType
     Crawl, JumpOver
 }
 
+[RequireComponent(typeof (NavMeshHandler))]
 public class Movement : MonoBehaviour, IIntersectSmoke
 {
     private CharacterController characterController;
     private Animator animator;
-
     private NavMeshAgent navMeshAgent;
+    private NavMeshHandler navMeshHandler;
 
     public Coroutine coroutine;
     public Coroutine lerpRoutine;
-    public Coroutine moveAcross;
+    public Coroutine movingAcrossOffMeshLink;
 
     [SerializeField] private float lerpValue = 0.2f;
     [SerializeField] private float movementSpeed = 25f;
@@ -58,6 +59,8 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         }
         else
             navMeshAgent.enabled = false;
+
+        navMeshHandler = GetComponent<NavMeshHandler>();
     }
 
     #region FogStuff
@@ -132,102 +135,14 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         return VectorHelper.Convert3To2(movement);
     }
 
-    public void MovePlayerToPos(Vector3 position,float speed=1)
+    public void FollowPartner(Vector3 otherCharacterPos)
     {
-        navMeshAgent.enabled = true;
-        navMeshAgent.autoTraverseOffMeshLink = false;
-        characterController.enabled = false;
-
-        if (position!=navMeshAgent.destination && moveAcross==null)
-        {
-            navMeshAgent.SetDestination(position);
-            animator.SetBool("Grounded", true);
-            animator.SetFloat("MotionSpeed", 1);
-            animator.SetFloat("Speed", navMeshAgent.velocity.magnitude / Time.deltaTime * 3f);
-        }
-
-        characterController.enabled = true;
-
-
-
-        if (navMeshAgent.isOnOffMeshLink)
-        {
-            if (moveAcross==null)
-            {
-               moveAcross = StartCoroutine(MoveAcrossNavMeshLink());
-            }      
-        }
-
+       navMeshHandler.FollowPartner(otherCharacterPos);
     }
 
-    IEnumerator MoveAcrossNavMeshLink()
+    public void DisableNavMeshHandling()
     {
-        OffMeshLinkData data = navMeshAgent.currentOffMeshLinkData;
-        navMeshAgent.updateRotation = false;
-        navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-
-        Vector3 startPos = navMeshAgent.transform.position;
-        Vector3 endPos = data.endPos + Vector3.up * navMeshAgent.baseOffset;
-        float duration = (endPos-startPos).magnitude/navMeshAgent.velocity.magnitude;
-
-        duration = ((endPos-startPos).magnitude/movementSpeed) * 3f;
-
-        float t = 0.0f;
-        float tStep = 1.0f/duration;
-        tStep = 1*tStep;
-        characterController.enabled = false;
-        navMeshAgent.enabled = false;
-        
-        Debug.Log ("MoveAcrossStart");
-
-        while(t<1.0f){
-            transform.position = Vector3.Lerp(startPos,endPos,t);
-            if (navMeshAgent.isOnNavMesh)
-                navMeshAgent.destination = transform.position;
-            
-            t+=tStep*Time.deltaTime;
-
-            animator.SetFloat("Speed", (1/duration) / Time.deltaTime * 3f);
-
-            Debug.Log ("MovingAcross");
-
-            yield return null;
-        }
-        transform.position = endPos;
-
-        Debug.Log ("MoveAcrossEnd");
-
-        navMeshAgent.enabled = true;
-        navMeshAgent.updateRotation = true;
-        navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
-        navMeshAgent.updateRotation = true;
-
-        
-        navMeshAgent.CompleteOffMeshLink();
-        moveAcross = null;
-    }
-
-
-    public bool GetPossiblePath(Vector3 targetPos)
-    {
-        navMeshAgent.enabled = true;
-        NavMeshPath navMeshPath = new NavMeshPath();
-
-        navMeshAgent.CalculatePath(targetPos,navMeshPath);
-
-        return navMeshPath.status == NavMeshPathStatus.PathComplete;
-    }
-
-    public void DisableNavMesh()
-    {
-        navMeshAgent.enabled = false;
-    }
-
-    public void EnableIdleAnim()
-    {
-        animator.SetBool("Grounded", true);
-        animator.SetFloat("MotionSpeed", 1);
-        animator.SetFloat("Speed", 0);
+        navMeshHandler.DisableNavMesh();
     }
 
     private Vector2 AssureMovement(Vector3 position, Vector2 input)
@@ -340,42 +255,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         }
 
         animator.SetBool(animationType,false);
-        coroutine = null;
-    }
-
-    private IEnumerator Traverse(Vector3 traverseDir,float traverseDuration)
-    {
-        float time = 0;
-
-        //Lerp Rotation and Position
-        Vector3 originPos = transform.position;
-        Quaternion originRot = transform.rotation;
-
-        Vector3 targetPos = transform.position + -traverseDir * 1f;
-        Quaternion targetRot = Quaternion.LookRotation(traverseDir);
-
-        while (time < 0.1f)
-        {
-            transform.position = Vector3.Lerp(originPos, targetPos, time * 10);
-            transform.rotation = Quaternion.Slerp(originRot, targetRot, time * 10);
-
-            time += Time.deltaTime * Time.timeScale;
-            yield return null;
-        }
-
-        transform.position = targetPos;
-        transform.rotation = targetRot;
-        
-        //Start Traversing
-        time = 0;
-        animator.SetFloat("Speed",1/traverseDuration);
-        while (time < traverseDuration)
-        {   
-            transform.Translate(traverseDir * Time.timeScale * Time.deltaTime*movementSpeed / 10, Space.World);
-            time += Time.deltaTime * Time.timeScale;
-
-            yield return null;
-        }
         coroutine = null;
     }
 

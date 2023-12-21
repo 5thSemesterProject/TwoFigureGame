@@ -25,33 +25,17 @@ class AIState : CharacterState
 
             CustomEvents.RaiseCharacterSwitch(characterData.roomFadeRigidBody);
 
-            characterData.movement.DisableNavMesh();
+            characterData.movement.DisableNavMeshHandling();
             return new IdleState(characterData);
         }
 
         //Follow Partner
-        FollowPartner();
+        Vector3 otherCharacterPos = characterData.other.gameObject.transform.position;
+        characterData.movement.FollowPartner(otherCharacterPos);
 
         return this;
     }
 
-     void FollowPartner()
-    {   
-       Vector3 otherCharacterPos = characterData.other.gameObject.transform.position;
-        Vector3 pos = characterData.gameObject.transform.position;
-
-        //Follow Character in case out of range
-        if (characterData.movement.GetPossiblePath(otherCharacterPos) && Vector3.Distance(otherCharacterPos,pos)>GameStats.instance.inactiveFollowDistance)
-        {
-            characterData.movement.MovePlayerToPos(otherCharacterPos);
-        }
-        //Stop in case in range    
-        else if (characterData.movement.moveAcross==null)
-        {
-            characterData.movement.DisableNavMesh();
-            characterData.movement.EnableIdleAnim();
-        }
-    }
 }
 
 
