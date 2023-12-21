@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour
         else
         {
             WSUI.RemovePrompt(pauseMenu);
+            //pauseMenu.GetComponent<ButtonGroupFade>().ExitAndDestroy();
             Time.timeScale = 1;
             CustomEventSystem.SwitchControlScheme(CustomEventSystem.GetInputMapping.InGame);
         }

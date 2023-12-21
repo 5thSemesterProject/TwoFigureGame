@@ -32,10 +32,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8422607472565643543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 220.0234}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1675609807986469157
 CanvasRenderer:
@@ -76,8 +76,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291019715
-  m_fontColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    rgba: 4286611584
+  m_fontColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -145,8 +145,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3598499884565931284}
+  - component: {fileID: 7648140413171742118}
   - component: {fileID: 1408796485614285952}
   - component: {fileID: 9126061332750682152}
+  - component: {fileID: 3583276903045821613}
   m_Layer: 5
   m_Name: PauseScreenUI
   m_TagString: Untagged
@@ -177,6 +179,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7648140413171742118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189521557001687654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10aa09f383209d74eaed0a49e49fab63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!225 &1408796485614285952
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -185,7 +199,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2189521557001687654}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -203,6 +217,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
   interactable: 1
+--- !u!114 &3583276903045821613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189521557001687654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bb09fc273104e9592c3472e7c329cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeSpeed: 0.3
+  fadeOnEnable: 1
 --- !u!1 &4759578228413236166
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,10 +472,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 9201490907304546137}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 195.19}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7737747321873783383
 CanvasRenderer:
@@ -486,8 +514,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291019715
-  m_fontColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    rgba: 4286611584
+  m_fontColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -580,10 +608,10 @@ RectTransform:
   - {fileID: 1945476052712145657}
   m_Father: {fileID: 3598499884565931284}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 80}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5455508994937547276
 GameObject:
@@ -596,8 +624,8 @@ GameObject:
   - component: {fileID: 8422607472565643543}
   - component: {fileID: 8207765134251110877}
   - component: {fileID: 2512700773333910219}
-  - component: {fileID: 613208633524522172}
   - component: {fileID: 82866259696631209}
+  - component: {fileID: 1244835721138785847}
   m_Layer: 5
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -623,7 +651,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: 160, y: 54.8334}
+  m_SizeDelta: {x: 421.1951, y: 69.9024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8207765134251110877
 CanvasRenderer:
@@ -649,28 +677,13 @@ MonoBehaviour:
   holdsPointer: 0
   ButtonClickType: 1
   isDefaultButton: 1
-  isBackButton: 0
+  isBackButton: 1
   interactable: 1
   navigation:
     up: {fileID: 0}
     right: {fileID: 0}
     down: {fileID: 226781707956803318}
     left: {fileID: 0}
---- !u!114 &613208633524522172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5455508994937547276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ad4543e89ac49bd908b825458b8d6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToActivate: {fileID: 0}
-  activeTriggerMoment: 2
-  inActiveTriggerMoment: 3
 --- !u!114 &82866259696631209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -683,12 +696,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textToChange: []
+  textToChange:
+  - {fileID: 1892493722231172311}
   imageToChange: []
   ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
+  stateToDisplay: 0
+--- !u!114 &1244835721138785847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5455508994937547276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae6d8bf47cdb45cc82829a1453381d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTriggerMoment: 1
+  buttonEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7648140413171742118}
+        m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
+        m_MethodName: PauseMenuLogic
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Resume
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5545795963174137189
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,10 +764,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1945476052712145657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 195.19}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &980608034927965212
 CanvasRenderer:
@@ -763,8 +806,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291019715
-  m_fontColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    rgba: 4286611584
+  m_fontColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -925,8 +968,8 @@ GameObject:
   - component: {fileID: 8258247493817541255}
   - component: {fileID: 7901860844850805288}
   - component: {fileID: 226781707956803318}
-  - component: {fileID: 1458088148903222821}
   - component: {fileID: 4127269755689391443}
+  - component: {fileID: 4862751318260367951}
   m_Layer: 5
   m_Name: MainMenuButton
   m_TagString: Untagged
@@ -952,7 +995,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 245.7879, y: 52.5758}
+  m_SizeDelta: {x: 421.2, y: 77.6907}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7901860844850805288
 CanvasRenderer:
@@ -985,21 +1028,6 @@ MonoBehaviour:
     right: {fileID: 0}
     down: {fileID: 1736229588019139471}
     left: {fileID: 0}
---- !u!114 &1458088148903222821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7340609320699158615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ad4543e89ac49bd908b825458b8d6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToActivate: {fileID: 0}
-  activeTriggerMoment: 2
-  inActiveTriggerMoment: 3
 --- !u!114 &4127269755689391443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,12 +1040,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textToChange: []
+  textToChange:
+  - {fileID: 2233326181744319617}
   imageToChange: []
   ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
+  stateToDisplay: 0
+--- !u!114 &4862751318260367951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7340609320699158615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae6d8bf47cdb45cc82829a1453381d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTriggerMoment: 1
+  buttonEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7648140413171742118}
+        m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
+        m_MethodName: PauseMenuLogic
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Menu
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7390662615372261821
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,10 +1108,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8258247493817541255}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 195.19}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4523487842087069277
 CanvasRenderer:
@@ -1092,8 +1150,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291019715
-  m_fontColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    rgba: 4286611584
+  m_fontColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1163,8 +1221,8 @@ GameObject:
   - component: {fileID: 9201490907304546137}
   - component: {fileID: 1372150048934193115}
   - component: {fileID: 1736229588019139471}
-  - component: {fileID: 8607961129891500983}
   - component: {fileID: 8265053349967551921}
+  - component: {fileID: 9133492689734244012}
   m_Layer: 5
   m_Name: OptionsButton
   m_TagString: Untagged
@@ -1190,7 +1248,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -250}
-  m_SizeDelta: {x: 182.5756, y: 45.803}
+  m_SizeDelta: {x: 421.19, y: 80.9639}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1372150048934193115
 CanvasRenderer:
@@ -1223,21 +1281,6 @@ MonoBehaviour:
     right: {fileID: 0}
     down: {fileID: 3590400146297352055}
     left: {fileID: 0}
---- !u!114 &8607961129891500983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7638095719132472314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ad4543e89ac49bd908b825458b8d6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToActivate: {fileID: 0}
-  activeTriggerMoment: 2
-  inActiveTriggerMoment: 3
 --- !u!114 &8265053349967551921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1250,12 +1293,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textToChange: []
+  textToChange:
+  - {fileID: 5912851516967977836}
   imageToChange: []
   ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
+  stateToDisplay: 0
+--- !u!114 &9133492689734244012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7638095719132472314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae6d8bf47cdb45cc82829a1453381d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTriggerMoment: 1
+  buttonEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7648140413171742118}
+        m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
+        m_MethodName: PauseMenuLogic
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Options
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9014368093061726995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,8 +1340,8 @@ GameObject:
   - component: {fileID: 1945476052712145657}
   - component: {fileID: 2774315988836946345}
   - component: {fileID: 3590400146297352055}
-  - component: {fileID: 5928474889178651988}
   - component: {fileID: 5746123975271005990}
+  - component: {fileID: 6804886169182573778}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -1294,7 +1367,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -350}
-  m_SizeDelta: {x: 160, y: 48.0606}
+  m_SizeDelta: {x: 421.2, y: 81.4427}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2774315988836946345
 CanvasRenderer:
@@ -1327,21 +1400,6 @@ MonoBehaviour:
     right: {fileID: 0}
     down: {fileID: 0}
     left: {fileID: 0}
---- !u!114 &5928474889178651988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9014368093061726995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ad4543e89ac49bd908b825458b8d6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToActivate: {fileID: 0}
-  activeTriggerMoment: 2
-  inActiveTriggerMoment: 3
 --- !u!114 &5746123975271005990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1354,9 +1412,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836ba872dc84f4a90b051f2eef5b7c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textToChange: []
+  textToChange:
+  - {fileID: 2125487511201649681}
   imageToChange: []
   ToChangeType: 2
   buttonColorNormal: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   buttonColorHighlighted: {r: 1, g: 1, b: 1, a: 1}
   buttonColorSelected: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
+  stateToDisplay: 0
+--- !u!114 &6804886169182573778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9014368093061726995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae6d8bf47cdb45cc82829a1453381d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTriggerMoment: 1
+  buttonEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7648140413171742118}
+        m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
+        m_MethodName: PauseMenuLogic
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Quit
+          m_BoolArgument: 0
+        m_CallState: 2
