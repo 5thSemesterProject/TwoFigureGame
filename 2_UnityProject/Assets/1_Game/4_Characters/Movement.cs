@@ -26,6 +26,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
     public Coroutine coroutine;
     public Coroutine lerpRoutine;
+    public Coroutine moveAcross;
 
     [SerializeField] private float lerpValue = 0.2f;
     [SerializeField] private float movementSpeed = 25f;
@@ -134,14 +135,78 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     public void MovePlayerToPos(Vector3 position,float speed=1)
     {
         navMeshAgent.enabled = true;
-        if (position!=navMeshAgent.destination)
+        navMeshAgent.autoTraverseOffMeshLink = false;
+        characterController.enabled = false;
+
+        if (position!=navMeshAgent.destination && moveAcross==null)
         {
             navMeshAgent.SetDestination(position);
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
-        }      
-        animator.SetFloat("Speed", navMeshAgent.velocity.magnitude / Time.deltaTime * 0.05f);
+            animator.SetFloat("Speed", navMeshAgent.velocity.magnitude / Time.deltaTime * 3f);
+        }
+
+        characterController.enabled = true;
+
+
+
+        if (navMeshAgent.isOnOffMeshLink)
+        {
+            if (moveAcross==null)
+            {
+               moveAcross = StartCoroutine(MoveAcrossNavMeshLink());
+            }      
+        }
+
     }
+
+    IEnumerator MoveAcrossNavMeshLink()
+    {
+        OffMeshLinkData data = navMeshAgent.currentOffMeshLinkData;
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+
+        Vector3 startPos = navMeshAgent.transform.position;
+        Vector3 endPos = data.endPos + Vector3.up * navMeshAgent.baseOffset;
+        float duration = (endPos-startPos).magnitude/navMeshAgent.velocity.magnitude;
+
+        duration = ((endPos-startPos).magnitude/movementSpeed) * 3f;
+
+        float t = 0.0f;
+        float tStep = 1.0f/duration;
+        tStep = 1*tStep;
+        characterController.enabled = false;
+        navMeshAgent.enabled = false;
+        
+        Debug.Log ("MoveAcrossStart");
+
+        while(t<1.0f){
+            transform.position = Vector3.Lerp(startPos,endPos,t);
+            if (navMeshAgent.isOnNavMesh)
+                navMeshAgent.destination = transform.position;
+            
+            t+=tStep*Time.deltaTime;
+
+            animator.SetFloat("Speed", (1/duration) / Time.deltaTime * 3f);
+
+            Debug.Log ("MovingAcross");
+
+            yield return null;
+        }
+        transform.position = endPos;
+
+        Debug.Log ("MoveAcrossEnd");
+
+        navMeshAgent.enabled = true;
+        navMeshAgent.updateRotation = true;
+        navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        navMeshAgent.updateRotation = true;
+
+        
+        navMeshAgent.CompleteOffMeshLink();
+        moveAcross = null;
+    }
+
 
     public bool GetPossiblePath(Vector3 targetPos)
     {
@@ -232,20 +297,23 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         else if (traversalType == TraversalType.JumpOver)
             animationName = "JumpOver";
 
+        
         coroutine = StartCoroutine(Traverse(crawl.gameObject,traversalDuration,animationName));
     }
 
-    private IEnumerator Traverse(GameObject crawlObject,float crawlDuration, string animationType)
+
+
+    private IEnumerator Traverse(GameObject traverseObject,float traverseDuration, string animationType)
     {
         float time = 0;
-        Vector3 crawlDir = GetTraverseDir(crawlObject);
+        Vector3 traverseDir = GetTraverseDir(traverseObject);
 
         //Lerp Rotation and Position
         Vector3 originPos = transform.position;
         Quaternion originRot = transform.rotation;
 
-        Vector3 targetPos = new Vector3(crawlObject.transform.position.x, transform.position.y, crawlObject.transform.position.z) + -crawlDir * 1f;
-        Quaternion targetRot = Quaternion.LookRotation(crawlDir);
+        Vector3 targetPos = new Vector3(traverseObject.transform.position.x, transform.position.y, traverseObject.transform.position.z) + -traverseDir * 1f;
+        Quaternion targetRot = Quaternion.LookRotation(traverseDir);
 
         while (time < 0.1f)
         {
@@ -259,19 +327,55 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         transform.position = targetPos;
         transform.rotation = targetRot;
         
-        //Start Crawling
+        //Start Traversing
         time = 0;
         animator.SetBool(animationType,true);
         animator.SetFloat("Speed",0);
-        while (time < crawlDuration)
+        while (time < traverseDuration)
         {   
-            transform.Translate(crawlDir * Time.timeScale * Time.deltaTime*movementSpeed / 10, Space.World);
+            transform.Translate(traverseDir * Time.timeScale * Time.deltaTime*movementSpeed / 10, Space.World);
             time += Time.deltaTime * Time.timeScale;
 
             yield return null;
         }
 
         animator.SetBool(animationType,false);
+        coroutine = null;
+    }
+
+    private IEnumerator Traverse(Vector3 traverseDir,float traverseDuration)
+    {
+        float time = 0;
+
+        //Lerp Rotation and Position
+        Vector3 originPos = transform.position;
+        Quaternion originRot = transform.rotation;
+
+        Vector3 targetPos = transform.position + -traverseDir * 1f;
+        Quaternion targetRot = Quaternion.LookRotation(traverseDir);
+
+        while (time < 0.1f)
+        {
+            transform.position = Vector3.Lerp(originPos, targetPos, time * 10);
+            transform.rotation = Quaternion.Slerp(originRot, targetRot, time * 10);
+
+            time += Time.deltaTime * Time.timeScale;
+            yield return null;
+        }
+
+        transform.position = targetPos;
+        transform.rotation = targetRot;
+        
+        //Start Traversing
+        time = 0;
+        animator.SetFloat("Speed",1/traverseDuration);
+        while (time < traverseDuration)
+        {   
+            transform.Translate(traverseDir * Time.timeScale * Time.deltaTime*movementSpeed / 10, Space.World);
+            time += Time.deltaTime * Time.timeScale;
+
+            yield return null;
+        }
         coroutine = null;
     }
 
