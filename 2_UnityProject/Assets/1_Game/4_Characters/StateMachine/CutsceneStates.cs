@@ -38,7 +38,7 @@ class WalkTowards : CutsceneState
 
         intitialTargetDistance = Vector2.Distance(VectorHelper.Convert3To2(characterData.gameObject.transform.position),targetPos)-tolerance;
 
-        characterData.movement.MovePlayerToPos(actor.transform.position);
+        characterData.movement.GetComponent<NavMeshHandler>().MovePlayerToPos(actor.transform.position);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -174,7 +174,7 @@ class RecoverLastState : CutsceneState
 
     public override CharacterState SpecificStateUpdate()
     {
-        characterData.movement.DisableNavMesh();
+        characterData.movement.DisableNavMeshHandling();
 
         //Return to previous States
         if (characterData.lastState is AIState)
