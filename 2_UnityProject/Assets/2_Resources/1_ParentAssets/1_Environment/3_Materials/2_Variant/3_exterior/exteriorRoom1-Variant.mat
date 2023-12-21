@@ -1,53 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!21 &2100000
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: furnitureRoom_2-Variant
-  m_Shader: {fileID: -6465566751694194690, guid: 0fb8ebeb9fb004acb84a0fe53c613f25, type: 3}
-  m_Parent: {fileID: 2100000, guid: cade1703798ba0045b72d77341445f2d, type: 2}
-  m_ModifiedSerializedProperties: 16
-  m_ValidKeywords:
-  - _ALPHATEST_ON
-  - _DISABLE_SSR_TRANSPARENT
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2225
-  stringTagMap:
-    MotionVector: User
-    RenderType: TransparentCutout
-  disabledShaderPasses:
-  - TransparentDepthPrepass
-  - TransparentDepthPostpass
-  - TransparentBackface
-  - RayTracingPrepass
-  - MOTIONVECTORS
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _AlphaMap:
-        m_Texture: {fileID: 10307, guid: 0000000000000000f000000000000000, type: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _AlphaCutoffEnable: 0
-    - _CharacterRadius: 0
-    - _Radius: 50
-    - _ShouldFade: 0
-    - _ZTestGBuffer: 3
-    m_Colors:
-    - _Epicenter: {r: 0, g: 0, b: 0, a: 0}
-    - _InactiveCharacter: {r: 0, g: 0, b: 0, a: 0}
-  m_BuildTextureStacks: []
---- !u!114 &3546524974318690797
+--- !u!114 &-7081681567799147802
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,3 +16,52 @@ MonoBehaviour:
   hdPluginSubTargetMaterialVersions:
     m_Keys: []
     m_Values: 
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: exteriorRoom1-Variant
+  m_Shader: {fileID: -6465566751694194690, guid: 0fb8ebeb9fb004acb84a0fe53c613f25, type: 3}
+  m_Parent: {fileID: 2100000, guid: d366db112c3889a40be8087fd0d1322f, type: 2}
+  m_ModifiedSerializedProperties: 16
+  m_ValidKeywords:
+  - _ALPHATEST_ON
+  - _DISABLE_SSR_TRANSPARENT
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    MotionVector: User
+    RenderType: TransparentCutout
+  disabledShaderPasses:
+  - TransparentDepthPrepass
+  - TransparentDepthPostpass
+  - TransparentBackface
+  - RayTracingPrepass
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _AlphaDstBlend: 0
+    - _CharacterRadius: 0
+    - _DstBlend: 0
+    - _RenderQueueType: 1
+    - _StencilRefDepth: 8
+    - _StencilRefGBuffer: 10
+    - _StencilRefMV: 40
+    - _SurfaceType: 1
+    - _TransparentZWrite: 1
+    - _ZTestDepthEqualForOpaque: 3
+    - _ZWrite: 1
+    m_Colors:
+    - _Epicenter: {r: 0, g: 0, b: 0, a: 0}
+    - _InactiveCharacter: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
