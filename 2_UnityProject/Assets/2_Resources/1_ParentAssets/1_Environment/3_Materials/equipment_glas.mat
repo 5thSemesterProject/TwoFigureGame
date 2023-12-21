@@ -47,11 +47,12 @@ Material:
   - RayTracingPrepass
   m_LockedProperties: :m_LightmapFlags :m_CustomRenderQueue _AddPrecomputedVelocity
     _Alpha _AlphaCutoffEnable _AlphaMap _DoubleSidedEnable _DoubleSidedGIMode _OpaqueCullMode
-    _RayTracing _ReceivesSSR _SupportDecals _SurfaceType
+    _RayTracing _ReceivesSSR _SupportDecals _SurfaceType _TransparentSortPriority
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _TransparentSortPriority: 16
     m_Colors: []
   m_BuildTextureStacks: []

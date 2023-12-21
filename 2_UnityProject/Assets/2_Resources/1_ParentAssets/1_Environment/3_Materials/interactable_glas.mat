@@ -29,7 +29,6 @@ Material:
   m_ModifiedSerializedProperties: 24
   m_ValidKeywords:
   - _ALPHATEST_ON
-  - _DISABLE_DECALS
   - _DISABLE_SSR_TRANSPARENT
   - _ENABLE_FOG_ON_TRANSPARENT
   - _SURFACE_TYPE_TRANSPARENT
@@ -47,7 +46,10 @@ Material:
   - TransparentBackface
   - RayTracingPrepass
   - MOTIONVECTORS
-  m_LockedProperties: 
+  m_LockedProperties: :m_CustomRenderQueue _BlendMode _EnableBlendModePreserveSpecularLighting
+    _EnableFogOnTransparent _ReceivesSSRTransparent _SurfaceType _TransparentCullMode
+    _TransparentDepthPrepassEnable _TransparentSortPriority _TransparentWritingMotionVec
+    _TransparentZWrite _ZTestTransparent
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs: []
@@ -63,11 +65,9 @@ Material:
     - _DoubleSidedEnable: 0
     - _DstBlend: 10
     - _EnableBlendModePreserveSpecularLighting: 1
-    - _Radius: 50
     - _ReceivesSSRTransparent: 0
     - _Recieve_Fog: 0
     - _RenderQueueType: 4
-    - _ShouldFade: 0
     - _StencilRefDepth: 0
     - _StencilRefGBuffer: 2
     - _StencilRefMV: 32
