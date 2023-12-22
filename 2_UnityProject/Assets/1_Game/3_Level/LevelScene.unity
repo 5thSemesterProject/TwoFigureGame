@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 1262.3136, g: 842.818, b: 553.9985, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1414,6 +1414,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2562125370709793390, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2597223957387174268, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_LightlayersMask
       value: 13
@@ -2487,6 +2491,10 @@ PrefabInstance:
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5604602642733744747, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5604602642733744747, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: parameters.textureOffset.x
       value: 0
       objectReference: {fileID: 0}
@@ -3182,6 +3190,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7824909186605872125, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7830045507926993594, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_LightlayersMask
       value: 13
@@ -3752,10 +3764,7 @@ PrefabInstance:
     - {fileID: 8642333141738375066, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
     - {fileID: 742419442324208939, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
     - {fileID: 6968077292330273838, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 5272757339849091941, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1453176392}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5496360025786219174, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       insertIndex: -1
@@ -4630,74 +4639,6 @@ Transform:
   - {fileID: 702504986}
   m_Father: {fileID: 1667880893}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1453176391
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1453176392}
-  - component: {fileID: 1453176393}
-  m_Layer: 0
-  m_Name: GodRays (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1453176392
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1453176391}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.17846324, y: -0.116756506, z: -0.021332458, w: 0.9767618}
-  m_LocalPosition: {x: 0.704, y: -0.07418279, z: -1.15}
-  m_LocalScale: {x: 1, y: 0.045178328, z: 0.45687118}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 643871693}
-  m_LocalEulerAnglesHint: {x: -20.708, y: -13.633, z: 0}
---- !u!114 &1453176393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1453176391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1fbb15bf92b84f40a1eb030765b5afe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parameters:
-    albedo: {r: 0.78123885, g: 0.8978859, b: 0.9339623, a: 1}
-    meanFreePath: 0.4
-    blendingMode: 1
-    priority: 0
-    anisotropy: 0
-    volumeMask: {fileID: 11700000, guid: 12191a686cf63a04b8a2cc2eaf175539, type: 3}
-    textureScrollingSpeed: {x: 0, y: 0.05, z: 0}
-    textureTiling: {x: 1, y: 1, z: 1}
-    positiveFade: {x: 0.5, y: 0.43110234, z: 0.1303238}
-    negativeFade: {x: 0.5, y: 0.43110234, z: 0.1303238}
-    m_EditorUniformFade: 1
-    m_EditorPositiveFade: {x: 0.25, y: 0.7586615, z: 0.16942085}
-    m_EditorNegativeFade: {x: 0.2, y: 0.24133849, z: 0.026064763}
-    m_EditorAdvancedFade: 0
-    size: {x: 2, y: 2.319635, z: 7.6731954}
-    invertFade: 0
-    distanceFadeStart: 50
-    distanceFadeEnd: 60
-    textureOffset: {x: -0, y: -24.357395, z: -0}
-    falloffMode: 0
-    maskMode: 0
-    materialMask: {fileID: 2100000, guid: f034ef93a4c1c1640957af19f45a3983, type: 2}
-  m_Version: 2
 --- !u!1 &1462179987
 GameObject:
   m_ObjectHideFlags: 1
