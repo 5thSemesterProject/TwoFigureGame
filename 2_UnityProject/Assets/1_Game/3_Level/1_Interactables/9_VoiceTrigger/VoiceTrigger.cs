@@ -14,6 +14,7 @@ public class MyScriptEditor : Editor
     private const string PlayOnceKey = "VoiceTrigger_PlayOnce";
     private const string PlayOnceBeforeRandomKey = "VoiceTrigger_PlayOnceBeforeRandom";
     private const string VoiceLineKey = "VoiceTrigger_VoiceLine";
+    private const string TriggerTypeKey = "VoiceTrigger_TriggerType";
 
     public override void OnInspectorGUI()
     {
@@ -24,6 +25,7 @@ public class MyScriptEditor : Editor
         voiceTrigger.playOnce = EditorPrefs.GetBool(PlayOnceKey, voiceTrigger.playOnce);
         voiceTrigger.playOnceBeforeRandom = EditorPrefs.GetBool(PlayOnceBeforeRandomKey, voiceTrigger.playOnceBeforeRandom);
         voiceTrigger.voiceLine = (E_1_Voicelines)EditorPrefs.GetInt(VoiceLineKey, (int)voiceTrigger.voiceLine);
+        voiceTrigger.triggerType = (TriggerType)EditorPrefs.GetInt(TriggerTypeKey, (int)voiceTrigger.triggerType);
 
         voiceTrigger.playOnce = EditorGUILayout.Toggle("Play Once", voiceTrigger.playOnce);
 
@@ -58,6 +60,7 @@ public class MyScriptEditor : Editor
         EditorPrefs.SetBool(PlayOnceKey, voiceTrigger.playOnce);
         EditorPrefs.SetBool(PlayOnceBeforeRandomKey, voiceTrigger.playOnceBeforeRandom);
         EditorPrefs.SetInt(VoiceLineKey, (int)voiceTrigger.voiceLine);
+        EditorPrefs.SetInt(TriggerTypeKey, (int)voiceTrigger.triggerType);
 
         serializedObject.ApplyModifiedProperties();
     }
