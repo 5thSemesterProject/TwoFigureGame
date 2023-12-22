@@ -16,6 +16,8 @@ class AIState : CharacterState
 
     public override CharacterState SpecificStateUpdate()
     {
+        Movement movement = characterData.movement;
+
         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
         {
             if (characterData.virtualCamera == null)
@@ -25,13 +27,22 @@ class AIState : CharacterState
 
             CustomEvents.RaiseCharacterSwitch(characterData.roomFadeRigidBody);
 
-            characterData.movement.DisableNavMeshHandling();
+            movement.DisableNavMeshHandling();
             return new IdleState(characterData);
         }
 
         //Follow Partner
-        Vector3 otherCharacterPos = characterData.other.gameObject.transform.position;
-        characterData.movement.FollowPartner(otherCharacterPos);
+        if (movement.interactable !=null && movement.interactable.TryGetComponent(out PressurePlate pressurePlate)) //Don't follow partner if on pressure plate
+        {
+            movement.DisableNavMeshHandling();
+            movement.MovePlayer(Vector2.one,0);
+        }
+        else if (movement.interactable == null)
+        {
+            Vector3 otherCharacterPos = characterData.other.gameObject.transform.position;
+            characterData.movement.FollowPartner(otherCharacterPos);
+        }
+
 
         return this;
     }

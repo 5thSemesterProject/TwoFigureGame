@@ -108,7 +108,6 @@ public abstract class CharacterState
         if (characterData.movement.interactable != null
         && CharacterManager.customInputMaps.InGame.Action.triggered)
         {   
-
             //Check if there a Player Action Type
             if (characterData.movement.interactable.TryGetComponent(out PlayerActionType playerActionType))
             {
@@ -140,7 +139,7 @@ public abstract class CharacterState
                 if (movement.interactable.TryGetComponent(out TriggerByCharacter triggerByCharacter))
                 {
                     triggerByCharacter.Activate(movement);
-                    characterData.movement.interactable = null;
+                    movement.interactable = null;
                 }
             }
         }

@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.TextCore.Text;
 
 public enum CharacterType
 {
@@ -32,6 +33,9 @@ public class Interactable : MonoBehaviour
     public event ActionDel untriggerEvent;
     public event ActionDel highlightEvent;
     public event ActionDel unhiglightEvent;
+    public event ActionDel aiEnterEvent;
+    public event ActionDel aiExitEvent;
+    public event ActionDel aiStayEvent;
 
     public Condition exitCond;
     public Condition enterCond;
@@ -56,16 +60,28 @@ public class Interactable : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out Movement movementComp) && CharacterManager.ActiveCharacterData.currentState.GetType() != typeof(AIState))
-        {
-            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
-            {
-                if (enterCond!=null && enterCond(movementComp)||enterCond==null)
-                    enterEvent?.Invoke(movementComp);
+    {   
+        CharacterData activeCharacterData = CharacterManager.ActiveCharacterData;
 
-                if (highlightCond!=null && highlightCond(movementComp)||highlightCond==null)
-                    highlightEvent?.Invoke(movementComp);
+        if (other.TryGetComponent(out Movement movementComp))
+        {   
+            //Handle Active Character    
+            if (activeCharacterData.currentState.GetType() != typeof(AIState) &&activeCharacterData.movement == movementComp)
+            {
+                if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
+                {
+                    if (enterCond!=null && enterCond(movementComp)||enterCond==null)
+                        enterEvent?.Invoke(movementComp);
+
+                    if (highlightCond!=null && highlightCond(movementComp)||highlightCond==null)
+                        highlightEvent?.Invoke(movementComp);
+                }
+            }
+
+            //Handle inactive AI Character
+            else if (activeCharacterData.currentState.GetType() != typeof(AIState) &&activeCharacterData.movement != movementComp)
+            {
+                aiEnterEvent?.Invoke(movementComp);
             }
         }
     }
@@ -74,26 +90,48 @@ public class Interactable : MonoBehaviour
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
+            CharacterData activeCharacterData = CharacterManager.ActiveCharacterData;
+            if (activeCharacterData.movement == movementComp)
+            {
                 if (exitCond!=null&&exitCond(movementComp)||exitCond==null)
                    exitEvent?.Invoke(movementComp);
 
                 if (unhighlightCond!=null && unhighlightCond(movementComp)||unhighlightCond==null)
                     unhiglightEvent?.Invoke(movementComp);
+            }
+
+            //Handle inactive AI Character
+            else if (activeCharacterData.movement != movementComp)
+                aiExitEvent?.Invoke(movementComp);
+               
         }
     }
 
-    void  OnTriggerStay(Collider other)
+    void OnTriggerStay(Collider other)
     {
-        if (other.TryGetComponent(out Movement movementComp)&& CharacterManager.ActiveCharacterData.currentState.GetType() != typeof(AIState))
+        CharacterData activeCharacterData = CharacterManager.ActiveCharacterData;
+        if (other.TryGetComponent(out Movement movementComp))
         {
-            if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
+
+            //Handle Active Player
+            if (activeCharacterData.currentState.GetType() != typeof(AIState) &&activeCharacterData.movement == movementComp)
             {
-                if (enterCond!=null &&enterCond(movementComp)||enterCond==null)
-                    enterEvent?.Invoke(movementComp);
- 
-                if (highlightCond!=null && highlightCond(movementComp)||highlightCond==null)
-                    highlightEvent?.Invoke(movementComp);
+                if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType && activeCharacterData.movement == movementComp)
+                {
+                    if (enterCond!=null &&enterCond(movementComp)||enterCond==null)
+                        enterEvent?.Invoke(movementComp);
+    
+                    if (highlightCond!=null && highlightCond(movementComp)||highlightCond==null)
+                        highlightEvent?.Invoke(movementComp);
+                }
             }
+
+            //Handle inactive AI Character
+            else if (activeCharacterData.movement != movementComp)
+            {
+                aiStayEvent?.Invoke(movementComp);
+            }
+                
         }
     }
 

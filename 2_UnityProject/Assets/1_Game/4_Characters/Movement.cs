@@ -18,7 +18,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
     public Coroutine coroutine;
     public Coroutine lerpRoutine;
-    public Coroutine movingAcrossOffMeshLink;
 
     //Movement
     private Coroutine moveRoutine;

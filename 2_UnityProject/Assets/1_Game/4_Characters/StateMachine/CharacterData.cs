@@ -37,8 +37,6 @@ public class CharacterData
     public CharacterData other;
     public CharacterState lastState;
     public WSUI_Element oxygenBar;
-
-
 }
 
 public class WomanData : CharacterData
