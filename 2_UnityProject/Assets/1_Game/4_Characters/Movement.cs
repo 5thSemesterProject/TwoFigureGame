@@ -1,7 +1,16 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Playables;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UIElements;
+using UnityEngine.Windows;
+using static UnityEngine.Rendering.DebugUI;
 
 public enum TraversalType
 {
@@ -18,14 +27,11 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
     public Coroutine coroutine;
     public Coroutine lerpRoutine;
+    public Coroutine movingAcrossOffMeshLink;
 
-    //Movement
-    private Coroutine moveRoutine;
-    private Vector3 desiredMove = Vector3.zero;
-    private Vector3 currentMove = Vector3.zero;
-    [SerializeField] private float acceleration = 10;
-    [SerializeField] private float deceleration = 20;
-    [SerializeField] private float maxSpeed = 4;
+    [SerializeField] private float lerpValue = 0.2f;
+    [SerializeField] private float movementSpeed = 25f;
+    [SerializeField] private float rotationSpeed = 50f;
 
     [SerializeField] private float smokeIntersectionRadius = 1;
     [SerializeField] private float gravity = 9.81f;
@@ -80,91 +86,20 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         //characterController.Move(Vector3.down*0.001f);
 
         if (!characterController.isGrounded)
-            timeFalling += Time.deltaTime;
-        else
-            timeFalling = 0;
-    }
-    
-    private IEnumerator _Move()
-    {
-        float tolerance = 0.001f;
-        while (true)
         {
-            //Apply Gravity
-            if (timeFalling > 0)
-            {
-                float gravityFallDistance = gravity * timeFalling * timeFalling;
-                characterController.Move(Vector3.down * gravityFallDistance);
-            }
-
-
-            if (currentMove.magnitude <= tolerance && desiredMove.magnitude <= tolerance &&  characterController.isGrounded)
-            {
-                //Move Zero
-                currentMove = Vector3.zero;
-                desiredMove = Vector3.zero;
-
-                characterController.Move(Vector3.zero);
-
-                moveRoutine = null;
-                yield break;
-            }
-
-            //Adjust for Camera Rotation
-            Transform cameraTransform = Camera.main.transform;
-            Vector3 cameraForward = new(cameraTransform.forward.x, 0, cameraTransform.forward.z);
-            Vector3 cameraRight = new(cameraTransform.right.x, 0, cameraTransform.right.z);
-            desiredMove = (cameraForward * desiredMove.z + cameraRight * desiredMove.x).normalized * desiredMove.magnitude;
-
-            //Calculate Deceleration
-            if (desiredMove.magnitude <= 0)
-            {
-                currentMove -= Mathf.Min(currentMove.magnitude, deceleration * currentMove.magnitude / maxSpeed * Time.unscaledDeltaTime * Time.timeScale) * currentMove.normalized;
-            }
-            else if (currentMove.magnitude > 0)
-                currentMove -= acceleration * Mathf.Pow((currentMove.magnitude / maxSpeed), 3) * Time.unscaledDeltaTime * Time.timeScale * currentMove.normalized;
-
-            //Calculate Added Move
-            float moveMagnitude = desiredMove.magnitude * Time.unscaledDeltaTime * Time.timeScale * acceleration;
-            currentMove += desiredMove.normalized * moveMagnitude;
-
-            //Move
-            Vector3 previousPosition = transform.position;
-            if (currentMove != null)
-                characterController.Move(currentMove * Time.unscaledDeltaTime * Time.timeScale);
-            Vector3 nextPosition = transform.position;
-            currentMove = (nextPosition - previousPosition) / Time.unscaledDeltaTime * Time.timeScale;
-            currentMove.y = 0;
-
-            //Rotate
-            if (currentMove != null && currentMove != Vector3.zero)
-                transform.rotation = Quaternion.LookRotation(currentMove);
-
-            desiredMove = Vector3.zero;
-
-            //Animators
-            animator.SetBool("Grounded", true);
-            animator.SetFloat("MotionSpeed", 1);
-            animator.SetFloat("Speed", currentMove.magnitude*2);
-
-            yield return null;
+            float gravityFallDistance = gravity * timeFalling * timeFalling;
+            characterController.Move(Vector3.down * gravityFallDistance);
+            timeFalling += Time.deltaTime;
         }
-    }
-
-    public void ActivateMove()
-    {
-        if (moveRoutine == null)
-            moveRoutine = StartCoroutine(_Move());
+        else
+        {
+            timeFalling = 0;
+        }
     }
 
     public Vector2 MovePlayer(Vector2 axis, float speed = 1)
     {
-        /*desiredMove += VectorHelper.Convert2To3(axis * speed);
 
-        ActivateMove();
-        return Vector2.Max(VectorHelper.Convert3To2(desiredMove), VectorHelper.Convert3To2(currentMove));*/
-
-        
         Vector3 movement=default;
         Vector3 movementDir=default;
 
@@ -210,7 +145,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         navMeshHandler.DisableNavMesh();
     }
 
-    /*
     private Vector2 AssureMovement(Vector3 position, Vector2 input)
     {
         return OptimizeMovement(position, input);
@@ -267,7 +201,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
         return (dir2 - proj).normalized;
     }
-    */
     #endregion
 
     #region Traversing
@@ -315,7 +248,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         animator.SetFloat("Speed",0);
         while (time < traverseDuration)
         {   
-            transform.Translate(traverseDir * Time.timeScale * Time.deltaTime * maxSpeed / 10, Space.World);
+            transform.Translate(traverseDir * Time.timeScale * Time.deltaTime*movementSpeed / 10, Space.World);
             time += Time.deltaTime * Time.timeScale;
 
             yield return null;
