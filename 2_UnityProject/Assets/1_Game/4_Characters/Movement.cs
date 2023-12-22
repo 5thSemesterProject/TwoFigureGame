@@ -159,12 +159,12 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
     public Vector2 MovePlayer(Vector2 axis, float speed = 1)
     {
-        desiredMove += VectorHelper.Convert2To3(axis * speed);
+        /*desiredMove += VectorHelper.Convert2To3(axis * speed);
 
         ActivateMove();
-        return Vector2.Max(VectorHelper.Convert3To2(desiredMove), VectorHelper.Convert3To2(currentMove));
+        return Vector2.Max(VectorHelper.Convert3To2(desiredMove), VectorHelper.Convert3To2(currentMove));*/
 
-        /*
+        
         Vector3 movement=default;
         Vector3 movementDir=default;
 
@@ -197,7 +197,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         animator.SetBool("Grounded", true);
         animator.SetFloat("MotionSpeed", 1);
         animator.SetFloat("Speed", speed>0? (movement.magnitude / Time.deltaTime * 3):0);
-        return VectorHelper.Convert3To2(movement);*/
+        return VectorHelper.Convert3To2(movement);
     }
 
     public void FollowPartner(Vector3 otherCharacterPos)
