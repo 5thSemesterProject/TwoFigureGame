@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Rendering.HighDefinition;
 
 public enum ActivationMode
@@ -9,7 +10,6 @@ public enum ActivationMode
     Player, Box
 }
 
-[ExecuteInEditMode]
 [RequireComponent(typeof(PassOnTrigger),typeof(TriggerOnEnter),typeof(Interactable)) ]
 public class PressurePlate : MonoBehaviour
 {
@@ -24,6 +24,8 @@ public class PressurePlate : MonoBehaviour
 
     Interactable interactable;
 
+    NavMeshObstacle navMeshObstacle;
+
     bool pressed;
 
     void Awake()
@@ -33,6 +35,8 @@ public class PressurePlate : MonoBehaviour
         //Add Actions
         interactable.triggerEvent+=TriggerAction;
         interactable.untriggerEvent+=UntriggerAction;
+        interactable.aiStayEvent+=TriggerStayAI;
+
 
         //Set Conditions
         GetComponent<TriggerOnEnter>().AddTriggerCond(CheckPressed);
@@ -49,11 +53,16 @@ public class PressurePlate : MonoBehaviour
         {
             Destroy(GetComponent<TriggerOnEnter>());
         }
+
+        //Handle Navmesh Obstacle;
+        navMeshObstacle = GetComponent<NavMeshObstacle>();
+        if (navMeshObstacle!=null)
+            navMeshObstacle.enabled = true;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out MoveBox movementComp) && activationMode == ActivationMode.Box)
+        if (other.TryGetComponent(out MoveBox moveBodx) && activationMode == ActivationMode.Box)
         {
             interactable.Trigger(null);
         }
@@ -67,7 +76,7 @@ public class PressurePlate : MonoBehaviour
         }
     }
 
-    void  OnValidate()
+    void OnValidate()
     {
         if (button == null)
             Debug.LogWarning("Missing buton. Add a button to the Pressure Plate on "+ gameObject.name);
@@ -78,8 +87,15 @@ public class PressurePlate : MonoBehaviour
         return !pressed;
     }
 
+    void TriggerStayAI(Movement movement)
+    {
+        if (navMeshObstacle!=null && navMeshObstacle.enabled)
+            navMeshObstacle.enabled = false;
+    } 
+
     void TriggerAction(Movement movement)
     {
+        movement.interactable = interactable;
         targetPos = initialButtonPos+Vector3.down*pressAmount;
         pressed = true;
     }
@@ -90,7 +106,12 @@ public class PressurePlate : MonoBehaviour
     }
 
     void UntriggerAction(Movement movement)
-    {
+    {   
+        //Remove Trigger from NavMesh
+        if (navMeshObstacle!=null)
+            navMeshObstacle.enabled = true;
+
+        movement.interactable = null;
         targetPos = initialButtonPos;
         pressed = false;
     }

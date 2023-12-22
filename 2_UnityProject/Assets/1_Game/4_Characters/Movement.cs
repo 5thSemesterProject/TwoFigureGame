@@ -27,7 +27,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
     public Coroutine coroutine;
     public Coroutine lerpRoutine;
-    public Coroutine movingAcrossOffMeshLink;
 
     [SerializeField] private float lerpValue = 0.2f;
     [SerializeField] private float movementSpeed = 25f;

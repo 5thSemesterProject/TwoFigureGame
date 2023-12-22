@@ -1,19 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Interactable))]
 public class TriggerOnEnter : MonoBehaviour
 {
+    [SerializeField] private bool includeAICharacterStay = true;
     Interactable interactable;
     Interactable.Condition additionalTriggerCond;
     Interactable.Condition additionalUntriggerCond;
+
+    NavMeshObstacle navMeshObstacle;
 
     void  Start()
     {
         interactable = GetComponent<Interactable>();
         interactable.enterEvent += TriggerAction;
         interactable.exitEvent+=UntriggerAction;
+
+        if (includeAICharacterStay)
+        {
+            interactable.aiStayEvent +=TriggerAction;
+        }
+
     }
 
     public void AddUntriggerCond(Interactable.Condition condition)
@@ -32,7 +43,7 @@ public class TriggerOnEnter : MonoBehaviour
         {
             interactable.Trigger(movement);
         }
-            
+
     }
 
     void UntriggerAction(Movement movement)
