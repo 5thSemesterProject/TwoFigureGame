@@ -145,7 +145,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             //Animators
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
-            animator.SetFloat("Speed", currentMove.magnitude);
+            animator.SetFloat("Speed", currentMove.magnitude*2);
 
             yield return null;
         }

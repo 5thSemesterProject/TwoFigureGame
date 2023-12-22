@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 4416926081852918491}
   - component: {fileID: 3637628967683660923}
   - component: {fileID: 6892696573093899433}
+  - component: {fileID: 3848071047263186792}
   m_Layer: 3
   m_Name: female
   m_TagString: Player
@@ -175,9 +176,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6cd8e0a016a4492e82b67c09e4360da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpValue: 0.2
-  movementSpeed: 10
-  rotationSpeed: 50
+  acceleration: 50
+  deceleration: 50
+  maxSpeed: 4
   smokeIntersectionRadius: 0.1
   gravity: 9.81
   interactable: {fileID: 0}
@@ -205,6 +206,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &3848071047263186792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416926081852918481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aebc4e437046b343812b7b027cc31ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8338988566280778634
 GameObject:
   m_ObjectHideFlags: 0
