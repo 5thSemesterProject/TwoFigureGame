@@ -96,7 +96,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             {
                 float gravityFallDistance = gravity * timeFalling * timeFalling;
                 characterController.Move(Vector3.down * gravityFallDistance);
-                timeFalling += Time.deltaTime;
             }
 
 
@@ -121,27 +120,26 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             //Calculate Deceleration
             if (desiredMove.magnitude <= 0)
             {
-                currentMove -= Mathf.Min(currentMove.magnitude, deceleration * currentMove.magnitude / maxSpeed * Time.deltaTime) * currentMove.normalized;
+                currentMove -= Mathf.Min(currentMove.magnitude, deceleration * currentMove.magnitude / maxSpeed * Time.unscaledDeltaTime * Time.timeScale) * currentMove.normalized;
             }
             else if (currentMove.magnitude > 0)
-                currentMove -= acceleration * Mathf.Pow((currentMove.magnitude / maxSpeed), 3) * Time.deltaTime * currentMove.normalized;
+                currentMove -= acceleration * Mathf.Pow((currentMove.magnitude / maxSpeed), 3) * Time.unscaledDeltaTime * Time.timeScale * currentMove.normalized;
 
             //Calculate Added Move
-            float moveMagnitude = desiredMove.magnitude * Time.deltaTime * acceleration;
+            float moveMagnitude = desiredMove.magnitude * Time.unscaledDeltaTime * Time.timeScale * acceleration;
             currentMove += desiredMove.normalized * moveMagnitude;
 
             //Move
             Vector3 previousPosition = transform.position;
-            characterController.Move(currentMove * Time.deltaTime);
+            if (currentMove != null)
+                characterController.Move(currentMove * Time.unscaledDeltaTime * Time.timeScale);
             Vector3 nextPosition = transform.position;
-            currentMove = (nextPosition - previousPosition) / Time.deltaTime;
+            currentMove = (nextPosition - previousPosition) / Time.unscaledDeltaTime * Time.timeScale;
             currentMove.y = 0;
 
             //Rotate
-            if (currentMove != Vector3.zero)
-            {
+            if (currentMove != null && currentMove != Vector3.zero)
                 transform.rotation = Quaternion.LookRotation(currentMove);
-            }
 
             desiredMove = Vector3.zero;
 
