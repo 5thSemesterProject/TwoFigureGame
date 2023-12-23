@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 
 
-[RequireComponent(typeof (TriggerOnEnter))]
+[RequireComponent(typeof (TriggerByCharacter))]
 public class CutsceneTrigger : PlayerActionType
 {
     [SerializeField] PlayableDirector playableDirector;
