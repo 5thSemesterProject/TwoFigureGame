@@ -45,14 +45,16 @@ public class WSUI_Element : MonoBehaviour
    {
         this.canvas = canvas;
         rectTransform.SetParent(canvas.GetComponent<RectTransform>());
+
+        SetScaleWithScreen();
+
    }
 
-    public void SetScaleWithScreen()
+    void SetScaleWithScreen()
     {
-        rectTransform.anchoredPosition = Vector3.zero;
-        rectTransform.sizeDelta = Vector2.zero;
-        rectTransform.anchorMin = Vector2.zero;
-        rectTransform.anchorMax = Vector2.one;
+        Vector3 originalScale = transform.localScale;
+        float scaleFactor = 3840/Screen.width;
+        transform.localScale = originalScale/scaleFactor;
     }
 
     IEnumerator FollowTransform(Vector2 offset)

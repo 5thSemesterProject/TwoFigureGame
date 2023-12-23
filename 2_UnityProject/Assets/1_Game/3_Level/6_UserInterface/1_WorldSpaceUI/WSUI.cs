@@ -22,22 +22,15 @@ public class WSUI : MonoBehaviour
 
     public static WSUI_Element ShowPrompt (GameObject prefab,Transform transformToFollow,out WSUI_Element spawnedElement)
     {
-        WSUI_Element element = SpawnIUElement(prefab);
+        WSUI_Element element = SpanwWSUIELement(prefab);
         spawnedElement = element;
 
         element.SetTarget(transformToFollow);
 
         return element;
-
-        //Save scale
-        //Vector3 originalScale = spawnedElement.transform.localScale;
-        //
-        //Set Scale
-        //float scaleFactor = 3840/Screen.width;
-        //spawnedElement.transform.localScale = originalScale/scaleFactor;
     }
 
-    private static WSUI_Element SpawnIUElement(GameObject prefab)
+    private static WSUI_Element SpanwWSUIELement(GameObject prefab)
     {
         GameObject spawnedElement = Instantiate(prefab);
         WSUI_Element element = spawnedElement.AddComponent<WSUI_Element>();
@@ -78,8 +71,7 @@ public class WSUI : MonoBehaviour
 
     public static WSUI_Element AddOverlay(GameObject overlayPrefab)
     {
-        WSUI_Element element = SpawnIUElement(overlayPrefab);
-        element.SetScaleWithScreen();
+        WSUI_Element element = SpanwWSUIELement(overlayPrefab);
         return element;
     }
 }
