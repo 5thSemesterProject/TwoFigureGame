@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Playables;
 
 [System.Serializable]
@@ -21,7 +22,8 @@ public class ActorData
     public void PrepareActorForScene()
     {   
         //Toogle Visibility
-        var skinnedMeshRenderer = actor.GetComponentInChildren<SkinnedMeshRenderer>();
+        var skinnedMeshRenderers = actor.GetComponentsInChildren<SkinnedMeshRenderer>();
+        foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
         if (skinnedMeshRenderer)
             skinnedMeshRenderer.enabled = false;
         
