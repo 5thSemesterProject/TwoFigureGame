@@ -2054,6 +2054,7 @@ Transform:
   - {fileID: 3662677828418202728}
   - {fileID: 3934370845722364819}
   - {fileID: 4325366106315781845}
+  - {fileID: 4905848698057682242}
   m_Father: {fileID: 3015399454290454417}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2952443396992611394
@@ -3721,6 +3722,95 @@ Transform:
   - {fileID: 2992456408533338417}
   m_Father: {fileID: 1196631478263241395}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5081767124291710455
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4905848698057682242}
+  - component: {fileID: 4620419961737163023}
+  - component: {fileID: 3271261173791339634}
+  - component: {fileID: 2338066023503376026}
+  m_Layer: 0
+  m_Name: VoiceTrigger_Enter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4905848698057682242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5081767124291710455}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -71.227, y: 1.034, z: -21.658}
+  m_LocalScale: {x: 1, y: 1, z: 1.7677}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4641207251786964872}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4620419961737163023
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5081767124291710455}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3271261173791339634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5081767124291710455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68c1cc48e6d740e41b02af8060caf0f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  specificCharacterAccess: 0
+--- !u!114 &2338066023503376026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5081767124291710455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraWaitTimeAfterClip: 1
+  playOnce: 1
+  playOnceBeforeRandom: 0
+  voiceLine: 51
+  randomizeVoicelines: 0
+  randomVoicelines: 
+  triggerType: 0
+  characterType: 0
+  characterMode: 1
 --- !u!1 &5086447483370319261
 GameObject:
   m_ObjectHideFlags: 0
@@ -7694,19 +7784,72 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5738198774351855226, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7071062926208031014}
+    - targetCorrespondingSourceObject: {fileID: 5738198774351855226, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8689802631791584185}
   m_SourcePrefab: {fileID: 100100000, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
 --- !u!4 &5158712284878572417 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4965779127796933824, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
   m_PrefabInstance: {fileID: 251797728319975233}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5538510347844047163 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5738198774351855226, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
+  m_PrefabInstance: {fileID: 251797728319975233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7071062926208031014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5538510347844047163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraWaitTimeAfterClip: 1
+  playOnce: 0
+  playOnceBeforeRandom: 0
+  voiceLine: 52
+  randomizeVoicelines: 1
+  randomVoicelines: 170000001800000019000000
+  triggerType: 1
+  characterType: 1
+  characterMode: 1
+--- !u!114 &8689802631791584185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5538510347844047163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraWaitTimeAfterClip: 1
+  playOnce: 0
+  playOnceBeforeRandom: 1
+  voiceLine: 52
+  randomizeVoicelines: 1
+  randomVoicelines: 1a0000001b0000001c000000
+  triggerType: 1
+  characterType: 2
+  characterMode: 1
 --- !u!114 &6129641725510518245 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -2995373004135552348, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
   m_PrefabInstance: {fileID: 251797728319975233}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5538510347844047163}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6b32a4212f490247a9456ff13daa9c8, type: 3}
@@ -9937,6 +10080,7 @@ MonoBehaviour:
   randomVoicelines: 000000000100000002000000
   triggerType: 1
   characterType: 1
+  characterMode: 0
 --- !u!114 &9098738312713824675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9957,6 +10101,7 @@ MonoBehaviour:
   randomVoicelines: 03000000040000000500000006000000
   triggerType: 1
   characterType: 2
+  characterMode: 0
 --- !u!1001 &578214318438329381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10295,6 +10440,7 @@ MonoBehaviour:
   randomVoicelines: 0700000008000000090000000a000000
   triggerType: 1
   characterType: 0
+  characterMode: 1
 --- !u!1001 &666110172273453372
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13123,8 +13269,9 @@ MonoBehaviour:
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 170000001800000019000000
-  triggerType: 0
+  triggerType: 1
   characterType: 1
+  characterMode: 1
 --- !u!114 &1919123810229394831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13143,8 +13290,9 @@ MonoBehaviour:
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 1a0000001b0000001c000000
-  triggerType: 0
+  triggerType: 1
   characterType: 2
+  characterMode: 1
 --- !u!4 &5416703370346108153 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4965779127796933824, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
@@ -13406,10 +13554,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7571872175291914751}
     m_Modifications:
-    - target: {fileID: 4295315659823089368, guid: 4cd0f0a0a394a9c46ac5bab665abd68e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 5378b084e2591f04286439cffd2bb818, type: 2}
     - target: {fileID: 3167398455596923255, guid: feddbd41c342aa144be9b7cff3ccd986, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -13462,6 +13606,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wallSection
       objectReference: {fileID: 0}
+    - target: {fileID: 4295315659823089368, guid: 4cd0f0a0a394a9c46ac5bab665abd68e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5378b084e2591f04286439cffd2bb818, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24279,6 +24427,7 @@ MonoBehaviour:
   randomVoicelines: 13000000140000001500000016000000
   triggerType: 1
   characterType: 0
+  characterMode: 0
 --- !u!4 &4544388718044119441 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1547530833143956112, guid: e48f469c632e4f1498ccc8a328235676, type: 3}
@@ -30530,13 +30679,42 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4976925026321240174, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6226254968584112417}
   m_SourcePrefab: {fileID: 100100000, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
 --- !u!4 &8406885766834559053 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5645902451615812308, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
   m_PrefabInstance: {fileID: 4247180656211612313}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9214526176666993399 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4976925026321240174, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
+  m_PrefabInstance: {fileID: 4247180656211612313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6226254968584112417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9214526176666993399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraWaitTimeAfterClip: 1
+  playOnce: 0
+  playOnceBeforeRandom: 0
+  voiceLine: 47
+  randomizeVoicelines: 1
+  randomVoicelines: 0700000008000000090000000a000000
+  triggerType: 0
+  characterType: 0
+  characterMode: 1
 --- !u!1001 &4268244750590683072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31451,6 +31629,7 @@ MonoBehaviour:
   randomVoicelines: 0700000008000000090000000a000000
   triggerType: 1
   characterType: 0
+  characterMode: 1
 --- !u!1001 &4446896714903428137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31715,10 +31894,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7571872175291914751}
     m_Modifications:
-    - target: {fileID: 4295315659823089368, guid: 4cd0f0a0a394a9c46ac5bab665abd68e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 5378b084e2591f04286439cffd2bb818, type: 2}
     - target: {fileID: 3167398455596923255, guid: feddbd41c342aa144be9b7cff3ccd986, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -31771,6 +31946,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wallSection
       objectReference: {fileID: 0}
+    - target: {fileID: 4295315659823089368, guid: 4cd0f0a0a394a9c46ac5bab665abd68e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5378b084e2591f04286439cffd2bb818, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -34105,6 +34284,7 @@ MonoBehaviour:
   randomVoicelines: 13000000140000001500000016000000
   triggerType: 1
   characterType: 0
+  characterMode: 0
 --- !u!1001 &4990449990539518574
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34384,6 +34564,7 @@ MonoBehaviour:
   randomVoicelines: 0700000008000000090000000a000000
   triggerType: 1
   characterType: 0
+  characterMode: 1
 --- !u!4 &849601001428153001 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5645902451615812308, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
@@ -41881,10 +42062,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7571872175291914751}
     m_Modifications:
-    - target: {fileID: 4295315659823089368, guid: 4cd0f0a0a394a9c46ac5bab665abd68e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 5378b084e2591f04286439cffd2bb818, type: 2}
     - target: {fileID: 3167398455596923255, guid: feddbd41c342aa144be9b7cff3ccd986, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -41937,6 +42114,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wallSection
       objectReference: {fileID: 0}
+    - target: {fileID: 4295315659823089368, guid: 4cd0f0a0a394a9c46ac5bab665abd68e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5378b084e2591f04286439cffd2bb818, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -42680,6 +42861,7 @@ MonoBehaviour:
   randomVoicelines: 03000000040000000500000006000000
   triggerType: 1
   characterType: 2
+  characterMode: 0
 --- !u!114 &6436021436080373128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42700,6 +42882,7 @@ MonoBehaviour:
   randomVoicelines: 000000000100000002000000
   triggerType: 1
   characterType: 1
+  characterMode: 0
 --- !u!1001 &6785923324901080151
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48264,6 +48447,7 @@ MonoBehaviour:
   randomVoicelines: 000000000100000002000000
   triggerType: 1
   characterType: 1
+  characterMode: 0
 --- !u!114 &6186432060216416190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48284,6 +48468,7 @@ MonoBehaviour:
   randomVoicelines: 03000000040000000500000006000000
   triggerType: 1
   characterType: 2
+  characterMode: 0
 --- !u!4 &4377605486472740126 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6243584794034034947, guid: 2a4536f57f384a141a5fa34cfcb77925, type: 3}
@@ -48824,6 +49009,7 @@ MonoBehaviour:
   randomVoicelines: 13000000140000001500000016000000
   triggerType: 1
   characterType: 0
+  characterMode: 1
 --- !u!4 &8752352771559109058 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1547530833143956112, guid: e48f469c632e4f1498ccc8a328235676, type: 3}
@@ -49542,6 +49728,7 @@ MonoBehaviour:
   randomVoicelines: 13000000140000001500000016000000
   triggerType: 1
   characterType: 0
+  characterMode: 1
 --- !u!4 &8824811163205711166 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1547530833143956112, guid: e48f469c632e4f1498ccc8a328235676, type: 3}
@@ -53918,6 +54105,7 @@ MonoBehaviour:
   randomVoicelines: 13000000140000001500000016000000
   triggerType: 1
   characterType: 0
+  characterMode: 0
 --- !u!4 &7538500850946225802 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1547530833143956112, guid: e48f469c632e4f1498ccc8a328235676, type: 3}

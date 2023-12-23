@@ -49,6 +49,7 @@ public enum E_1_Voicelines
     Room2_FirstBox_E,
     Room2_FirstBox_V,
     Room3_Enter,
+    Room3_FirstPlate_E,
     Room3_FirstPlate_V,
     Room4_Enter,
     Room4_FirstLever_E,
