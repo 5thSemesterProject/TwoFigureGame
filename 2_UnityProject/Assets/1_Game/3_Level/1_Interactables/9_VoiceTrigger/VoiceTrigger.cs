@@ -6,6 +6,11 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
+public enum CharacterMode
+{
+    Both,Active, Inactive
+}
+
 
 [CustomEditor(typeof(VoiceTrigger))]
 public class MyScriptEditor : Editor
@@ -14,10 +19,10 @@ public class MyScriptEditor : Editor
   {
     var voiceTrigger = target as VoiceTrigger;
 
+    EditorGUILayout.LabelField("Trigger Conditions", EditorStyles.boldLabel);
+
     voiceTrigger.playOnce = EditorGUILayout.Toggle("Play Once", voiceTrigger.playOnce);
     
-    voiceTrigger.randomizeVoicelines = EditorGUILayout.Toggle("Randomize Voicelines", voiceTrigger.randomizeVoicelines);
-
     //Gender Specific Voices
     Interactable interactable = voiceTrigger.GetComponent<Interactable>();
     if (interactable && interactable.specificCharacterAccess==CharacterType.None)
@@ -29,9 +34,16 @@ public class MyScriptEditor : Editor
         voiceTrigger.characterType = CharacterType.None;
     }
 
+    voiceTrigger.triggerType = (TriggerType)EditorGUILayout.EnumPopup("TriggerType",voiceTrigger.triggerType);
+
+    voiceTrigger.characterMode = (CharacterMode)EditorGUILayout.EnumPopup("Required Character Mode",voiceTrigger.characterMode);
+
+    EditorGUILayout.Space(10);
+    EditorGUILayout.LabelField("Voiceline Settings", EditorStyles.boldLabel);
+
     voiceTrigger.extraWaitTimeAfterClip = EditorGUILayout.FloatField("Wait Time Between Clips", voiceTrigger.extraWaitTimeAfterClip);
 
-    voiceTrigger.triggerType = (TriggerType)EditorGUILayout.EnumPopup("TriggerType",voiceTrigger.triggerType);
+    voiceTrigger.randomizeVoicelines = EditorGUILayout.Toggle("Randomize Voicelines", voiceTrigger.randomizeVoicelines);
 
     if (voiceTrigger.randomizeVoicelines)
     {
@@ -62,7 +74,6 @@ public class VoiceTrigger : MonoBehaviour
     int lastRandom = 500;
 
     static List<VoiceTrigger>otherVoiceTriggers = new List<VoiceTrigger>();
-    
     public Coroutine coroutine;
     public float extraWaitTimeAfterClip = 1f;
     public bool playOnce = false;
@@ -71,18 +82,17 @@ public class VoiceTrigger : MonoBehaviour
     public bool randomizeVoicelines;
     public E_1_Voicelines[] randomVoicelines;
     public TriggerType triggerType;
-
     public CharacterType characterType = CharacterType.None;
+    public CharacterMode characterMode = CharacterMode.Both;
 
 
-
-    // Start is called before the first frame update
     void Start()
     {
         interactable = GetComponent<Interactable>();
 
         if (triggerType== TriggerType.OnTrigger)
         {
+
             interactable.triggerEvent+=LoadVoiceLine;
 
             if (!playOnce)
@@ -90,10 +100,22 @@ public class VoiceTrigger : MonoBehaviour
         }
         else if (triggerType == TriggerType.OnHighlight)
         {
-            interactable.highlightEvent+=LoadVoiceLine;
+            if (characterMode != CharacterMode.Inactive)
+            {
+                interactable.highlightEvent+=LoadVoiceLine;
             
-            if (!playOnce)
-                interactable.unhiglightEvent+=Untrigger;
+                if (!playOnce)
+                    interactable.unhiglightEvent+=Untrigger;
+            }
+            else
+            {
+                interactable.aiEnterEvent+=LoadVoiceLine;
+                interactable.aiStayEvent += LoadVoiceLine;
+                
+                if (!playOnce)
+                    interactable.aiExitEvent+=Untrigger;
+            }   
+
         }
 
         AddOtherVoiceTriggerRange(GetComponents<VoiceTrigger>());
@@ -104,7 +126,8 @@ public class VoiceTrigger : MonoBehaviour
     {
         if (coroutine==null && !triggered 
         && CheckCharacterTypes(movement)
-        && CheckOtherVoicelines())
+        && CheckOtherVoicelines()
+        && CheckCharacterMode(movement))
         {
             triggered = true;
 
@@ -195,6 +218,26 @@ public class VoiceTrigger : MonoBehaviour
         return interactable.specificCharacterAccess == CharacterType.None && movement.characterType == characterType && characterType!=CharacterType.None
          ||interactable.specificCharacterAccess!= CharacterType.None
          ||characterType==CharacterType.None;
+    }
+
+    bool CheckCharacterMode(Movement movement)
+    {
+        Movement activeMovement = CharacterManager.ActiveCharacterData.movement;
+
+        switch(characterMode)
+        {
+            case CharacterMode.Both:
+                return true;
+            case CharacterMode.Active:
+                if (movement == activeMovement)
+                    return true;
+                break;
+            case CharacterMode.Inactive:
+                if (movement != activeMovement)
+                    return true;
+                break;
+        }
+        return false;
     }
 
     void AddOtherVoiceTriggerRange(VoiceTrigger[] voiceTriggers)
