@@ -22,23 +22,27 @@ abstract class CutsceneState : CharacterState
 class WalkTowards : CutsceneState
 {   
     Vector2 targetDir;
-    Vector2 targetPos;
+    Vector3 targetPos;
     float intitialTargetDistance;
-    float tolerance = 0.05f;
+    float tolerance = 0.2f;
+
+    GameObject actor;
     public WalkTowards(CharacterData data, CutsceneHandler cutsceneHandler) : base(data, cutsceneHandler)
     {
         updateLastState = false;
         handleInteractables = false;
+        
         characterData.gameObject.GetComponent<CharacterController>().detectCollisions = false;
 
-        GameObject actor = cutsceneHandler.GetActorData(characterData.movement.characterType).actor;
+        //Turn off UI
+        
 
-        targetPos = VectorHelper.Convert3To2(actor.transform.position);
+        //Set up positions
+        actor = cutsceneHandler.GetActorData(characterData.movement.characterType).actor;
+        targetPos = actor.transform.position;
         targetDir = actor.transform.forward;
+        intitialTargetDistance = Vector2.Distance(characterData.gameObject.transform.position,targetPos)-tolerance;
 
-        intitialTargetDistance = Vector2.Distance(VectorHelper.Convert3To2(characterData.gameObject.transform.position),targetPos)-tolerance;
-
-        characterData.movement.GetComponent<NavMeshHandler>().MovePlayerToPos(actor.transform.position);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -46,18 +50,17 @@ class WalkTowards : CutsceneState
         if (characterData.other.currentState is WaitForOtherState)
             characterData.virtualCamera.gameObject.SetActive(true);
 
-        Vector2 playerPos = VectorHelper.Convert3To2(characterData.gameObject.transform.position);
-        float distanceToTarget = Vector2.Distance(playerPos,targetPos);
+        Vector3 playerPos = characterData.gameObject.transform.position;
+        float distanceToTarget = Vector3.Distance(playerPos,targetPos);
         
         if (distanceToTarget>tolerance)
         {
-            Vector2 moveDirection = GetMoveDirection(targetPos,playerPos);
+            characterData.movement.GetComponent<NavMeshHandler>().MovePlayerToPos(targetPos,1,true);
 
-            //Slowly Lerp Player into Direction
+            //Slowly Lerp Player Rotation into  Actor Direction
+            Vector2 moveDirection = GetMoveDirection(targetPos,playerPos);
             moveDirection = Vector2.Lerp(moveDirection,targetDir,1-distanceToTarget/intitialTargetDistance);
             moveDirection = moveDirection.normalized;
-
-            //characterData.movement.MovePlayer(moveDirection);
 
             return this;
         }
@@ -127,12 +130,12 @@ class PlayCutsceneState : CutsceneState
         handleInteractables = false;
         updateLastState = false;
 
-        playableDirector = cutsceneHandler.GetPlayableDirector();
         
         //Swap To Actor Model
         cutsceneHandler.SwapToActorModel(characterData.gameObject,characterData.movement.characterType);
 
         //Start Cutscene if not already playing
+        playableDirector = cutsceneHandler.GetPlayableDirector();
         if (playableDirector.state != PlayState.Playing)
             playableDirector.Play();
 

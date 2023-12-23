@@ -35,11 +35,14 @@ public class NavMeshHandler : MonoBehaviour
         }
     }
 
-    public void MovePlayerToPos(Vector3 position,float movementSpeed=1)
+    public void MovePlayerToPos(Vector3 position,float movementSpeed=1,bool noStoppingDistance = false)
     {
         navMeshAgent.enabled = true;
         navMeshAgent.autoTraverseOffMeshLink = false;
         characterController.enabled = false;
+
+        if (noStoppingDistance)
+            navMeshAgent.stoppingDistance = 0.1f;
 
         if (position!=navMeshAgent.destination && movingAcrossOffMeshLink==null)
         {
