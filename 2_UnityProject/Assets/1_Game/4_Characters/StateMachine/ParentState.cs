@@ -99,6 +99,11 @@ public abstract class CharacterState
             characterData.oxygenData.FallOff();
         }
 
+        if (characterData.oxygenData.currentOxygen<=GameStats.instance.lowOxygenThreshhold)
+        {
+            CustomEvents.RaiseLowOxygen(characterData);
+        }
+
     }
 
     public void HandleInteractable(out CharacterState updatedState)
