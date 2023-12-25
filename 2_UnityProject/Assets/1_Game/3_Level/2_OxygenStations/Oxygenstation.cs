@@ -8,21 +8,22 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
    [SerializeField]float chargeRate = 5.0f;
    [SerializeField] float smokeIntersectionRadius;
    [SerializeField] Material fluidMaterial;
-
-    [SerializeField]float maxEmission = 20;
+   [SerializeField]float maxEmission = 20;
    float targetEmission;
    float initialEmission = 0;
    Coroutine emissionCoroutine;
-
    bool isCharging;
-
    int amountOfCharacters;
+   float maxSmokeIntersectionRadus;
 
-    void  Awake()
+    #region  Setup
+    void Start()
     {
-        oxygenData = new OxygenData(200,0.1f);
-
+        oxygenData = GameStats.instance.oxygenStation;
+        oxygenData.currentOxygen =oxygenData.maxOxygen;
         gameObject.layer = 3;
+
+        maxSmokeIntersectionRadus = smokeIntersectionRadius;
 
         if (TryGetComponent(out SphereCollider sphereCollider))
         {
@@ -47,19 +48,44 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
         }
     }
 
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position,smokeIntersectionRadius);
+        
+    }
+    #endregion
+
+
     public float ChargePlayer()
     {
+        Debug.Log (oxygenData.currentOxygen);
+
         if (oxygenData.currentOxygen>0)
         {
             isCharging = true;
             oxygenData.currentOxygen-=chargeRate*Time.deltaTime;
             SetFluidLevel();
             LerpEmission();
+            DecreaseRadius();
             return chargeRate*Time.deltaTime;
         }
         
         return 0;
     }
+
+
+    #region Smoke Intersection Radius
+    void DecreaseRadius()
+    {
+        smokeIntersectionRadius = (oxygenData.currentOxygen/oxygenData.maxOxygen)*maxSmokeIntersectionRadus;
+    }
+
+    public float GetIntersectionRadius()
+    {
+        return smokeIntersectionRadius;
+    }
+    #endregion
 
     void SetFluidLevel()
     {
@@ -67,24 +93,10 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
         fluidMaterial.SetFloat("_Cutoff",fluidLevel);
     }
 
-    
-
-    public float GetIntersectionRadius()
-    {
-        return smokeIntersectionRadius;
-    }
-
+    #region  CountCharacters
     public int GetAmountOfCharacters()
     {
         return amountOfCharacters;
-    }
-
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position,smokeIntersectionRadius);
-        
     }
 
     void  OnTriggerEnter(Collider other)
@@ -113,9 +125,10 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
         }
     }
 
+    #endregion
+
 
     #region Emission Handling
-
     public void LerpEmission()
     {
         if (emissionCoroutine == null)

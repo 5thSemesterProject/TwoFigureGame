@@ -38,6 +38,7 @@ public class CharacterData
     public CharacterState lastState;
     public WSUI_Element oxygenBar;
     public bool raisedLowOxygenEvent = false;
+    public bool raisedChargingEvent = false;
 }
 
 public class WomanData : CharacterData
