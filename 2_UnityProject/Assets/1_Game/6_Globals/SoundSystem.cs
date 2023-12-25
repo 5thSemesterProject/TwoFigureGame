@@ -156,7 +156,7 @@ public class SoundSystem : MonoBehaviour
     /// <param name="id">The unique task ID to search for.</param>
     /// <param name="audioSource">The resulting AudioSource if found.</param>
     /// <returns>True if an AudioSource with the specified ID is found; otherwise, false.</returns>
-   bool TryGetAudioSourceById(Int32 id, out Tuple<AudioSource,Coroutine> soundTaskData)
+   static bool TryGetAudioSourceById(Int32 id, out Tuple<AudioSource,Coroutine> soundTaskData)
    {
         for (int i = 0; i < activeSoundTasks.Count; i++)
         {
@@ -183,7 +183,7 @@ public class SoundSystem : MonoBehaviour
    }
 
 
-   public bool TryStopSound(int taskId)
+   public static bool TryStopSound(int taskId)
    {
         if (TryGetAudioSourceById(taskId, out Tuple<AudioSource,Coroutine> soundTaskData ))
         {
