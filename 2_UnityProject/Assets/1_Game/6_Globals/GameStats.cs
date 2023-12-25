@@ -31,9 +31,9 @@ public struct OxygenData
 public class GameStats : MonoBehaviour
 {
    public static GameStats instance;
-
     public float inactiveFollowDistance = 4;
     public OxygenData characterOxy,oxygenStation;
+    public float lowOxygenThreshhold = 20;
 
 
    void  Awake()
