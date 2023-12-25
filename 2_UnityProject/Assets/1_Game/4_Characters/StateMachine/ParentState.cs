@@ -40,10 +40,7 @@ public abstract class CharacterState
             return new WalkTowards(characterData,walkTowards.GetCutSceneHandler());
         }
 
-        if (activateOxygenBar)
-            HandleOxygenBar();
-        else
-            HideOxygenBar();
+
            
         return SpecificStateUpdate();
     }
@@ -88,21 +85,38 @@ public abstract class CharacterState
 
     public void HandleOxygen()
     {   
+
+        //OxygenBar
+        if (activateOxygenBar)
+            HandleOxygenBar();
+        else
+            HideOxygenBar();
+
+        //Oxygenstation
         Oxygenstation oxygenstation  = characterData.movement.oxygenstation;
         if (oxygenstation!=null)
         {
             if (characterData.oxygenData.currentOxygen<=characterData.oxygenData.maxOxygen)
             {
                 characterData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
+                //Debug.Log (characterData.oxygenData.currentOxygen);
                 characterData.raisedLowOxygenEvent = false;
+
+                //On Charging
+                if (characterData.raisedChargingEvent)
+                {
+                    characterData.raisedChargingEvent = true;
+                    CustomEvents.RaiseChargingOxygen(characterData);
+                }
             }
                 
         }
         else
         {
             characterData.oxygenData.FallOff();
+            characterData.raisedChargingEvent = true;
 
-            //Raise Low Health
+            //Raise Low Health Event
             if (characterData.oxygenData.currentOxygen<=GameStats.instance.lowOxygenThreshhold && !characterData.raisedLowOxygenEvent)
             {
                 characterData.raisedLowOxygenEvent = true;

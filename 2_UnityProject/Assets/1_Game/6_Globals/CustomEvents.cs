@@ -16,9 +16,16 @@ public class CustomEvents : MonoBehaviour
     //Voiceline Trigger
     public delegate void TriggerVoicelineEvent(CharacterData characterData);
     public static event TriggerVoicelineEvent lowOxygen;
+    public static event TriggerVoicelineEvent chargingOxygen;
 
     public static void RaiseLowOxygen(CharacterData characterData)
     {
         lowOxygen?.Invoke(characterData);
+    }
+
+   
+    public static void RaiseChargingOxygen(CharacterData characterData)
+    {
+        chargingOxygen?.Invoke(characterData);
     }
 }

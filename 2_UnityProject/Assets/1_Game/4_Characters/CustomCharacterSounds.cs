@@ -37,17 +37,25 @@ struct VoicelineData
 public class CustomCharacterSounds : MonoBehaviour
 {
     [SerializeField] VoiceLineDataContainer lowHealthSound;
+    [SerializeField] VoiceLineDataContainer chargingOxygenSound;
     [SerializeField] float waitTimeBetweenClips = 1;
     
     void Start()
     {
         lowHealthSound.Initalize();
         CustomEvents.lowOxygen+= PlayLowHealthSound;
+        CustomEvents.chargingOxygen+=PlayChargingOxygenSound;
     }
 
    void PlayLowHealthSound(CharacterData characterData)
    {
         E_1_Voicelines voicelineToPlay = lowHealthSound.GetVoicelineByCharacterType(characterData.movement.characterType);
+        VoicelinePlayer.instance.LoadAndPlayVoiceLine(voicelineToPlay,waitTimeBetweenClips,2);
+   }
+
+   void PlayChargingOxygenSound(CharacterData characterData)
+   {
+        E_1_Voicelines voicelineToPlay = chargingOxygenSound.GetVoicelineByCharacterType(characterData.movement.characterType);
         VoicelinePlayer.instance.LoadAndPlayVoiceLine(voicelineToPlay,waitTimeBetweenClips,2);
    }
 }
