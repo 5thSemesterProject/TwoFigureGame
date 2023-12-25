@@ -9,8 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3441645674464402619}
+  - component: {fileID: 1569898279842544177}
+  - component: {fileID: 7492134434037337651}
   m_Layer: 0
-  m_Name: Custom Voice Trigger Data
+  m_Name: VoiceHandling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,6 +33,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2779561743891827041}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1569898279842544177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5926435566355848803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ab3b72a3a7dfe4c84e583a15bd36c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7492134434037337651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5926435566355848803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf1cb3eb8d184f46ba14500e68090d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lowHealthSound:
+    maleData:
+      voiceline: 36
+      characterType: 0
+    femaleData:
+      voiceline: 0
+      characterType: 0
+  waitTimeBetweenClips: 1
 --- !u!1 &7087388740281395952
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,7 +78,6 @@ GameObject:
   - component: {fileID: 6820310742034594229}
   - component: {fileID: 5550199543701370580}
   - component: {fileID: 2485981417808355059}
-  - component: {fileID: 4851917989455482655}
   m_Layer: 0
   m_Name: Globals
   m_TagString: Untagged
@@ -136,15 +169,4 @@ MonoBehaviour:
     maxOxygen: 150
     currentOxygen: 0
     fallOfRate: 10
---- !u!114 &4851917989455482655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7087388740281395952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79ab3b72a3a7dfe4c84e583a15bd36c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  lowOxygenThreshhold: 20

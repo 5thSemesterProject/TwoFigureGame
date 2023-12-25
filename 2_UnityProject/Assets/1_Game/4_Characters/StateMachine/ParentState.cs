@@ -92,16 +92,22 @@ public abstract class CharacterState
         if (oxygenstation!=null)
         {
             if (characterData.oxygenData.currentOxygen<=characterData.oxygenData.maxOxygen)
+            {
                 characterData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
+                characterData.raisedLowOxygenEvent = false;
+            }
+                
         }
         else
         {
             characterData.oxygenData.FallOff();
-        }
 
-        if (characterData.oxygenData.currentOxygen<=GameStats.instance.lowOxygenThreshhold)
-        {
-            CustomEvents.RaiseLowOxygen(characterData);
+            //Raise Low Health
+            if (characterData.oxygenData.currentOxygen<=GameStats.instance.lowOxygenThreshhold && !characterData.raisedLowOxygenEvent)
+            {
+                characterData.raisedLowOxygenEvent = true;
+                CustomEvents.RaiseLowOxygen(characterData);
+            }
         }
 
     }

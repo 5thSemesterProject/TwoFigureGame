@@ -19,6 +19,6 @@ public class CustomEvents : MonoBehaviour
 
     public static void RaiseLowOxygen(CharacterData characterData)
     {
-        lowOxygen.Invoke(characterData);
+        lowOxygen?.Invoke(characterData);
     }
 }
