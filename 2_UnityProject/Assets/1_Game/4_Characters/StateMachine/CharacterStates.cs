@@ -80,7 +80,7 @@ class CrawlState : CharacterState
         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
             return new AIState(characterData);
 
-        if (characterData.movement.coroutine == null)
+        if (characterData.movement.traversalRoutine == null)
             return new IdleState(characterData);
 
         return this;
@@ -101,7 +101,7 @@ class JumpOverState : CharacterState
         if (CharacterManager.customInputMaps.InGame.Switch.triggered)
             return new AIState(characterData);
 
-        if (characterData.movement.coroutine == null)
+        if (characterData.movement.traversalRoutine == null)
             return new IdleState(characterData);
 
         return this;
