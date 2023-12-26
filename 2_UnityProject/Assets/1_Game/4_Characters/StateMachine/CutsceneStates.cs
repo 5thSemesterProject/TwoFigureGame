@@ -11,6 +11,7 @@ abstract class CutsceneState : CharacterState
 
     protected  CutsceneState(CharacterData data, CutsceneHandler cutsceneHandler) : base(data)
     {
+        handleOxygen = false;
         this.cutsceneHandler = cutsceneHandler;
     }
 
@@ -31,6 +32,7 @@ class WalkTowards : CutsceneState
     {
         updateLastState = false;
         handleInteractables = false;
+        handleOxygen = false;
         
         characterData.gameObject.GetComponent<CharacterController>().detectCollisions = false;
 
@@ -98,6 +100,7 @@ class WaitForOtherState : CutsceneState
     {
         updateLastState = false;
         handleInteractables = false;
+        handleOxygen = false;
 
         Vector2 moveDir = VectorHelper.Convert3To2(cutsceneHandler.GetActorData(characterData.movement.characterType).actor.transform.forward);
         characterData.movement.MovePlayer(moveDir,0);
@@ -129,6 +132,7 @@ class PlayCutsceneState : CutsceneState
     {
         handleInteractables = false;
         updateLastState = false;
+        handleOxygen = false;
 
         
         //Swap To Actor Model
@@ -173,6 +177,7 @@ class RecoverLastState : CutsceneState
     {
         handleInteractables = false;
         updateLastState = false;
+        handleOxygen = false;
     }
 
     public override CharacterState SpecificStateUpdate()

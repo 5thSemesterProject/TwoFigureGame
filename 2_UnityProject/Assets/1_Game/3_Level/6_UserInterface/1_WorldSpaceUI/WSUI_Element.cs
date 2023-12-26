@@ -102,30 +102,31 @@ public class WSUI_Element : MonoBehaviour
     }
     public void LerpAlpha(float alpha, float smoothTime = 0.33f)
     {
-          
-          targetAlpha = alpha;
+        SetTargetAlpha(alpha);
+
         if (alphaCoroutine == null)
         {
             alphaCoroutine = StartCoroutine(_LerpAlpha(smoothTime));
         }
-  
     }
-    IEnumerator _LerpAlpha(float smoothTime)
+
+    public void SetTargetAlpha(float alpha) 
+    {
+        targetAlpha = alpha;
+    }
+    public IEnumerator _LerpAlpha(float smoothTime=0.33f)
     {
         float currentAlpha = GetAlpha();
         float velocity = 0;
 
         while (true)
         {
-            targetAlpha = 
-
-               currentAlpha = Mathf.SmoothDamp(currentAlpha, targetAlpha, ref velocity, smoothTime);
+            currentAlpha =  Mathf.SmoothDamp(currentAlpha, targetAlpha, ref velocity, smoothTime);
 
           if (Mathf.Abs(targetAlpha-currentAlpha)<0.01f)
           {
                 currentAlpha = targetAlpha;
                 SetAlpha(currentAlpha);
-
                 break;
           }
 

@@ -8,6 +8,7 @@ public abstract class CharacterState
     protected bool handleInteractables = true;
     protected bool updateLastState = true;
     protected bool activateOxygenBar = true;
+    protected bool handleOxygen = true;
     protected Oxygenstation lastOxyggenStation;
 
     public CharacterState(CharacterData data)
@@ -24,7 +25,10 @@ public abstract class CharacterState
         if (!(characterData.currentState is AIState))
             CamManager.FindOccludingObjects(characterData.gameObject.transform);
 
-        HandleOxygen();
+        if (handleOxygen)
+            HandleOxygen();
+        else
+            HideOxygenBar();
 
         if (handleInteractables)
         {
@@ -40,30 +44,20 @@ public abstract class CharacterState
             return new WalkTowards(characterData,walkTowards.GetCutSceneHandler());
         }
 
-
            
         return SpecificStateUpdate();
     }
 
     public void HandleOxygenBar()
-    {
-        WSUI_Element oxygenBar = characterData.oxygenBar;
-
-        if (oxygenBar != null && oxygenBar.GetRemoved())
-        {
-            GameObject.Destroy(oxygenBar.gameObject);
-            oxygenBar = null;
-        }
-                
+    {            
         float currentOxygen = characterData.oxygenData.currentOxygen;
 
-        if (currentOxygen<=characterData.oxygenData.maxOxygen)
-        {   
-            if (oxygenBar == null)
-                WSUI.ShowPrompt(characterData.gameObject.GetComponentInChildren<CharacterUI>().GetOxygenBar().gameObject,characterData.gameObject.transform,out characterData.oxygenBar);
+        if (currentOxygen<characterData.oxygenData.maxOxygen)
+        {     
+            if (characterData.oxygenBar == null)
+                WSUI.FadeInElement(characterData.gameObject.GetComponentInChildren<CharacterUI>().GetOxygenBar().gameObject,characterData.gameObject.transform,out characterData.oxygenBar);
             
-            oxygenBar = characterData.oxygenBar;
-
+            WSUI_Element oxygenBar = characterData.oxygenBar;
             oxygenBar.LerpAlphaToInitial();
             oxygenBar.GetComponent<OxygenBar>().SetValue(currentOxygen);    
         }
@@ -77,7 +71,7 @@ public abstract class CharacterState
     {
         if (characterData.oxygenBar !=null)
         {
-            WSUI.RemoveAndFadeOutPrompt(characterData.oxygenBar);
+            WSUI.RemoveAndFadeOutPrompt(characterData.oxygenBar,0.05f);
             characterData.oxygenBar = null;
         }
     }
@@ -85,7 +79,6 @@ public abstract class CharacterState
 
     public void HandleOxygen()
     {   
-
         //OxygenBar
         if (activateOxygenBar)
             HandleOxygenBar();

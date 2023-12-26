@@ -20,14 +20,17 @@ public class WSUI : MonoBehaviour
          canvas = GetComponent<Canvas>();
     }
 
-    public static WSUI_Element ShowPrompt (GameObject prefab,Transform transformToFollow,out WSUI_Element spawnedElement)
+    public static void FadeInElement(GameObject prefab,Transform transformToFollow,out WSUI_Element spawnedElement)
     {
-        WSUI_Element element = SpanwWSUIELement(prefab);
-        spawnedElement = element;
+        ShowElement(prefab,transformToFollow,out spawnedElement);
+        spawnedElement.SetAlpha(0);
+        spawnedElement.LerpAlpha(1);
+    }
 
-        element.SetTarget(transformToFollow);
-
-        return element;
+    public static void ShowElement (GameObject prefab,Transform transformToFollow,out WSUI_Element spawnedElement)
+    {
+        spawnedElement = SpanwWSUIELement(prefab);
+        spawnedElement.SetTarget(transformToFollow);
     }
 
     private static WSUI_Element SpanwWSUIELement(GameObject prefab)
@@ -60,12 +63,13 @@ public class WSUI : MonoBehaviour
         element.StartCoroutine( _RemoveAndFadeOutPrompt(element,smoothTime));
     }
 
-    static IEnumerator _RemoveAndFadeOutPrompt(WSUI_Element element, float smoothTime = 0.33f)
+    static IEnumerator _RemoveAndFadeOutPrompt(WSUI_Element element, float smoothTime)
     {
-        element.LerpAlpha(0,smoothTime);
-        yield return new WaitUntil(()=>element.GetAlpha()<=0);
+        element.SetTargetAlpha(0);
+        yield return element._LerpAlpha(smoothTime);
         elements.Remove(element);
         element.SetRemoved(true);
+        Destroy(element.gameObject);
     }
 
 

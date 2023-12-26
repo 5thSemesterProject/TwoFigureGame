@@ -59,7 +59,6 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
 
     public float ChargePlayer()
     {
-        Debug.Log (oxygenData.currentOxygen);
 
         if (oxygenData.currentOxygen>0)
         {
