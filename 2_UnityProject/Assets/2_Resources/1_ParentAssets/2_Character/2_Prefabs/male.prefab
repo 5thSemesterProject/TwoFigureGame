@@ -160,7 +160,7 @@ CharacterController:
   m_Height: 1.8
   m_Radius: 0.28
   m_SlopeLimit: 45
-  m_StepOffset: 0.25
+  m_StepOffset: 0.02
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.93, z: 0}
@@ -179,6 +179,7 @@ MonoBehaviour:
   acceleration: 30
   deceleration: 30
   maxSpeed: 4
+  traverseDistance: 2
   smokeIntersectionRadius: 0.1
   gravity: 9.81
   interactable: {fileID: 0}
