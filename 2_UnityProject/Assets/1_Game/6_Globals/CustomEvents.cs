@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CustomEvents : MonoBehaviour
 {   
+
+    public delegate void CharacterDataDel(CharacterData characterData);
+
     //Character Switch
     public delegate void CharacterSwitchEvent(GameObject activeCharacter);
     public static event CharacterSwitchEvent characterSwitch;
@@ -14,9 +17,9 @@ public class CustomEvents : MonoBehaviour
     }
 
     //Voiceline Trigger
-    public delegate void TriggerVoicelineEvent(CharacterData characterData);
-    public static event TriggerVoicelineEvent lowOxygen;
-    public static event TriggerVoicelineEvent chargingOxygen;
+    #region  Voiceline Trigger
+    public static event CharacterDataDel lowOxygen;
+    public static event CharacterDataDel chargingOxygen;
 
     public static void RaiseLowOxygen(CharacterData characterData)
     {
@@ -28,4 +31,16 @@ public class CustomEvents : MonoBehaviour
     {
         chargingOxygen?.Invoke(characterData);
     }
+    #endregion
+
+    //Unlocked Twine Story
+    public delegate void TwineStoryDel (CharacterType characterType,TwineStoryData twineStoryData);
+    public static event TwineStoryDel unlockedTwineStory;
+
+    public static void RaiseUnlockTwineStory(CharacterType characterType, TwineStoryData twineStoryData)
+    {
+        unlockedTwineStory?.Invoke(characterType,twineStoryData);
+    }
+
 }
+
