@@ -15015,11 +15015,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6846684000227950911, guid: ca50bec13c36fba439d50b6258f3dfec, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.7493539
+      value: 0.672
       objectReference: {fileID: 0}
     - target: {fileID: 6846684000227950911, guid: ca50bec13c36fba439d50b6258f3dfec, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -26.162
+      value: -26.119
       objectReference: {fileID: 0}
     - target: {fileID: 6846684000227950911, guid: ca50bec13c36fba439d50b6258f3dfec, type: 3}
       propertyPath: m_LocalRotation.w
@@ -57695,8 +57695,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2089360209938372482, guid: a49873be0a0e76242976454ba27d12ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7763103149651784932}
   m_SourcePrefab: {fileID: 100100000, guid: a49873be0a0e76242976454ba27d12ed, type: 3}
+--- !u!1 &6961318284743816943 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2089360209938372482, guid: a49873be0a0e76242976454ba27d12ed, type: 3}
+  m_PrefabInstance: {fileID: 8963698255814746477}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &7763103149651784932
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6961318284743816943}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.2203065, y: 1.381871, z: 0.09008983}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &7768782699957218389 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1708331720711212344, guid: a49873be0a0e76242976454ba27d12ed, type: 3}
