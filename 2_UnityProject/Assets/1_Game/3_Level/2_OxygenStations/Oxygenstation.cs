@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Oxygenstation : MonoBehaviour, IIntersectSmoke
 {
@@ -8,13 +10,19 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
    [SerializeField]float chargeRate = 5.0f;
    [SerializeField] float smokeIntersectionRadius;
    [SerializeField] Material fluidMaterial;
-   [SerializeField]float maxEmission = 20;
+   [SerializeField]float maxAlpha = 20;
+    [SerializeField]float maxEmission = 20;
+   [SerializeField] VisualEffect absorbEffect1;
+   [SerializeField] VisualEffect absorbEffect2;
    float targetEmission;
    float initialEmission = 0;
    Coroutine emissionCoroutine;
    bool isCharging;
    int amountOfCharacters;
    float maxSmokeIntersectionRadus;
+
+    bool alphaIncrease;
+   Coroutine alphaCoroutine;
 
     #region  Setup
     void Start()
@@ -37,6 +45,8 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
 
         initialEmission = GetEmission();
         SetFluidLevel();
+
+        SetAlpha(0);
         
     }
 
@@ -63,15 +73,72 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
         if (oxygenData.currentOxygen>0)
         {
             isCharging = true;
+            alphaIncrease = true;
             oxygenData.currentOxygen-=chargeRate*Time.deltaTime;
             SetFluidLevel();
             LerpEmission();
             DecreaseRadius();
+            SetAbsorbVFX();
             return chargeRate*Time.deltaTime;
         }
         
         return 0;
     }
+
+    
+    #region SetAbsorbVFX
+    void SetAbsorbVFX()
+    {
+        if (absorbEffect1 && absorbEffect2)
+        {
+            if (alphaCoroutine==null)
+                alphaCoroutine = StartCoroutine(_AbsorbAlpha());
+        }
+    }
+
+    IEnumerator _AbsorbAlpha()
+    {
+        float currentAlpha = GetAlpha();
+        float smoothTime = 0.5f;
+        float velocity = 0;
+
+        while (true)
+        {
+            float targetAlpha = alphaIncrease?1:0;
+            currentAlpha = Mathf.SmoothDamp(currentAlpha, targetAlpha, ref velocity, smoothTime);
+
+            if (currentAlpha<0.01f)
+            {
+                currentAlpha = targetAlpha;
+                SetAlpha(currentAlpha);
+                break;
+            }
+
+            SetAlpha(currentAlpha);
+            alphaIncrease = false;
+
+            yield return null;
+        }
+
+        alphaCoroutine = null; 
+    }
+
+    public void SetAlpha(float inputAlpha)
+    {
+
+        absorbEffect1.SetFloat("Alpha",inputAlpha);
+        absorbEffect1.SetFloat("SpawnRate",inputAlpha);
+
+        absorbEffect2.SetFloat("Alpha",inputAlpha);
+        absorbEffect2.SetFloat("SpawnRate",inputAlpha);
+    }
+
+    public float GetAlpha()
+    {
+        return absorbEffect1.GetFloat("SpawnRate");
+    }
+    #endregion
+
 
 
     #region Smoke Intersection Radius
