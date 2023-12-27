@@ -17,6 +17,8 @@ public class VoicelinePlayer : MonoBehaviour
 
     void Awake()
     {
+        AsyncOperationHandle<AudioClip> asyncOperationHandle =  Addressables.LoadAssetAsync<AudioClip>("Assets/4_Assets/2_Sound/1_Voicelines/"+"Box_E_01"+".wav");
+
         if (instance==null)
         {
             instance = this;
