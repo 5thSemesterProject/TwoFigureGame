@@ -147,8 +147,6 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     }
     #endregion
 
-
-
     #region Smoke Intersection Radius
     void DecreaseRadius()
     {
@@ -177,6 +175,8 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
+            if (movementComp.characterType == CharacterType.Man)
+                Debug.Log ("Trigger Enter "+other.name);
             movementComp.oxygenstation = this;
             amountOfCharacters++;
         }
@@ -186,12 +186,13 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     {   
         if (other.TryGetComponent(out Movement movementComp))
         {
-            movementComp.oxygenstation = this;
+            //movementComp.oxygenstation = this;
         }
     }
 
     void  OnTriggerExit(Collider other)
-    {   
+    {           
+
         if (other.TryGetComponent(out Movement movementComp))
         {
             movementComp.oxygenstation = null;

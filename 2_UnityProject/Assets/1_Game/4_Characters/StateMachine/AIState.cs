@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 class AIState : CharacterState
 {
+    private BoxCollider collider;
+
     public AIState(CharacterData data) : base(data)
     {
         if (characterData.virtualCamera != null)
@@ -12,6 +15,9 @@ class AIState : CharacterState
         characterData.movement.MovePlayer(Vector2.zero, 0);
 
         handleInteractables = false;
+
+        collider = characterData.gameObject.AddComponent<BoxCollider>();
+        collider.size = Vector3.one*0.1f;
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -28,14 +34,17 @@ class AIState : CharacterState
             CustomEvents.RaiseCharacterSwitch(characterData.roomFadeRigidBody);
 
             movement.DisableNavMeshHandling();
+            GameObject.Destroy(collider);
+            collider = null;
+
             return new IdleState(characterData);
         }
 
         //Follow Partner
         if (movement.interactable !=null && movement.interactable.TryGetComponent(out PressurePlate pressurePlate)) //Don't follow partner if on pressure plate
         {
-            movement.DisableNavMeshHandling();
-            movement.MovePlayer(Vector2.one,0);
+            //movement.DisableNavMeshHandling();
+            movement.MovePlayer(Vector2.zero,0);
         }
         else if (movement.interactable == null)
         {

@@ -96,7 +96,7 @@ public abstract class CharacterState
                 characterData.raisedLowOxygenEvent = false;
 
                 //On Charging
-                if (characterData.raisedChargingEvent)
+                if (!characterData.raisedChargingEvent)
                 {
                     characterData.raisedChargingEvent = true;
                     CustomEvents.RaiseChargingOxygen(characterData);
@@ -107,7 +107,7 @@ public abstract class CharacterState
         else
         {
             characterData.oxygenData.FallOff();
-            characterData.raisedChargingEvent = true;
+            characterData.raisedChargingEvent = false;
 
             //Raise Low Health Event
             if (characterData.oxygenData.currentOxygen<=GameStats.instance.lowOxygenThreshhold && !characterData.raisedLowOxygenEvent)
