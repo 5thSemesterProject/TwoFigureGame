@@ -47,14 +47,22 @@ public class WSUI_Element : MonoBehaviour
         rectTransform.SetParent(canvas.GetComponent<RectTransform>());
 
         SetScaleWithScreen();
-
    }
+
+    public void SetCenterScreen()
+    {
+        rectTransform.anchoredPosition = Vector3.zero;
+        rectTransform.sizeDelta = Vector2.zero;
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.localScale *= 2;
+    }
 
     void SetScaleWithScreen()
     {
-        Vector3 originalScale = transform.localScale;
+        Vector3 originalScale = rectTransform.localScale;
         float scaleFactor = 3840/Screen.width;
-        transform.localScale = originalScale/scaleFactor;
+        rectTransform.localScale = originalScale/scaleFactor;
     }
 
     IEnumerator FollowTransform(Vector2 offset)

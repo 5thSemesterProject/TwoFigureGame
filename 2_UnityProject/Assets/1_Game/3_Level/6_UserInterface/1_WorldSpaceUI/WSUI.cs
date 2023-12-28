@@ -29,11 +29,11 @@ public class WSUI : MonoBehaviour
 
     public static void ShowElement (GameObject prefab,Transform transformToFollow,out WSUI_Element spawnedElement)
     {
-        spawnedElement = SpanwWSUIELement(prefab);
+        spawnedElement = SpawnWSUIElement(prefab);
         spawnedElement.SetTarget(transformToFollow);
     }
 
-    private static WSUI_Element SpanwWSUIELement(GameObject prefab)
+    private static WSUI_Element SpawnWSUIElement(GameObject prefab)
     {
         GameObject spawnedElement = Instantiate(prefab);
         WSUI_Element element = spawnedElement.AddComponent<WSUI_Element>();
@@ -75,7 +75,8 @@ public class WSUI : MonoBehaviour
 
     public static WSUI_Element AddOverlay(GameObject overlayPrefab)
     {
-        WSUI_Element element = SpanwWSUIELement(overlayPrefab);
+        WSUI_Element element = SpawnWSUIElement(overlayPrefab);
+        element.SetCenterScreen();
         return element;
     }
 }
