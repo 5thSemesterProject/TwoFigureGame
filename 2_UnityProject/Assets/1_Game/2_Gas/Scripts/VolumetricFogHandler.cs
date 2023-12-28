@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
-[ExecuteInEditMode]
+
 public class VolumetricFogHandler : MonoBehaviour
 {   
     [SerializeField] LayerMask layerMask;
