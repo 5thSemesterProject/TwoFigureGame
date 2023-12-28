@@ -107,6 +107,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
                 desiredMove = Vector3.zero;
 
                 characterController.Move(Vector3.zero);
+                animator.SetFloat("Speed", 0);
 
                 moveRoutine = null;
                 yield break;

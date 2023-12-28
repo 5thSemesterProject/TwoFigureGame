@@ -20,7 +20,7 @@ class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-       // characterData.movement.MovePlayer(Vector2.zero, 0);
+        characterData.movement.MovePlayer(Vector2.zero, 0);
     }
 
     public override CharacterState SpecificStateUpdate()
