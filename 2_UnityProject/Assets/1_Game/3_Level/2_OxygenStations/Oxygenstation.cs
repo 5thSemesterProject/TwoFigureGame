@@ -151,11 +151,12 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     void DecreaseRadius()
     {
         smokeIntersectionRadius = (oxygenData.currentOxygen/oxygenData.maxOxygen)*maxSmokeIntersectionRadus;
+        GetComponent<SphereCollider>().radius  = smokeIntersectionRadius;
     }
 
     public float GetIntersectionRadius()
     {
-        return smokeIntersectionRadius;
+        return smokeIntersectionRadius*9;
     }
     #endregion
 
@@ -175,8 +176,6 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     {
         if (other.TryGetComponent(out Movement movementComp))
         {
-            if (movementComp.characterType == CharacterType.Man)
-                Debug.Log ("Trigger Enter "+other.name);
             movementComp.oxygenstation = this;
             amountOfCharacters++;
         }

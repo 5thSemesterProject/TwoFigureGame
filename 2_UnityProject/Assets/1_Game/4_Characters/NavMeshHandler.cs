@@ -135,9 +135,14 @@ public class NavMeshHandler : MonoBehaviour
         float distance = Vector3.Distance(transform.position,oxygenstation.transform.position);
 
         if (distance<=oxygenstation.GetIntersectionRadius())
-            return;
-
-        GetComponent<Movement>().oxygenstation = null;
+        {
+            Debug.Log ("In Range with "+distance+" Range was "+oxygenstation.GetIntersectionRadius());
+        }
+        else
+        {
+            Debug.Log ("Out of range with "+distance+" Range was "+oxygenstation.GetIntersectionRadius());
+            GetComponent<Movement>().oxygenstation = null;
+        }
     }
 
 }
