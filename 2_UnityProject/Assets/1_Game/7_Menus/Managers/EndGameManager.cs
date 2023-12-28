@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class EndGameManager : MonoBehaviour
 {
     [SerializeField] private GameObject WinScreen;
-    [SerializeField] private GameObject LoseScreenVignette;
     [SerializeField] private GameObject LoseScreenTransition;
 
     private Coroutine endRoutine;
@@ -58,7 +57,6 @@ public class EndGameManager : MonoBehaviour
                 break;
         }
 
-        //WSUI.AddOverlay(LoseScreenVignette);
         Volume postProsess = GameObject.Find("PostProcessing").GetComponent<Volume>();
         Vignette vignette;
         if (postProsess.profile.TryGet(out vignette))
@@ -69,7 +67,7 @@ public class EndGameManager : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(1);
 
-        //WSUI.AddOverlay(LoseScreenTransition);
+        WSUI.AddOverlay(LoseScreenTransition);
 
         yield return new WaitForSecondsRealtime(0.5f);
 
@@ -85,7 +83,6 @@ public class EndGameManager : MonoBehaviour
 
         while (time < 1)
         {
-            //Debug.Log(vignette.intensity);
             vignette.intensity.value = Mathf.Lerp(currentIntesity,targetIntesity,time);
             vignette.smoothness.value = Mathf.Lerp(currentSmoothness,targetSmoothness,time);
             time += Time.deltaTime / duration;
