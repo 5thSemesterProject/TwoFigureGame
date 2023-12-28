@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System;
 using System.Linq;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Manages the sound system of the game.
@@ -69,7 +70,7 @@ public class SoundSystem : MonoBehaviour
     public static void PlaySound(string soundName, float delay, float volume = -1)
     {
         AudioClip clip = GetAudioClip(soundName);
-        PlaySound(clip, volume, delay);
+        PlaySound(clip, volume, delay,null);
     }
 
     /// <summary>
@@ -80,7 +81,7 @@ public class SoundSystem : MonoBehaviour
     public static void PlaySound(string soundName, float volume)
     {
         AudioClip clip = GetAudioClip(soundName);
-        PlaySound(clip, volume);
+        PlaySound(clip, volume,0,null);
     }
 
     /// <summary>
@@ -90,15 +91,25 @@ public class SoundSystem : MonoBehaviour
     public static void PlaySound(string soundName)
     {
         AudioClip clip = GetAudioClip(soundName);
-        PlaySound(clip);
+        PlaySound(clip,-1,0,null);
     }
 
-    public static void PlaySound(AudioClip soundClip, float volume = -1, float delay = 0)
+    public static void PlaySound(AudioClip soundClip,GameObject audioSourceHolder)
+    {
+        PlaySound(soundClip, -1, 0,audioSourceHolder);
+    }
+
+    public static void PlaySound(AudioClip soundClip, float volume = -1, float delay = 0,GameObject audioSourceHolder=null)
     {
         volume = Mathf.Min(1, volume);
         
         //Create a new AudioSource component to play the sound
-        AudioSource source = instance.gameObject.AddComponent<AudioSource>();
+        if (audioSourceHolder==null)
+            audioSourceHolder = instance.gameObject;
+
+        AudioSource source;
+        if(!audioSourceHolder.TryGetComponent(out source))    
+            source = audioSourceHolder.gameObject.AddComponent<AudioSource>();
 
         var soundTask = new Tuple<AudioSource,Coroutine,Int32>(source,null,nextId);
 
@@ -123,7 +134,7 @@ public class SoundSystem : MonoBehaviour
     public static void PlaySound(AudioClip soundClip,out Int32 taskId,float volume = -1, float delay = 0)
     {
         taskId = nextId;
-        PlaySound(soundClip, volume = -1, delay = 0);
+        PlaySound(soundClip, volume = -1, delay = 0,null);
     }
     
     private IEnumerator _PlaySound(AudioClip audioClip, Tuple<AudioSource,Coroutine,Int32> audioTask,float volume, float delay)
