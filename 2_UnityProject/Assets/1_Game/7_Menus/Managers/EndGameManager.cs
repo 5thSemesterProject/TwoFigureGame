@@ -29,9 +29,6 @@ public class EndGameManager : MonoBehaviour
 
                 WSUI.AddOverlay(WinScreen);
                 Debug.Log("YOU WIN!");
-                yield return new WaitForSecondsRealtime(2);
-                SceneManager.LoadScene("MainMenu");
-
                 yield break;
             case EndCondition.OxygenMan:
 
