@@ -106,8 +106,10 @@ public class SoundSystem : MonoBehaviour
         //Create a new AudioSource component to play the sound
         if (audioSourceHolder==null)
             audioSourceHolder = instance.gameObject;
-            
-        AudioSource source = audioSourceHolder.gameObject.AddComponent<AudioSource>();
+
+        AudioSource source;
+        if(!audioSourceHolder.TryGetComponent(out source))    
+            source = audioSourceHolder.gameObject.AddComponent<AudioSource>();
 
         var soundTask = new Tuple<AudioSource,Coroutine,Int32>(source,null,nextId);
 
