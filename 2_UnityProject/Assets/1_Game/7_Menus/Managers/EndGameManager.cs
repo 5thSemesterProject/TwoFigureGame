@@ -85,7 +85,7 @@ public class EndGameManager : MonoBehaviour
 
         while (time < 1)
         {
-            Debug.Log(vignette.intensity);
+            //Debug.Log(vignette.intensity);
             vignette.intensity.value = Mathf.Lerp(currentIntesity,targetIntesity,time);
             vignette.smoothness.value = Mathf.Lerp(currentSmoothness,targetSmoothness,time);
             time += Time.deltaTime / duration;

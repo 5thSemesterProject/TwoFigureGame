@@ -48,6 +48,7 @@ public class VoicelinePlayer : MonoBehaviour
         }
         else if (priority>activeTaskPriority)
         {
+            Debug.Log ("Overwrite");
             StopCoroutine(coroutine);
             coroutine = null;
             SoundSystem.TryStopSound(activeTaskId);

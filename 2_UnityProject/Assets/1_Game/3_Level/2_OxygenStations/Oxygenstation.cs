@@ -9,7 +9,7 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
    OxygenData oxygenData;
    [SerializeField]float chargeRate = 5.0f;
    [SerializeField] float smokeIntersectionRadius;
-   [SerializeField] Material fluidMaterial;
+   Material fluidMaterial;
    [SerializeField]float maxAlpha = 20;
     [SerializeField]float maxEmission = 20;
    [SerializeField] VisualEffect absorbEffect1;
@@ -31,6 +31,14 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
         oxygenData.currentOxygen =oxygenData.maxOxygen;
         gameObject.layer = 3;
 
+        Material[] materials = GetComponent<Renderer>().materials;
+
+        for (int i = 0; i < materials.Length; i++)
+        {
+            if (materials[i].name.Contains("Oxygen"))
+                fluidMaterial = materials[i];
+        }
+
         maxSmokeIntersectionRadus = smokeIntersectionRadius;
 
         if (TryGetComponent(out SphereCollider sphereCollider))
@@ -45,8 +53,8 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
 
         initialEmission = GetEmission();
         SetFluidLevel();
-
         SetAlpha(0);
+
         
     }
 
