@@ -308,19 +308,20 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     {
         Vector3 traverseDir = GetTraverseDir(traverseObject);
 
-        //Set Animations
-        animator.SetBool(animationType, true);
-        animator.SetFloat("Speed", 0);
 
         //Lerp To Start
         Vector3 targetPos = new Vector3(traverseObject.transform.position.x, transform.position.y, traverseObject.transform.position.z) + -traverseDir * 1f;
         Quaternion targetRot = Quaternion.LookRotation(traverseDir);
         yield return LerpPlayer(targetPos, targetRot, true, 0.1f);
+
+        //Set Animations
+        animator.SetBool(animationType, true);
+        animator.SetFloat("Speed", 0);
         
         //Start Traversing
         yield return LerpPlayerAddative(traverseDir * traverseDistance, traverseDuration);
 
-        //Unanimate
+        //Reset Animations
         animator.SetBool(animationType,false);
         traversalRoutine = null;
     }
@@ -328,13 +329,13 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     private Vector3 GetTraverseDir(Transform traversable)
     {
         Vector3 crawlPos = traversable.position;
-        Vector3 crawlDir = traversable.forward;
+        Vector3 traverseDir = traversable.forward;
         Vector3 relativePos = Vector3.Normalize(transform.position - crawlPos);
 
-        float scalar = Vector3.Dot(relativePos, crawlDir) > 0 ? -1 : 1;
-        crawlDir = new Vector3(crawlDir.x, 0, crawlDir.z).normalized;
+        float scalar = Vector3.Dot(relativePos, traverseDir) > 0 ? -1 : 1;
+        traverseDir = new Vector3(traverseDir.x, 0, traverseDir.z).normalized;
 
-        return crawlDir * scalar;
+        return traverseDir * scalar;
     }
     #endregion
 
