@@ -11,7 +11,8 @@ public class StartMenuManager : MonoBehaviour
     [SerializeField] private ButtonEnabler mainMenuGroup;
     [SerializeField] private ButtonEnabler archiveGroup;
     [SerializeField] private ButtonEnabler startGroup;
-    [SerializeField] private VideoManager introVideo;
+    [SerializeField] private GameObject introVideo;
+    [SerializeField] Canvas canvas;
 
     private void Start()
     {
@@ -75,11 +76,23 @@ public class StartMenuManager : MonoBehaviour
             yield return null;
         }
 
-        CustomEventSystem.EnableUIInputs();
+
         transition = null;
 
-        introVideo.StartVideo();
-        introVideo.videoFinished.AddListener(() => SceneManager.LoadSceneAsync("LevelScene"));
+        
+        //Start Intro Video
+        GameObject spawwnedIntroManager =Instantiate(introVideo);
+        spawwnedIntroManager.transform.SetParent(canvas.gameObject.transform);
+        spawwnedIntroManager.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,0);
+        VideoManager introManager = spawwnedIntroManager.GetComponentInChildren<VideoManager>();
+        if (introManager!=null)
+        {
+            introManager.StartVideo();
+            introManager.videoFinished.AddListener(() =>{
+                SceneLoader.LoadScene("LevelScene",this,3,true,false);
+                CustomEventSystem.EnableUIInputs();
+                });
+        }
 
     }
     private IEnumerator Archive()

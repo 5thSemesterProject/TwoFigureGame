@@ -10,7 +10,7 @@ public class SkipPrompt : MonoBehaviour
 {
     [SerializeField] float skipPromptAppearance = 1;
     [SerializeField] Coroutine skipPromptProcess;
-    [SerializeField] public UnityEvent skip;
+    [SerializeField] public UnityEvent onSkip;
     CustomInputs customInputMaps;
     CanvasGroup canvasGroup;
     Coroutine alphaCoroutine;
@@ -22,32 +22,36 @@ public class SkipPrompt : MonoBehaviour
         customInputMaps = CustomEventSystem.GetInputMapping;
         customInputMaps.InUI.AnyKey.performed+=ShowSkipPrompt;
         canvasGroup = GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0;
     }
 
     void ShowSkipPrompt(InputAction.CallbackContext callbackContext)
     {
-        customInputMaps.InUI.AnyKey.performed-=ShowSkipPrompt;
-        customInputMaps.InUI.AnyKey.performed+=InvokeSkipEvent;
         if (skipPromptProcess!=null)
             StopCoroutine(skipPromptProcess);
-        skipPromptProcess = StartCoroutine(SkipIntroProceess());
+        skipPromptProcess = StartCoroutine(SkipProcess());
     }
 
     void InvokeSkipEvent (InputAction.CallbackContext callbackContext)
     {
-        skip?.Invoke();
+        customInputMaps.InUI.AnyKey.performed-=InvokeSkipEvent;
+        customInputMaps.InUI.AnyKey.performed-=ShowSkipPrompt;
+        onSkip?.Invoke();
     }
 
-    #region AlphaLerp
-    IEnumerator SkipIntroProceess()
+    IEnumerator SkipProcess()
     {
+        customInputMaps.InUI.AnyKey.performed+=InvokeSkipEvent;
+        customInputMaps.InUI.AnyKey.performed-=ShowSkipPrompt;
+        LerpAlpha(1,0.1f);
         yield return new WaitForSeconds(skipPromptAppearance);
-        //skipPrompt.SetActive(false);
         customInputMaps.InUI.AnyKey.performed-=InvokeSkipEvent;
         customInputMaps.InUI.AnyKey.performed+=ShowSkipPrompt;
+        LerpAlpha(0,0.1f);
         yield return null;
     }
 
+    #region AlphaLerp
     public void LerpAlpha(float alpha, float smoothTime = 0.33f)
     {
         SetTargetAlpha(alpha);

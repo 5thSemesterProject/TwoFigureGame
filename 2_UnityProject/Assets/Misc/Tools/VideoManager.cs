@@ -5,8 +5,8 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Video;
 
-[RequireComponent(typeof(VideoPlayer))]
-public class VideoManager : MonoBehaviour
+[RequireComponent(typeof(ButtonGroupFade))]
+public class VideoManager:MonoBehaviour
 {   
     [SerializeField] float skipPromptAppearance = 1;
     [SerializeField] Coroutine skipPromptProcess;
@@ -15,20 +15,31 @@ public class VideoManager : MonoBehaviour
     public UnityEvent videoStarted;
     VideoPlayer videoPlayer;
 
+    ButtonGroupFade buttonGroupFade;
+
 
     void  Awake()
     {
-        videoPlayer = GetComponent<VideoPlayer>();
+        videoPlayer = GetComponentInChildren<VideoPlayer>();
+        buttonGroupFade = GetComponent<ButtonGroupFade>();
+
+        GetComponent<CanvasGroup>().alpha = 0;
+        
+        if (skipPrompt!=null)
+            skipPrompt.onSkip.AddListener(Skip);
+
     }
 
     public void StartVideo()
     {
-        videoPlayer.Play();
+        buttonGroupFade.FadeIn();
+        if (videoPlayer!=null)
+            videoPlayer.Play();
         StartCoroutine(WaitForVideoEnding());
         videoStarted?.Invoke();
     }
 
-    void Skip(InputAction.CallbackContext callbackContext)
+    void Skip()
     {
         StopAllCoroutines();
         videoFinished?.Invoke();
@@ -36,8 +47,12 @@ public class VideoManager : MonoBehaviour
 
     IEnumerator WaitForVideoEnding()
     {
-        float videoLength = (float)videoPlayer.length;
-        yield return new WaitForSeconds(videoLength);
+        if (videoPlayer!=null)
+        {
+            float videoLength = (float)videoPlayer.length;
+            yield return new WaitForSeconds(videoLength);
+        }
+        
         videoFinished?.Invoke();
     }
 
