@@ -60,6 +60,7 @@ public class ButtonGroupFade : MonoBehaviour
         while (timeElapsed < 1)
         {
             buttonEnabler.canvasGroup.alpha = Mathf.Lerp(currentValue, targetValue, timeElapsed);
+
             timeElapsed += Time.unscaledDeltaTime / time;
             yield return null;
         }
@@ -67,5 +68,11 @@ public class ButtonGroupFade : MonoBehaviour
         buttonEnabler.canvasGroup.alpha = targetValue;
 
         fadeRoutine = null;
+    }
+
+    //To be overriden
+    protected virtual void CustomLogic(float timeElapsed)
+    {
+
     }
 }

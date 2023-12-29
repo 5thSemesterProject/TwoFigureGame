@@ -36,7 +36,11 @@ public class GameManager : MonoBehaviour
     {
         if (GUILayout.Button("End Game"))
         {
-            gameEnd.Invoke(EndCondition.OxygenWoman);
+            gameEnd?.Invoke(EndCondition.OxygenWoman);
+        }
+        if (GUILayout.Button("Win Game"))
+        {
+            gameEnd?.Invoke(EndCondition.Win);
         }
     }
 
@@ -130,9 +134,9 @@ public class GameManager : MonoBehaviour
         if (CharacterManager.IsGameOver && !hasGameEnded)
         {
             if (CharacterManager.IsWomanDead)
-                gameEnd.Invoke(EndCondition.OxygenWoman);
+                gameEnd?.Invoke(EndCondition.OxygenWoman);
             else
-                gameEnd.Invoke(EndCondition.OxygenMan);
+                gameEnd?.Invoke(EndCondition.OxygenMan);
             hasGameEnded = true;
         }
     }
@@ -140,6 +144,7 @@ public class GameManager : MonoBehaviour
     public static void EndGameLogic(EndCondition endCondition)
     {
         UnSubscribeEvents();
+        instance.hasGameEnded = true;
 
         GameObject endPrefab = Instantiate(instance.endScreenPrefab);
 

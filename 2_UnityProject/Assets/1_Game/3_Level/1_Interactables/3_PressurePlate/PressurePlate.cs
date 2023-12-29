@@ -10,7 +10,7 @@ public enum ActivationMode
     Player, Box
 }
 
-[RequireComponent(typeof(PassOnTrigger),typeof(TriggerOnEnter),typeof(Interactable)) ]
+[RequireComponent(typeof(PassOnTrigger),typeof(Interactable)) ]
 public class PressurePlate : MonoBehaviour
 {
     [SerializeField] GameObject button;
@@ -39,8 +39,22 @@ public class PressurePlate : MonoBehaviour
 
 
         //Set Conditions
-        GetComponent<TriggerOnEnter>().AddTriggerCond(CheckPressed);
-        GetComponent<TriggerOnEnter>().AddUntriggerCond(UntriggerCondition);
+        if (activationMode ==ActivationMode.Player)
+        {
+            TriggerOnEnter triggerOnEnter;
+            
+            if (!TryGetComponent(out triggerOnEnter))
+                triggerOnEnter = gameObject.AddComponent<TriggerOnEnter>();
+
+            triggerOnEnter.AddTriggerCond(CheckPressed);
+            triggerOnEnter.AddUntriggerCond(UntriggerCondition);
+        }
+        else if (activationMode==ActivationMode.Box)
+        {
+            if (TryGetComponent(out TriggerOnEnter triggerOnEnter))
+                 Destroy(triggerOnEnter);
+        }
+
 
         if (button!=null)
         {
@@ -49,10 +63,7 @@ public class PressurePlate : MonoBehaviour
             coroutine = StartCoroutine(PressDownAnim());
         }
 
-        if (activationMode==ActivationMode.Box)
-        {
-            Destroy(GetComponent<TriggerOnEnter>());
-        }
+
 
         //Handle Navmesh Obstacle;
         navMeshObstacle = GetComponent<NavMeshObstacle>();

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Threading.Tasks;
 
 public class SaveSystem : MonoBehaviour
 {
-
 
     /// <summary>
     /// Saves the data to a file at the specified path.
@@ -22,9 +22,26 @@ public class SaveSystem : MonoBehaviour
             writer.Write(json);
             Debug.Log("SavedData to " + savePath);
         }
-        catch (IOException)
+        catch (IOException exception)
         {
-            Debug.Log("File is in use. Trying again");
+            Debug.Log (exception.Message);
+        }
+    }
+
+
+    public static async Task SaveDataAsync<T>(T saveFile, string savePath)
+    {
+        string json = JsonUtility.ToJson(saveFile);
+       
+        try
+        {
+            //using StreamWriter writer = new StreamWriter(savePath);
+           // await writer.WriteAsync(json);
+            Debug.Log("Test " + savePath);
+        }
+        catch (IOException exception)
+        {
+            Debug.Log (exception.Message);
         }
     }
 

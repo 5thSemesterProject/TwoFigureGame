@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
+using System.Linq;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Manages the sound system of the game.
@@ -12,11 +15,15 @@ public class SoundSystem : MonoBehaviour
     private static AudioSource backgroundMusicPlayer;
     private static Coroutine backgroundMusicCoroutine;
     private static Coroutine overrideMusicCoroutine;
-
     private static SoundSystem instance;
 
+    [Header("Default Volumes")]
     [SerializeField] private float SFXDefaultVolume = 1;
     [SerializeField] private float musicDefaultVolume = 0.2f;
+
+    [Header("Audio Source Sound Tasks")]
+    private static List<Tuple<AudioSource,Coroutine,int>>  activeSoundTasks = new List<Tuple<AudioSource,Coroutine,Int32>>();
+    static Int32 nextId = 0;
 
     #region Startup
     private void Awake()
@@ -63,7 +70,7 @@ public class SoundSystem : MonoBehaviour
     public static void PlaySound(string soundName, float delay, float volume = -1)
     {
         AudioClip clip = GetAudioClip(soundName);
-        PlaySound(clip, volume, delay);
+        PlaySound(clip, volume, delay,null);
     }
 
     /// <summary>
@@ -74,7 +81,7 @@ public class SoundSystem : MonoBehaviour
     public static void PlaySound(string soundName, float volume)
     {
         AudioClip clip = GetAudioClip(soundName);
-        PlaySound(clip, volume);
+        PlaySound(clip, volume,0,null);
     }
 
     /// <summary>
@@ -84,22 +91,60 @@ public class SoundSystem : MonoBehaviour
     public static void PlaySound(string soundName)
     {
         AudioClip clip = GetAudioClip(soundName);
-        PlaySound(clip);
+        PlaySound(clip,-1,0,null);
     }
 
-    /// <summary>
-    /// Plays the specified sound.
-    /// </summary>
-    /// <param name="soundType">The type of sound to play.</param>
-    /// <param name="volume">The volume of the sound (Clamped between 0 and 1).</param>
-    public static void PlaySound(AudioClip soundClip, float volume = -1, float delay = 0)
+    public static void PlaySound(AudioClip soundClip,GameObject audioSourceHolder)
+    {
+        PlaySound(soundClip, -1, 0,audioSourceHolder);
+    }
+
+    public static void PlaySound(AudioClip soundClip, float volume = -1, float delay = 0,GameObject audioSourceHolder=null)
     {
         volume = Mathf.Min(1, volume);
-        IEnumerator i = instance._PlaySound(soundClip, volume, delay);
-        instance.StartCoroutine(i);
-    }
 
-    private IEnumerator _PlaySound(AudioClip audioClip, float volume, float delay)
+        bool externalAudioSource = false;
+    
+
+        AudioSource source=null;
+        if (audioSourceHolder!=null && audioSourceHolder.TryGetComponent(out source))
+            externalAudioSource = true;
+
+        //Use this object as sourceHolder instead of external one
+        if (audioSourceHolder==null)
+            audioSourceHolder = instance.gameObject;
+
+        //Create a new AudioSource component to play the sound
+        if(source==null)    
+            source = audioSourceHolder.gameObject.AddComponent<AudioSource>();
+
+        var soundTask = new Tuple<AudioSource,Coroutine,Int32>(source,null,nextId);
+
+        //Start Coroutine
+        IEnumerator i = instance._PlaySound(soundClip,soundTask ,volume, delay, externalAudioSource);
+        Coroutine coroutine = instance.StartCoroutine(i);
+        
+        //Save Soundtask in activeSoundTaksks
+        soundTask = new Tuple<AudioSource,Coroutine,Int32>(source,coroutine,nextId);
+        nextId++;
+        activeSoundTasks.Add(soundTask);
+    }   
+
+    
+    /// <summary>
+    /// Plays a sound with optional volume and delay, and returns a unique task ID.
+    /// </summary>
+    /// <param name="soundClip">The AudioClip to be played.</param>
+    /// <param name="taskId">An out parameter to get the unique task ID.</param>
+    /// <param name="volume">The volume of the sound (default is -1, which uses the default volume).</param>
+    /// <param name="delay">The delay before playing the sound (default is 0).</param>
+    public static void PlaySound(AudioClip soundClip,out Int32 taskId,float volume = -1, float delay = 0)
+    {
+        taskId = nextId;
+        PlaySound(soundClip, volume = -1, delay = 0,null);
+    }
+    
+    private IEnumerator _PlaySound(AudioClip audioClip, Tuple<AudioSource,Coroutine,Int32> audioTask,float volume, float delay,bool externalAudioSource=false)
     {
         //Delay the sound start
         if (delay > 0)
@@ -108,8 +153,9 @@ public class SoundSystem : MonoBehaviour
         if (volume <= 0)
             volume = SFXDefaultVolume;
 
-        // Create a new AudioSource component to play the sound
-        AudioSource source = gameObject.AddComponent<AudioSource>();
+        
+        //Set Source Settings And Play
+        var source = audioTask.Item1;
         source.volume = volume;
         source.clip = audioClip;
         source.Play();
@@ -118,8 +164,55 @@ public class SoundSystem : MonoBehaviour
         yield return new WaitForSeconds(audioClip.length);
 
         // Destroy the AudioSource component to clean up
-        Component.Destroy(source);
+        activeSoundTasks.Remove(audioTask);
+        if (!externalAudioSource)
+            Component.Destroy(source);
     }
+
+    // <summary>
+    /// Tries to get an AudioSource by its unique task ID.
+    /// </summary>
+    /// <param name="id">The unique task ID to search for.</param>
+    /// <param name="audioSource">The resulting AudioSource if found.</param>
+    /// <returns>True if an AudioSource with the specified ID is found; otherwise, false.</returns>
+   static bool TryGetAudioSourceById(Int32 id, out Tuple<AudioSource,Coroutine> soundTaskData)
+   {
+        for (int i = 0; i < activeSoundTasks.Count; i++)
+        {
+            var activeSoundTask = activeSoundTasks[i];
+            if (activeSoundTask.Item3 == id)
+            {
+                soundTaskData = new Tuple<AudioSource, Coroutine>(activeSoundTask.Item1,activeSoundTask.Item2);
+                return true;
+            }    
+        }
+        soundTaskData = null;
+        return false;
+   }
+
+    Tuple<AudioSource,Coroutine,Int32> GetAudioTaskById(Int32 id)
+   {
+        for (int i = 0; i < activeSoundTasks.Count; i++)
+        {
+            var activeSoundTask = activeSoundTasks[i];
+            if (activeSoundTask.Item3 == id)
+                return activeSoundTask;
+        }
+        return null;
+   }
+
+
+   public static bool TryStopSound(int taskId)
+   {
+        if (TryGetAudioSourceById(taskId, out Tuple<AudioSource,Coroutine> soundTaskData ))
+        {
+            instance.StopCoroutine(soundTaskData.Item2);
+            Component.Destroy(soundTaskData.Item1);
+            return true;
+        }
+        return false;
+   }
+
     #endregion
 
     #region PlayMusic
@@ -156,7 +249,7 @@ public class SoundSystem : MonoBehaviour
 
         yield return new WaitForSeconds(length);
 
-        Object.Destroy(source);
+        UnityEngine.Object.Destroy(source);
         backgroundMusicPlayer.volume = backgroundMusicVolume;
 
         overrideMusicCoroutine = null;
@@ -179,7 +272,7 @@ public class SoundSystem : MonoBehaviour
     private IEnumerator _PlayBackgroundMusic(AudioClip[] musicClips, float fadeTime = 3)
     {
         AudioClip[] backgroundMusicDatabase = musicClips;
-        int backgroundMusicPointer = Random.Range(0,backgroundMusicDatabase.Length);
+        int backgroundMusicPointer = UnityEngine.Random.Range(0,backgroundMusicDatabase.Length);
 
         while (true)
         {
@@ -203,7 +296,7 @@ public class SoundSystem : MonoBehaviour
 
             source.volume = targetVolume;
 
-            Object.Destroy(backgroundMusicPlayer);
+            UnityEngine.Object.Destroy(backgroundMusicPlayer);
             backgroundMusicPlayer = source;
 
             yield return new WaitForSeconds(backgroundMusicDatabase[backgroundMusicPointer].length - fadeTime);

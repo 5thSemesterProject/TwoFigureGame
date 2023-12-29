@@ -11,7 +11,6 @@ public enum CharacterMode
     Both,Active, Inactive
 }
 
-
 [CustomEditor(typeof(VoiceTrigger))]
 public class MyScriptEditor : Editor
 {
@@ -68,13 +67,10 @@ public class MyScriptEditor : Editor
 public class VoiceTrigger : MonoBehaviour
 {
     Interactable interactable;
-    AudioClip voiceClip;
     bool triggered = false;
 
     int lastRandom = 500;
 
-    static List<VoiceTrigger>otherVoiceTriggers = new List<VoiceTrigger>();
-    public Coroutine coroutine;
     public float extraWaitTimeAfterClip = 1f;
     public bool playOnce = false;
     public bool playOnceBeforeRandom;
@@ -118,15 +114,12 @@ public class VoiceTrigger : MonoBehaviour
 
         }
 
-        AddOtherVoiceTriggerRange(GetComponents<VoiceTrigger>());
-
     }
 
     void LoadVoiceLine(Movement movement)
     {
-        if (coroutine==null && !triggered 
+        if (!triggered 
         && CheckCharacterTypes(movement)
-        && CheckOtherVoicelines()
         && CheckCharacterMode(movement))
         {
             triggered = true;
@@ -134,7 +127,7 @@ public class VoiceTrigger : MonoBehaviour
             E_1_Voicelines voicelineToPlay; 
             
             if (randomizeVoicelines)
-                voicelineToPlay = RandomVoiceLine();
+                voicelineToPlay = randomVoicelines[AudioUtility.RandomNumber(lastRandom,randomVoicelines.Length,out lastRandom)];
             else  
                 voicelineToPlay = voiceLine;
 
@@ -144,73 +137,15 @@ public class VoiceTrigger : MonoBehaviour
                 voicelineToPlay = voiceLine;
             }    
 
-            string fileName = Enum.GetName(typeof(E_1_Voicelines),voicelineToPlay);
-            fileName = RemoveFirstUnderscore(fileName);
-            AsyncOperationHandle<AudioClip> asyncOperationHandle =  Addressables.LoadAssetAsync<AudioClip>("Assets/4_Assets/2_Sound/1_Voicelines/"+fileName+".wav");
-            asyncOperationHandle.Completed+=PlayVoiceLine;
+            VoicelinePlayer.instance.TryPlayVoiceLine(voicelineToPlay,extraWaitTimeAfterClip);
         }
     }
 
-    void PlayVoiceLine(AsyncOperationHandle<AudioClip> asyncOperationHandle)
-    {
-        voiceClip = asyncOperationHandle.Result;
-        coroutine  = StartCoroutine(_PlayVoiceLine());
-    }
-
-    IEnumerator _PlayVoiceLine()
-    {
-        SoundSystem.PlaySound(voiceClip);
-        yield return new WaitForSeconds(voiceClip.length+extraWaitTimeAfterClip);
-
-        coroutine = null;
-    }
-
-    E_1_Voicelines RandomVoiceLine()
-    {
-        int random = UnityEngine.Random.Range(0,randomVoicelines.Length-1);
-        if(random==lastRandom)
-            random = (random + 1) % randomVoicelines.Length;
-        lastRandom = random;
-        return randomVoicelines[random];
-    }
-    
 
     void Untrigger(Movement movement)
     {
         if (CheckCharacterTypes(movement))
             triggered = false;
-    }
-
-
-    string RemoveFirstUnderscore(string text)
-    {
-        char[] characters = text.ToCharArray();
-        string textWithoutUnderscore = text;
-
-        if (characters[0]=='_')
-        {
-            text.ToCharArray();
-
-            textWithoutUnderscore = "";
-
-            for (int i = 1; i < characters.Length; i++)
-            {
-                textWithoutUnderscore = textWithoutUnderscore+characters[i];
-            }
-        }
-
-        return textWithoutUnderscore;
-
-    }
-
-    bool CheckOtherVoicelines()
-    {
-        for (int i = 0; i < otherVoiceTriggers.Count; i++)
-        {
-            if (otherVoiceTriggers[i].coroutine !=null)
-                return false;
-        }
-        return true;
     }
 
     bool CheckCharacterTypes(Movement movement)
@@ -240,22 +175,6 @@ public class VoiceTrigger : MonoBehaviour
         return false;
     }
 
-    void AddOtherVoiceTriggerRange(VoiceTrigger[] voiceTriggers)
-    {
-        for (int i = 0; i < voiceTriggers.Length; i++)
-        {
-            TryAddOtherVoiceTrigger(voiceTriggers[i]);
-        }
-    }
-
-    bool TryAddOtherVoiceTrigger(VoiceTrigger voiceTrigger)
-    {
-        if (otherVoiceTriggers.Contains(voiceTrigger))
-            return false;
-
-        otherVoiceTriggers.Add(voiceTrigger);
-        return true;
-    }
 }
 
 

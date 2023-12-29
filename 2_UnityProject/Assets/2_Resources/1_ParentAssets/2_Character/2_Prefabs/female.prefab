@@ -45,7 +45,7 @@ Animator:
   m_GameObject: {fileID: 2047792424129499249}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 5bdef3a1be509214b866cf191d23abf9, type: 3}
-  m_Controller: {fileID: 9100000, guid: 40db3173a05ae3242b1c182a09b0a183, type: 2}
+  m_Controller: {fileID: 22100000, guid: 4ee3f117a0b2e9648a6ec6070e46bd0e, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -117,7 +117,7 @@ GameObject:
   m_Layer: 3
   m_Name: female
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -160,7 +160,7 @@ CharacterController:
   m_Height: 1.8
   m_Radius: 0.28
   m_SlopeLimit: 45
-  m_StepOffset: 0.25
+  m_StepOffset: 0.2
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.93, z: 0}
@@ -176,9 +176,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6cd8e0a016a4492e82b67c09e4360da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 50
-  deceleration: 50
+  acceleration: 30
+  deceleration: 30
   maxSpeed: 4
+  traverseDistance: 2
   smokeIntersectionRadius: 0.1
   gravity: 9.81
   interactable: {fileID: 0}

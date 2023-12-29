@@ -32,7 +32,7 @@ public class RoomFadeLogic : MonoBehaviour
     {
         if (rootObject == null)
         {
-            Debug.LogWarning("No Room root object assigned! Room will not be toggled!");
+            Debug.LogWarning($"No Room root object assigned! Room will not be toggled! {transform.parent.name}");
         }
 
         if (materials == null || materials.Length == 0)

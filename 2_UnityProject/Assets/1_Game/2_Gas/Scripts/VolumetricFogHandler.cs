@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
+
 public class VolumetricFogHandler : MonoBehaviour
 {   
     [SerializeField] LayerMask layerMask;
@@ -18,7 +19,8 @@ public class VolumetricFogHandler : MonoBehaviour
     void Start()
     {   
         localVolumetricFog = GetComponent<LocalVolumetricFog>();
-        ResetSmokeMasks();
+        if (fallOffEpicenter!=null)
+            ResetSmokeMasks();
     }
 
     void  OnDrawGizmos()
@@ -32,10 +34,13 @@ public class VolumetricFogHandler : MonoBehaviour
     void LateUpdate()
     {
         //Update Epicenter
-        localVolumetricFog.parameters.materialMask.SetVector($"_FallOffEpicenter", fallOffEpicenter.transform.position);
 
-        UpdateSpheres(intersectSmokeTransforms.ToArray());
-        CheckColliders();
+        if (fallOffEpicenter!=null)
+        {
+            localVolumetricFog.parameters.materialMask.SetVector($"_FallOffEpicenter", fallOffEpicenter.transform.position);
+            UpdateSpheres(intersectSmokeTransforms.ToArray());
+            CheckColliders();
+        }
     }
 
     void UpdateSpheres(Transform [] transforms) 

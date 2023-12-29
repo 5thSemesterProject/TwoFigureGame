@@ -47,14 +47,22 @@ public class WSUI_Element : MonoBehaviour
         rectTransform.SetParent(canvas.GetComponent<RectTransform>());
 
         SetScaleWithScreen();
-
    }
+
+    public void SetCenterScreen()
+    {
+        rectTransform.anchoredPosition = Vector3.zero;
+        rectTransform.sizeDelta = Vector2.zero;
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.localScale *= 2;
+    }
 
     void SetScaleWithScreen()
     {
-        Vector3 originalScale = transform.localScale;
+        Vector3 originalScale = rectTransform.localScale;
         float scaleFactor = 3840/Screen.width;
-        transform.localScale = originalScale/scaleFactor;
+        rectTransform.localScale = originalScale/scaleFactor;
     }
 
     IEnumerator FollowTransform(Vector2 offset)
@@ -102,30 +110,31 @@ public class WSUI_Element : MonoBehaviour
     }
     public void LerpAlpha(float alpha, float smoothTime = 0.33f)
     {
-          
-          targetAlpha = alpha;
+        SetTargetAlpha(alpha);
+
         if (alphaCoroutine == null)
         {
             alphaCoroutine = StartCoroutine(_LerpAlpha(smoothTime));
         }
-  
     }
-    IEnumerator _LerpAlpha(float smoothTime)
+
+    public void SetTargetAlpha(float alpha) 
+    {
+        targetAlpha = alpha;
+    }
+    public IEnumerator _LerpAlpha(float smoothTime=0.33f)
     {
         float currentAlpha = GetAlpha();
         float velocity = 0;
 
         while (true)
         {
-            targetAlpha = 
-
-               currentAlpha = Mathf.SmoothDamp(currentAlpha, targetAlpha, ref velocity, smoothTime);
+            currentAlpha =  Mathf.SmoothDamp(currentAlpha, targetAlpha, ref velocity, smoothTime);
 
           if (Mathf.Abs(targetAlpha-currentAlpha)<0.01f)
           {
                 currentAlpha = targetAlpha;
                 SetAlpha(currentAlpha);
-
                 break;
           }
 
