@@ -1,13 +1,32 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public static class SceneLoader
 {
     private static AsyncOperation asyncOperationScene;
+    private static GameObject loadScreenPrefab;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    public static void LoadIntoMemory()
+    {
+        AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>("Assets/2_Resources/3_UI/5_PreFabs/LoadingScreen.prefab");
+
+        // When the loading is complete, invoke the callback with the loaded prefab
+        handle.Completed += (result) =>
+        {
+            if (result.Status == AsyncOperationStatus.Succeeded)
+            {
+                loadScreenPrefab = handle.Result;
+            }
+            else
+            {
+                Debug.LogError($"Failed to load prefab at address: Assets/2_Resources/3_UI/5_PreFabs/LoadingScreen.prefab");
+            }
+        };
+    }
 
     public static void LoadScene(string sceneName, MonoBehaviour objectForLoad, float minLoadTime = 0, bool loadingScreen = false, bool enableOnLoad = true)
     {
@@ -17,30 +36,17 @@ public class SceneLoader : MonoBehaviour
 
         if (loadingScreen)
         {
-            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>("Assets/2_Resources/3_UI/5_PreFabs/LoadingScreen.prefab");
+            GameObject loadingScreenObj = Object.Instantiate(loadScreenPrefab);
+            LoadScreenManager loadingManager = loadingScreenObj.GetComponentInChildren<LoadScreenManager>();
+            loadingManager.SignalLoading();
 
-            // When the loading is complete, invoke the callback with the loaded prefab
-            handle.Completed += (result) =>
+            float endTime = Time.realtimeSinceStartup;
+            float elapsedTime = endTime - startTime;
+            objectForLoad.StartCoroutine(ChangeLoadingIcon(loadingManager, minLoadTime - elapsedTime, enableOnLoad));
+
+            loadingManager.onLoad += () =>
             {
-                if (result.Status == AsyncOperationStatus.Succeeded)
-                {
-                    GameObject loadingScreen = Instantiate(handle.Result);
-                    LoadScreenManager loadingManager = loadingScreen.GetComponentInChildren<LoadScreenManager>();
-                    loadingManager.SignalLoading();
-
-                    float endTime = Time.realtimeSinceStartup;
-                    float elapsedTime = endTime - startTime;
-                    objectForLoad.StartCoroutine(ChangeLoadingIcon(loadingManager, minLoadTime - elapsedTime, enableOnLoad));
-
-                    loadingManager.onLoad += () =>
-                    {
-                        asyncOperationScene.allowSceneActivation = true;
-                    };
-                }
-                else
-                {
-                    Debug.LogError($"Failed to load prefab at address: Assets/2_Resources/3_UI/5_PreFabs/LoadingScreen.prefab");
-                }
+                asyncOperationScene.allowSceneActivation = true;
             };
         }
         else
