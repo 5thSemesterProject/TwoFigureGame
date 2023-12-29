@@ -69,7 +69,7 @@ public class EndGameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.5f);
 
         endRoutine = null;
-        SceneManager.LoadSceneAsync("LevelScene");
+        SceneLoader.LoadScene("LevelScene", this);
     }
 
     private IEnumerator LerpVignette(Vignette vignette, float targetIntesity, float targetSmoothness, float duration = 1)

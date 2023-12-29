@@ -77,7 +77,7 @@ public class StartMenuManager : MonoBehaviour
 
         CustomEventSystem.EnableUIInputs();
         transition = null;
-        SceneManager.LoadSceneAsync("LevelScene");
+        SceneLoader.LoadScene("LevelScene", this, 3, true, false);
     }
     private IEnumerator Archive()
     {
