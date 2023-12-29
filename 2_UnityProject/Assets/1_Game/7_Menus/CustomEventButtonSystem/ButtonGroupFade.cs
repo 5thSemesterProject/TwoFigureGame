@@ -6,6 +6,7 @@ using UnityEngine;
 public class ButtonGroupFade : MonoBehaviour
 {
     public float fadeSpeed = 0.3f;
+    public bool hiddenOnEnable = true;
     public bool fadeOnEnable = true;
     private ButtonEnabler buttonEnabler;
     private Coroutine fadeRoutine;
@@ -16,6 +17,10 @@ public class ButtonGroupFade : MonoBehaviour
         if (fadeOnEnable)
         {
             EnterFromZero();
+        }
+        else if (true)
+        {
+            buttonEnabler.canvasGroup.alpha = 0;
         }
     }
 
@@ -60,6 +65,7 @@ public class ButtonGroupFade : MonoBehaviour
         while (timeElapsed < 1)
         {
             buttonEnabler.canvasGroup.alpha = Mathf.Lerp(currentValue, targetValue, timeElapsed);
+            CustomLogic(timeElapsed);
 
             timeElapsed += Time.unscaledDeltaTime / time;
             yield return null;
