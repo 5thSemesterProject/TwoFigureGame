@@ -11,6 +11,7 @@ public class StartMenuManager : MonoBehaviour
     [SerializeField] private ButtonEnabler mainMenuGroup;
     [SerializeField] private ButtonEnabler archiveGroup;
     [SerializeField] private ButtonEnabler startGroup;
+    [SerializeField] private VideoManager introVideo;
 
     private void Start()
     {
@@ -76,7 +77,10 @@ public class StartMenuManager : MonoBehaviour
 
         CustomEventSystem.EnableUIInputs();
         transition = null;
-        SceneManager.LoadSceneAsync("LevelScene");
+
+        introVideo.StartVideo();
+        introVideo.videoFinished.AddListener(() => SceneManager.LoadSceneAsync("LevelScene"));
+
     }
     private IEnumerator Archive()
     {
