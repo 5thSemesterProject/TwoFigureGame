@@ -24,7 +24,8 @@ public class AudioUtility
         for (int i = 0; i < filenames.Length; i++)
         {
             filenames[i] = RemovePrefix(filenames[i],"_");
-            AsyncOperationHandle<AudioClip> asyncOperationHandle =  Addressables.LoadAssetAsync<AudioClip>($"Assets/4_Assets/2_Sound/"+folderName+"/"+filenames[i]+".wav");
+            string filePath = "Assets/2_Resources/2_Sound/"+folderName+"/"+filenames[i]+".wav";
+            AsyncOperationHandle<AudioClip> asyncOperationHandle =  Addressables.LoadAssetAsync<AudioClip>(filePath);
             asyncOperationHandle.Completed+=LoadClipToMemory;
         }
     }

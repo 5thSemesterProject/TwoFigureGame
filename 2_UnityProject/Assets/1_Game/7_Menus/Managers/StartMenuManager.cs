@@ -8,7 +8,6 @@ using System;
 public class StartMenuManager : MonoBehaviour
 {
     private Coroutine transition;
-
     [SerializeField] private ButtonEnabler mainMenuGroup;
     [SerializeField] private ButtonEnabler archiveGroup;
     [SerializeField] private ButtonEnabler startGroup;
