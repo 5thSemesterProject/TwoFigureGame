@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -16,6 +14,7 @@ public class ActivateOnAnyKey : MonoBehaviour
     private void Start()
     {
         CustomInputs inputMapping = CustomEventSystem.GetInputMapping;
+        CustomEventSystem.SwitchControlScheme(inputMapping.InUI);
         inputMapping.InUI.AnyKey.performed += InvokeEvent;
     }
 

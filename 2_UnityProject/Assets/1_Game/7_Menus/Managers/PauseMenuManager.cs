@@ -60,7 +60,7 @@ public class PauseMenuManager : MonoBehaviour
         yield return null;
         Time.timeScale = 1;
         GameManager.UnSubscribeEvents();
-        SceneManager.LoadSceneAsync("MainMenu");
+        SceneLoader.LoadScene("MainMenu", this, 3, true);
     }
     private IEnumerator QuitLogic()
     {
