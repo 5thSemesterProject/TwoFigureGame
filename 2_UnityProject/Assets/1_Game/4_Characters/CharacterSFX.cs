@@ -11,27 +11,14 @@ public class CharacterSFX : MonoBehaviour
 
     void  Awake()
     {
-        LoadAllAudioClips();
+        AudioUtility audioUtility = new AudioUtility();
+        audioUtility.LoadAllAudioClips<E_5_Character>(SaveClips);
     }
 
-    private void LoadAllAudioClips()
+    private void SaveClips(AudioClip[] audioClips)
     {
-        string[] filenames = Enum.GetNames(typeof(E_5_Character));
-
-        for (int i = 0; i < filenames.Length; i++)
-        {
-            filenames[i] = RemoveFirstUnderscore(filenames[i]);
-            AsyncOperationHandle<AudioClip> asyncOperationHandle =  Addressables.LoadAssetAsync<AudioClip>($"Assets/2_Resources/2_Sound/5_Character/{filenames[i]}.wav");
-            asyncOperationHandle.Completed+=LoadClipToMemory;
-        }
+        this.audioClips.AddRange(audioClips);
     }
-
-    void LoadClipToMemory(AsyncOperationHandle<AudioClip> asyncOperationHandle)
-    {
-        AudioClip audioClip = asyncOperationHandle.Result;
-        audioClips.Add(audioClip);
-    }
-
 
     public void PlaySound(E_5_Character soundEffectToPlay)
     {

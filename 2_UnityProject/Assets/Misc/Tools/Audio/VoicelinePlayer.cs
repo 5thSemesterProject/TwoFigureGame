@@ -19,6 +19,8 @@ public class VoicelinePlayer : MonoBehaviour
 
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+
         //Singleton Steup    
         if (instance==null)
             instance = this;
@@ -47,7 +49,6 @@ public class VoicelinePlayer : MonoBehaviour
     {
         if (coroutine==null)
         {
-            Debug.Log (fileName);
             activeTaskPriority = priority;
             AudioClip voiceClip = voicelines.FirstOrDefault(clip=>clip.name==fileName);
             if (voiceClip!=null)
