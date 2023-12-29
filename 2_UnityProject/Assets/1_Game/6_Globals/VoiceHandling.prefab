@@ -57,18 +57,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf1cb3eb8d184f46ba14500e68090d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lowHealthSound:
-    maleData:
-      voiceline: 15
-      characterType: 0
-    femaleData:
-      voiceline: 13
-      characterType: 0
   chargingOxygenSound:
+    randomize: 1
     maleData:
-      voiceline: 57
+      voicelines: 390000003a0000003b000000
+      lastRandom: 0
       characterType: 0
     femaleData:
-      voiceline: 54
+      voicelines: 360000003700000038000000
+      lastRandom: 0
       characterType: 0
   waitTimeBetweenClips: 1

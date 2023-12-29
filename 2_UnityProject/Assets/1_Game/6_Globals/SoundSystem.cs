@@ -102,19 +102,26 @@ public class SoundSystem : MonoBehaviour
     public static void PlaySound(AudioClip soundClip, float volume = -1, float delay = 0,GameObject audioSourceHolder=null)
     {
         volume = Mathf.Min(1, volume);
-        
-        //Create a new AudioSource component to play the sound
+
+        bool externalAudioSource = false;
+    
+
+        AudioSource source=null;
+        if (audioSourceHolder!=null && audioSourceHolder.TryGetComponent(out source))
+            externalAudioSource = true;
+
+        //Use this object as sourceHolder instead of external one
         if (audioSourceHolder==null)
             audioSourceHolder = instance.gameObject;
 
-        AudioSource source;
-        if(!audioSourceHolder.TryGetComponent(out source))    
+        //Create a new AudioSource component to play the sound
+        if(source==null)    
             source = audioSourceHolder.gameObject.AddComponent<AudioSource>();
 
         var soundTask = new Tuple<AudioSource,Coroutine,Int32>(source,null,nextId);
 
         //Start Coroutine
-        IEnumerator i = instance._PlaySound(soundClip,soundTask ,volume, delay);
+        IEnumerator i = instance._PlaySound(soundClip,soundTask ,volume, delay, externalAudioSource);
         Coroutine coroutine = instance.StartCoroutine(i);
         
         //Save Soundtask in activeSoundTaksks
@@ -137,7 +144,7 @@ public class SoundSystem : MonoBehaviour
         PlaySound(soundClip, volume = -1, delay = 0,null);
     }
     
-    private IEnumerator _PlaySound(AudioClip audioClip, Tuple<AudioSource,Coroutine,Int32> audioTask,float volume, float delay)
+    private IEnumerator _PlaySound(AudioClip audioClip, Tuple<AudioSource,Coroutine,Int32> audioTask,float volume, float delay,bool externalAudioSource=false)
     {
         //Delay the sound start
         if (delay > 0)
@@ -158,7 +165,8 @@ public class SoundSystem : MonoBehaviour
 
         // Destroy the AudioSource component to clean up
         activeSoundTasks.Remove(audioTask);
-        Component.Destroy(source);
+        if (!externalAudioSource)
+            Component.Destroy(source);
     }
 
     // <summary>

@@ -6,6 +6,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System;
 using Unity.IO.LowLevel.Unsafe;
+using System.Linq;
 
 public class VoicelinePlayer : MonoBehaviour
 {
@@ -14,81 +15,65 @@ public class VoicelinePlayer : MonoBehaviour
     public static VoicelinePlayer instance;
     static int activeTaskPriority;
     static Int32 activeTaskId;
+    static List<AudioClip> voicelines = new List<AudioClip>();
 
     void Awake()
     {
-        AsyncOperationHandle<AudioClip> asyncOperationHandle =  Addressables.LoadAssetAsync<AudioClip>("Assets/4_Assets/2_Sound/1_Voicelines/"+"Box_E_01"+".wav");
-
+        //Singleton Steup    
         if (instance==null)
-        {
             instance = this;
-        }
         else
-        {
             Destroy(this);
-        }
+
+        //Load All Voicelines
+        AudioUtility audioUtility = new AudioUtility();
+        audioUtility.LoadAllAudioClips<E_1_Voicelines>(SaveVoiceLines);
     }
 
-    public bool LoadAndPlayVoiceLine(E_1_Voicelines voiceline,float extraWaitTimeAfterClip,int priority=1)
+    void SaveVoiceLines(AudioClip[] audioClips)
+    {
+        voicelines.AddRange(audioClips);
+    }
+
+
+    public bool TryPlayVoiceLine(E_1_Voicelines voiceline,float extraWaitTimeAfterClip=0,int priority=1)
     {
         string fileName = Enum.GetName(typeof(E_1_Voicelines),voiceline);
-        fileName = RemoveFirstUnderscore(fileName);
-        return LoadVoiceLine(fileName,extraWaitTimeAfterClip,priority);
+        fileName = AudioUtility.RemovePrefix(fileName,"_");
+        return TryPlayVoiceLine(fileName,extraWaitTimeAfterClip,priority);
     }
 
-    bool LoadVoiceLine(string fileName,float extraWaitTimeAfterClip=0,int priority=1)
+    public bool TryPlayVoiceLine(string fileName,float extraWaitTimeAfterClip=0,int priority=1)
     {
         if (coroutine==null)
         {
+            Debug.Log (fileName);
             activeTaskPriority = priority;
-            AsyncOperationHandle<AudioClip> asyncOperationHandle =  Addressables.LoadAssetAsync<AudioClip>("Assets/4_Assets/2_Sound/1_Voicelines/"+fileName+".wav");
-            asyncOperationHandle.Completed+=PlayVoiceLine;
-            this.extraWaitTimeAfterClip = extraWaitTimeAfterClip;
-            return true;
+            AudioClip voiceClip = voicelines.FirstOrDefault(clip=>clip.name==fileName);
+            if (voiceClip!=null)
+            {
+                coroutine  = StartCoroutine(PlayVoiceLine(voiceClip));
+                this.extraWaitTimeAfterClip = extraWaitTimeAfterClip;
+                return true;
+            }
+            return false;
         }
         else if (priority>activeTaskPriority)
         {
-            Debug.Log ("Overwrite");
             StopCoroutine(coroutine);
             coroutine = null;
             SoundSystem.TryStopSound(activeTaskId);
-            return LoadVoiceLine(fileName,extraWaitTimeAfterClip,priority);
+            return TryPlayVoiceLine(fileName,extraWaitTimeAfterClip,priority);
         }
         return false;
     }
 
-    void PlayVoiceLine(AsyncOperationHandle<AudioClip> asyncOperationHandle)
-    {
-        AudioClip voiceClip = asyncOperationHandle.Result;
-        coroutine  = StartCoroutine(_PlayVoiceLine(voiceClip));
-    }
 
-    IEnumerator _PlayVoiceLine(AudioClip voiceClip)
+    IEnumerator PlayVoiceLine(AudioClip voiceClip)
     {
         SoundSystem.PlaySound(voiceClip,out activeTaskId);
         yield return new WaitForSeconds(voiceClip.length+extraWaitTimeAfterClip);
         coroutine = null;
-    }
-
-    string RemoveFirstUnderscore(string text)
-    {
-        char[] characters = text.ToCharArray();
-        string textWithoutUnderscore = text;
-
-        if (characters[0]=='_')
-        {
-            text.ToCharArray();
-
-            textWithoutUnderscore = "";
-
-            for (int i = 1; i < characters.Length; i++)
-            {
-                textWithoutUnderscore = textWithoutUnderscore+characters[i];
-            }
-        }
-
-        return textWithoutUnderscore;
-
     }
 
 }
