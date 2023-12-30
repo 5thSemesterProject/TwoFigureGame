@@ -1,13 +1,5 @@
-using System;
-using Cinemachine;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Playables;
-using UnityEngine.UI;
-
-
 
 public class CharacterManager : MonoBehaviour
 {
@@ -146,8 +138,3 @@ public class CharacterManager : MonoBehaviour
     }
     #endregion
 }
-
-
-
-
-
