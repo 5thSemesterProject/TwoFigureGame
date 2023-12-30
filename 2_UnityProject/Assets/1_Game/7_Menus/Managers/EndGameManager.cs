@@ -28,6 +28,7 @@ public class EndGameManager : MonoBehaviour
             case EndCondition.Win:
 
                 WSUI.AddOverlay(WinScreen);
+                CustomEventSystem.SwitchControlScheme(CustomEventSystem.GetInputMapping.InUI);
                 Debug.Log("YOU WIN!");
                 yield break;
             case EndCondition.OxygenMan:
