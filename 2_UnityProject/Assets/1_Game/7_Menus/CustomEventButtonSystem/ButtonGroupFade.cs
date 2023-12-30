@@ -14,33 +14,27 @@ public class ButtonGroupFade : MonoBehaviour
     private void OnEnable()
     {
         buttonEnabler = GetComponent<ButtonEnabler>();
-        if (fadeOnEnable)
-        {
-            EnterFromZero();
-        }
-        else if (true)
+        if (hiddenOnEnable)
         {
             buttonEnabler.canvasGroup.alpha = 0;
         }
+        if (fadeOnEnable)
+        {
+            FadeIn();
+        }
     }
 
-    public void EnterFromZero()
-    {
-        buttonEnabler.canvasGroup.alpha = 0;
-        FadeIn();
-    }
-    public float ExitAndDestroy()
-    {
-        ReplaceCoroutine(FadeAndDestroy(1, fadeSpeed));
-        return fadeSpeed;
-    }
     public void FadeIn()
     {
         ReplaceCoroutine(Fade(1, fadeSpeed));
     }
-    public void FadeOut()
+    public float FadeOut(bool destroy = false)
     {
-        ReplaceCoroutine(Fade(0, fadeSpeed));
+        if (destroy)
+            ReplaceCoroutine(FadeAndDestroy(0, fadeSpeed));
+        else
+            ReplaceCoroutine(Fade(0, fadeSpeed));
+        return fadeSpeed;
     }
 
     private void ReplaceCoroutine(IEnumerator coroutine)
@@ -64,20 +58,22 @@ public class ButtonGroupFade : MonoBehaviour
 
         while (timeElapsed < 1)
         {
-            buttonEnabler.canvasGroup.alpha = Mathf.Lerp(currentValue, targetValue, timeElapsed);
-            CustomLogic(timeElapsed);
+            float tempValue = Mathf.Lerp(currentValue, targetValue, timeElapsed);
+            buttonEnabler.canvasGroup.alpha = tempValue;
+            CustomLogic(timeElapsed, tempValue);
 
             timeElapsed += Time.unscaledDeltaTime / time;
             yield return null;
         }
 
         buttonEnabler.canvasGroup.alpha = targetValue;
+        CustomLogic(1, targetValue);
 
         fadeRoutine = null;
     }
 
     //To be overriden
-    protected virtual void CustomLogic(float timeElapsed)
+    protected virtual void CustomLogic(float timeElapsed, float currentValue)
     {
 
     }

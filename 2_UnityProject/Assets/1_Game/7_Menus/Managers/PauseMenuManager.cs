@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenuManager : MonoBehaviour
 {
     private Coroutine transition;
+    [SerializeField] private ButtonGroupFade buttonGroupFade;
 
     public void PauseMenuLogic(string action)
     {
@@ -46,7 +47,12 @@ public class PauseMenuManager : MonoBehaviour
     #region Button Logics
     private IEnumerator ResumeLogic()
     {
-        yield return null;
+        if (buttonGroupFade != null)
+        {
+            CustomEventSystem.DisableUIInputs();
+            yield return new WaitForSecondsRealtime(buttonGroupFade.FadeOut());
+            CustomEventSystem.EnableUIInputs();
+        }
         GameManager.TogglePauseManual();
     }
     private IEnumerator OptionsLogic()

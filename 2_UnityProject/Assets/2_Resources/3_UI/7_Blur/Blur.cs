@@ -19,7 +19,7 @@ public class Blur : MonoBehaviour
 
     private void OnDisable()
     {
-        SetBlur(4);
+        SetBlur(0);
     }
 
     public void SetBlur(float value)
