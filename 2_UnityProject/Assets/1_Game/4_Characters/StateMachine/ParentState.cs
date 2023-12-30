@@ -117,6 +117,11 @@ public abstract class CharacterState
             }
         }
 
+        if (characterData.oxygenData.currentOxygen <= 0)
+        {
+            characterData.animator.SetBool("Dead", true);
+        }
+
     }
 
     public void HandleInteractable(out CharacterState updatedState)

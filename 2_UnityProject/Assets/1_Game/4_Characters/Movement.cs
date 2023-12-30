@@ -24,6 +24,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     private Coroutine moveRoutine;
     private Vector3 desiredMove = Vector3.zero;
     private Vector3 currentMove = Vector3.zero;
+    private Vector3 previousMove;
     [SerializeField] private float acceleration = 10;
     [SerializeField] private float deceleration = 20;
     [SerializeField] private float maxSpeed = 4;
@@ -139,9 +140,16 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             currentMove = (nextPosition - previousPosition) / Time.unscaledDeltaTime * Time.timeScale;
             currentMove.y = 0;
 
+            //Rotation Animation
+            float angle = Vector3.Angle(previousMove, currentMove);
+            Debug.Log(angle);
+            Debug.Log(angle >= 45);
+
             //Rotate
             if (currentMove != null && currentMove != Vector3.zero)
                 transform.rotation = Quaternion.LookRotation(currentMove);
+
+            previousMove = currentMove;
 
             desiredMove = Vector3.zero;
 
@@ -149,6 +157,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
             animator.SetFloat("Speed", currentMove.magnitude*2);
+            animator.SetFloat("RotationAngle", angle);
 
             yield return null;
         }
