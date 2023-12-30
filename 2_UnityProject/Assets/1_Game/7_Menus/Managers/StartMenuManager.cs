@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Cinemachine;
-using System;
 
 public class StartMenuManager : MonoBehaviour
 {

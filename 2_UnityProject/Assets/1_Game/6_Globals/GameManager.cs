@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
     public GameObject endScreenPrefab;
     public bool hasGameEnded = false;
 
+    //Game Time
+    public static float GetGameTime { get => elapsedGameTime; }
+    private static float elapsedGameTime;
+    private static float lastTimeMarker = 0;
+
     private void OnGUI()
     {
         if (GUILayout.Button("End Game"))
@@ -44,6 +49,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #region Game Time
+    private static void ResetTimer()
+    {
+        elapsedGameTime = 0;
+    }
+    private static void ResumeTimer()
+    {
+        lastTimeMarker = Time.realtimeSinceStartup;
+    }
+    private static float StopTimer()
+    {
+        elapsedGameTime += Time.realtimeSinceStartup - lastTimeMarker;
+        return elapsedGameTime;
+    }
+    #endregion
+
     #region Startup
     private void OnEnable()
     {
@@ -55,6 +76,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this);
         }
+
+        ResetTimer();
+        ResumeTimer();
     }
 
     private void OnDisable()
@@ -114,12 +138,14 @@ public class GameManager : MonoBehaviour
         pause = !pause;
         if (pause)
         {
+            StopTimer();
             pauseMenu = WSUI.AddOverlay(pauseMenuPrefab);
             Time.timeScale = 0;
             CustomEventSystem.SwitchControlScheme(CustomEventSystem.GetInputMapping.InUI);
         }
         else
         {
+            ResumeTimer();
             WSUI.RemovePrompt(pauseMenu);
             //pauseMenu.GetComponent<ButtonGroupFade>().ExitAndDestroy();
             Time.timeScale = 1;
@@ -145,6 +171,7 @@ public class GameManager : MonoBehaviour
     {
         UnSubscribeEvents();
         instance.hasGameEnded = true;
+        StopTimer();
 
         GameObject endPrefab = Instantiate(instance.endScreenPrefab);
 

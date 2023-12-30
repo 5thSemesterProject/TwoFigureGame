@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 282348434639528649}
   - component: {fileID: 5632256713010996890}
+  - component: {fileID: -2236848123265309299}
   m_Layer: 5
   m_Name: Blur
   m_TagString: Untagged
@@ -49,7 +50,7 @@ MonoBehaviour:
   priority: 0
   customPasses:
   - rid: 3958318370739453953
-  injectionPoint: 1
+  injectionPoint: 2
   m_TargetCamera: {fileID: 0}
   useTargetCamera: 1
   references:
@@ -69,3 +70,16 @@ MonoBehaviour:
         materialPassIndex: 0
         materialPassName: DrawProcedural
         fetchColorBuffer: 0
+--- !u!114 &-2236848123265309299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265993956646148557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57fef798ec5604123875dc0624f94d97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blurterial: {fileID: 2100000, guid: b794bedc8f7ce490599507e87d318ce2, type: 2}

@@ -19,7 +19,7 @@ public class VoicelinePlayer : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         //Singleton Steup    
         if (instance==null)
