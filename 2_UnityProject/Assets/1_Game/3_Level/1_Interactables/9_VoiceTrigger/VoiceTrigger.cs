@@ -11,6 +11,7 @@ public enum CharacterMode
     Both,Active, Inactive
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(VoiceTrigger))]
 public class MyScriptEditor : Editor
 {
@@ -60,7 +61,7 @@ public class MyScriptEditor : Editor
 
   }
 }
-
+#endif
 
 
 [RequireComponent(typeof(Interactable))]
