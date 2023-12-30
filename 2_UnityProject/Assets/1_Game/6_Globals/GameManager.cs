@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.SceneManagement;
 
 public enum EndCondition
@@ -31,6 +33,11 @@ public class GameManager : MonoBehaviour
     public event EndGame gameEnd;
     public GameObject endScreenPrefab;
     public bool hasGameEnded = false;
+
+    //LowTriggers
+    public event ButtonEvent notifyLow;
+    public event ButtonEvent unNotifyLow;
+    private bool hasBeenNotified;
 
     //Game Time
     public static float GetGameTime { get => elapsedGameTime; }
@@ -95,6 +102,8 @@ public class GameManager : MonoBehaviour
     {
         UnSubscribeEvents();
         SubscribeEvents();
+
+        UnNotifyLow();
     }
 
     public static void SubscribeEvents()
@@ -154,6 +163,41 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    #region NotifyLow
+    private static void NotifyLow()
+    {
+        instance.notifyLow?.Invoke();
+        Volume postProsess = GameObject.Find("PostProcessing").GetComponent<Volume>();
+        Vignette vignette;
+        if (postProsess.profile.TryGet(out vignette))
+                postProsess.StartCoroutine(LerpVignette(vignette, 0.5f, 1));
+    }
+    private static void UnNotifyLow()
+    {
+        instance.unNotifyLow?.Invoke();
+        Volume postProsess = GameObject.Find("PostProcessing").GetComponent<Volume>();
+        Vignette vignette;
+        if (postProsess.profile.TryGet(out vignette))
+            postProsess.StartCoroutine(LerpVignette(vignette, 0.4f, 0.5f));
+    }
+
+    private static IEnumerator LerpVignette(Vignette vignette, float targetIntesity, float targetSmoothness, float duration = 1)
+    {
+        float currentIntesity = (float)vignette.intensity;
+        float currentSmoothness = (float)vignette.smoothness;
+        float time = 0;
+
+        while (time < 1)
+        {
+            vignette.intensity.value = Mathf.Lerp(currentIntesity, targetIntesity, time);
+            vignette.smoothness.value = Mathf.Lerp(currentSmoothness, targetSmoothness, time);
+            time += Time.deltaTime / duration;
+            yield return null;
+        }
+
+    }
+    #endregion
+
     #region EndGame
     private void Update()
     {
@@ -164,6 +208,19 @@ public class GameManager : MonoBehaviour
             else
                 gameEnd?.Invoke(EndCondition.OxygenMan);
             hasGameEnded = true;
+        }
+        else if (CharacterManager.IsManLow || CharacterManager.IsWomanLow)
+        {
+            if (!hasBeenNotified)
+            {
+                hasBeenNotified = true;
+                NotifyLow();
+            }
+        }
+        else if (hasBeenNotified)
+        {
+            hasBeenNotified = false;
+            UnNotifyLow();
         }
     }
 

@@ -20,7 +20,21 @@ public class CharacterManager : MonoBehaviour
     {
         get => womanData.oxygenData.currentOxygen <= 0;
     }
-    
+    public static bool IsManLow
+    {
+        get
+        {
+            return manData.oxygenData.currentOxygen <= manData.oxygenData.maxOxygen / 5;
+        }
+    }
+    public static bool IsWomanLow
+    {
+        get
+        {
+            return womanData.oxygenData.currentOxygen <= womanData.oxygenData.maxOxygen / 5;
+        }
+    }
+
     //Character Prefab
 
     [Header("Prefabs")]

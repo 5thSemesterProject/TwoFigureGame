@@ -142,8 +142,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
             //Rotation Animation
             float angle = Vector3.Angle(previousMove, currentMove);
-            Debug.Log(angle);
-            Debug.Log(angle >= 45);
 
             //Rotate
             if (currentMove != null && currentMove != Vector3.zero)
