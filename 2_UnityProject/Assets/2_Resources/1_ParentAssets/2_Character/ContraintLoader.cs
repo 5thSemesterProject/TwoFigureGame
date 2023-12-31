@@ -116,7 +116,8 @@ public class ContraintLoader : MonoBehaviour
         if (debug && constraint != null && target != null)
         {
             Gizmos.DrawWireSphere(transform.position, radius);
-            Gizmos.DrawLine(constraint.data.constrainedObject.position, target.position);
+            if (constraint.data.constrainedObject != null)
+                Gizmos.DrawLine(constraint.data.constrainedObject.position, target.position);
         }
     }
 }
