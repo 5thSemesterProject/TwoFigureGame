@@ -159,6 +159,11 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
             }
             return interactable && enabler.interactable;
         }
+
+        set
+        {
+            interactable = value;
+        }
     }
 
     //Navigation

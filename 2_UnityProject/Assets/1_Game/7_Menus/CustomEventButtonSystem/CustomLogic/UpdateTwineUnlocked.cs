@@ -3,12 +3,17 @@ using UnityEngine;
 public class UpdateTwineUnlocked : MonoBehaviour
 {
     [SerializeField] private TextAsset twineStory;
+    [SerializeField] private CustomButton correspondingButton;
 
     private void OnEnable()
     {
         if (!CheckIfUnlocked())
         {
             gameObject.SetActive(false);
+            if (correspondingButton != null)
+            {
+                correspondingButton.IsInteractable = false;
+            }
         }
     }
 

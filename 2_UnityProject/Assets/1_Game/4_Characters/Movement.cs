@@ -93,6 +93,11 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         float tolerance = 0.001f;
         while (true)
         {
+            while (Time.timeScale == 0)
+            {
+                yield return null;
+            }
+
             //Apply Gravity
             if (timeFalling > 0)
             {
@@ -142,8 +147,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
             //Rotation Animation
             float angle = Vector3.Angle(previousMove, currentMove);
-            Debug.Log(angle);
-            Debug.Log(angle >= 45);
 
             //Rotate
             if (currentMove != null && currentMove != Vector3.zero)
@@ -156,7 +159,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             //Animators
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
-            animator.SetFloat("Speed", currentMove.magnitude*2);
+            animator.SetFloat("Speed", currentMove.magnitude*2 / Time.timeScale);
             animator.SetFloat("RotationAngle", angle);
 
             yield return null;
