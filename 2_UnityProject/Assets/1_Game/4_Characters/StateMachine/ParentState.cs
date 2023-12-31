@@ -58,7 +58,7 @@ public abstract class CharacterState
                 WSUI.FadeInElement(characterData.gameObject.GetComponentInChildren<CharacterUI>().GetOxygenBar().gameObject,characterData.gameObject.transform,out characterData.oxygenBar);
             
             WSUI_Element oxygenBar = characterData.oxygenBar;
-            oxygenBar.LerpAlphaToInitial();
+            //oxygenBar.LerpAlphaToInitial();
             oxygenBar.GetComponent<OxygenBar>().SetValue(currentOxygen);    
         }
         else

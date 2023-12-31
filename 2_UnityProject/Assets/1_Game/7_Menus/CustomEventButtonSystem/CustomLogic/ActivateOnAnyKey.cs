@@ -11,6 +11,9 @@ public class ActivateOnAnyKey : MonoBehaviour
     [SerializeField]
     private ButtonUnityEvent buttonEvent;
 
+    [SerializeField]
+    private bool returnToInGame = false;
+
     private void Start()
     {
         CustomInputs inputMapping = CustomEventSystem.GetInputMapping;
@@ -24,6 +27,11 @@ public class ActivateOnAnyKey : MonoBehaviour
 
         CustomInputs inputMapping = CustomEventSystem.GetInputMapping;
         inputMapping.InUI.AnyKey.performed -= InvokeEvent;
+
+        if (returnToInGame)
+        {
+            CustomEventSystem.SwitchControlScheme(inputMapping.InGame);
+        }
 
         Destroy(this);
     }

@@ -26,6 +26,14 @@ public struct OxygenData
         if (currentOxygen <= maxOxygen)
             currentOxygen += amount;
     }
+
+    public bool IsLow
+    {
+        get
+        {
+            return currentOxygen <= maxOxygen / 5;
+        }
+    }
 }
 
 public class GameStats : MonoBehaviour
