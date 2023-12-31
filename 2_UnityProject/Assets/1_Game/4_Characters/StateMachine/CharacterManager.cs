@@ -24,14 +24,14 @@ public class CharacterManager : MonoBehaviour
     {
         get
         {
-            return manData.oxygenData.currentOxygen <= manData.oxygenData.maxOxygen / 5;
+            return manData.oxygenData.IsLow;
         }
     }
     public static bool IsWomanLow
     {
         get
         {
-            return womanData.oxygenData.currentOxygen <= womanData.oxygenData.maxOxygen / 5;
+            return womanData.oxygenData.IsLow;
         }
     }
 

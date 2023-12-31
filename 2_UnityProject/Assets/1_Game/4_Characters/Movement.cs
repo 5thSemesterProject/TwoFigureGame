@@ -13,6 +13,7 @@ public enum TraversalType
 public class Movement : MonoBehaviour, IIntersectSmoke
 {
     private CharacterController characterController;
+    private CharacterData characterData;
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private NavMeshHandler navMeshHandler;
@@ -58,6 +59,8 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             navMeshAgent.enabled = false;
 
         navMeshHandler = GetComponent<NavMeshHandler>();
+
+        characterData = characterType == CharacterType.Man ? CharacterManager.manData : CharacterManager.womanData;
     }
 
     #region FogStuff
@@ -161,6 +164,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             animator.SetFloat("MotionSpeed", 1);
             animator.SetFloat("Speed", currentMove.magnitude*2 / Time.timeScale);
             animator.SetFloat("RotationAngle", angle);
+            animator.SetFloat("Hurt", characterData.oxygenData.IsLow ? 1 : 0);
 
             yield return null;
         }
