@@ -21,43 +21,42 @@ public class ContraintLoader : MonoBehaviour
     [SerializeField] private AnimationCurve weightCurveIdle = new AnimationCurve();
     [SerializeField] private AnimationCurve weightCurveMove = new AnimationCurve();
     [SerializeField] private bool debug;
+    [SerializeField] private Animator animator;
     private MultiAimConstraint constraint;
     private Transform target;
-    private Movement movement;
 
     #region Startup
     //Load values on Editor Change
     private void OnValidate()
     {
         LoadConstraint();
-        movement = GetComponentInParent<Movement>();
+        if (animator == null)
+            animator = GetComponentsInParent<Animator>()[1];
     }
 
     private void Start()
     {
         LoadConstraint();
-        movement = GetComponentInParent<Movement>();
+        if (animator == null)
+            animator = GetComponentsInParent<Animator>()[1];
     }
     #endregion
 
-    private HeadState CheckState(Movement movement)
+    private HeadState CheckState(Animator animator)
     {
-        if (movement == null)
+        if (animator == null)
             return HeadState.Idle;
 
-        CharacterData data;
-        if (movement.characterType == CharacterType.Man)
-            data = CharacterManager.manData;
-        else
-            data = CharacterManager.womanData;
+        if (animator.GetBool("JumpOver") == true ||
+            animator.GetBool("Crawl") == true ||
+            animator.GetBool("MoveBox") == true ||
+            animator.GetBool("Dead") == true)
+            return HeadState.Off;
 
-        if (data == null)
+        if (animator.GetFloat("Speed") == 0)
             return HeadState.Idle;
 
-        if (data.currentState.GetType() == typeof(IdleState))
-            return HeadState.Idle;
-
-        if (data.currentState.GetType() == typeof(MoveState))
+        if (animator.GetFloat("Speed") != 0)
             return HeadState.Move;
 
         return HeadState.Off;
@@ -100,7 +99,7 @@ public class ContraintLoader : MonoBehaviour
             return;
         }
 
-        switch (CheckState(movement))
+        switch (CheckState(animator))
         {
             case HeadState.Idle:
                 float distance = Vector3.Distance(transform.position, target.position);
