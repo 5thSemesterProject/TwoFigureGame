@@ -97,7 +97,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle Action Randomizer
+  m_Name: Action Randomizer
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 4edc9bb75e1a87540a32c678fe1651fe, type: 2}
@@ -214,9 +214,9 @@ AnimatorStateMachine:
   - first: {fileID: -4754915216220460146}
     second: []
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 10, y: 330, z: 0}
+  m_AnyStatePosition: {x: 220, y: 250, z: 0}
   m_EntryPosition: {x: 220, y: 330, z: 0}
-  m_ExitPosition: {x: 680, y: 260, z: 0}
+  m_ExitPosition: {x: 220, y: 290, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 8106094335264357861}
 --- !u!1101 &-5554260563948360725
@@ -273,23 +273,23 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle Walk Run Blend
+  m_Name: Movement Blend
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8106094335264357861}
-    m_Position: {x: -100, y: 200, z: 0}
+    m_Position: {x: -100, y: 140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4923327296419445321}
-    m_Position: {x: 130, y: 200, z: 0}
+    m_Position: {x: -100, y: 240, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -80, y: 0, z: 0}
-  m_EntryPosition: {x: -80, y: 80, z: 0}
-  m_ExitPosition: {x: -80, y: 40, z: 0}
-  m_ParentStateMachinePosition: {x: -100, y: 300, z: 0}
+  m_AnyStatePosition: {x: -320, y: 180, z: 0}
+  m_EntryPosition: {x: -320, y: 140, z: 0}
+  m_ExitPosition: {x: -320, y: 220, z: 0}
+  m_ParentStateMachinePosition: {x: 140, y: 140, z: 0}
   m_DefaultState: {fileID: 8106094335264357861}
 --- !u!1101 &-3943826829571047522
 AnimatorStateTransition:
@@ -458,7 +458,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: aff05bc29d9d4b74d89225cde037b7a2, type: 2}
+  m_Motion: {fileID: 7400000, guid: ca1046c6703d95a418feaa2717447f59, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -544,18 +544,6 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Crawl
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: JumpOver
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
   - m_Name: PushPull
     m_Type: 1
     m_DefaultFloat: 0
@@ -586,14 +574,26 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
+  - m_Name: IdleAction
+    m_Type: 1
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   - m_Name: IdleActionTrigger
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: IdleAction
-    m_Type: 1
+  - m_Name: JumpOver
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: Crawl
+    m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -871,7 +871,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blend Tree
+  m_Name: Movement
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 9048436096874925251}
@@ -956,7 +956,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 7400000, guid: 06ea5d992ca612d4084f7400797ddc62, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -994,7 +994,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle Action
+  m_Name: Action
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1190,7 +1190,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle Walk Run Blend Tree
+  m_Name: Movement Blend
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1246,7 +1246,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Standart
+  m_Name: Default
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 49ff162dfad79cb4298b52ad7311530a, type: 2}
