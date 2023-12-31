@@ -59,7 +59,10 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             navMeshAgent.enabled = false;
 
         navMeshHandler = GetComponent<NavMeshHandler>();
+    }
 
+    private void Start()
+    {
         characterData = characterType == CharacterType.Man ? CharacterManager.manData : CharacterManager.womanData;
     }
 
@@ -162,7 +165,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             //Animators
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
-            animator.SetFloat("Speed", currentMove.magnitude*2 / Time.timeScale);
+            animator.SetFloat("Speed", currentMove.magnitude / Time.timeScale);
             animator.SetFloat("RotationAngle", angle);
             animator.SetFloat("Hurt", characterData.oxygenData.IsLow ? 1 : 0);
 

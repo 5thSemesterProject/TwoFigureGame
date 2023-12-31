@@ -149,7 +149,6 @@ public class ContraintLoader : MonoBehaviour
         {
             float velocity = 0;
             constraint.weight = Mathf.SmoothDamp(constraint.weight, targetWeight, ref velocity, 0.1f);
-            Debug.Log(constraint.weight);
 
             if (Mathf.Abs(constraint.weight - targetWeight) <= 0.05f )
             {
