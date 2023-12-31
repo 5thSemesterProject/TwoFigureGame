@@ -6,7 +6,7 @@ public class CharacterManager : MonoBehaviour
     //Inputs
     public static CustomInputs customInputMaps;
 
-    static CharacterData manData, womanData;
+    public static CharacterData manData, womanData;
 
     public static bool IsGameOver
     {
