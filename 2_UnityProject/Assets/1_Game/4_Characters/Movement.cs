@@ -92,6 +92,8 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             timeFalling += Time.deltaTime;
         else
             timeFalling = 0;
+
+        animator.SetFloat("Hurt", characterData.oxygenData.IsLow ? 1f : 0);
     }
     
     private IEnumerator _Move()
@@ -167,7 +169,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             animator.SetFloat("MotionSpeed", 1);
             animator.SetFloat("Speed", currentMove.magnitude / Time.timeScale);
             animator.SetFloat("RotationAngle", angle);
-            animator.SetFloat("Hurt", characterData.oxygenData.IsLow ? 1 : 0);
 
             yield return null;
         }
