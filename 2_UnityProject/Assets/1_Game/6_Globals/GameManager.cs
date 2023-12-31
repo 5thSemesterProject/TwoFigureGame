@@ -44,17 +44,22 @@ public class GameManager : MonoBehaviour
     private static float elapsedGameTime;
     private static float lastTimeMarker = 0;
 
+#if UNITY_EDITOR
     private void OnGUI()
     {
-        if (GUILayout.Button("End Game"))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            gameEnd?.Invoke(EndCondition.OxygenWoman);
-        }
-        if (GUILayout.Button("Win Game"))
-        {
-            gameEnd?.Invoke(EndCondition.Win);
+            if (GUILayout.Button("End Game"))
+            {
+                gameEnd?.Invoke(EndCondition.OxygenWoman);
+            }
+            if (GUILayout.Button("Win Game"))
+            {
+                gameEnd?.Invoke(EndCondition.Win);
+            }
         }
     }
+#endif
 
     #region Game Time
     private static void ResetTimer()
@@ -156,7 +161,6 @@ public class GameManager : MonoBehaviour
         {
             ResumeTimer();
             WSUI.RemovePrompt(pauseMenu);
-            //pauseMenu.GetComponent<ButtonGroupFade>().ExitAndDestroy();
             Time.timeScale = 1;
             CustomEventSystem.SwitchControlScheme(CustomEventSystem.GetInputMapping.InGame);
         }
