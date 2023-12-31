@@ -15,6 +15,8 @@ public class EndGameManager : MonoBehaviour
     #region Start
     public void EndGame(EndCondition endCondition)
     {
+        CustomEventSystem.SwitchControlScheme(CustomEventSystem.GetInputMapping.InUI);
+
         if (endRoutine == null)
         {
             StartCoroutine(_EndGame(endCondition));
