@@ -9,6 +9,7 @@ public class SaveTwine : MonoBehaviour
 {
     Interactable interactable;
     [SerializeField]_1_JSON twineStory;
+    [SerializeField] GameObject popupPrefab;
 
     TwineStoryData twineStoryData;
     string fullPath;
@@ -32,7 +33,11 @@ public class SaveTwine : MonoBehaviour
         {
             twineStoryData.unlocked = true;
             CustomEvents.RaiseUnlockTwineStory(movement.characterType,twineStoryData);  
-            SaveSystem.SaveDataAsync<TwineStoryData>(twineStoryData,fullPath);    
+            SaveSystem.SaveDataAsync<TwineStoryData>(twineStoryData,fullPath);
+            if (popupPrefab != null)
+            {
+                WSUI.AddOverlay(popupPrefab);
+            }
         }
     }
 

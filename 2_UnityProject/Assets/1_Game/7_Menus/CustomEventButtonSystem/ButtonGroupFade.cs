@@ -28,7 +28,11 @@ public class ButtonGroupFade : MonoBehaviour
     {
         ReplaceCoroutine(Fade(1, fadeSpeed));
     }
-    public float FadeOut(bool destroy = false)
+    public void Remove()
+    {
+        FadeOut(true);
+    }
+    public float FadeOut(bool destroy = true)
     {
         if (destroy)
             ReplaceCoroutine(FadeAndDestroy(0, fadeSpeed));
