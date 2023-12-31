@@ -33,7 +33,7 @@ public class ContraintLoader : MonoBehaviour
         movement = GetComponentInParent<Movement>();
     }
 
-    private void Awake()
+    private void Start()
     {
         LoadConstraint();
         movement = GetComponentInParent<Movement>();
