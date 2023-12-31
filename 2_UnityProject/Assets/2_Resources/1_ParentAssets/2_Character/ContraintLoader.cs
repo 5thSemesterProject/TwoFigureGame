@@ -16,7 +16,7 @@ public class ContraintLoader : MonoBehaviour
 {
     public bool overrideOnlyIdle = true;
 
-    [SerializeField] private string headToFind;
+    [SerializeField] private string targetToFind;
     [SerializeField] private float radius = 5;
     [SerializeField] private AnimationCurve weightCurveIdle = new AnimationCurve();
     [SerializeField] private AnimationCurve weightCurveMove = new AnimationCurve();
@@ -24,6 +24,8 @@ public class ContraintLoader : MonoBehaviour
     [SerializeField] private Animator animator;
     private MultiAimConstraint constraint;
     private Transform target;
+    private float targetWeight = 0;
+    private Coroutine weightLerpRoutine;
 
     #region Startup
     //Load values on Editor Change
@@ -31,14 +33,28 @@ public class ContraintLoader : MonoBehaviour
     {
         LoadConstraint();
         if (animator == null)
-            animator = GetComponentsInParent<Animator>()[1];
+        {
+            Animator[] temp = GetComponentsInParent<Animator>();
+            if (temp.Length >= 2)
+            {
+                animator = temp[1];
+            }
+        }
     }
 
     private void Start()
     {
         LoadConstraint();
         if (animator == null)
-            animator = GetComponentsInParent<Animator>()[1];
+        {
+            Animator[] temp = GetComponentsInParent<Animator>();
+            if (temp.Length >= 2)
+            {
+                animator = temp[1];
+            }
+        }
+
+        SetTarget(0);
     }
     #endregion
 
@@ -66,7 +82,7 @@ public class ContraintLoader : MonoBehaviour
     {
         //Get constraint and target
         constraint = GetComponent<MultiAimConstraint>();
-        GameObject targetGameobject = GameObject.Find(headToFind);
+        GameObject targetGameobject = GameObject.Find(targetToFind);
 
         if (targetGameobject != null)
         {
@@ -83,7 +99,7 @@ public class ContraintLoader : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Head -{headToFind}- not found!");
+            Debug.LogWarning($"Head -{targetToFind}- not found!");
         }
     }
 
@@ -95,7 +111,7 @@ public class ContraintLoader : MonoBehaviour
         if (overrideOnlyIdle)
         {
             float distance = Vector3.Distance(transform.position, target.position);
-            constraint.weight = Mathf.Clamp01(weightCurveIdle.Evaluate(Mathf.Clamp01(distance / radius)));
+            SetTarget(weightCurveIdle.Evaluate(Mathf.Clamp01(distance / radius)));
             return;
         }
 
@@ -103,17 +119,47 @@ public class ContraintLoader : MonoBehaviour
         {
             case HeadState.Idle:
                 float distance = Vector3.Distance(transform.position, target.position);
-                constraint.weight = Mathf.Clamp01(weightCurveIdle.Evaluate(Mathf.Clamp01(distance / radius)));
+                SetTarget(weightCurveIdle.Evaluate(Mathf.Clamp01(distance / radius)));
                 return;
             case HeadState.Move:
                 distance = Vector3.Distance(transform.position, target.position);
-                constraint.weight = Mathf.Clamp01(weightCurveMove.Evaluate(Mathf.Clamp01(distance / radius)));
+                SetTarget(weightCurveMove.Evaluate(Mathf.Clamp01(distance / radius)));
                 return;
             case HeadState.Off:
                 break;
         }
 
         constraint.weight = 0;
+    }
+
+    private void SetTarget(float target)
+    {
+        targetWeight = Mathf.Clamp01(target);
+
+        if (weightLerpRoutine == null)
+            weightLerpRoutine = StartCoroutine(LerpWeight());
+    }
+
+    private IEnumerator LerpWeight()
+    {
+        if (constraint == null)
+            yield break;
+
+        while (true)
+        {
+            float velocity = 0;
+            constraint.weight = Mathf.SmoothDamp(constraint.weight, targetWeight, ref velocity, 0.1f);
+            Debug.Log(constraint.weight);
+
+            if (Mathf.Abs(constraint.weight - targetWeight) <= 0.05f )
+            {
+                constraint.weight = targetWeight;
+                weightLerpRoutine = null;
+                yield break;
+            }
+
+            yield return null;
+        }
     }
 
     private void OnDrawGizmos()
