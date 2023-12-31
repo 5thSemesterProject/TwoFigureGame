@@ -94,16 +94,19 @@ public class StartMenuManager : MonoBehaviour
     private IEnumerator Archive()
     {
         yield return TransitionBetweenCanvasGroups(mainMenuGroup, archiveGroup);
+        transition = null;
     }
     private IEnumerator Menu()
     {
         yield return TransitionBetweenCanvasGroups(archiveGroup,mainMenuGroup);
+        transition = null;
     }
     private IEnumerator Enter()
     {
         yield return TransitionBetweenCanvasGroups(startGroup, mainMenuGroup);
+        transition = null;
     }
-    private IEnumerator TransitionBetweenCanvasGroups(ButtonEnabler startGroup, ButtonEnabler endGroup)
+    public static IEnumerator TransitionBetweenCanvasGroups(ButtonEnabler startGroup, ButtonEnabler endGroup)
     {
         CustomEventSystem.DisableUIInputs();
 
@@ -111,7 +114,7 @@ public class StartMenuManager : MonoBehaviour
 
         while (alpha > 0)
         {
-            alpha -= Time.deltaTime * 2;
+            alpha -= Time.unscaledDeltaTime * 2;
             startGroup.canvasGroup.alpha = Mathf.Clamp01(alpha);
             yield return null;
         }
@@ -123,7 +126,7 @@ public class StartMenuManager : MonoBehaviour
 
         while (alpha < 1)
         {
-            alpha += Time.deltaTime * 2;
+            alpha += Time.unscaledDeltaTime * 2;
             endGroup.canvasGroup.alpha = Mathf.Clamp01(alpha);
             yield return null;
         }
@@ -133,8 +136,6 @@ public class StartMenuManager : MonoBehaviour
 
         CustomEventSystem.EnableUIInputs();
         CustomEventSystem.ResetSelectedButtons();
-
-        transition = null;
     }
     private IEnumerator Options()
     {
