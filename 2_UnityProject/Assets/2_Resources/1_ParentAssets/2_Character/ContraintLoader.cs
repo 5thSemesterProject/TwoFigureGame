@@ -75,6 +75,12 @@ public class ContraintLoader : MonoBehaviour
             WeightedTransformArray array = new WeightedTransformArray { new WeightedTransform(target, 1) };
 
             constraint.data.sourceObjects = array;
+
+            RigBuilder rigBuilder = GetComponentInParent<RigBuilder>();
+            if (rigBuilder != null)
+                rigBuilder.Build();
+            else
+                Debug.LogWarning("Rigbuilder not found");
         }
         else
         {
