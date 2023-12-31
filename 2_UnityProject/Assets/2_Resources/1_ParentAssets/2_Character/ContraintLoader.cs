@@ -18,8 +18,8 @@ public class ContraintLoader : MonoBehaviour
 
     [SerializeField] private string headToFind;
     [SerializeField] private float radius = 5;
-    [SerializeField] private AnimationCurve weightCurveIdle;
-    [SerializeField] private AnimationCurve weightCurveMove;
+    [SerializeField] private AnimationCurve weightCurveIdle = new AnimationCurve();
+    [SerializeField] private AnimationCurve weightCurveMove = new AnimationCurve();
     [SerializeField] private bool debug;
     private MultiAimConstraint constraint;
     private Transform target;
@@ -84,6 +84,9 @@ public class ContraintLoader : MonoBehaviour
 
     private void Update()
     {
+        if (target == null)
+            return;
+
         if (overrideOnlyIdle)
         {
             float distance = Vector3.Distance(transform.position, target.position);
@@ -110,7 +113,7 @@ public class ContraintLoader : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (debug && constraint != null)
+        if (debug && constraint != null && target != null)
         {
             Gizmos.DrawWireSphere(transform.position, radius);
             Gizmos.DrawLine(constraint.data.constrainedObject.position, target.position);
