@@ -10,6 +10,7 @@ public class MoveToSide : MonoBehaviour
     Interactable interactable;
 
     private int activePlatesCount = 0;
+    [SerializeField] private bool stayOpened = false;
 
     void Start()
     {
@@ -30,7 +31,7 @@ public class MoveToSide : MonoBehaviour
     {
         activePlatesCount--;
 
-        if (activePlatesCount <= 0)
+        if (activePlatesCount <= 0 && !stayOpened)
         {
             activePlatesCount = 0;
             animator.SetBool("Open", false);
