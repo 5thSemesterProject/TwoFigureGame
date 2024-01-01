@@ -92,6 +92,10 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             timeFalling += Time.deltaTime;
         else
             timeFalling = 0;
+
+        //Change Hurt Value In Idle 
+        float smoothHurtValue = Mathf.Lerp(animator.GetFloat("Hurt"), characterData.oxygenData.IsLow ? 1f : 0f, 0.005f);
+        animator.SetFloat("Hurt", smoothHurtValue);
     }
     
     private IEnumerator _Move()
@@ -167,7 +171,6 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             animator.SetFloat("MotionSpeed", 1);
             animator.SetFloat("Speed", currentMove.magnitude / Time.timeScale);
             animator.SetFloat("RotationAngle", angle);
-            animator.SetFloat("Hurt", characterData.oxygenData.IsLow ? 1 : 0);
 
             yield return null;
         }

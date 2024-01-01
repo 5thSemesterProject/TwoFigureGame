@@ -172,7 +172,7 @@ class MoveObjectState : CharacterState
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
         Vector2 gameWorldVector = VectorHelper.Convert3To2(Camera.main.transform.forward).normalized * inputVector.y + VectorHelper.Convert3To2(Camera.main.transform.right).normalized * inputVector.x;
         float moveDir = movableObject.MoveWithObject(gameWorldVector);
-        characterData.animator.SetFloat("PushPull", moveDir);
+        characterData.animator.SetFloat("PushPull", moveDir, 0.1f, Time.deltaTime);
         Debug.Log(moveDir);
         switch (moveDir)
         {
@@ -192,5 +192,4 @@ class MoveObjectState : CharacterState
 
         return this;
     }
- 
 }

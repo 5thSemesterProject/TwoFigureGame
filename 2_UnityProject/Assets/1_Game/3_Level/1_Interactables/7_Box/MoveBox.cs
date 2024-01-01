@@ -6,6 +6,9 @@ public class MoveBox : PlayerActionType
     [SerializeField] public Transform playerHandlePosition;
     [SerializeField] private LayerMask blockingLayers;
 
+    [SerializeField] private float forwardSpeed = 1.0f;
+    [SerializeField] private float backwardSpeed = 0.5f;
+
     private BoxCollider boxCollider;
 
     private void Start()
@@ -39,22 +42,24 @@ public class MoveBox : PlayerActionType
 
         bool moveForward = moveDirection > 0 ? true : false;
 
+        float speed = moveForward ? backwardSpeed : forwardSpeed;
+
         if (CheckIfBlocked(moveForward, out float distance))
         {
-            Move(moveDirection ,distance);
+            Move(moveDirection, distance, speed);
         }
         else
         {
-            Move(moveDirection, distance);
+            Move(moveDirection, distance, speed);
         }
 
         return moveDirection;
     }
 
-    private void Move(float direction,float distance)
+    private void Move(float direction, float distance, float speed)
     {
         distance = Mathf.Clamp01(distance - (0.2f * (direction < 0 ? 1 : 3)));
-        float moveDistance = Mathf.Clamp(direction * Time.deltaTime, -distance, distance);
+        float moveDistance = Mathf.Clamp(direction * Time.deltaTime * speed, -distance, distance);
         transform.Translate(Vector3.forward * moveDistance);
     }
 
