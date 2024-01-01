@@ -166,15 +166,11 @@ public class Movement : MonoBehaviour, IIntersectSmoke
 
             desiredMove = Vector3.zero;
 
-            //Change Hurt Value
-            float smoothHurtValue = Mathf.Lerp(animator.GetFloat("Hurt"), characterData.oxygenData.IsLow ? 1f : 0f, 0.05f);
-
             //Animators
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
             animator.SetFloat("Speed", currentMove.magnitude / Time.timeScale);
             animator.SetFloat("RotationAngle", angle);
-            animator.SetFloat("Hurt", smoothHurtValue);
 
             yield return null;
         }
