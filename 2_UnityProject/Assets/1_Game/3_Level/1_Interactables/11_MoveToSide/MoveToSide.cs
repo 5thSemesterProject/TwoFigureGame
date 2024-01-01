@@ -9,22 +9,32 @@ public class MoveToSide : MonoBehaviour
     Animator animator;
     Interactable interactable;
 
+    private int activePlatesCount = 0;
+
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
         interactable = GetComponent<Interactable>();
 
-        interactable.triggerEvent+=SlideOpen;
-        interactable.untriggerEvent+=SlideClose;
-    }
-    public void SlideOpen(Movement movement)
-    {
-        animator.SetBool("Open",true);
+        interactable.triggerEvent += PlateActivated;
+        interactable.untriggerEvent += PlateDeactivated;
     }
 
-    public void SlideClose(Movement movement)
+    public void PlateActivated(Movement movement)
     {
-        animator.SetBool("Open",false);
+        activePlatesCount++;
+        animator.SetBool("Open", true);
+    }
+
+    public void PlateDeactivated(Movement movement)
+    {
+        activePlatesCount--;
+
+        if (activePlatesCount <= 0)
+        {
+            activePlatesCount = 0;
+            animator.SetBool("Open", false);
+        }
     }
 }
 
