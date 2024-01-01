@@ -167,7 +167,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             desiredMove = Vector3.zero;
 
             //Change Hurt Value
-            float smoothHurtValue = Mathf.Lerp(animator.GetFloat("Hurt"), characterData.oxygenData.IsLow ? 1f : 0f, 0.005f);
+            float smoothHurtValue = Mathf.Lerp(animator.GetFloat("Hurt"), characterData.oxygenData.IsLow ? 1f : 0f, 0.05f);
 
             //Animators
             animator.SetBool("Grounded", true);
