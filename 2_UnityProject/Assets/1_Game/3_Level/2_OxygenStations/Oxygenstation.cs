@@ -85,7 +85,6 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
             oxygenData.currentOxygen-=chargeRate*Time.deltaTime;
             SetFluidLevel();
             LerpEmission();
-            DecreaseRadius();
             SetAbsorbVFX();
             return chargeRate*Time.deltaTime;
         }
@@ -148,11 +147,6 @@ public class Oxygenstation : MonoBehaviour, IIntersectSmoke
     #endregion
 
     #region Smoke Intersection Radius
-    void DecreaseRadius()
-    {
-        smokeIntersectionRadius = (oxygenData.currentOxygen/oxygenData.maxOxygen)*maxSmokeIntersectionRadus;
-        GetComponent<SphereCollider>().radius  = smokeIntersectionRadius;
-    }
 
     public float GetIntersectionRadius()
     {
