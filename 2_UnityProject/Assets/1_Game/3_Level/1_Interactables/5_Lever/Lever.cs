@@ -30,7 +30,7 @@ public class Lever : MonoBehaviour
         //Wait for switch to reactivate
         interactable.enterCond = CheckUsable;
 
-        initialHandleRot = handle.transform.rotation;
+        initialHandleRot = handle.transform.localRotation;
         StartCoroutine(RotateHandle());
     }
 
@@ -57,13 +57,13 @@ public class Lever : MonoBehaviour
 
     IEnumerator RotateHandle()
     {
-        targetRot = handle.transform.rotation;
+        targetRot = handle.transform.localRotation;
         float t = 0;
 
         while (true)
         {
-            Quaternion currenRot = Quaternion.Lerp(handle.transform.rotation,targetRot,t);
-            handle.transform.rotation = currenRot;
+            Quaternion currenRot = Quaternion.Lerp(handle.transform.localRotation,targetRot,t);
+            handle.transform.localRotation = currenRot;
             t+=Time.deltaTime*rotateSpeed*0.01f;
             yield return null;
         }
