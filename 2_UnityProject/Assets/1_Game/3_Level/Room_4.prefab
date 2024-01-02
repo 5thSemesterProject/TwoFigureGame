@@ -4110,7 +4110,6 @@ GameObject:
   - component: {fileID: 4905848698057682242}
   - component: {fileID: 4620419961737163023}
   - component: {fileID: 3271261173791339634}
-  - component: {fileID: 8079774605745449255}
   - component: {fileID: 2338066023503376026}
   m_Layer: 0
   m_Name: VoiceTrigger_Enter
@@ -4168,19 +4167,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   specificCharacterAccess: 0
---- !u!114 &8079774605745449255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5081767124291710455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d59efdd7bb83c543be490a682a56d80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  includeAICharacterStay: 1
 --- !u!114 &2338066023503376026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8615,7 +8601,7 @@ MonoBehaviour:
   extraWaitTimeAfterClip: 1
   playOnce: 0
   playOnceBeforeRandom: 1
-  voiceLine: 53
+  voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 1a0000001b0000001c000000
   triggerType: 1
@@ -10990,7 +10976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 000000000100000002000000
@@ -11011,7 +10997,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 03000000040000000500000006000000
@@ -11374,7 +11360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 0700000008000000090000000a000000
@@ -14461,7 +14447,7 @@ MonoBehaviour:
   extraWaitTimeAfterClip: 1
   playOnce: 0
   playOnceBeforeRandom: 1
-  voiceLine: 53
+  voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 1a0000001b0000001c000000
   triggerType: 1
@@ -16625,66 +16611,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1151848490978185908, guid: 071b54230254bf646a6866fe869821dd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3485387965826028813}
-    - targetCorrespondingSourceObject: {fileID: 1151848490978185908, guid: 071b54230254bf646a6866fe869821dd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3142226594721221914}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 071b54230254bf646a6866fe869821dd, type: 3}
 --- !u!4 &1203514665508341225 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 339987365175183374, guid: 071b54230254bf646a6866fe869821dd, type: 3}
   m_PrefabInstance: {fileID: 1442381698053066215}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2015482443857485651 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1151848490978185908, guid: 071b54230254bf646a6866fe869821dd, type: 3}
-  m_PrefabInstance: {fileID: 1442381698053066215}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3485387965826028813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015482443857485651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  extraWaitTimeAfterClip: 1
-  playOnce: 0
-  playOnceBeforeRandom: 0
-  voiceLine: 0
-  randomizeVoicelines: 1
-  randomVoicelines: 210000002200000023000000
-  triggerType: 1
-  characterType: 1
-  characterMode: 0
---- !u!114 &3142226594721221914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015482443857485651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  extraWaitTimeAfterClip: 1
-  playOnce: 0
-  playOnceBeforeRandom: 0
-  voiceLine: 0
-  randomizeVoicelines: 1
-  randomVoicelines: 240000002500000026000000
-  triggerType: 1
-  characterType: 2
-  characterMode: 0
 --- !u!1001 &1444682974880810470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20480,61 +20413,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5738198774351855226, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8662275003095473295}
-    - targetCorrespondingSourceObject: {fileID: 5738198774351855226, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 642814021942349520}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
---- !u!1 &5836691125158122631 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5738198774351855226, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
-  m_PrefabInstance: {fileID: 2207391387050797821}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8662275003095473295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5836691125158122631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  extraWaitTimeAfterClip: 1
-  playOnce: 0
-  playOnceBeforeRandom: 0
-  voiceLine: 0
-  randomizeVoicelines: 1
-  randomVoicelines: 170000001800000019000000
-  triggerType: 1
-  characterType: 1
-  characterMode: 1
---- !u!114 &642814021942349520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5836691125158122631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  extraWaitTimeAfterClip: 1
-  playOnce: 0
-  playOnceBeforeRandom: 0
-  voiceLine: 0
-  randomizeVoicelines: 1
-  randomVoicelines: 1a0000001b0000001c000000
-  triggerType: 1
-  characterType: 2
-  characterMode: 1
 --- !u!4 &6506512940484120125 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4965779127796933824, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
@@ -26724,7 +26604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 13000000140000001500000016000000
@@ -31427,66 +31307,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1151848490978185908, guid: 071b54230254bf646a6866fe869821dd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7295957073546663787}
-    - targetCorrespondingSourceObject: {fileID: 1151848490978185908, guid: 071b54230254bf646a6866fe869821dd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8715945949492170004}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 071b54230254bf646a6866fe869821dd, type: 3}
 --- !u!4 &3579680588760585440 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 339987365175183374, guid: 071b54230254bf646a6866fe869821dd, type: 3}
   m_PrefabInstance: {fileID: 3826498594170264814}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4244154650667765338 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1151848490978185908, guid: 071b54230254bf646a6866fe869821dd, type: 3}
-  m_PrefabInstance: {fileID: 3826498594170264814}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7295957073546663787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4244154650667765338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  extraWaitTimeAfterClip: 1
-  playOnce: 0
-  playOnceBeforeRandom: 0
-  voiceLine: 0
-  randomizeVoicelines: 1
-  randomVoicelines: 210000002200000023000000
-  triggerType: 1
-  characterType: 1
-  characterMode: 0
---- !u!114 &8715945949492170004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4244154650667765338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  extraWaitTimeAfterClip: 1
-  playOnce: 0
-  playOnceBeforeRandom: 0
-  voiceLine: 0
-  randomizeVoicelines: 1
-  randomVoicelines: 240000002500000026000000
-  triggerType: 1
-  characterType: 2
-  characterMode: 0
 --- !u!1001 &3835969715176268867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37480,7 +37307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 13000000140000001500000016000000
@@ -37780,7 +37607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 0700000008000000090000000a000000
@@ -46605,7 +46432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 03000000040000000500000006000000
@@ -46626,7 +46453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 000000000100000002000000
@@ -52522,7 +52349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 000000000100000002000000
@@ -52543,7 +52370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 03000000040000000500000006000000
@@ -53116,7 +52943,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 13000000140000001500000016000000
@@ -53879,7 +53706,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 13000000140000001500000016000000
@@ -56996,61 +56823,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5738198774351855226, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9091428740748944930}
-    - targetCorrespondingSourceObject: {fileID: 5738198774351855226, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9050336078086612204}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
---- !u!1 &3927484343024751586 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5738198774351855226, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
-  m_PrefabInstance: {fileID: 8728846141802999192}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &9091428740748944930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3927484343024751586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  extraWaitTimeAfterClip: 1
-  playOnce: 0
-  playOnceBeforeRandom: 0
-  voiceLine: 0
-  randomizeVoicelines: 1
-  randomVoicelines: 170000001800000019000000
-  triggerType: 1
-  characterType: 1
-  characterMode: 1
---- !u!114 &9050336078086612204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3927484343024751586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad903ca9f2e663144b3d94eb8dfa33b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  extraWaitTimeAfterClip: 1
-  playOnce: 0
-  playOnceBeforeRandom: 0
-  voiceLine: 0
-  randomizeVoicelines: 1
-  randomVoicelines: 1a0000001b0000001c000000
-  triggerType: 1
-  characterType: 2
-  characterMode: 1
 --- !u!4 &4452629150705273176 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4965779127796933824, guid: e6f534dc020c757419193dce9ca0e700, type: 3}
@@ -58644,7 +58418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraWaitTimeAfterClip: 1
   playOnce: 0
-  playOnceBeforeRandom: 0
+  playOnceBeforeRandom: 1
   voiceLine: 52
   randomizeVoicelines: 1
   randomVoicelines: 13000000140000001500000016000000
