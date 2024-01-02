@@ -16,24 +16,31 @@ public class Lever : MonoBehaviour
 
     Quaternion initialHandleRot;
     Quaternion targetRot;
-
-    
-
     Interactable interactable;
+
+    Coroutine rotateHandleProcess;
     bool usable = true;
 
-    void Start()
+    void Awake()
     {
         interactable = GetComponent<Interactable>();
-        interactable.triggerEvent+=ActivateSwitch;
-        
-        //Wait for switch to reactivate
-        interactable.enterCond = CheckUsable;
 
         initialHandleRot = handle.transform.localRotation;
-        StartCoroutine(RotateHandle());
+        interactable.triggerEvent+=ActivateSwitch;
+        interactable.enterCond = CheckUsable;
+        
+        if (rotateHandleProcess==null)
+            rotateHandleProcess = StartCoroutine(RotateHandle());
     }
 
+    void  OnDisable()
+    {
+        if (rotateHandleProcess!=null)
+        {
+            StopCoroutine(rotateHandleProcess);
+            rotateHandleProcess = null;
+        }
+    }
 
     bool CheckUsable(Movement movement)
     {
@@ -49,6 +56,8 @@ public class Lever : MonoBehaviour
     IEnumerator ActivationCoroutine(Movement movement)
     {
         targetRot = Quaternion.Euler(new Vector3(-rotationAngle,0,0));
+        if (rotateHandleProcess==null)
+            rotateHandleProcess = StartCoroutine(RotateHandle());
         yield return new WaitForSeconds(activationTimeInSeconds);
         usable = true;
         interactable.Untrigger(movement);

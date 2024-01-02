@@ -6,7 +6,7 @@ using UnityEngine;
 public class TriggerByCharacter : MonoBehaviour
 {
     Interactable interactable;
-
+    [SerializeField] bool useTriggeredStates = true;
     bool triggered;
     
     void  Start()
@@ -29,12 +29,20 @@ public class TriggerByCharacter : MonoBehaviour
 
     public void Activate(Movement movement)
     {
-        if (triggered)
-            interactable.Untrigger(movement);
-        else
-            interactable.Trigger(movement);
+        if (useTriggeredStates)
+        {
+            if (triggered)
+                interactable.Untrigger(movement);
+            else
+                interactable.Trigger(movement);
 
-        triggered = !triggered;
+            triggered = !triggered;
+        }
+        else
+        {
+            interactable.Trigger(movement);
+        }
+
     }
 }
 
