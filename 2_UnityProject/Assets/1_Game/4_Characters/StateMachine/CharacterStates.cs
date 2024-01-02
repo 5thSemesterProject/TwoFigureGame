@@ -125,7 +125,7 @@ class MoveObjectState : CharacterState
         if (data.movement.interactable.GetComponent<MoveBox>() != null)
         {
             movableObject = data.movement.interactable.GetComponent<MoveBox>();
-            Debug.Log(movableObject);
+            movableObject.currentMover = characterData.movement;
         }
         else
         {
@@ -173,7 +173,6 @@ class MoveObjectState : CharacterState
         Vector2 gameWorldVector = VectorHelper.Convert3To2(Camera.main.transform.forward).normalized * inputVector.y + VectorHelper.Convert3To2(Camera.main.transform.right).normalized * inputVector.x;
         float moveDir = movableObject.MoveWithObject(gameWorldVector);
         characterData.animator.SetFloat("PushPull", moveDir, 0.1f, Time.deltaTime);
-        Debug.Log(moveDir);
         switch (moveDir)
         {
             case -1:

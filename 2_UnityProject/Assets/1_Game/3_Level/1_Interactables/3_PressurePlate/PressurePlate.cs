@@ -17,13 +17,12 @@ public class PressurePlate : MonoBehaviour
     [SerializeField] float pressAmount = 0.05f;
     [SerializeField] float pressSpeed = 0.1f;
     [SerializeField] ActivationMode activationMode;
+    [SerializeField] float boxPositionTolerance = 0.1f;
 
     Vector3 initialButtonPos;
     Vector3 targetPos;
     Coroutine coroutine;
-
     Interactable interactable;
-
     NavMeshObstacle navMeshObstacle;
 
     bool pressed;
@@ -73,17 +72,21 @@ public class PressurePlate : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out MoveBox moveBodx) && activationMode == ActivationMode.Box)
+        if (other.TryGetComponent(out MoveBox moveBox) && activationMode == ActivationMode.Box)
         {
-            interactable.Trigger(null);
+            Vector2 moveBoxPos = VectorHelper.Convert3To2(moveBox.transform.position);
+            Vector2 pressurePlatePos = VectorHelper.Convert3To2(moveBox.transform.position);
+
+            if (Vector2.Distance(moveBoxPos,pressurePlatePos)<boxPositionTolerance)
+                interactable.Trigger(moveBox.currentMover);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out MoveBox movementComp)&& activationMode == ActivationMode.Box)
+        if (other.TryGetComponent(out MoveBox moveBox)&& activationMode == ActivationMode.Box)
         {
-            interactable.Untrigger(null);
+            interactable.Untrigger(moveBox.currentMover);
         }
     }
 

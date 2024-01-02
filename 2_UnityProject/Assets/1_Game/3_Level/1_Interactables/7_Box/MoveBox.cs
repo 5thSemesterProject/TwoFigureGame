@@ -10,6 +10,7 @@ public class MoveBox : PlayerActionType
     [SerializeField] private float backwardSpeed = 0.5f;
 
     private BoxCollider boxCollider;
+    [HideInInspector]public Movement currentMover;
 
     private void Start()
     {
@@ -19,7 +20,7 @@ public class MoveBox : PlayerActionType
     public bool CheckIfBlocked(bool bForward, out float distance)
     {
         distance = 1;
-        bool isBlocked = Physics.BoxCast(transform.position, boxCollider.size / 2, transform.forward * (bForward ? 1 : -1), out RaycastHit hit, Quaternion.identity, 2, blockingLayers);
+        bool isBlocked = Physics.BoxCast(transform.position, boxCollider.size / 2, transform.forward * (bForward ? 1 : -1), out RaycastHit hit, Quaternion.identity, 2, blockingLayers,QueryTriggerInteraction.Ignore);
 
         if (isBlocked)
         {
