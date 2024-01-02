@@ -41,16 +41,26 @@ public class CharacterSFX : MonoBehaviour
 
     public void PlaySound(E_5_Character soundEffectToPlay)
     {
+        PlaySoundWithVolumeControl(soundEffectToPlay,-1);
+    }
+
+    public void PlaySoundWithVolumeControl(E_5_Character soundEffectToPlay,float volume=-1)
+    {
         string fileName = Enum.GetName(typeof(E_5_Character),soundEffectToPlay);
         
         for (int i = 0; i < audioClips.Count; i++)
         {
             if (fileName==audioClips[i].name)
-                SoundSystem.PlaySound(audioClips[i],gameObject);
+                SoundSystem.PlaySound(audioClips[i],gameObject,volume);
         }
     }
 
     public void PlayFootstep()
+    {
+        PlayFootstepWithVolumeControl(-1);
+    }
+
+    public void PlayFootstepWithVolumeControl(float volume = -1)
     {   
         //Set up layer mask to ignore character layer
         int characterLayer = LayerMask.NameToLayer("Player");
@@ -82,7 +92,7 @@ public class CharacterSFX : MonoBehaviour
                 if (tags.Contains(footstepSounds[i].tag))
                 {
                     E_5_Character soundToPlay = footstepSounds[i].GetRandomSound();
-                    PlaySound(soundToPlay);
+                    PlaySoundWithVolumeControl(soundToPlay,volume);
                     return;
                 }    
             }
@@ -96,30 +106,9 @@ public class CharacterSFX : MonoBehaviour
             {   
                // Debug.Log ("Default");
                 E_5_Character soundToPlay = footstepSounds[i].GetRandomSound();
-                PlaySound(soundToPlay);
+                PlaySoundWithVolumeControl(soundToPlay,volume);
                 return;
             }    
         }
-    }
-
-    private string RemoveFirstUnderscore(string text)
-    {
-        char[] characters = text.ToCharArray();
-        string textWithoutUnderscore = text;
-
-        if (characters[0]=='_')
-        {
-            text.ToCharArray();
-
-            textWithoutUnderscore = "";
-
-            for (int i = 1; i < characters.Length; i++)
-            {
-                textWithoutUnderscore = textWithoutUnderscore+characters[i];
-            }
-        }
-
-        return textWithoutUnderscore;
-
     }
 }

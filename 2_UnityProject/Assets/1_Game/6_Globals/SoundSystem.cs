@@ -94,6 +94,10 @@ public class SoundSystem : MonoBehaviour
         PlaySound(clip,-1,0,null);
     }
 
+    public static void PlaySound(AudioClip soundClip,GameObject audioSourceHolder,float volume = -1)
+    {
+        PlaySound(soundClip, volume, 0,audioSourceHolder);
+    }
     public static void PlaySound(AudioClip soundClip,GameObject audioSourceHolder)
     {
         PlaySound(soundClip, -1, 0,audioSourceHolder);
