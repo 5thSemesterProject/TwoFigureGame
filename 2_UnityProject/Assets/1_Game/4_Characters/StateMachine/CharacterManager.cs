@@ -1,20 +1,12 @@
-using System;
-using Cinemachine;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Playables;
-using UnityEngine.UI;
-
-
 
 public class CharacterManager : MonoBehaviour
 {
     //Inputs
     public static CustomInputs customInputMaps;
 
-    static CharacterData manData, womanData;
+    public static CharacterData manData, womanData;
 
     public static bool IsGameOver
     {
@@ -28,7 +20,21 @@ public class CharacterManager : MonoBehaviour
     {
         get => womanData.oxygenData.currentOxygen <= 0;
     }
-    
+    public static bool IsManLow
+    {
+        get
+        {
+            return manData.oxygenData.IsLow;
+        }
+    }
+    public static bool IsWomanLow
+    {
+        get
+        {
+            return womanData.oxygenData.IsLow;
+        }
+    }
+
     //Character Prefab
 
     [Header("Prefabs")]
@@ -146,8 +152,3 @@ public class CharacterManager : MonoBehaviour
     }
     #endregion
 }
-
-
-
-
-

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 [RequireComponent (typeof(CharacterController),typeof(NavMeshAgent))]
 public class NavMeshHandler : MonoBehaviour
@@ -22,6 +23,11 @@ public class NavMeshHandler : MonoBehaviour
 
     public void FollowPartner(Vector3 otherCharacterPos)
     {
+        //Check Oxygenstation due to collider mess
+        Oxygenstation oxygenstation = GetComponent<Movement>().oxygenstation;
+        if (oxygenstation)
+            CheckOxygenstation(oxygenstation);
+
         //Follow Character in case out of range
         if (GetMovementRequired(otherCharacterPos))
         {
@@ -82,13 +88,9 @@ public class NavMeshHandler : MonoBehaviour
         Vector3 startPos = navMeshAgent.transform.position;
         Vector3 endPos = data.endPos + Vector3.up * navMeshAgent.baseOffset;
 
-        //ACalulate veloctiy
+        //Calulate veloctiy
         float navMeshAgentVelocity = navMeshAgent.velocity.magnitude;
         float duration = (endPos-startPos).magnitude/(navMeshAgentVelocity>2.5f?navMeshAgentVelocity:movementSpeed* 2.5f);
-
-        //Caccluate other characters rotation
-        //Vector3 otherCharacterPosition = Vector3.zero;
-       // transform.rotation  = Quaternion.Euler(startPos-endPo);
 
         float t = 0.0f;
         float tStep = 1.0f/duration;
@@ -105,7 +107,6 @@ public class NavMeshHandler : MonoBehaviour
 
             //Adjustanimation
             animator.SetFloat("Speed", tStep / Time.deltaTime * 2f);
-
 
             yield return null;
         }
@@ -128,5 +129,20 @@ public class NavMeshHandler : MonoBehaviour
         animator.SetFloat("Speed", 0);
     }
 
+
+    public void CheckOxygenstation(Oxygenstation oxygenstation)
+    {
+        float distance = Vector3.Distance(transform.position,oxygenstation.transform.position);
+
+        if (distance<=oxygenstation.GetIntersectionRadius())
+        {
+            Debug.Log ("In Range with "+distance+" Range was "+oxygenstation.GetIntersectionRadius());
+        }
+        else
+        {
+            Debug.Log ("Out of range with "+distance+" Range was "+oxygenstation.GetIntersectionRadius());
+            GetComponent<Movement>().oxygenstation = null;
+        }
+    }
 
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class ButtonGroupFade : MonoBehaviour
 {
     public float fadeSpeed = 0.3f;
+    public bool hiddenOnEnable = true;
     public bool fadeOnEnable = true;
     private ButtonEnabler buttonEnabler;
     private Coroutine fadeRoutine;
@@ -13,29 +14,31 @@ public class ButtonGroupFade : MonoBehaviour
     private void OnEnable()
     {
         buttonEnabler = GetComponent<ButtonEnabler>();
+        if (hiddenOnEnable)
+        {
+            buttonEnabler.canvasGroup.alpha = 0;
+        }
         if (fadeOnEnable)
         {
-            EnterFromZero();
+            FadeIn();
         }
     }
 
-    public void EnterFromZero()
-    {
-        buttonEnabler.canvasGroup.alpha = 0;
-        FadeIn();
-    }
-    public float ExitAndDestroy()
-    {
-        ReplaceCoroutine(FadeAndDestroy(1, fadeSpeed));
-        return fadeSpeed;
-    }
     public void FadeIn()
     {
         ReplaceCoroutine(Fade(1, fadeSpeed));
     }
-    public void FadeOut()
+    public void Remove()
     {
-        ReplaceCoroutine(Fade(0, fadeSpeed));
+        FadeOut(true);
+    }
+    public float FadeOut(bool destroy = true)
+    {
+        if (destroy)
+            ReplaceCoroutine(FadeAndDestroy(0, fadeSpeed));
+        else
+            ReplaceCoroutine(Fade(0, fadeSpeed));
+        return fadeSpeed;
     }
 
     private void ReplaceCoroutine(IEnumerator coroutine)
@@ -59,13 +62,23 @@ public class ButtonGroupFade : MonoBehaviour
 
         while (timeElapsed < 1)
         {
-            buttonEnabler.canvasGroup.alpha = Mathf.Lerp(currentValue, targetValue, timeElapsed);
+            float tempValue = Mathf.Lerp(currentValue, targetValue, timeElapsed);
+            buttonEnabler.canvasGroup.alpha = tempValue;
+            CustomLogic(timeElapsed, tempValue);
+
             timeElapsed += Time.unscaledDeltaTime / time;
             yield return null;
         }
 
         buttonEnabler.canvasGroup.alpha = targetValue;
+        CustomLogic(1, targetValue);
 
         fadeRoutine = null;
+    }
+
+    //To be overriden
+    protected virtual void CustomLogic(float timeElapsed, float currentValue)
+    {
+
     }
 }

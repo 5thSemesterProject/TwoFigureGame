@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(WaypointComponent))]
 public class WaypointSystemEditor : Editor
 {
@@ -132,6 +132,7 @@ public class WaypointSystemEditor : Editor
         Handles.DrawLine(endPos, endPos + left * arrowSize);
     }
 }
+#endif
 
 [RequireComponent(typeof(Interactable), typeof(TriggerByCharacter))]
 public class WaypointComponent : MonoBehaviour

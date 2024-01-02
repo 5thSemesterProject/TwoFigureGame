@@ -1,17 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Cinemachine;
-using System;
 
 public class StartMenuManager : MonoBehaviour
 {
     private Coroutine transition;
-
     [SerializeField] private ButtonEnabler mainMenuGroup;
     [SerializeField] private ButtonEnabler archiveGroup;
     [SerializeField] private ButtonEnabler startGroup;
+    [SerializeField] private GameObject introVideo;
+    [SerializeField] Canvas canvas;
 
     private void Start()
     {
@@ -75,23 +72,41 @@ public class StartMenuManager : MonoBehaviour
             yield return null;
         }
 
-        CustomEventSystem.EnableUIInputs();
+
         transition = null;
-        SceneManager.LoadSceneAsync("LevelScene");
+
+        
+        //Start Intro Video
+        GameObject spawwnedIntroManager =Instantiate(introVideo);
+        spawwnedIntroManager.transform.SetParent(canvas.gameObject.transform);
+        spawwnedIntroManager.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,0);
+        VideoManager introManager = spawwnedIntroManager.GetComponentInChildren<VideoManager>();
+        if (introManager!=null)
+        {
+            introManager.StartVideo();
+            introManager.videoFinished.AddListener(() =>{
+                SceneLoader.LoadScene("LevelScene",this,3,true,false);
+                CustomEventSystem.EnableUIInputs();
+                });
+        }
+
     }
     private IEnumerator Archive()
     {
         yield return TransitionBetweenCanvasGroups(mainMenuGroup, archiveGroup);
+        transition = null;
     }
     private IEnumerator Menu()
     {
         yield return TransitionBetweenCanvasGroups(archiveGroup,mainMenuGroup);
+        transition = null;
     }
     private IEnumerator Enter()
     {
         yield return TransitionBetweenCanvasGroups(startGroup, mainMenuGroup);
+        transition = null;
     }
-    private IEnumerator TransitionBetweenCanvasGroups(ButtonEnabler startGroup, ButtonEnabler endGroup)
+    public static IEnumerator TransitionBetweenCanvasGroups(ButtonEnabler startGroup, ButtonEnabler endGroup)
     {
         CustomEventSystem.DisableUIInputs();
 
@@ -99,7 +114,7 @@ public class StartMenuManager : MonoBehaviour
 
         while (alpha > 0)
         {
-            alpha -= Time.deltaTime * 2;
+            alpha -= Time.unscaledDeltaTime * 2;
             startGroup.canvasGroup.alpha = Mathf.Clamp01(alpha);
             yield return null;
         }
@@ -111,7 +126,7 @@ public class StartMenuManager : MonoBehaviour
 
         while (alpha < 1)
         {
-            alpha += Time.deltaTime * 2;
+            alpha += Time.unscaledDeltaTime * 2;
             endGroup.canvasGroup.alpha = Mathf.Clamp01(alpha);
             yield return null;
         }
@@ -121,8 +136,6 @@ public class StartMenuManager : MonoBehaviour
 
         CustomEventSystem.EnableUIInputs();
         CustomEventSystem.ResetSelectedButtons();
-
-        transition = null;
     }
     private IEnumerator Options()
     {

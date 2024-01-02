@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
+[ExecuteInEditMode]
 public class GasManager : MonoBehaviour
 {   
     [SerializeField] LayerMask layerMask;
     Transform[] maskPos;
     int maxMasks = 3;
-
 
     VisualEffect visualEffect;
 

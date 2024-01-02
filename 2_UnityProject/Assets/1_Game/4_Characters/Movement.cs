@@ -13,6 +13,7 @@ public enum TraversalType
 public class Movement : MonoBehaviour, IIntersectSmoke
 {
     private CharacterController characterController;
+    private CharacterData characterData;
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private NavMeshHandler navMeshHandler;
@@ -24,6 +25,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     private Coroutine moveRoutine;
     private Vector3 desiredMove = Vector3.zero;
     private Vector3 currentMove = Vector3.zero;
+    private Vector3 previousMove;
     [SerializeField] private float acceleration = 10;
     [SerializeField] private float deceleration = 20;
     [SerializeField] private float maxSpeed = 4;
@@ -59,6 +61,11 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         navMeshHandler = GetComponent<NavMeshHandler>();
     }
 
+    private void Start()
+    {
+        characterData = characterType == CharacterType.Man ? CharacterManager.manData : CharacterManager.womanData;
+    }
+
     #region FogStuff
     public Vector4 GetSphereInformation()
     {
@@ -85,6 +92,10 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             timeFalling += Time.deltaTime;
         else
             timeFalling = 0;
+
+        //Change Hurt Value In Idle 
+        float smoothHurtValue = Mathf.Lerp(animator.GetFloat("Hurt"), characterData.oxygenData.IsLow ? 1f : 0f, 0.005f);
+        animator.SetFloat("Hurt", smoothHurtValue);
     }
     
     private IEnumerator _Move()
@@ -92,6 +103,11 @@ public class Movement : MonoBehaviour, IIntersectSmoke
         float tolerance = 0.001f;
         while (true)
         {
+            while (Time.timeScale == 0)
+            {
+                yield return null;
+            }
+
             //Apply Gravity
             if (timeFalling > 0)
             {
@@ -107,6 +123,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
                 desiredMove = Vector3.zero;
 
                 characterController.Move(Vector3.zero);
+                animator.SetFloat("Speed", 0);
 
                 moveRoutine = null;
                 yield break;
@@ -138,16 +155,22 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             currentMove = (nextPosition - previousPosition) / Time.unscaledDeltaTime * Time.timeScale;
             currentMove.y = 0;
 
+            //Rotation Animation
+            float angle = Vector3.Angle(previousMove, currentMove);
+
             //Rotate
             if (currentMove != null && currentMove != Vector3.zero)
                 transform.rotation = Quaternion.LookRotation(currentMove);
+
+            previousMove = currentMove;
 
             desiredMove = Vector3.zero;
 
             //Animators
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
-            animator.SetFloat("Speed", currentMove.magnitude*2);
+            animator.SetFloat("Speed", currentMove.magnitude / Time.timeScale);
+            animator.SetFloat("RotationAngle", angle);
 
             yield return null;
         }
@@ -307,19 +330,20 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     {
         Vector3 traverseDir = GetTraverseDir(traverseObject);
 
-        //Set Animations
-        animator.SetBool(animationType, true);
-        animator.SetFloat("Speed", 0);
 
         //Lerp To Start
         Vector3 targetPos = new Vector3(traverseObject.transform.position.x, transform.position.y, traverseObject.transform.position.z) + -traverseDir * 1f;
         Quaternion targetRot = Quaternion.LookRotation(traverseDir);
         yield return LerpPlayer(targetPos, targetRot, true, 0.1f);
+
+        //Set Animations
+        animator.SetBool(animationType, true);
+        animator.SetFloat("Speed", 0);
         
         //Start Traversing
         yield return LerpPlayerAddative(traverseDir * traverseDistance, traverseDuration);
 
-        //Unanimate
+        //Reset Animations
         animator.SetBool(animationType,false);
         traversalRoutine = null;
     }
@@ -327,13 +351,13 @@ public class Movement : MonoBehaviour, IIntersectSmoke
     private Vector3 GetTraverseDir(Transform traversable)
     {
         Vector3 crawlPos = traversable.position;
-        Vector3 crawlDir = traversable.forward;
+        Vector3 traverseDir = traversable.forward;
         Vector3 relativePos = Vector3.Normalize(transform.position - crawlPos);
 
-        float scalar = Vector3.Dot(relativePos, crawlDir) > 0 ? -1 : 1;
-        crawlDir = new Vector3(crawlDir.x, 0, crawlDir.z).normalized;
+        float scalar = Vector3.Dot(relativePos, traverseDir) > 0 ? -1 : 1;
+        traverseDir = new Vector3(traverseDir.x, 0, traverseDir.z).normalized;
 
-        return crawlDir * scalar;
+        return traverseDir * scalar;
     }
     #endregion
 

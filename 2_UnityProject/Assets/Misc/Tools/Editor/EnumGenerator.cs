@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-public class EnumGenerator : EditorWindow
+public class EnumGeneratorWizard : EditorWindow
 {
     private string folderPath = "";
     private string SavePath = "Assets/Enums";
@@ -21,7 +21,7 @@ public class EnumGenerator : EditorWindow
     [MenuItem("Window/Enum Generator")]
     public static void ShowWindow()
     {
-        GetWindow<EnumGenerator>("Enum Generator");
+        GetWindow<EnumGeneratorWizard>("Enum Generator");
     }
 
     private void OnEnable()
@@ -62,7 +62,7 @@ public class EnumGenerator : EditorWindow
         }
 
         //EnumName Field
-        EditorGUILayout.TextField("Enum Name", enumName);
+        enumName = EditorGUILayout.TextField("Enum Name", enumName);
 
         //SaveFolder Field
         EditorGUILayout.TextField("Enum Save Path", SavePath);
@@ -103,7 +103,7 @@ public class EnumGenerator : EditorWindow
                         string temp = Path.GetFileName(folderPath);
                         if (temp != null)
                         {
-                            enumName = MakeValidCSharpIdentifier(temp);
+                            enumName = EnumGenerator.MakeValidCSharpIdentifier(temp);
                         }
                     }
                     else if (bEnumSaveFolder)
@@ -129,7 +129,7 @@ public class EnumGenerator : EditorWindow
 
         if (GUILayout.Button("Generate"))
         {
-            GenerateEnum();
+            EnumGenerator.GenerateEnum(folderPath, enumName, excludedFiles, SavePath, addEnumPrefix, ignoreMetaFiles);
         }
         if (GUILayout.Button("Reset"))
         {
@@ -152,9 +152,17 @@ public class EnumGenerator : EditorWindow
         SavePath = "Assets/Enums";
         excludedFiles.Clear();
     }
+}
 
+public static class EnumGenerator
+{
+    public static void GenerateEnum(string folderPath, string enumName, string savePath = "Assets/Enums", bool addEnumPrefix = false, bool ignoreMetaFiles = true)
+    {
+        List<string> excludedFiles = new List<string>();
+        GenerateEnum(folderPath, enumName, excludedFiles, savePath, addEnumPrefix, ignoreMetaFiles);
+    }
 
-    public void GenerateEnum()
+    public static void GenerateEnum(string folderPath, string enumName, List<string> excludedFiles, string savePath = "Assets/Enums", bool addEnumPrefix = false, bool ignoreMetaFiles = true)
     {
         if (string.IsNullOrEmpty(folderPath))
         {
@@ -163,35 +171,29 @@ public class EnumGenerator : EditorWindow
         }
 
         // Ensure that the enum save folder exists, create it if it doesn't.
-        if (!AssetDatabase.IsValidFolder(SavePath))
+        if (!AssetDatabase.IsValidFolder(savePath))
         {
             AssetDatabase.CreateFolder("Assets", "Enums");
         }
 
-        if (string.IsNullOrEmpty(this.enumName))
+        if (string.IsNullOrEmpty(enumName))
         {
             string temp = Path.GetFileName(folderPath);
-            this.enumName = MakeValidCSharpIdentifier(temp);
+            enumName = MakeValidCSharpIdentifier(temp);
         }
 
-        string enumName = this.enumName;
         if (addEnumPrefix)
         {
             enumName = "E" + enumName;
         }
 
-        string enumFilePath = Path.Combine(SavePath, enumName + ".cs");
+        string enumFilePath = Path.Combine(savePath, enumName + ".cs");
         using (StreamWriter writer = new StreamWriter(enumFilePath))
         {
             writer.WriteLine("public enum " + enumName);
             writer.WriteLine("{");
 
             string[] fileNames = Directory.GetFiles(folderPath);
-
-            //fileNames = fileNames.Where(filePath => !filePath.EndsWith(".meta"))
-            //    .Select(Path.GetFileNameWithoutExtension)
-            //    .Select(MakeValidCSharpIdentifier)
-            //    .ToArray();
 
             if (ignoreMetaFiles)
                 fileNames = RemoveMetaFiles(fileNames);
@@ -201,8 +203,8 @@ public class EnumGenerator : EditorWindow
                 fileNames[i] = Path.GetFileNameWithoutExtension(fileNames[i]);
                 fileNames[i] = MakeValidCSharpIdentifier(fileNames[i]);
             }
-            
-            fileNames = RemoveDuplicatesAndExcluded(fileNames);
+
+            fileNames = RemoveDuplicatesAndExcluded(fileNames, enumName, excludedFiles);
 
 
 
@@ -214,11 +216,11 @@ public class EnumGenerator : EditorWindow
             writer.WriteLine("}");
         }
 
-        AssetDatabase.Refresh(); 
+        AssetDatabase.Refresh();
         Debug.Log($"Enum Generated - {enumName}");
     }
 
-    private string[] RemoveDuplicatesAndExcluded(string[] fileNames)
+    private static string[] RemoveDuplicatesAndExcluded(string[] fileNames, string enumName, List<string> excludedFiles)
     {
         //Removes Duplicates
         for (int i = 0; i < fileNames.Length; i++)
@@ -228,7 +230,7 @@ public class EnumGenerator : EditorWindow
                 continue;
             }
 
-            for (int j = i+1; j < fileNames.Length; j++)
+            for (int j = i + 1; j < fileNames.Length; j++)
             {
                 if (fileNames[i] == fileNames[j])
                 {
@@ -256,7 +258,7 @@ public class EnumGenerator : EditorWindow
         return names.ToArray();
     }
 
-    private string[] RemoveMetaFiles(string[] fileNames)
+    private static string[] RemoveMetaFiles(string[] fileNames)
     {
         //Removes Duplicates
         for (int i = 0; i < fileNames.Length; i++)
@@ -271,15 +273,15 @@ public class EnumGenerator : EditorWindow
         List<string> names = new List<string>();
         for (int i = 0; i < fileNames.Length; i++)
         {
-           if (fileNames[i]!=null)
-            names.Add(fileNames[i]);
+            if (fileNames[i] != null)
+                names.Add(fileNames[i]);
         }
 
         return names.ToArray();
     }
 
 
-    private string MakeValidCSharpIdentifier(string input)
+    public static string MakeValidCSharpIdentifier(string input)
     {
         // Remove any characters that are not valid in C# identifiers.
         input = new string(input.Where(c => Char.IsLetterOrDigit(c) || c == '_').ToArray());
