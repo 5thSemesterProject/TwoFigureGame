@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -52,18 +53,26 @@ public class CharacterSFX : MonoBehaviour
     public void PlayFootstep()
     {   
         //Set up layer mask to ignore character layer
-        int characterLayer = LayerMask.NameToLayer("Character");
+        int characterLayer = LayerMask.NameToLayer("Player");
         LayerMask layerMask = ~(1 << characterLayer);
 
-        //Build Ray
-        Ray ray = new Ray(transform.position,Vector3.down);
+        //Build  and cast Ray
+        Ray ray = new Ray(transform.position+Vector3.up,Vector3.down);
         RaycastHit hit;
-        Physics.Raycast(ray,out hit,Mathf.Infinity,layerMask,QueryTriggerInteraction.Ignore);
+        Physics.Raycast(ray,out hit,Mathf.Infinity,layerMask);
+        
+        Debug.DrawRay(transform.position+Vector3.up,Vector3.down*200, Color.red,10000);
 
         //Get tags
         string[] tags = null;
-        if (TryGetComponent(out MultipleTagsTool multipleTagsTool))
-            tags = multipleTagsTool.GetTags();
+        if (hit.transform!=null)
+        {
+            var multipleTagsTool = hit.transform.GetComponent<MultipleTagsTool>();
+            if (multipleTagsTool!=null)
+            {
+                tags = multipleTagsTool.GetTags();
+            }
+        }   
 
         //Check for matching tags
         if (tags!=null)
@@ -84,7 +93,8 @@ public class CharacterSFX : MonoBehaviour
         for (int i = 0; i < footstepSounds.Length; i++)
         {
             if (footstepSounds[i].setAsDefault)
-            {
+            {   
+               // Debug.Log ("Default");
                 E_5_Character soundToPlay = footstepSounds[i].GetRandomSound();
                 PlaySound(soundToPlay);
                 return;
