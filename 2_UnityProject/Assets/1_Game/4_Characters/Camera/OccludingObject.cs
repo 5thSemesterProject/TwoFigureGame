@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEditor.SceneManagement;
 
 class OccludingObject:MonoBehaviour
 {

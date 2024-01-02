@@ -15,12 +15,11 @@ class SetUpState : CharacterState
     }
 }
 
-
 class IdleState : CharacterState
 {
     public IdleState(CharacterData characterData) : base(characterData)
     {
-       // characterData.movement.MovePlayer(Vector2.zero, 0);
+        characterData.movement.MovePlayer(Vector2.zero, 0);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -116,6 +115,9 @@ class MoveObjectState : CharacterState
 
     public MoveObjectState(CharacterData data) : base(data)
     {
+        //Disable Move
+        characterData.movement.TerminateMove();
+
         //Disable ability to interact with other objects
         handleInteractables = false;
 
@@ -136,6 +138,9 @@ class MoveObjectState : CharacterState
 
         //Lerp Player to handle
         characterData.movement.LerpPlayerTo(movableObject.playerHandlePosition, true, 0.2f);
+
+        //Animate
+        characterData.animator.SetBool("MoveBox", true);
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -158,12 +163,17 @@ class MoveObjectState : CharacterState
             //Stop lerp to handle
             characterData.movement.StopLerp();
 
+            //Animator
+            characterData.animator.SetBool("MoveBox", false);
+
             return new IdleState(characterData);
         }
 
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
         Vector2 gameWorldVector = VectorHelper.Convert3To2(Camera.main.transform.forward).normalized * inputVector.y + VectorHelper.Convert3To2(Camera.main.transform.right).normalized * inputVector.x;
         float moveDir = movableObject.MoveWithObject(gameWorldVector);
+        characterData.animator.SetFloat("PushPull", moveDir, 0.1f, Time.deltaTime);
+        Debug.Log(moveDir);
         switch (moveDir)
         {
             case -1:
@@ -182,5 +192,4 @@ class MoveObjectState : CharacterState
 
         return this;
     }
- 
 }

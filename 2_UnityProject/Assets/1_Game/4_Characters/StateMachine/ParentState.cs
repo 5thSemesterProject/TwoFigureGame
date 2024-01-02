@@ -58,7 +58,7 @@ public abstract class CharacterState
                 WSUI.FadeInElement(characterData.gameObject.GetComponentInChildren<CharacterUI>().GetOxygenBar().gameObject,characterData.gameObject.transform,out characterData.oxygenBar);
             
             WSUI_Element oxygenBar = characterData.oxygenBar;
-            oxygenBar.LerpAlphaToInitial();
+            //oxygenBar.LerpAlphaToInitial();
             oxygenBar.GetComponent<OxygenBar>().SetValue(currentOxygen);    
         }
         else
@@ -96,7 +96,7 @@ public abstract class CharacterState
                 characterData.raisedLowOxygenEvent = false;
 
                 //On Charging
-                if (characterData.raisedChargingEvent)
+                if (!characterData.raisedChargingEvent)
                 {
                     characterData.raisedChargingEvent = true;
                     CustomEvents.RaiseChargingOxygen(characterData);
@@ -107,7 +107,7 @@ public abstract class CharacterState
         else
         {
             characterData.oxygenData.FallOff();
-            characterData.raisedChargingEvent = true;
+            characterData.raisedChargingEvent = false;
 
             //Raise Low Health Event
             if (characterData.oxygenData.currentOxygen<=GameStats.instance.lowOxygenThreshhold && !characterData.raisedLowOxygenEvent)
@@ -115,6 +115,11 @@ public abstract class CharacterState
                 characterData.raisedLowOxygenEvent = true;
                 CustomEvents.RaiseLowOxygen(characterData);
             }
+        }
+
+        if (characterData.oxygenData.currentOxygen <= 0)
+        {
+            characterData.animator.SetBool("Dead", true);
         }
 
     }

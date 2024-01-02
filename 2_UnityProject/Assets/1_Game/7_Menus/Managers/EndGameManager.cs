@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
-using UnityEngine.SceneManagement;
 
 public class EndGameManager : MonoBehaviour
 {
     [SerializeField] private GameObject WinScreen;
-    [SerializeField] private GameObject LoseScreenVignette;
     [SerializeField] private GameObject LoseScreenTransition;
 
     private Coroutine endRoutine;
@@ -16,6 +14,8 @@ public class EndGameManager : MonoBehaviour
     #region Start
     public void EndGame(EndCondition endCondition)
     {
+        CustomEventSystem.SwitchControlScheme(CustomEventSystem.GetInputMapping.InUI);
+
         if (endRoutine == null)
         {
             StartCoroutine(_EndGame(endCondition));
@@ -29,10 +29,8 @@ public class EndGameManager : MonoBehaviour
             case EndCondition.Win:
 
                 WSUI.AddOverlay(WinScreen);
+                CustomEventSystem.SwitchControlScheme(CustomEventSystem.GetInputMapping.InUI);
                 Debug.Log("YOU WIN!");
-                yield return new WaitForSecondsRealtime(2);
-                SceneManager.LoadScene("MainMenu");
-
                 yield break;
             case EndCondition.OxygenMan:
 
@@ -58,36 +56,32 @@ public class EndGameManager : MonoBehaviour
                 break;
         }
 
-        //WSUI.AddOverlay(LoseScreenVignette);
         Volume postProsess = GameObject.Find("PostProcessing").GetComponent<Volume>();
-        Vignette vignette;
-        if (postProsess.profile.TryGet(out vignette))
-            yield return LerpVignette(vignette, 0.6f, 1);
+        ColorAdjustments adjustments;
+        if (postProsess.profile.TryGet(out adjustments))
+            yield return LerpMomochrome(adjustments, -100f, 1);
         else
             yield return new WaitForSecondsRealtime(1);
         
 
         yield return new WaitForSecondsRealtime(1);
 
-        //WSUI.AddOverlay(LoseScreenTransition);
+        WSUI.AddOverlay(LoseScreenTransition);
 
         yield return new WaitForSecondsRealtime(0.5f);
 
         endRoutine = null;
-        SceneManager.LoadSceneAsync("LevelScene");
+        SceneLoader.LoadScene("LevelScene", this);
     }
 
-    private IEnumerator LerpVignette(Vignette vignette, float targetIntesity, float targetSmoothness, float duration = 1)
+    private IEnumerator LerpMomochrome(ColorAdjustments adjustments, float targetSaturation, float duration = 1)
     {
-        float currentIntesity = (float)vignette.intensity;
-        float currentSmoothness = (float)vignette.smoothness;
+        float currentSaturation = (float)adjustments.saturation;
         float time = 0;
 
         while (time < 1)
         {
-            Debug.Log(vignette.intensity);
-            vignette.intensity.value = Mathf.Lerp(currentIntesity,targetIntesity,time);
-            vignette.smoothness.value = Mathf.Lerp(currentSmoothness,targetSmoothness,time);
+            adjustments.saturation.value = Mathf.Lerp(currentSaturation, targetSaturation, time);
             time += Time.deltaTime / duration;
             yield return null;
         }

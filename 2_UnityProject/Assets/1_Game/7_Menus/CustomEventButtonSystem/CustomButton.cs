@@ -59,6 +59,7 @@ public delegate void ButtonEvent();
 #endregion
 
 #region Editor
+#if UNITY_EDITOR
 [CustomEditor(typeof(CustomButton))]
 public class CustomButtonEditor : Editor
 {
@@ -122,6 +123,7 @@ public class CustomButtonEditor : Editor
         Handles.DrawLine(endPos, endPos + left * arrowSize * distance * 0.2f, arrowThickness);
     }
 }
+#endif
 #endregion
 
 #region Custom Button Core
@@ -156,6 +158,11 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
                 return interactable;
             }
             return interactable && enabler.interactable;
+        }
+
+        set
+        {
+            interactable = value;
         }
     }
 

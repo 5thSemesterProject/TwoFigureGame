@@ -11,7 +11,7 @@ public enum CharacterMode
     Both,Active, Inactive
 }
 
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(VoiceTrigger))]
 public class MyScriptEditor : Editor
 {
@@ -61,14 +61,13 @@ public class MyScriptEditor : Editor
 
   }
 }
-
+#endif
 
 
 [RequireComponent(typeof(Interactable))]
 public class VoiceTrigger : MonoBehaviour
 {
     Interactable interactable;
-    AudioClip voiceClip;
     bool triggered = false;
 
     int lastRandom = 500;
@@ -129,7 +128,7 @@ public class VoiceTrigger : MonoBehaviour
             E_1_Voicelines voicelineToPlay; 
             
             if (randomizeVoicelines)
-                voicelineToPlay = RandomVoiceLine();
+                voicelineToPlay = randomVoicelines[AudioUtility.RandomNumber(lastRandom,randomVoicelines.Length,out lastRandom)];
             else  
                 voicelineToPlay = voiceLine;
 
@@ -139,18 +138,10 @@ public class VoiceTrigger : MonoBehaviour
                 voicelineToPlay = voiceLine;
             }    
 
-            VoicelinePlayer.instance.LoadAndPlayVoiceLine(voicelineToPlay,extraWaitTimeAfterClip);
+            VoicelinePlayer.instance.TryPlayVoiceLine(voicelineToPlay,extraWaitTimeAfterClip);
         }
     }
 
-    E_1_Voicelines RandomVoiceLine()
-    {
-        int random = UnityEngine.Random.Range(0,randomVoicelines.Length-1);
-        if(random==lastRandom)
-            random = (random + 1) % randomVoicelines.Length;
-        lastRandom = random;
-        return randomVoicelines[random];
-    }
 
     void Untrigger(Movement movement)
     {
