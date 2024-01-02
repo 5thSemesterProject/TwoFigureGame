@@ -54,8 +54,11 @@ public class AudioUtility
     {   
         length = length-1;
         int random = UnityEngine.Random.Range(0,length);
-        if(random==lastRandom)
-            random = (random + 1) % length;
+        if (length!=0)
+        {
+            if(random==lastRandom)
+                random = (random + 1) % length;
+        }
         newLastRandom = random;
         return random;
     }
