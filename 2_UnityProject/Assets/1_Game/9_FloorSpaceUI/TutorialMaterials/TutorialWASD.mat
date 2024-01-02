@@ -29,6 +29,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _COLORMAP
+  - _EMISSIVEMAP
   - _MATERIAL_AFFECTS_ALBEDO
   - _MATERIAL_AFFECTS_MASKMAP
   m_InvalidKeywords: []
@@ -43,8 +44,19 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _BaseColorMap:
+        m_Texture: {fileID: 2800000, guid: 3b0e5907861cf1848acea63619e032b5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissiveColorMap:
+        m_Texture: {fileID: 2800000, guid: 2d46623516372431690b31e3ca629619, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats: []
-    m_Colors: []
+    m_Colors:
+    - _EmissiveColor: {r: 98175.49, g: 98175.49, b: 98175.49, a: 131072}
+    - _EmissiveColorHDR: {r: 90147.45, g: 90147.45, b: 90147.45, a: 90147.45}
+    - _EmissiveColorLDR: {r: 0.88031507, g: 0.88031507, b: 0.88031507, a: 1}
   m_BuildTextureStacks: []

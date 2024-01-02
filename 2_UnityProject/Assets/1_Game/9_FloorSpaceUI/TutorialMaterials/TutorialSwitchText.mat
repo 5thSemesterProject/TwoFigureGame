@@ -29,6 +29,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _COLORMAP
+  - _EMISSIVEMAP
   - _MATERIAL_AFFECTS_ALBEDO
   - _MATERIAL_AFFECTS_MASKMAP
   m_InvalidKeywords: []
@@ -46,6 +47,10 @@ Material:
     m_TexEnvs:
     - _BaseColorMap:
         m_Texture: {fileID: 2800000, guid: 14ba672894badc1479217ff5a586d110, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissiveColorMap:
+        m_Texture: {fileID: 2800000, guid: 7ee8df125d016452f95740b95a5f7d4d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []

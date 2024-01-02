@@ -31,7 +31,7 @@ Material:
   - MOTIONVECTORS
   - DecalMeshForwardEmissive
   - DecalProjectorForwardEmissive
-  m_LockedProperties: 
+  m_LockedProperties: _AffectAlbedo _AffectEmission _AffectNormal _AffectSmoothness
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -143,7 +143,7 @@ Material:
     - _AffectEmission: 0
     - _AffectMetal: 1
     - _AffectNormal: 0
-    - _AffectSmoothness: 1
+    - _AffectSmoothness: 0
     - _AlbedoAffectEmissive: 0
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 0
@@ -163,7 +163,7 @@ Material:
     - _DecalBlend: 0.5
     - _DecalColorMask0: 15
     - _DecalColorMask1: 0
-    - _DecalColorMask2: 11
+    - _DecalColorMask2: 8
     - _DecalColorMask3: 8
     - _DecalMaskMapBlueScale: 0
     - _DecalMeshBiasType: 0
@@ -187,7 +187,7 @@ Material:
     - _DstBlend: 0
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
-    - _EmissiveIntensity: 3866.8
+    - _EmissiveIntensity: 131072
     - _EmissiveIntensityUnit: 1
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
@@ -261,7 +261,7 @@ Material:
     - _UVDetail: 0
     - _UVEmissive: 0
     - _Unity_Identify_HDRP_Decal: 1
-    - _UseEmissiveIntensity: 0
+    - _UseEmissiveIntensity: 1
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
@@ -274,7 +274,7 @@ Material:
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissiveColor: {r: 2896.3088, g: 2896.3088, b: 2896.3088, a: 3866.8}
+    - _EmissiveColor: {r: 98175.49, g: 98175.49, b: 98175.49, a: 131072}
     - _EmissiveColorHDR: {r: 2896.3088, g: 2896.3088, b: 2896.3088, a: 3866.8}
     - _EmissiveColorLDR: {r: 0.88031507, g: 0.88031507, b: 0.88031507, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
