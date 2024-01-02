@@ -15348,7 +15348,7 @@ Transform:
   m_GameObject: {fileID: 7915172342314084875}
   serializedVersion: 2
   m_LocalRotation: {x: -0.70710737, y: -0, z: -0, w: -0.7071063}
-  m_LocalPosition: {x: -0.15499973, y: 1.8000001, z: 1.9790001}
+  m_LocalPosition: {x: -0.15499973, y: 0.93, z: 2.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15478,7 +15478,7 @@ MonoBehaviour:
   m_EvsmLightLeakBias: 0
   m_EvsmVarianceBias: 0.00001
   m_EvsmBlurPasses: 0
-  m_LightlayersMask: 79
+  m_LightlayersMask: 9
   m_LinkShadowLayers: 1
   m_ShadowNearPlane: 0
   m_BlockerSampleCount: 24
@@ -53670,8 +53670,16 @@ PrefabInstance:
       value: 79
       objectReference: {fileID: 0}
     - target: {fileID: 2526165735917255434, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
+      propertyPath: m_Range
+      value: 6.1285205
+      objectReference: {fileID: 0}
+    - target: {fileID: 2526165735917255434, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 79
+      objectReference: {fileID: 0}
+    - target: {fileID: 2526165735917255434, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 6.1285205
       objectReference: {fileID: 0}
     - target: {fileID: 3356661534467235815, guid: 489fd11d8bc491946b9b47cffdba5a37, type: 3}
       propertyPath: specificCharacterAccess
