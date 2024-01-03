@@ -94,7 +94,7 @@ public class Movement : MonoBehaviour, IIntersectSmoke
             timeFalling = 0;
 
         //Change Hurt Value In Idle 
-        float smoothHurtValue = Mathf.Lerp(animator.GetFloat("Hurt"), characterData.oxygenData.IsLow ? 1f : 0f, 0.005f);
+        float smoothHurtValue = Mathf.Lerp(animator.GetFloat("Hurt"), characterData.characterOxygenData.oxygenData.IsLow ? 1f : 0f, 0.005f);
         animator.SetFloat("Hurt", smoothHurtValue);
     }
     

@@ -32,13 +32,14 @@ public class CharacterData
     public Animator animator;
     public CharacterState currentState;
     public CinemachineVirtualCamera virtualCamera;
-    public OxygenData oxygenData;
+    public CharacterOxygenData characterOxygenData;
     public GameObject roomFadeRigidBody;
     public CharacterData other;
     public CharacterState lastState;
     public WSUI_Element oxygenBar;
     public bool raisedLowOxygenEvent = false;
     public bool raisedChargingEvent = false;
+    public float elapsedTime;
 }
 
 public class WomanData : CharacterData

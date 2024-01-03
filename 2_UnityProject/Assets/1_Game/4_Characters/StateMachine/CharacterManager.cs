@@ -14,24 +14,24 @@ public class CharacterManager : MonoBehaviour
     }
     public static bool IsManDead
     {
-        get => manData.oxygenData.currentOxygen <= 0;
+        get => manData.characterOxygenData.oxygenData.currentOxygen <= 0;
     }
     public static bool IsWomanDead
     {
-        get => womanData.oxygenData.currentOxygen <= 0;
+        get => womanData.characterOxygenData.oxygenData.currentOxygen <= 0;
     }
     public static bool IsManLow
     {
         get
         {
-            return manData.oxygenData.IsLow;
+            return manData.characterOxygenData.oxygenData.IsLow;
         }
     }
     public static bool IsWomanLow
     {
         get
         {
-            return womanData.oxygenData.IsLow;
+            return womanData.characterOxygenData.oxygenData.IsLow;
         }
     }
 
@@ -106,7 +106,7 @@ public class CharacterManager : MonoBehaviour
             womanData.currentState = womanData.currentState.UpdateState();
 
             debuggingCharacterStateMachines.text = "Woman: " + womanData.currentState.GetType() + "\n Man: " + manData.currentState.GetType();
-            debuggingOxygenCharacters.text = "WomanOxy: " + womanData.oxygenData.currentOxygen + "\n ManOxy: " + manData.oxygenData.currentOxygen;
+            debuggingOxygenCharacters.text = "WomanOxy: " + womanData.characterOxygenData.oxygenData.currentOxygen + "\n ManOxy: " + manData.characterOxygenData.oxygenData.currentOxygen;
         }
     }
 
@@ -126,10 +126,12 @@ public class CharacterManager : MonoBehaviour
         manData.movement.characterType = CharacterType.Man;
         manData.other = womanData;
         womanData.other   = manData;
+        manData.elapsedTime = 0;
+        womanData.elapsedTime = 0;
 
         //Oxygen Setup
-        womanData.oxygenData = GameStats.instance.characterOxy;
-        manData.oxygenData = GameStats.instance.characterOxy;
+        womanData.characterOxygenData = GameStats.instance.characterOxy;
+        manData.characterOxygenData = GameStats.instance.characterOxy;
 
         //Cam Setup
         CamManager.SetCamPrefab(cameraPrefab);

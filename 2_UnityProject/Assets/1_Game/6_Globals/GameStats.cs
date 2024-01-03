@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [System.Serializable]
@@ -36,22 +37,45 @@ public struct OxygenData
     }
 }
 
+[System.Serializable]
+public struct CharacterOxygenData
+{
+   public OxygenData oxygenData;
+   public float lowOxygenThreshhold;
+   public float fallOffTimeInMinutes;
+   public AnimationCurve fallOffCurve;
+   public float maxFallOff;
+   [HideInInspector]public float initialFallOff;
+
+    public void Initialize()
+    {
+        initialFallOff = oxygenData.fallOfRate;
+        oxygenData.currentOxygen = oxygenData.maxOxygen;
+    }
+   public void UpdateFallOff(float elapsedTime)
+   {
+        float fallOffProgress = elapsedTime/(fallOffTimeInMinutes*100*60);
+        oxygenData.fallOfRate = Mathf.Lerp(oxygenData.fallOfRate,maxFallOff,fallOffCurve.Evaluate(fallOffProgress));
+   }
+}
+
 public class GameStats : MonoBehaviour
 {
    public static GameStats instance;
     public float inactiveFollowDistance = 4;
-    public OxygenData characterOxy,oxygenStation;
-    public float characterOxygenFallOffDecreaseRate = 0.01f;
-    public float lowOxygenThreshhold = 20;
-    public Transform fallOffEpicenter;
+    public OxygenData oxygenStation;
+    public CharacterOxygenData characterOxy;
 
-
-   void  Awake()
-   {
+   void Awake()
+   {    
         if (instance==null)
             instance = this;
         else
             Destroy(this);
+
+        characterOxy.Initialize();
    }
+
+
 
 }

@@ -50,15 +50,14 @@ public abstract class CharacterState
 
     public void HandleOxygenBar()
     {            
-        float currentOxygen = characterData.oxygenData.currentOxygen;
+        float currentOxygen = characterData.characterOxygenData.oxygenData.currentOxygen;
 
-        if (currentOxygen<characterData.oxygenData.maxOxygen)
+        if (currentOxygen<characterData.characterOxygenData.oxygenData.maxOxygen)
         {     
             if (characterData.oxygenBar == null)
                 WSUI.FadeInElement(characterData.gameObject.GetComponentInChildren<CharacterUI>().GetOxygenBar().gameObject,characterData.gameObject.transform,out characterData.oxygenBar);
             
             WSUI_Element oxygenBar = characterData.oxygenBar;
-            //oxygenBar.LerpAlphaToInitial();
             oxygenBar.GetComponent<OxygenBar>().SetValue(currentOxygen);    
         }
         else
@@ -89,10 +88,9 @@ public abstract class CharacterState
         Oxygenstation oxygenstation  = characterData.movement.oxygenstation;
         if (oxygenstation!=null)
         {
-            if (characterData.oxygenData.currentOxygen<=characterData.oxygenData.maxOxygen)
+            if (characterData.characterOxygenData.oxygenData.currentOxygen<=characterData.characterOxygenData.oxygenData.maxOxygen)
             {
-                characterData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
-                //Debug.Log (characterData.oxygenData.currentOxygen);
+                characterData.characterOxygenData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
                 characterData.raisedLowOxygenEvent = false;
 
                 //On Charging
@@ -106,31 +104,26 @@ public abstract class CharacterState
         }
         else
         {
-            characterData.oxygenData.FallOff();
-            
-            //Determine Falloff Rate
-            Vector2 characterPos = VectorHelper.Convert3To2(GameStats.instance.fallOffEpicenter.transform.position);
-            Vector2 epicenterPos = VectorHelper.Convert3To2(characterData.gameObject.transform.position);
-            float distanceToEpicenter = Vector2.Distance(characterPos,epicenterPos);
-            characterData.oxygenData.fallOfRate = GameStats.instance.characterOxygenFallOffDecreaseRate/**GameManager.GetGameTime**/*GameStats.instance.characterOxy.fallOfRate;
-            Debug.Log ("FallOffRate "+characterData.oxygenData.fallOfRate);
-            
-            ;
+            characterData.characterOxygenData.oxygenData.FallOff();
             characterData.raisedChargingEvent = false;
 
             //Raise Low Health Event
-            if (characterData.oxygenData.currentOxygen<=GameStats.instance.lowOxygenThreshhold && !characterData.raisedLowOxygenEvent)
+            if (characterData.characterOxygenData.oxygenData.currentOxygen<=characterData.characterOxygenData.lowOxygenThreshhold && !characterData.raisedLowOxygenEvent)
             {
                 characterData.raisedLowOxygenEvent = true;
                 CustomEvents.RaiseLowOxygen(characterData);
             }
         }
 
-        if (characterData.oxygenData.currentOxygen <= 0)
+        if (characterData.characterOxygenData.oxygenData.currentOxygen <= 0)
         {
             characterData.animator.SetBool("Dead", true);
         }
 
+        //Increase FallOff With Time
+        characterData.elapsedTime +=Time.deltaTime;
+        characterData.characterOxygenData.UpdateFallOff(characterData.elapsedTime);
+        Debug.Log (characterData.characterOxygenData.oxygenData.fallOfRate);
     }
 
     public void HandleInteractable(out CharacterState updatedState)

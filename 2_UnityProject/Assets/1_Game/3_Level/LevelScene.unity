@@ -5508,8 +5508,124 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: fallOffEpicenter
+      value: 
+      objectReference: {fileID: 6359877}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
       propertyPath: characterOxy.fallOfRate
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.maxFallOff
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffTime
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.initialFallOff
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffIncreaseRate
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.lowOxygenThreshhold
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffTimeInMinutes
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.oxygenData.maxOxygen
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.oxygenData.fallOfRate
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxygenFallOffDecreaseRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[1].time
+      value: 0.70469195
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[1].value
+      value: 0.3769855
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[2].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[0].inSlope
+      value: 0.5349649
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[1].inSlope
+      value: 1.3223376
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[2].inSlope
+      value: 2.1097105
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[0].outSlope
+      value: 0.5349649
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[1].outSlope
+      value: 1.3223376
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[2].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[2].outSlope
+      value: 2.1097105
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[1].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
+      propertyPath: characterOxy.fallOffCurve.m_Curve.Array.data[2].tangentMode
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 2779561743891827041, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
       propertyPath: m_LocalPosition.x
