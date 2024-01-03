@@ -35,6 +35,14 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
+    public static float ElapsedTime
+    {
+        get
+        {
+            return womanData.elapsedTime;
+        }
+    }
+
     //Character Prefab
 
     [Header("Prefabs")]

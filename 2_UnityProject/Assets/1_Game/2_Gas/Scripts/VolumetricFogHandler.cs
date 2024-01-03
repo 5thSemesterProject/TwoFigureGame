@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
@@ -10,7 +11,11 @@ using UnityEngine.Rendering.HighDefinition;
 public class VolumetricFogHandler : MonoBehaviour
 {   
     [SerializeField] LayerMask layerMask;
-    [SerializeField] Transform fallOffEpicenter;
+
+    [Header("Density")]
+    [SerializeField] float minDensity = 0.01f, maxDensity = 0.11f;
+
+    [Header("SmokeMasks")]
     List<Transform> intersectSmokeTransforms  = new List<Transform>();
     int maxMasks = 6;
 
@@ -19,20 +24,16 @@ public class VolumetricFogHandler : MonoBehaviour
     void Start()
     {   
         localVolumetricFog = GetComponent<LocalVolumetricFog>();
-        if (fallOffEpicenter!=null)
-            ResetSmokeMasks();
+        ResetSmokeMasks();
     }
 
     void LateUpdate()
     {
         //Update Epicenter
-
-        if (fallOffEpicenter!=null)
-        {
-            localVolumetricFog.parameters.materialMask.SetVector($"_FallOffEpicenter", fallOffEpicenter.transform.position);
-            UpdateSpheres(intersectSmokeTransforms.ToArray());
-            CheckColliders();
-        }
+        float fallOffValue = Mathf.Lerp(minDensity,maxDensity,CharacterOxygenData.falloffProgress);
+        localVolumetricFog.parameters.materialMask.SetFloat($"_FalloffFactor",fallOffValue);
+        UpdateSpheres(intersectSmokeTransforms.ToArray());
+        CheckColliders();
     }
 
     void UpdateSpheres(Transform [] transforms) 
@@ -165,6 +166,8 @@ public class VolumetricFogHandler : MonoBehaviour
      private void OnApplicationQuit()
     {
         ResetSpheres();
+        //Reset FallOffFactor
+        localVolumetricFog.parameters.materialMask.SetFloat($"_FalloffFactor",minDensity);
     }
 
 }

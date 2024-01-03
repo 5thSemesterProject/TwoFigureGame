@@ -123,7 +123,6 @@ public abstract class CharacterState
         //Increase FallOff With Time
         characterData.elapsedTime +=Time.deltaTime;
         characterData.characterOxygenData.UpdateFallOff(characterData.elapsedTime);
-        Debug.Log (characterData.characterOxygenData.oxygenData.fallOfRate);
     }
 
     public void HandleInteractable(out CharacterState updatedState)

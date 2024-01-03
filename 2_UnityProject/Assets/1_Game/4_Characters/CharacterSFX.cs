@@ -70,8 +70,6 @@ public class CharacterSFX : MonoBehaviour
         Ray ray = new Ray(transform.position+Vector3.up,Vector3.down);
         RaycastHit hit;
         Physics.Raycast(ray,out hit,Mathf.Infinity,layerMask);
-        
-        Debug.DrawRay(transform.position+Vector3.up,Vector3.down*200, Color.red,10000);
 
         //Get tags
         string[] tags = null;
