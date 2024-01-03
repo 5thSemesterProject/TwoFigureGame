@@ -17,13 +17,13 @@ public class CamManager: MonoBehaviour
     static CamManager instance;
     static GameObject characterCamPrefab;
     static List<CinemachineVirtualCamera> activeCameras = new List<CinemachineVirtualCamera>();
-    static IEnumerable<OccludingObject> occludingObjects = new List<OccludingObject>();
+    static IEnumerable<FadeObject> occludingObjects = new List<FadeObject>();
     static RaycastHit [] raycastHits = new RaycastHit[12];
 
 
     void Awake()
     {
-        occludingObjects = new List<OccludingObject>();
+        occludingObjects = new List<FadeObject>();
 
           if (instance!=null && instance!=this)
                Destroy(this);
@@ -68,19 +68,19 @@ public class CamManager: MonoBehaviour
 
    public static void FindOccludingObjects(Transform transformToBeVisible)
    {
-          var tempOccludingObjects = GetOccludingObjects(transformToBeVisible);
+        var tempOccludingObjects = GetOccludingObjects(transformToBeVisible);
 
-          //Find Objects To Reset and Reset
-          List<OccludingObject> objectsToReset = occludingObjects.Except(tempOccludingObjects).ToList();
-          objectsToReset.ForEach(occludingObject =>occludingObject.LerpAlpha(1));
+        //Find Objects To Reset and Reset
+        List<FadeObject> objectsToReset = occludingObjects.Except(tempOccludingObjects).ToList();
+        objectsToReset.ForEach(occludingObject =>occludingObject.ShowObject());
  
-          //Update List and Adjust Alpha
-          occludingObjects = tempOccludingObjects;
-          
-          foreach(var item in occludingObjects)
-          {
-               item.LerpAlpha(0.5f);
-          }
+        //Update List and Adjust Alpha
+        occludingObjects = tempOccludingObjects;
+
+        foreach (FadeObject ocludingObject in occludingObjects)
+        {
+            ocludingObject.HideObject();
+        }
    }
 
     public static void FindOccludingObjects_(Transform transformToBeVisible)
@@ -89,55 +89,53 @@ public class CamManager: MonoBehaviour
         var tempOccludingObjects = GetOccludingObjects(transformToBeVisible);
 
         //Find Objects To Reset and Reset
-        List<OccludingObject> objectsToReset = occludingObjects.Except(tempOccludingObjects).ToList();
-        objectsToReset.ForEach(occludingObject => occludingObject.LerpAlpha(1));
+        List<FadeObject> objectsToReset = occludingObjects.Except(tempOccludingObjects).ToList();
+        objectsToReset.ForEach(occludingObject => occludingObject.ShowObject());
 
         //Update List and Adjust Alpha
         occludingObjects = tempOccludingObjects;
 
-        foreach (var item in occludingObjects)
-        {
-            item.LerpAlpha(0.5f);
-        }
+        //foreach (var item in occludingObjects)
+        //{
+        //    item.LerpAlpha(0.5f);
+        //}
     }
 
-    static IEnumerable<OccludingObject> GetOccludingObjects(Transform transformToBeVisible)
-   { 
-     int smokeLayerIndex = 7;
-     int allLayersMask = ~ (1 << smokeLayerIndex);
-     int layerMask =allLayersMask;
-     MonoBehaviour runCouroutineOn = transformToBeVisible.GetComponent<Movement>();
-     CharacterController characterController = transformToBeVisible.GetComponent<CharacterController>();
+    static IEnumerable<FadeObject> GetOccludingObjects(Transform transformToBeVisible)
+    { 
+         int smokeLayerIndex = 7;
+         int allLayersMask = ~ (1 << smokeLayerIndex);
+         int layerMask =allLayersMask;
+         CharacterController characterController = transformToBeVisible.GetComponent<CharacterController>();
 
-     float radius = characterController.radius;
-     float radiusOffset =  characterController.height/2-radius;
-     Vector3 worldCenter  = characterController.transform.TransformPoint(characterController.center);
-     Vector3 point1 = worldCenter+ characterController.transform.up*radiusOffset;
-     Vector3 point2 = worldCenter -characterController.transform.up*radiusOffset;
+         float radius = characterController.radius;
+         float radiusOffset =  characterController.height/2-radius;
+         Vector3 worldCenter  = characterController.transform.TransformPoint(characterController.center);
+         Vector3 point1 = worldCenter+ characterController.transform.up*radiusOffset;
+         Vector3 point2 = worldCenter -characterController.transform.up*radiusOffset;
      
-     Vector3 startPoint = Camera.main.transform.position;;
-     Vector3 direction = startPoint-worldCenter;
-     direction = direction.normalized;
+         Vector3 startPoint = Camera.main.transform.position;;
+         Vector3 direction = startPoint-worldCenter;
+         direction = direction.normalized;
 
-     int amountOfHits = Physics.CapsuleCastNonAlloc(point1,point2,radius,direction,raycastHits,Mathf.Infinity,layerMask);
+         int amountOfHits = Physics.CapsuleCastNonAlloc(point1,point2,radius,direction,raycastHits,Mathf.Infinity,layerMask);
 
-     List<OccludingObject> tempOccludingObjects = new List<OccludingObject>();
+         List<FadeObject> tempOccludingObjects = new List<FadeObject>();
 
-     for (int i = 0; i < amountOfHits; i++)
-     {
-          GameObject hitGameObject = raycastHits[i].transform.gameObject;
-          if (hitGameObject.tag =="Wall")
-          {
-                if (hitGameObject.TryGetComponent(out OccludingObject occludingObject))
+        for (int i = 0; i < amountOfHits; i++)
+        {
+            GameObject hitGameObject = raycastHits[i].transform.gameObject;
+            if (hitGameObject.tag == "Wall")
+            {
+                if (hitGameObject.TryGetComponent(out FadeObject occludingObject))
                     tempOccludingObjects.Add(occludingObject);
                 else
-                    tempOccludingObjects.Add(hitGameObject.AddComponent<OccludingObject>());
-          }
-               
-     }
+                    tempOccludingObjects.Add(hitGameObject.AddComponent<FadeObject>());
+            }
+        }
 
-     return tempOccludingObjects;
-   }
+        return tempOccludingObjects;
+    }
 
 
 }
