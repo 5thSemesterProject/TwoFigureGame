@@ -262,46 +262,57 @@ public class SoundSystem : MonoBehaviour
     #endregion
 
     #region Background Music
-    public static void PlayBackgroundMusic(AudioClip[] musicClips)
+    public static void PlayBackgroundMusic(AudioClip[] musicClips,float fadeTime = 3)
     {
         if (musicClips.Length > 0)
         {
             if (backgroundMusicCoroutine != null)
                 instance.StopCoroutine(backgroundMusicCoroutine);
-            IEnumerator i = instance._PlayBackgroundMusic(musicClips);
+            IEnumerator i = instance._PlayBackgroundMusic(musicClips,fadeTime);
             backgroundMusicCoroutine = instance.StartCoroutine(i);
         }
     }
 
-    private IEnumerator _PlayBackgroundMusic(AudioClip[] musicClips, float fadeTime = 3)
+    private IEnumerator _PlayBackgroundMusic(AudioClip[] musicClips, float fadeTime)
     {
         AudioClip[] backgroundMusicDatabase = musicClips;
         int backgroundMusicPointer = UnityEngine.Random.Range(0,backgroundMusicDatabase.Length);
 
         while (true)
-        {
-            AudioSource source = gameObject.AddComponent<AudioSource>();
+        {   
+            AudioSource source=null;
+            if (backgroundMusicPlayer==null)
+                source = gameObject.AddComponent<AudioSource>();
+            else
+                source = backgroundMusicPlayer;
+                
 
             float targetVolume = backgroundMusicPlayer.volume;
             float currentVolume = 0;
-            source.volume = currentVolume;
+            source.volume = fadeTime>0?currentVolume:targetVolume;
 
             source.clip = backgroundMusicDatabase[backgroundMusicPointer];
             source.Play();
 
-            while (currentVolume < targetVolume)
+            if (fadeTime>0)
             {
-                source.volume = currentVolume;
-                backgroundMusicPlayer.volume = targetVolume - currentVolume;
+                while (currentVolume < targetVolume)
+                {
+                    source.volume = currentVolume;
+                    backgroundMusicPlayer.volume = targetVolume - currentVolume;
 
-                currentVolume += targetVolume * Time.deltaTime / fadeTime;
-                yield return null;
+                    currentVolume += targetVolume * Time.deltaTime / fadeTime;
+                    yield return null;
+                }
+
+                source.volume = targetVolume;
+
+                UnityEngine.Object.Destroy(backgroundMusicPlayer);
+                backgroundMusicPlayer = null;
+                backgroundMusicPlayer = source;
             }
-
-            source.volume = targetVolume;
-
-            UnityEngine.Object.Destroy(backgroundMusicPlayer);
-            backgroundMusicPlayer = source;
+            else
+                source.loop = true;
 
             yield return new WaitForSeconds(backgroundMusicDatabase[backgroundMusicPointer].length - fadeTime);
 

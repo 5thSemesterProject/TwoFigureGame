@@ -31,7 +31,7 @@ public class CharacterSFX : MonoBehaviour
     void  Awake()
     {
         AudioUtility audioUtility = new AudioUtility();
-        audioUtility.LoadAllAudioClips<E_5_Character>(SaveClips);
+        audioUtility.LoadAllAudioClipsAsync<E_5_Character>(SaveClips);
     }
 
     private void SaveClips(AudioClip[] audioClips)

@@ -29,7 +29,7 @@ public class VoicelinePlayer : MonoBehaviour
 
         //Load All Voicelines
         AudioUtility audioUtility = new AudioUtility();
-        audioUtility.LoadAllAudioClips<E_1_Voicelines>(SaveVoiceLines);
+        audioUtility.LoadAllAudioClipsAsync<E_1_Voicelines>(SaveVoiceLines);
     }
 
     void SaveVoiceLines(AudioClip[] audioClips)
