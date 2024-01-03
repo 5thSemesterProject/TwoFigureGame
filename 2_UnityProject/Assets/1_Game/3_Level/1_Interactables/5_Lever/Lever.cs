@@ -4,39 +4,34 @@ using UnityEngine;
 using System.Reflection;
 using System;
 
-[RequireComponent(typeof(Interactable), typeof(PassOnTrigger), typeof(TriggerByCharacter))]
+[RequireComponent(typeof(Interactable),typeof(PassOnTrigger),typeof(TriggerByCharacter))]
 public class Lever : MonoBehaviour
 {
-    [SerializeField] float activationTimeInSeconds = 2;
+    [SerializeField]float activationTimeInSeconds = 2;
 
-    [Header("Handle")]
+    [Header ("Handle")]
     [SerializeField] GameObject handle;
     [SerializeField] float rotateSpeed = 0.1f;
     [SerializeField] float rotationAngle = 120;
 
     Quaternion initialHandleRot;
     Quaternion targetRot;
-    Interactable interactable;
 
-    Coroutine rotateHandleProcess;
+    
+
+    Interactable interactable;
     bool usable = true;
 
     void Start()
     {
         interactable = GetComponent<Interactable>();
-        interactable.triggerEvent += ActivateSwitch;
-
+        interactable.triggerEvent+=ActivateSwitch;
+        
         //Wait for switch to reactivate
         interactable.enterCond = CheckUsable;
 
         initialHandleRot = handle.transform.localRotation;
-        rotateHandleProcess = StartCoroutine(RotateHandle());
-    }
-
-    void OnDisable()
-    {
-        StopCoroutine(rotateHandleProcess);
-        rotateHandleProcess = null;
+        StartCoroutine(RotateHandle());
     }
 
 
@@ -48,14 +43,12 @@ public class Lever : MonoBehaviour
     void ActivateSwitch(Movement movement)
     {
         usable = false;
-        StartCoroutine(ActivationCoroutine(movement));
+        StartCoroutine(ActivationCoroutine(movement));     
     }
 
     IEnumerator ActivationCoroutine(Movement movement)
     {
-        targetRot = Quaternion.Euler(new Vector3(-rotationAngle, 0, 0));
-        if (rotateHandleProcess == null)
-            rotateHandleProcess = StartCoroutine(RotateHandle());
+        targetRot = Quaternion.Euler(new Vector3(-rotationAngle,0,0));
         yield return new WaitForSeconds(activationTimeInSeconds);
         usable = true;
         interactable.Untrigger(movement);
@@ -69,10 +62,11 @@ public class Lever : MonoBehaviour
 
         while (true)
         {
-            Quaternion currenRot = Quaternion.Lerp(handle.transform.localRotation, targetRot, t);
+            Quaternion currenRot = Quaternion.Lerp(handle.transform.localRotation,targetRot,t);
             handle.transform.localRotation = currenRot;
-            t += Time.deltaTime * rotateSpeed * 0.01f;
+            t+=Time.deltaTime*rotateSpeed*0.01f;
             yield return null;
         }
     }
 }
+
