@@ -23,14 +23,6 @@ public class VolumetricFogHandler : MonoBehaviour
             ResetSmokeMasks();
     }
 
-    void  OnDrawGizmos()
-    {
-        //Update Epicenter
-        //if (fallOffEpicenter!=null)
-           //localVolumetricFog.parameters.materialMask.SetVector($"_FallOffEpicenter", new Vector4(0,0,0,0));
-        
-    }
-
     void LateUpdate()
     {
         //Update Epicenter

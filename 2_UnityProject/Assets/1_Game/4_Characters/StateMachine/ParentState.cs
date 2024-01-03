@@ -107,6 +107,15 @@ public abstract class CharacterState
         else
         {
             characterData.oxygenData.FallOff();
+            
+            //Determine Falloff Rate
+            Vector2 characterPos = VectorHelper.Convert3To2(GameStats.instance.fallOffEpicenter.transform.position);
+            Vector2 epicenterPos = VectorHelper.Convert3To2(characterData.gameObject.transform.position);
+            float distanceToEpicenter = Vector2.Distance(characterPos,epicenterPos);
+            characterData.oxygenData.fallOfRate = GameStats.instance.characterOxygenFallOffDecreaseRate/**GameManager.GetGameTime**/*GameStats.instance.characterOxy.fallOfRate;
+            Debug.Log ("FallOffRate "+characterData.oxygenData.fallOfRate);
+            
+            ;
             characterData.raisedChargingEvent = false;
 
             //Raise Low Health Event
