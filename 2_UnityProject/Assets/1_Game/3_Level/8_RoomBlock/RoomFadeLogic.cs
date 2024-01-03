@@ -81,7 +81,7 @@ public class RoomFadeLogic : MonoBehaviour
                 skinnedMeshRenders[i].enabled = visible;
             }
 
-            for (int i = 0; i < skinnedMeshRenders.Length; i++)
+            for (int i = 0; i < meshRenderers.Length; i++)
             {
                 meshRenderers[i].enabled = visible;
             }
