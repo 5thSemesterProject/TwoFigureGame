@@ -19,7 +19,6 @@ public class Oxygenstation : MonoBehaviour, IIntersectGas
    Coroutine emissionCoroutine;
    bool isCharging;
    int amountOfCharacters;
-   float maxSmokeIntersectionRadus;
 
     bool alphaIncrease;
    Coroutine alphaCoroutine;
@@ -39,7 +38,6 @@ public class Oxygenstation : MonoBehaviour, IIntersectGas
                 fluidMaterial = materials[i];
         }
 
-        maxSmokeIntersectionRadus = smokeIntersectionRadius;
 
         if (TryGetComponent(out SphereCollider sphereCollider))
         {
@@ -150,7 +148,7 @@ public class Oxygenstation : MonoBehaviour, IIntersectGas
 
     public float GetIntersectionRadius()
     {
-        return smokeIntersectionRadius*9;
+        return smokeIntersectionRadius*3;
     }
     #endregion
 
