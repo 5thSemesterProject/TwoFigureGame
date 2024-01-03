@@ -41,7 +41,9 @@ public class GameStats : MonoBehaviour
    public static GameStats instance;
     public float inactiveFollowDistance = 4;
     public OxygenData characterOxy,oxygenStation;
+    public float characterOxygenFallOffDecreaseRate = 0.01f;
     public float lowOxygenThreshhold = 20;
+    public Transform fallOffEpicenter;
 
 
    void  Awake()
