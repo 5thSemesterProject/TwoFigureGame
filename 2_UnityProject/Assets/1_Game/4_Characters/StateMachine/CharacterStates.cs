@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -67,7 +68,8 @@ class MoveState : CharacterState
 }
 
 class CrawlState : CharacterState
-{
+{   
+    
     public CrawlState(CharacterData data) : base(data)
     {
         characterData.movement.StartTraversing(characterData.movement.interactable, TraversalType.Crawl, 2);

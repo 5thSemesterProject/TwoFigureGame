@@ -319,20 +319,29 @@ public class Movement : MonoBehaviour, IIntersectGas
         else if (traversalType == TraversalType.JumpOver)
             animationName = "JumpOver";
 
+        //Check For Potential Offset
+        float offset = 1;
+        Transform animationStartPoint=null;
+        if (traversable.TryGetComponent(out PlayerActionType playeractiontype))
+        {
+            if (playeractiontype.TryGetAnimationStartPoint(out animationStartPoint))
+                offset = animationStartPoint.transform.localPosition.z;
+        }
+     
         TerminateMove();
 
-        traversalRoutine = StartCoroutine(Traverse(traversable.transform,traversalDuration,animationName));
+        traversalRoutine = StartCoroutine(Traverse(traversable.transform,traversalDuration,animationName,offset));
     }
 
 
 
-    private IEnumerator Traverse(Transform traverseObject,float traverseDuration, string animationType)
+    private IEnumerator Traverse(Transform traverseObject,float traverseDuration, string animationType, float offset = 1)
     {
         Vector3 traverseDir = GetTraverseDir(traverseObject);
 
-
         //Lerp To Start
-        Vector3 targetPos = new Vector3(traverseObject.transform.position.x, transform.position.y, traverseObject.transform.position.z) + -traverseDir * 1f;
+        offset = Mathf.Abs(offset);
+        Vector3 targetPos = new Vector3(traverseObject.transform.position.x, transform.position.y, traverseObject.transform.position.z) + -traverseDir * offset;
         Quaternion targetRot = Quaternion.LookRotation(traverseDir);
         yield return LerpPlayer(targetPos, targetRot, true, 0.1f);
 
@@ -350,9 +359,9 @@ public class Movement : MonoBehaviour, IIntersectGas
 
     private Vector3 GetTraverseDir(Transform traversable)
     {
-        Vector3 crawlPos = traversable.position;
+        Vector3 traversablePos = traversable.position;
         Vector3 traverseDir = traversable.forward;
-        Vector3 relativePos = Vector3.Normalize(transform.position - crawlPos);
+        Vector3 relativePos = Vector3.Normalize(transform.position - traversablePos);
 
         float scalar = Vector3.Dot(relativePos, traverseDir) > 0 ? -1 : 1;
         traverseDir = new Vector3(traverseDir.x, 0, traverseDir.z).normalized;
