@@ -13,7 +13,7 @@ public class FadeObject : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float minAlpha = 0.5f;
     [SerializeField] private float maxAlpha = 1f;
-    public float fadeDuration = 1;
+    public float fadeDuration = 0.5f;
     public bool shouldMatchSharedMaterial = true;
     private bool isFadingIn = false;
 

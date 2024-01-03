@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using Unity.VisualScripting;
@@ -18,6 +19,8 @@ public class VolumetricFogHandler : MonoBehaviour
     [Header("SmokeMasks")]
     List<Transform> intersectSmokeTransforms  = new List<Transform>();
     int maxMasks = 6;
+
+    int maxRectangles = 8;
 
     LocalVolumetricFog localVolumetricFog;
 
@@ -39,6 +42,7 @@ public class VolumetricFogHandler : MonoBehaviour
     void UpdateSpheres(Transform [] transforms) 
     {
         List<Vector4> sphereInfos  = new List<Vector4>();
+        List<Vector4> rectangleInfos = new List<Vector4>();
         var isPlayer = new List<bool>();
         foreach(Transform transformItem in transforms)
         {
@@ -50,25 +54,28 @@ public class VolumetricFogHandler : MonoBehaviour
             MonoBehaviour[] allMonoBehaviours = transformItem.GetComponents<MonoBehaviour>();
             for (int i = 0; i < allMonoBehaviours.Length; i++)
             {
-                if (allMonoBehaviours[i] is IIntersectSmoke)
+                if (allMonoBehaviours[i] is IIntersectGas)
                 {
-                    IIntersectSmoke component = allMonoBehaviours[i] as IIntersectSmoke;
+                    IIntersectGas component = allMonoBehaviours[i] as IIntersectGas;
                     radius = component.GetIntersectionRadius();
-                }
 
-                if (allMonoBehaviours[i] is Movement)
+                    if (allMonoBehaviours[i] is Movement)
+                        _isPlayer = true;
+
+                    isPlayer.Add(_isPlayer);        
+                    sphereInfos.Add(VectorHelper.Convert3To4(transformItem.position,radius));
+                }
+                else if (allMonoBehaviours[i] is ExcludeRectangle)
                 {
-                    _isPlayer  = true;
+                   ExcludeRectangle excludeRectangle =  allMonoBehaviours[i] as ExcludeRectangle;
+                   rectangleInfos.Add(excludeRectangle.GetRectangleData());
                 }
 
             }
-
-            isPlayer.Add(_isPlayer);        
-            sphereInfos.Add(VectorHelper.Convert3To4(transformItem.position,radius));
-
         }
         
         SetSpheres(PutPlayersToFront(sphereInfos.ToArray(),isPlayer.ToArray()));
+        SetExcludeRectangles(rectangleInfos.ToArray());
     }
 
     void SetSpheres(Vector4[] sphereInfos)
@@ -79,9 +86,17 @@ public class VolumetricFogHandler : MonoBehaviour
         }
     }
 
+    void SetExcludeRectangles(Vector4[] rectangleInfos)
+    {
+         for (int i =0;i<rectangleInfos.Length;i++)
+        {   
+            localVolumetricFog.parameters.materialMask.SetVector($"_ExcludeRectangle_0{i+1}", rectangleInfos[i]);   
+        }
+    }
+
     void AddSmokeMask(Transform transform)
     {
-        if (intersectSmokeTransforms.Count<maxMasks)
+        if (intersectSmokeTransforms.Count<maxMasks+maxRectangles)
             intersectSmokeTransforms.Add(transform);
         else
             Debug.Log("There are more objects that mask out smoked then previsouly set up");
@@ -107,6 +122,17 @@ public class VolumetricFogHandler : MonoBehaviour
             emptySpheres[i] = Vector4.zero;
         }
         SetSpheres(emptySpheres);
+    }
+
+    void ResetRectangles()
+    {
+        //Reset Sphere Values in Material
+        Vector4[] emptyRectangles = new Vector4[maxRectangles];
+        for (int i = 0; i < maxMasks; i++)
+        {
+            emptyRectangles[i] = Vector4.zero;
+        }
+        SetExcludeRectangles(emptyRectangles);
     }
 
     void CheckColliders()
@@ -166,6 +192,7 @@ public class VolumetricFogHandler : MonoBehaviour
      private void OnApplicationQuit()
     {
         ResetSpheres();
+        ResetRectangles();
         //Reset FallOffFactor
         localVolumetricFog.parameters.materialMask.SetFloat($"_FalloffFactor",minDensity);
     }

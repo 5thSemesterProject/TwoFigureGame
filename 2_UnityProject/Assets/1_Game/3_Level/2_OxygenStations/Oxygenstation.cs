@@ -4,7 +4,7 @@ using System.Configuration;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class Oxygenstation : MonoBehaviour, IIntersectSmoke
+public class Oxygenstation : MonoBehaviour, IIntersectGas
 {
    OxygenData oxygenData;
    [SerializeField]float chargeRate = 5.0f;

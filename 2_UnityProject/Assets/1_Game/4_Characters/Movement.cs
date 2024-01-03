@@ -10,7 +10,7 @@ public enum TraversalType
 }
 
 [RequireComponent(typeof (NavMeshHandler))]
-public class Movement : MonoBehaviour, IIntersectSmoke
+public class Movement : MonoBehaviour, IIntersectGas
 {
     private CharacterController characterController;
     private CharacterData characterData;
