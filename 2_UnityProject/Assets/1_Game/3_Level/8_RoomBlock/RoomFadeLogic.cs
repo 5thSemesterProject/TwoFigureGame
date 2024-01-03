@@ -6,12 +6,16 @@ using UnityEngine.UIElements;
 
 public class RoomFadeLogic : MonoBehaviour
 {
+    [Header("Debug")]
+    [SerializeField] private bool shouldDebug = false;
+
     [Header("Parameters")]
     [SerializeField] private Material[] materials;
     [SerializeField] private int playerLayer = 9;
     [SerializeField] private float maxFadeRadius = 50;
     [SerializeField] private float fadeTime = 1;
     [SerializeField] private float CharacterRadius = 5;
+    //[SerializeField] private AnimationCurve fadeCurve = AnimationCurve.EaseInOut(0,0,1,1);
 
     [Header("Activation")]
     [SerializeField] private GameObject rootObject;
@@ -26,6 +30,24 @@ public class RoomFadeLogic : MonoBehaviour
     private string nameEpicenter = "_Epicenter";
     private string nameInactiveChar = "_InactiveCharacter";
     private string nameCharRadius = "_CharacterRadius";
+
+    #region Debug
+
+    private void OnValidate()
+    {
+        if (shouldDebug)
+        {
+            SetMaterialFloat(nameRadius, maxFadeRadius);
+            SetMaterialVector(nameEpicenter, VectorHelper.Convert3To2(transform.position));
+            SetMaterialInt(nameShouldFade, 1);
+        }
+        else
+        {
+            SetVisible(true);
+            SetMaterialVector(nameEpicenter, Vector2.zero);
+        }
+    }
+    #endregion
 
     #region Enter / Exit
     void Start()
@@ -197,7 +219,7 @@ public class RoomFadeLogic : MonoBehaviour
         while (bFadeIn ? currentRadius < targetRadius : targetRadius < currentRadius)
         {
             float addedDeltaTime = bFadeIn ? Time.deltaTime : -Time.deltaTime;
-            currentRadius += addedDeltaTime * maxFadeRadius / fadeTime;
+            currentRadius += addedDeltaTime * maxFadeRadius / (bFadeIn ? fadeTime : (fadeTime / 4));
             SetMaterialFloat(nameRadius, currentRadius);
             yield return null;
         }
