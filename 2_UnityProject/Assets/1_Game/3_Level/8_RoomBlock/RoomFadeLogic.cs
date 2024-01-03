@@ -71,7 +71,25 @@ public class RoomFadeLogic : MonoBehaviour
     {
         if (rootObject != null)
         {
-            rootObject.SetActive(visible);
+            //rootObject.SetActive(visible);
+            var meshRenderers  = rootObject.GetComponentsInChildren<MeshRenderer>();
+            var skinnedMeshRenders = rootObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            var lights = rootObject.GetComponentsInChildren<Light>();
+
+            for (int i = 0; i < skinnedMeshRenders.Length; i++)
+            {
+                skinnedMeshRenders[i].enabled = visible;
+            }
+
+            for (int i = 0; i < skinnedMeshRenders.Length; i++)
+            {
+                meshRenderers[i].enabled = visible;
+            }
+
+            for (int i = 0; i < lights.Length; i++)
+            {
+                lights[i].enabled = visible;
+            }
         }
     }
     #endregion
