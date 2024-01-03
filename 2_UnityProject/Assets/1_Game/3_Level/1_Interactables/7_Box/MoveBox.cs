@@ -20,7 +20,7 @@ public class MoveBox : PlayerActionType
     public bool CheckIfBlocked(bool bForward, out float distance)
     {
         distance = 1;
-        bool isBlocked = Physics.BoxCast(transform.position, boxCollider.size / 2, transform.forward * (bForward ? 1 : -1), out RaycastHit hit, Quaternion.identity, 2, blockingLayers,QueryTriggerInteraction.Ignore);
+        bool isBlocked = Physics.BoxCast(transform.position + (bForward ? 1 : -1)*transform.forward*0.1f, (boxCollider.size / 2), transform.forward * (bForward ? 1 : -1), out RaycastHit hit, Quaternion.identity, 2, blockingLayers,QueryTriggerInteraction.Ignore);
 
         if (isBlocked)
         {
