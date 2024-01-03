@@ -23,6 +23,8 @@ public class CamManager: MonoBehaviour
 
     void Awake()
     {
+        occludingObjects = new List<OccludingObject>();
+
           if (instance!=null && instance!=this)
                Destroy(this);
           else

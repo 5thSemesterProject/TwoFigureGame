@@ -4,7 +4,7 @@ using System.Collections;
 class OccludingObject:MonoBehaviour
 {
     public Coroutine coroutine;
-    public  new Renderer renderer;
+    public Renderer renderer;
     float targetAlpha;
 
 
