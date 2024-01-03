@@ -1,12 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
+[System.Serializable]
+class FootstepSound
+{
+    public string tag;
+    public E_5_Character[] sounds;
+    public bool setAsDefault;
+    int lastRandom;
+
+    public E_5_Character GetRandomSound()
+    {
+        int random = AudioUtility.RandomNumber(lastRandom,sounds.Length,out lastRandom);
+        return sounds[random];
+    }
+}
+
+
 public class CharacterSFX : MonoBehaviour
 {
+    [SerializeField]FootstepSound[] footstepSounds;
     List<AudioClip> audioClips = new List<AudioClip>();
 
     void  Awake()
@@ -22,33 +41,74 @@ public class CharacterSFX : MonoBehaviour
 
     public void PlaySound(E_5_Character soundEffectToPlay)
     {
+        PlaySoundWithVolumeControl(soundEffectToPlay,-1);
+    }
+
+    public void PlaySoundWithVolumeControl(E_5_Character soundEffectToPlay,float volume=-1)
+    {
         string fileName = Enum.GetName(typeof(E_5_Character),soundEffectToPlay);
         
         for (int i = 0; i < audioClips.Count; i++)
         {
             if (fileName==audioClips[i].name)
-                SoundSystem.PlaySound(audioClips[i],gameObject);
+                SoundSystem.PlaySound(audioClips[i],gameObject,volume);
         }
     }
 
-    private string RemoveFirstUnderscore(string text)
+    public void PlayFootstep()
     {
-        char[] characters = text.ToCharArray();
-        string textWithoutUnderscore = text;
+        PlayFootstepWithVolumeControl(-1);
+    }
 
-        if (characters[0]=='_')
+    public void PlayFootstepWithVolumeControl(float volume = -1)
+    {   
+        //Set up layer mask to ignore character layer
+        int characterLayer = LayerMask.NameToLayer("Player");
+        LayerMask layerMask = ~(1 << characterLayer);
+
+        //Build  and cast Ray
+        Ray ray = new Ray(transform.position+Vector3.up,Vector3.down);
+        RaycastHit hit;
+        Physics.Raycast(ray,out hit,Mathf.Infinity,layerMask);
+        
+        Debug.DrawRay(transform.position+Vector3.up,Vector3.down*200, Color.red,10000);
+
+        //Get tags
+        string[] tags = null;
+        if (hit.transform!=null)
         {
-            text.ToCharArray();
-
-            textWithoutUnderscore = "";
-
-            for (int i = 1; i < characters.Length; i++)
+            var multipleTagsTool = hit.transform.GetComponent<MultipleTagsTool>();
+            if (multipleTagsTool!=null)
             {
-                textWithoutUnderscore = textWithoutUnderscore+characters[i];
+                tags = multipleTagsTool.GetTags();
+            }
+        }   
+
+        //Check for matching tags
+        if (tags!=null)
+        {
+            for (int i = 0; i < footstepSounds.Length; i++)
+            {
+                if (tags.Contains(footstepSounds[i].tag))
+                {
+                    E_5_Character soundToPlay = footstepSounds[i].GetRandomSound();
+                    PlaySoundWithVolumeControl(soundToPlay,volume);
+                    return;
+                }    
             }
         }
 
-        return textWithoutUnderscore;
 
+        //Play default footstepsounds in case not matching tag is found
+        for (int i = 0; i < footstepSounds.Length; i++)
+        {
+            if (footstepSounds[i].setAsDefault)
+            {   
+               // Debug.Log ("Default");
+                E_5_Character soundToPlay = footstepSounds[i].GetRandomSound();
+                PlaySoundWithVolumeControl(soundToPlay,volume);
+                return;
+            }    
+        }
     }
 }

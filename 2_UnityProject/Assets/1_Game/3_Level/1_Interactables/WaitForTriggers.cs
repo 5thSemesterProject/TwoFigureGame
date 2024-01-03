@@ -7,7 +7,8 @@ public class WaitForTriggers : MonoBehaviour
 {
 
     [SerializeField]int requiredTriggers;
-    int loggedInTrigggers;
+    public int numberOfLoggedInTriggers { get { return loggedInTriggers.Count; }     private set { }}
+    List <Movement> loggedInTriggers = new List<Movement>();
     Interactable interactable;
 
     // Start is called before the first frame update
@@ -15,20 +16,20 @@ public class WaitForTriggers : MonoBehaviour
     {
         interactable = GetComponent<Interactable>();
         interactable.untriggerEvent +=Untrigger;
-
         interactable.enterCond =CompareTriggers;
-
         interactable.exitEvent +=Untrigger;
     }
 
     void Untrigger(Movement movement)
     {
-        loggedInTrigggers--;
+        if (loggedInTriggers.Contains(movement))
+            loggedInTriggers.Remove(movement);
     }
 
     bool CompareTriggers(Movement movement)
     {
-        loggedInTrigggers++;
-        return loggedInTrigggers>=requiredTriggers;
+        if (!loggedInTriggers.Contains(movement))
+            loggedInTriggers.Add(movement);
+        return numberOfLoggedInTriggers>=requiredTriggers;
     }
 }
