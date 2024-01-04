@@ -177,11 +177,11 @@ public abstract class CharacterState
 
         if (characterData.movement.interactable != null
         && CharacterManager.customInputMaps.InGame.Action.triggered)
-        {   
+        {
             //Check if there a Player Action Type
             if (characterData.movement.interactable.TryGetComponent(out PlayerActionType playerActionType))
             {
-            
+                
                 switch (playerActionType)
                 {
                     default:
@@ -203,14 +203,11 @@ public abstract class CharacterState
             }
 
             //Interact with Object without switching state
-            else
+            Movement movement = characterData.movement;
+            if (movement.interactable.TryGetComponent(out TriggerByCharacter triggerByCharacter))
             {
-                Movement movement = characterData.movement;
-                if (movement.interactable.TryGetComponent(out TriggerByCharacter triggerByCharacter))
-                {
-                    triggerByCharacter.Activate(movement);
-                    movement.interactable = null;
-                }
+                triggerByCharacter.Activate(movement);
+                movement.interactable = null;
             }
         }
     }
