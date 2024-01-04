@@ -57,7 +57,7 @@ class WalkTowards : CutsceneState
         
         if (distanceToTarget>tolerance)
         {
-            characterData.movement.GetComponent<NavMeshHandler>().MovePlayerToPos(targetPos,1,true);
+            characterData.movement.GetComponent<NavMeshHandler>().MovePlayerToPos(targetPos,1);
 
             //Slowly Lerp Player Rotation into  Actor Direction
             Vector2 moveDirection = GetMoveDirection(targetPos,playerPos);
