@@ -9,9 +9,6 @@ public class NavMeshHandler : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
     CharacterController characterController;
-
-    Coroutine movingAcrossOffMeshLink;
-
     Animator animator;
 
     void Awake()
@@ -34,88 +31,54 @@ public class NavMeshHandler : MonoBehaviour
             MovePlayerToPos(otherCharacterPos);
         }
         //Stop in case in range    
-        else if (movingAcrossOffMeshLink==null)
+        else
         {
             DisableNavMesh();
             IdleAnim();
         }
     }
 
+    public bool GetMovementRequired(Vector3 targetPos)
+    {
+        navMeshAgent.enabled = true;
+        NavMeshPath navMeshPath = new NavMeshPath();
+        navMeshAgent.CalculatePath(targetPos,navMeshPath);
+        return navMeshPath.status == NavMeshPathStatus.PathComplete && Vector3.Distance(targetPos,gameObject.transform.position)>GameStats.instance.inactiveFollowDistance;
+    }
+
+    private Vector2 previousMove;
     public void MovePlayerToPos(Vector3 position,float movementSpeed=1,bool noStoppingDistance = false)
     {
         navMeshAgent.enabled = true;
         navMeshAgent.autoTraverseOffMeshLink = false;
+        navMeshAgent.updateRotation = false;
         characterController.enabled = false;
 
         if (noStoppingDistance)
             navMeshAgent.stoppingDistance = 0.1f;
 
-        if (position!=navMeshAgent.destination && movingAcrossOffMeshLink==null)
+        if (position!=navMeshAgent.destination)
         {
             navMeshAgent.SetDestination(position);
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
-            animator.SetFloat("Speed", navMeshAgent.velocity.magnitude / Time.deltaTime * 3f);
+            animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
+
+            //Set Rotation
+            if(navMeshAgent.velocity.magnitude>0.01f)
+            {
+                transform.rotation = Quaternion.LookRotation(navMeshAgent.velocity);
+            
+                //Caclulate Movement Angle
+                Vector2 currentMove = VectorHelper.Convert3To2(transform.forward).normalized;
+                float angle = Vector2.Angle(currentMove,previousMove);
+                previousMove = currentMove;
+                animator.SetFloat("RotationAngle", angle);
+            }
         }
 
         characterController.enabled = true;
-
-
-        if (navMeshAgent.isOnOffMeshLink)
-        {
-            if (movingAcrossOffMeshLink==null)
-            {
-               movingAcrossOffMeshLink = StartCoroutine(MoveAcrossNavMeshLink(movementSpeed));
-            }      
-        }
-
     }
-
-    public bool GetMovementRequired(Vector3 targetPos)
-    {
-        navMeshAgent.enabled = true;
-        NavMeshPath navMeshPath = new NavMeshPath();
-
-        navMeshAgent.CalculatePath(targetPos,navMeshPath);
-
-        return navMeshPath.status == NavMeshPathStatus.PathComplete && Vector3.Distance(targetPos,gameObject.transform.position)>GameStats.instance.inactiveFollowDistance;
-    }
-
-    IEnumerator MoveAcrossNavMeshLink(float movementSpeed)
-    {
-        OffMeshLinkData data = navMeshAgent.currentOffMeshLinkData;
-
-        Vector3 startPos = navMeshAgent.transform.position;
-        Vector3 endPos = data.endPos + Vector3.up * navMeshAgent.baseOffset;
-
-        //Calulate veloctiy
-        float navMeshAgentVelocity = navMeshAgent.velocity.magnitude;
-        float duration = (endPos-startPos).magnitude/(navMeshAgentVelocity>2.5f?navMeshAgentVelocity:movementSpeed* 2.5f);
-
-        float t = 0.0f;
-        float tStep = 1.0f/duration;
-        tStep = 1*tStep;
-    
-
-        while(t<1.0f){
-            transform.position = Vector3.Lerp(startPos,endPos,t);
-            
-            if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
-                navMeshAgent.destination = transform.position;
-            
-            t+=tStep*Time.deltaTime;
-
-            //Adjustanimation
-            animator.SetFloat("Speed", tStep / Time.deltaTime * 2f);
-
-            yield return null;
-        }
-        transform.position = endPos;
-
-        navMeshAgent.CompleteOffMeshLink();
-        movingAcrossOffMeshLink = null;
-    }
-
 
     public void DisableNavMesh()
     {

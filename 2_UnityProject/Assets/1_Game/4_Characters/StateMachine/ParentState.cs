@@ -86,7 +86,7 @@ public abstract class CharacterState
 
         //Oxygenstation
         Oxygenstation oxygenstation  = characterData.movement.oxygenstation;
-        if (oxygenstation!=null)
+        if (oxygenstation!=null && !CheckForOccludingWalls(oxygenstation.transform.position))
         {
             if (characterData.characterOxygenData.oxygenData.currentOxygen<=characterData.characterOxygenData.oxygenData.maxOxygen)
             {
@@ -104,6 +104,7 @@ public abstract class CharacterState
         }
         else
         {
+            oxygenstation = null;
             characterData.characterOxygenData.oxygenData.FallOff();
             characterData.raisedChargingEvent = false;
 
@@ -123,6 +124,24 @@ public abstract class CharacterState
         //Increase FallOff With Time
         characterData.elapsedTime +=Time.deltaTime;
         characterData.characterOxygenData.UpdateFallOff(characterData.elapsedTime);
+    }
+
+    bool CheckForOccludingWalls(Vector3 targetToCheckPos)
+    {
+        //Check For Occluding Walls
+        Vector3 playerPos = characterData.movement.transform.position+Vector3.up;
+        Vector3 rayDir = playerPos-targetToCheckPos;
+        Ray ray = new Ray(targetToCheckPos,rayDir);
+        LayerMask allLayersMask = int.MaxValue;
+        RaycastHit hitInfo;
+        
+        if (Physics.Raycast(targetToCheckPos,rayDir, out hitInfo, Mathf.Infinity,allLayersMask,QueryTriggerInteraction.Ignore))
+        {
+            if (hitInfo.transform.TryGetComponent(out Movement movement))
+                return false;
+        }
+
+        return true;
     }
 
     public void HandleInteractable(out CharacterState updatedState)
