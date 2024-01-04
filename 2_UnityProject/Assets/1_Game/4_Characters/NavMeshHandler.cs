@@ -47,7 +47,7 @@ public class NavMeshHandler : MonoBehaviour
     }
 
     private Vector2 previousMove;
-    public void MovePlayerToPos(Vector3 position,float movementSpeed=1,bool noStoppingDistance = false)
+    public void MovePlayerToPos(Vector3 position,float movementSpeed=1,bool noStoppingDistance = false, bool updateRotation = true)
     {
         navMeshAgent.enabled = true;
         navMeshAgent.autoTraverseOffMeshLink = false;
@@ -66,8 +66,9 @@ public class NavMeshHandler : MonoBehaviour
 
             //Set Rotation
             if(navMeshAgent.velocity.magnitude>0.01f)
-            {
-                transform.rotation = Quaternion.LookRotation(navMeshAgent.velocity);
+            {   
+                if (updateRotation)
+                    transform.rotation = Quaternion.LookRotation(navMeshAgent.velocity);
             
                 //Caclulate Movement Angle
                 Vector2 currentMove = VectorHelper.Convert3To2(transform.forward).normalized;

@@ -118,7 +118,7 @@ public class CamManager: MonoBehaviour
          Vector3 direction = startPoint-worldCenter;
          direction = direction.normalized;
 
-         int amountOfHits = Physics.CapsuleCastNonAlloc(point1,point2,radius,direction,raycastHits,Mathf.Infinity,layerMask);
+         int amountOfHits = Physics.CapsuleCastNonAlloc(point1,point2,radius,direction,raycastHits,Mathf.Infinity,layerMask,QueryTriggerInteraction.Ignore);
 
          List<FadeObject> tempOccludingObjects = new List<FadeObject>();
 

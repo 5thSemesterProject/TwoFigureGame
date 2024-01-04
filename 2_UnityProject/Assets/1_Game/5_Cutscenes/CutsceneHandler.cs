@@ -9,13 +9,12 @@ using UnityEngine.Playables;
 public class ActorData
 {
     public GameObject actor;
-    public Transform transformRef;
+
     [HideInInspector]public CharacterType characterType;
 
     public ActorData(GameObject actor,Transform transformRef,CharacterType characterType)
     {
         this.actor = actor;
-        this.transformRef = transformRef;
         this.characterType = characterType;
     }
 
@@ -76,7 +75,7 @@ public class CutsceneHandler
     public void SwapToPlayModel(GameObject playModel, CharacterType characterType)
     {
         ActorData cutsceneData = GetActorData(characterType);
-        SwapCharacterModels(GetActorData(characterType).actor,playModel,true,cutsceneData.transformRef.position);
+        SwapCharacterModels(GetActorData(characterType).actor,playModel,true,cutsceneData.actor.transform.position);
     }
 
     public void SwapToActorModel(GameObject playModel, CharacterType characterType)

@@ -25,8 +25,8 @@ public abstract class CharacterState
         if (updateLastState)
             characterData.lastState = characterData.currentState;
 
-        if (!(characterData.currentState is AIState))
-            CamManager.FindOccludingObjects(characterData.gameObject.transform);
+        //if (!(characterData.currentState is AIState))
+           // CamManager.FindOccludingObjects(characterData.gameObject.transform);
 
         if (handleOxygen)
             HandleOxygen();
@@ -197,7 +197,7 @@ public abstract class CharacterState
                       break;
                     case CutsceneTrigger:
                         var cutsceneTrigger = playerActionType as CutsceneTrigger;
-                        updatedState = new WalkTowards(characterData,cutsceneTrigger.GetCutsceneHandler());
+                        updatedState = new WalkTowards(characterData,cutsceneTrigger.cutscene.cutsceneHandler);
                     break;
                 }
             }
