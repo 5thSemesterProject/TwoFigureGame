@@ -222,7 +222,6 @@ public abstract class CharacterState
 
         if (Input.anyKeyDown) 
         {
-            Debug.Log (cheatIndex);
             if (Input.GetKeyDown(cheatCode[cheatIndex].ToString())) 
                 cheatIndex++;
             else 
