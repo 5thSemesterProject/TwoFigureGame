@@ -93,7 +93,7 @@ class JumpOverState : CharacterState
 {
     public JumpOverState(CharacterData data) : base(data)
     {
-        characterData.movement.StartTraversing(characterData.movement.interactable, TraversalType.JumpOver, 2);
+        characterData.movement.StartTraversing(characterData.movement.interactable, TraversalType.JumpOver, 1.5f);
         handleInteractables = false;
     }
 
