@@ -107,8 +107,17 @@ public class CutsceneHandler
         target.transform.rotation = source.transform.rotation;
         
         //Swap Model visibility
-        source.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-        target.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        var sourceRenders  = source.GetComponentsInChildren<SkinnedMeshRenderer>();
+        for(int i = 0; i < sourceRenders.Length; i++)
+        {
+            sourceRenders[i].enabled = false;
+        }
+
+        var targetRenderers = target.GetComponentsInChildren<SkinnedMeshRenderer>();
+        for (int i = 0; i < targetRenderers.Length; i++)
+        {
+            targetRenderers[i].enabled = true;
+        }
     }
 
     void TransferAnimatorComponents(Animator source, Animator target)

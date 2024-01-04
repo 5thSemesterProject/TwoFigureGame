@@ -25,7 +25,7 @@ class WalkTowards : CutsceneState
     Vector2 targetDir;
     Vector3 targetPos;
     float intitialTargetDistance;
-    float tolerance = 0.2f;
+    float tolerance = 0.1f;
 
     GameObject actor;
     public WalkTowards(CharacterData data, CutsceneHandler cutsceneHandler) : base(data, cutsceneHandler)
