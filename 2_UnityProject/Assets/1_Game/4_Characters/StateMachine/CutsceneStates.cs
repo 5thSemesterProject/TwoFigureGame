@@ -12,11 +12,41 @@ abstract class CutsceneState : CharacterState
     protected  CutsceneState(CharacterData data, CutsceneHandler cutsceneHandler) : base(data)
     {
         handleOxygen = false;
+        handleInteractables = false;
         this.cutsceneHandler = cutsceneHandler;
     }
 
     public override abstract CharacterState SpecificStateUpdate();
 
+}
+
+class WaitForDoor: CutsceneState
+{
+    Door door;
+
+    public WaitForDoor(CharacterData data, CutsceneHandler cutsceneHandler, Door door) : base(data, cutsceneHandler)
+    {
+        updateLastState = false;
+        handleInteractables = false;
+        handleOxygen = false;
+        
+        this.cutsceneHandler = cutsceneHandler;
+        this.door = door;
+
+        characterData.movement.TerminateMove();
+        characterData.movement.GetComponent<CharacterController>().enabled = false;
+        characterData.movement.GetComponent<NavMeshAgent>().enabled = false;
+
+        characterData.movement.GetComponent<NavMeshHandler>().IdleAnim();
+
+    }
+
+    public override CharacterState SpecificStateUpdate()
+    {    
+       if (door.GetOpen())
+            return new WalkTowards(characterData,cutsceneHandler);
+        return this;
+    }
 }
 
 
@@ -37,13 +67,18 @@ class WalkTowards : CutsceneState
         characterData.gameObject.GetComponent<CharacterController>().detectCollisions = false;
 
         //Turn off UI
-        
+
+
+        characterData.movement.GetComponent<CharacterController>().enabled = false;
+        characterData.movement.GetComponent<NavMeshAgent>().enabled = true;
 
         //Set up positions
         actor = cutsceneHandler.GetActorData(characterData.movement.characterType).actor;
         targetPos = actor.transform.position;
         targetDir = actor.transform.forward;
         intitialTargetDistance = Vector2.Distance(characterData.gameObject.transform.position,targetPos)-tolerance;
+
+        characterData.movement.TerminateMove();
 
     }
 
@@ -193,11 +228,16 @@ class RecoverLastState : CutsceneState
         //Return to previous States
         if (characterData.lastState is AIState)
         {
+            characterData.movement.GetComponent<CharacterController>().enabled = false;
+            characterData.movement.GetComponent<NavMeshAgent>().enabled = true;
+            characterData.movement.GetComponent<NavMeshAgent>().isStopped = false;
             return new AIState(characterData);
         }
             
         else
         {
+            characterData.movement.GetComponent<CharacterController>().enabled = true;
+            characterData.movement.GetComponent<NavMeshAgent>().enabled = false;
             characterData.virtualCamera.gameObject.SetActive(true);
             return new IdleState(characterData);
         }

@@ -103,6 +103,7 @@ public class Movement : MonoBehaviour, IIntersectGas
         float tolerance = 0.001f;
         while (true)
         {
+
             while (Time.timeScale == 0)
             {
                 yield return null;
@@ -112,7 +113,8 @@ public class Movement : MonoBehaviour, IIntersectGas
             if (timeFalling > 0)
             {
                 float gravityFallDistance = gravity * timeFalling * timeFalling;
-                characterController.Move(Vector3.down * gravityFallDistance);
+                if (characterController.enabled)
+                    characterController.Move(Vector3.down * gravityFallDistance);
             }
 
 
@@ -149,7 +151,7 @@ public class Movement : MonoBehaviour, IIntersectGas
 
             //Move
             Vector3 previousPosition = transform.position;
-            if (currentMove != null)
+            if (currentMove != null && characterController.enabled)
                 characterController.Move(currentMove * Time.unscaledDeltaTime * Time.timeScale);
             Vector3 nextPosition = transform.position;
             currentMove = (nextPosition - previousPosition) / Time.unscaledDeltaTime * Time.timeScale;

@@ -31,7 +31,7 @@ public class ActorData
         if (movement)
             movement.enabled = false;
 
-        TurnOffAllCollliders (actor);
+        //TurnOffAllCollliders (actor);
     }
 
     
