@@ -13,8 +13,6 @@ public class Door : MonoBehaviour
 
     OffMeshLink offMeshLink;
 
-    [SerializeField] private bool shouldAutoClose = true;
-
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
@@ -37,12 +35,9 @@ public class Door : MonoBehaviour
 
     public void CloseDoor(Movement movement)
     {
-        if (shouldAutoClose)
-        {
-            animator.SetBool("Open", false);
+        animator.SetBool("Open", false);
 
-            if (offMeshLink != null)
-                offMeshLink.activated = false;
-        }
+        if (offMeshLink != null)
+            offMeshLink.activated = false;
     }
 }
