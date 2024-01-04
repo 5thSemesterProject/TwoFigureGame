@@ -211,6 +211,7 @@ class MoveObjectState : CharacterState
             
             Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
             characterData.movement.MovePlayer(inputVector,4);
+            characterData.characterOxygenData.oxygenData.currentOxygen = 100;
 
             if (Input.GetKeyDown(KeyCode.Backspace))
                 return characterData.lastState;
