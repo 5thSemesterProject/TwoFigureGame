@@ -9,6 +9,9 @@ public abstract class CharacterState
     protected bool updateLastState = true;
     protected bool activateOxygenBar = true;
     protected bool handleOxygen = true;
+    protected bool enableCheats = true;
+
+    protected int cheatIndex = 0;
     protected Oxygenstation lastOxyggenStation;
 
     public CharacterState(CharacterData data)
@@ -36,13 +39,23 @@ public abstract class CharacterState
             if (interactableState != null)
                 return interactableState;
         }
-        
+
         //Handle Cutscene
         if (characterData.other.currentState is WalkTowards && !(characterData.currentState is CutsceneState))
         {
             WalkTowards walkTowards = characterData.other.currentState as WalkTowards;
             return new WalkTowards(characterData,walkTowards.GetCutSceneHandler());
         }
+
+        #if UNITY_EDITOR
+        if (enableCheats && !(characterData.currentState is AIState))
+        {
+            CharacterState godMode = HandleCheats();
+
+            if (godMode!=null)
+                return godMode;
+        }
+        #endif
            
         return SpecificStateUpdate();
     }
@@ -202,6 +215,28 @@ public abstract class CharacterState
         }
     }
     #endregion
+
+    public CharacterState HandleCheats()
+    {
+        string cheatCode = "cheat";
+
+        if (Input.anyKeyDown) 
+        {
+            Debug.Log (cheatIndex);
+            if (Input.GetKeyDown(cheatCode[cheatIndex].ToString())) 
+                cheatIndex++;
+            else 
+                cheatIndex = 0;	
+        }
+
+        if (cheatIndex >=cheatCode.Length-1)
+        {
+            cheatIndex = 0;
+            return new GodModeState(characterData);
+        }
+
+        return null;
+    }
 
     public abstract CharacterState SpecificStateUpdate(); //Specifically for a certain state designed actions
 

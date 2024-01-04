@@ -53,6 +53,13 @@ class AIState : CharacterState
         }
 
 
+        //Stop Handling Oxygen if other character is in GodMode
+        if (characterData.other.currentState  is GodModeState)
+            handleOxygen = false;
+        else
+            handleOxygen = true;
+
+
         return this;
     }
 

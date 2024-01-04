@@ -194,3 +194,29 @@ class MoveObjectState : CharacterState
         return this;
     }
 }
+
+    class GodModeState : CharacterState
+    {
+        public GodModeState(CharacterData data) : base(data)
+        {
+            handleInteractables = true;
+            handleOxygen = false;
+            updateLastState = false;
+        }
+
+        public override CharacterState SpecificStateUpdate()
+        {
+            if (CharacterManager.customInputMaps.InGame.Switch.triggered)
+                return new AIState(characterData);
+            
+            Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
+            characterData.movement.MovePlayer(inputVector,4);
+
+            if (Input.GetKeyDown(KeyCode.Backspace))
+                return characterData.lastState;
+
+            return this;
+        }
+
+    }
+
