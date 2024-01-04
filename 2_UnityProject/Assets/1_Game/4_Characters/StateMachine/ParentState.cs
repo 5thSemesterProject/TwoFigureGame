@@ -36,18 +36,19 @@ public abstract class CharacterState
             if (interactableState != null)
                 return interactableState;
         }
-
+        
         //Handle Cutscene
         if (characterData.other.currentState is WalkTowards && !(characterData.currentState is CutsceneState))
         {
             WalkTowards walkTowards = characterData.other.currentState as WalkTowards;
             return new WalkTowards(characterData,walkTowards.GetCutSceneHandler());
         }
-
            
         return SpecificStateUpdate();
     }
 
+    #region OxygenHandling
+    #region  OxygenBar
     public void HandleOxygenBar()
     {            
         float currentOxygen = characterData.characterOxygenData.oxygenData.currentOxygen;
@@ -74,6 +75,7 @@ public abstract class CharacterState
             characterData.oxygenBar = null;
         }
     }
+    #endregion
 
 
     public void HandleOxygen()
@@ -84,38 +86,18 @@ public abstract class CharacterState
         else
             HideOxygenBar();
 
-        //Oxygenstation
+        //Oxygenstation Charge And Uncharge
         Oxygenstation oxygenstation  = characterData.movement.oxygenstation;
+        
         if (oxygenstation!=null && !CheckForOccludingWalls(oxygenstation.transform.position))
-        {
-            if (characterData.characterOxygenData.oxygenData.currentOxygen<=characterData.characterOxygenData.oxygenData.maxOxygen)
-            {
-                characterData.characterOxygenData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
-                characterData.raisedLowOxygenEvent = false;
-
-                //On Charging
-                if (!characterData.raisedChargingEvent)
-                {
-                    characterData.raisedChargingEvent = true;
-                    CustomEvents.RaiseChargingOxygen(characterData);
-                }
-            }
-                
-        }
+            ChargeCharacter(oxygenstation);
         else
         {
+            UnchargeCharacter();
             oxygenstation = null;
-            characterData.characterOxygenData.oxygenData.FallOff();
-            characterData.raisedChargingEvent = false;
-
-            //Raise Low Health Event
-            if (characterData.characterOxygenData.oxygenData.currentOxygen<=characterData.characterOxygenData.lowOxygenThreshhold && !characterData.raisedLowOxygenEvent)
-            {
-                characterData.raisedLowOxygenEvent = true;
-                CustomEvents.RaiseLowOxygen(characterData);
-            }
         }
 
+        //Check For Death
         if (characterData.characterOxygenData.oxygenData.currentOxygen <= 0)
         {
             characterData.animator.SetBool("Dead", true);
@@ -144,6 +126,38 @@ public abstract class CharacterState
         return true;
     }
 
+    void ChargeCharacter(Oxygenstation oxygenstation)
+    {
+        if (characterData.characterOxygenData.oxygenData.currentOxygen<=characterData.characterOxygenData.oxygenData.maxOxygen)
+        {
+            characterData.characterOxygenData.oxygenData.currentOxygen+=oxygenstation.ChargePlayer();
+            characterData.raisedLowOxygenEvent = false;
+
+            //On Charging
+            if (!characterData.raisedChargingEvent)
+            {
+                characterData.raisedChargingEvent = true;
+                CustomEvents.RaiseChargingOxygen(characterData);
+            }
+        }
+    }
+
+    void UnchargeCharacter()
+    {
+        characterData.characterOxygenData.oxygenData.FallOff();
+            characterData.raisedChargingEvent = false;
+
+        //Raise Low Health Event
+        if (characterData.characterOxygenData.oxygenData.currentOxygen<=characterData.characterOxygenData.lowOxygenThreshhold && !characterData.raisedLowOxygenEvent)
+        {
+            characterData.raisedLowOxygenEvent = true;
+            CustomEvents.RaiseLowOxygen(characterData);
+        }
+
+    }
+    #endregion
+
+    #region  Interactables
     public void HandleInteractable(out CharacterState updatedState)
     {
         updatedState = null;
@@ -187,6 +201,7 @@ public abstract class CharacterState
             }
         }
     }
+    #endregion
 
     public abstract CharacterState SpecificStateUpdate(); //Specifically for a certain state designed actions
 
