@@ -2388,7 +2388,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2ba9e664334ad4d8a67b06453cae2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldAutoClose: 1
 --- !u!114 &112067531789755978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2645,7 +2644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2ba9e664334ad4d8a67b06453cae2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldAutoClose: 1
 --- !u!114 &7903785245027761790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2822,7 +2820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2ba9e664334ad4d8a67b06453cae2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldAutoClose: 1
 --- !u!114 &1117645215525293124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3127,7 +3124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2ba9e664334ad4d8a67b06453cae2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldAutoClose: 1
 --- !u!114 &1741616671727535063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3154,6 +3150,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5272757339849091941}
     m_Modifications:
+    - target: {fileID: 376014379315893088, guid: 497f6be4d1072ff42a956b37ae7a04c0, type: 3}
+      propertyPath: triggering
+      value: 
+      objectReference: {fileID: 2142757015378445784}
     - target: {fileID: 722562402491976207, guid: 497f6be4d1072ff42a956b37ae7a04c0, type: 3}
       propertyPath: parameters.textureOffset.x
       value: 0
@@ -3231,6 +3231,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2142757015378445784}
     - target: {fileID: 7555774579513078888, guid: 497f6be4d1072ff42a956b37ae7a04c0, type: 3}
+      propertyPath: triggering
+      value: 
+      objectReference: {fileID: 2142757015378445784}
+    - target: {fileID: 8230969656101315212, guid: 497f6be4d1072ff42a956b37ae7a04c0, type: 3}
       propertyPath: triggering
       value: 
       objectReference: {fileID: 2142757015378445784}
@@ -3654,7 +3658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2ba9e664334ad4d8a67b06453cae2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldAutoClose: 0
 --- !u!95 &6054853413723907490
 Animator:
   serializedVersion: 5
@@ -3821,7 +3824,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2ba9e664334ad4d8a67b06453cae2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldAutoClose: 0
 --- !u!114 &2102042227563484684 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5440813446492820925, guid: 7dea1e23cbb0e3e4baec56c496ca4cb6, type: 3}
