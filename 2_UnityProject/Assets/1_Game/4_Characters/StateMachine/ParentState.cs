@@ -197,20 +197,21 @@ public abstract class CharacterState
                       break;
                     case CutsceneTrigger:
                         var cutsceneTrigger = playerActionType as CutsceneTrigger;
-                        updatedState = new WalkTowards(characterData,cutsceneTrigger.cutscene.cutsceneHandler);
+                        if (characterData.movement.interactable.TryGetComponent(out Door door))
+                            updatedState = new WaitForDoor(characterData,cutsceneTrigger.cutscene.cutsceneHandler,door);
+                        else
+                            updatedState = new WalkTowards(characterData,cutsceneTrigger.cutscene.cutsceneHandler);
                     break;
                 }
             }
 
             //Interact with Object without switching state
-            else
+            //Interact with Object without switching state
+            Movement movement = characterData.movement;
+            if (movement.interactable.TryGetComponent(out TriggerByCharacter triggerByCharacter))
             {
-                Movement movement = characterData.movement;
-                if (movement.interactable.TryGetComponent(out TriggerByCharacter triggerByCharacter))
-                {
-                    triggerByCharacter.Activate(movement);
-                    movement.interactable = null;
-                }
+                triggerByCharacter.Activate(movement);
+                movement.interactable = null;
             }
         }
     }

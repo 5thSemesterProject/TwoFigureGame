@@ -20,6 +20,8 @@ public class NavMeshHandler : MonoBehaviour
 
     public void FollowPartner(Vector3 otherCharacterPos)
     {
+        navMeshAgent.enabled = true;
+
         //Check Oxygenstation due to collider mess
         Oxygenstation oxygenstation = GetComponent<Movement>().oxygenstation;
         if (oxygenstation)
@@ -40,19 +42,18 @@ public class NavMeshHandler : MonoBehaviour
 
     public bool GetMovementRequired(Vector3 targetPos)
     {
-        navMeshAgent.enabled = true;
         NavMeshPath navMeshPath = new NavMeshPath();
         navMeshAgent.CalculatePath(targetPos,navMeshPath);
+
         return navMeshPath.status == NavMeshPathStatus.PathComplete && Vector3.Distance(targetPos,gameObject.transform.position)>GameStats.instance.inactiveFollowDistance;
     }
 
     private Vector2 previousMove;
     public void MovePlayerToPos(Vector3 position,float movementSpeed=1,bool noStoppingDistance = false, bool updateRotation = true)
     {
-        navMeshAgent.enabled = true;
-        navMeshAgent.autoTraverseOffMeshLink = false;
         navMeshAgent.updateRotation = false;
         characterController.enabled = false;
+        navMeshAgent.isStopped = false;
 
         if (noStoppingDistance)
             navMeshAgent.stoppingDistance = 0.1f;
@@ -62,7 +63,7 @@ public class NavMeshHandler : MonoBehaviour
             navMeshAgent.SetDestination(position);
             animator.SetBool("Grounded", true);
             animator.SetFloat("MotionSpeed", 1);
-            animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
+            animator.SetFloat("Speed", navMeshAgent.velocity.magnitude+1);
 
             //Set Rotation
             if(navMeshAgent.velocity.magnitude>0.01f)
@@ -77,8 +78,6 @@ public class NavMeshHandler : MonoBehaviour
                 animator.SetFloat("RotationAngle", angle);
             }
         }
-
-        characterController.enabled = true;
     }
 
     public void DisableNavMesh()
@@ -91,6 +90,8 @@ public class NavMeshHandler : MonoBehaviour
         animator.SetBool("Grounded", true);
         animator.SetFloat("MotionSpeed", 1);
         animator.SetFloat("Speed", 0);
+        if (navMeshAgent.isOnNavMesh)
+            navMeshAgent.isStopped = true;
     }
 
 
