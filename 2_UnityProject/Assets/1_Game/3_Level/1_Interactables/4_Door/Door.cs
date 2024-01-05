@@ -6,12 +6,11 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(Interactable))]
 public class Door : MonoBehaviour
-
 {
     Animator animator;
     Interactable interactable;
-
-    OffMeshLink offMeshLink;
+    bool open = false;
+    float doorOpenTime = 2;
 
     void Start()
     {
@@ -21,23 +20,27 @@ public class Door : MonoBehaviour
         interactable.triggerEvent+=OpenDoor;
         interactable.untriggerEvent+=CloseDoor;
 
-        offMeshLink = interactable.GetComponentInChildren<OffMeshLink>();
-        if (offMeshLink!=null)
-            offMeshLink.activated = false;
     }
     public void OpenDoor(Movement movement)
     {
         animator.SetBool("Open",true);
-
-        if (offMeshLink!=null)
-            offMeshLink.activated = true;
+        StartCoroutine(_OpenDoor());
     }
 
     public void CloseDoor(Movement movement)
     {
         animator.SetBool("Open", false);
-
-        if (offMeshLink != null)
-            offMeshLink.activated = false;
+        open = false;
     }
+
+    public bool GetOpen()
+    {
+        return open;
+    }
+
+   IEnumerator _OpenDoor()
+   {
+        yield return new WaitForSeconds(doorOpenTime);
+        open = true;
+   }
 }

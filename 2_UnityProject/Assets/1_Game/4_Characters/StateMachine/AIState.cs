@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 class AIState : CharacterState
 {
@@ -12,7 +13,11 @@ class AIState : CharacterState
         if (characterData.virtualCamera != null)
             characterData.virtualCamera.gameObject.SetActive(false);
 
-        characterData.movement.MovePlayer(Vector2.zero, 0);
+        characterData.movement.TerminateMove();
+
+        
+        characterData.movement.GetComponent<CharacterController>().enabled = false;
+        characterData.movement.GetComponent<NavMeshAgent>().enabled = true;
 
         handleInteractables = false;
 
@@ -32,10 +37,11 @@ class AIState : CharacterState
                 characterData.virtualCamera.gameObject.SetActive(true);
 
             CustomEvents.RaiseCharacterSwitch(characterData.roomFadeRigidBody);
-
-            movement.DisableNavMeshHandling();
             GameObject.Destroy(collider);
             collider = null;
+
+            characterData.movement.GetComponent<CharacterController>().enabled = true;
+            characterData.movement.GetComponent<NavMeshAgent>().enabled = false;
 
             return new IdleState(characterData);
         }
@@ -44,13 +50,16 @@ class AIState : CharacterState
         if (movement.interactable !=null && movement.interactable.TryGetComponent(out PressurePlate pressurePlate)) //Don't follow partner if on pressure plate
         {
             //movement.DisableNavMeshHandling();
-            movement.MovePlayer(Vector2.zero,0);
+            //movement.MovePlayer(Vector2.zero,0);
+            movement.GetComponent<NavMeshHandler>().IdleAnim();
         }
-        else if (movement.interactable == null)
+        else
         {
+            movement.interactable = null;
             Vector3 otherCharacterPos = characterData.other.gameObject.transform.position;
             characterData.movement.FollowPartner(otherCharacterPos);
         }
+
 
 
         //Stop Handling Oxygen if other character is in GodMode

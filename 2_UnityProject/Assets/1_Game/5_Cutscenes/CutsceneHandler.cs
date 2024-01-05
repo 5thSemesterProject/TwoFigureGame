@@ -9,13 +9,12 @@ using UnityEngine.Playables;
 public class ActorData
 {
     public GameObject actor;
-    public Transform transformRef;
+
     [HideInInspector]public CharacterType characterType;
 
     public ActorData(GameObject actor,Transform transformRef,CharacterType characterType)
     {
         this.actor = actor;
-        this.transformRef = transformRef;
         this.characterType = characterType;
     }
 
@@ -32,7 +31,7 @@ public class ActorData
         if (movement)
             movement.enabled = false;
 
-        TurnOffAllCollliders (actor);
+        //TurnOffAllCollliders (actor);
     }
 
     
@@ -76,7 +75,7 @@ public class CutsceneHandler
     public void SwapToPlayModel(GameObject playModel, CharacterType characterType)
     {
         ActorData cutsceneData = GetActorData(characterType);
-        SwapCharacterModels(GetActorData(characterType).actor,playModel,true,cutsceneData.transformRef.position);
+        SwapCharacterModels(GetActorData(characterType).actor,playModel,true,cutsceneData.actor.transform.position);
     }
 
     public void SwapToActorModel(GameObject playModel, CharacterType characterType)
@@ -107,8 +106,17 @@ public class CutsceneHandler
         target.transform.rotation = source.transform.rotation;
         
         //Swap Model visibility
-        source.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-        target.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        var sourceRenders  = source.GetComponentsInChildren<SkinnedMeshRenderer>();
+        for(int i = 0; i < sourceRenders.Length; i++)
+        {
+            sourceRenders[i].enabled = false;
+        }
+
+        var targetRenderers = target.GetComponentsInChildren<SkinnedMeshRenderer>();
+        for (int i = 0; i < targetRenderers.Length; i++)
+        {
+            targetRenderers[i].enabled = true;
+        }
     }
 
     void TransferAnimatorComponents(Animator source, Animator target)
