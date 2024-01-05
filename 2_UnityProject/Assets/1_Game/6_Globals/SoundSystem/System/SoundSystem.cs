@@ -58,7 +58,7 @@ public struct SoundData
 public class SoundChannel
 {
     private List<SoundTask> internalList = new List<SoundTask>();
-    public bool customChannel = false;
+    [HideInInspector] public bool customChannel = false;
     public bool IsDisposable { get => !customChannel && internalList.Count <= 0; }
 
     //Values
