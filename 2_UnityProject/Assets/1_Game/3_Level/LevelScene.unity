@@ -234,6 +234,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &468552706 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7786416885364305354, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+  m_PrefabInstance: {fileID: 833025216}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &496029931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +252,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   specificCharacterAccess: 0
+--- !u!95 &504236628 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7701115376929073142, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+  m_PrefabInstance: {fileID: 833025216}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &537188519
 GameObject:
   m_ObjectHideFlags: 0
@@ -4550,16 +4560,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2923821545120269673, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_SceneBindings.Array.size
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2923821545120269673, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_SceneBindings.Array.data[9].key
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5229944607270868215, guid: a8ebbdd93f841f245be4131a803b17f3, type: 2}
+    - target: {fileID: 2923821545120269673, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+      propertyPath: m_SceneBindings.Array.data[10].key
+      value: 
+      objectReference: {fileID: 2430984664974087118, guid: a8ebbdd93f841f245be4131a803b17f3, type: 2}
     - target: {fileID: 2923821545120269673, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_SceneBindings.Array.data[9].value
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 468552706}
+    - target: {fileID: 2923821545120269673, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+      propertyPath: m_SceneBindings.Array.data[10].value
+      value: 
+      objectReference: {fileID: 504236628}
     - target: {fileID: 2936368389527917188, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.00022798793
@@ -5873,7 +5891,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1514159246
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6482,7 +6500,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3538733709912251231, guid: 1ec250fdb8785e34aa945fbf06e1109f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4054937172013594412, guid: 1ec250fdb8785e34aa945fbf06e1109f, type: 3}
       propertyPath: m_IsActive
