@@ -123,17 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &75556877 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5386993858617576826, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
-  m_PrefabInstance: {fileID: 833025216}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e93a0bf7081358648be23611810171af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &95470957
 GameObject:
   m_ObjectHideFlags: 0
@@ -4446,6 +4435,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &740925598 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5386993858617576826, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+  m_PrefabInstance: {fileID: 833025216}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93a0bf7081358648be23611810171af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &782016351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4490,7 +4490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationStartpoint: {fileID: 0}
-  cutscene: {fileID: 1400501615}
+  cutscene: {fileID: 1030463190}
 --- !u!4 &830098088 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6066715123520040635, guid: 38ef1576894a58641be64be05040116c, type: 3}
@@ -4511,6 +4511,14 @@ PrefabInstance:
     - target: {fileID: 134117502353784414, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0.000000029802322
+      objectReference: {fileID: 0}
+    - target: {fileID: 606387098935758635, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+      propertyPath: m_Lens.m_SensorSize.x
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 606387098935758635, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+      propertyPath: m_Lens.m_SensorSize.y
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 1039374457708735962, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4551,7 +4559,7 @@ PrefabInstance:
     - target: {fileID: 2923821545120269673, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_SceneBindings.Array.data[9].value
       value: 
-      objectReference: {fileID: 833025219}
+      objectReference: {fileID: 0}
     - target: {fileID: 2936368389527917188, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.00022798793
@@ -4757,42 +4765,13 @@ PrefabInstance:
     - {fileID: 7377860845106535634, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
     - {fileID: 2754692326502725182, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3951112705724626754, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 833025219}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
 --- !u!4 &833025217 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8293144701452676192, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
   m_PrefabInstance: {fileID: 833025216}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &833025218 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3951112705724626754, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
-  m_PrefabInstance: {fileID: 833025216}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &833025219
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 833025218}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &881123972 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7816954721284331373, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
@@ -5115,6 +5094,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   specificCharacterAccess: 0
+--- !u!114 &1030463190 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 465672801389423340, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+  m_PrefabInstance: {fileID: 833025216}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93a0bf7081358648be23611810171af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1036269932
 GameObject:
   m_ObjectHideFlags: 0
@@ -5700,17 +5690,6 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 7fb47b3f86c4f6b4ca814ddc38dcda88, type: 2}
   m_BuildHeightMesh: 1
---- !u!114 &1400501615 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 465672801389423340, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
-  m_PrefabInstance: {fileID: 833025216}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e93a0bf7081358648be23611810171af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1405552172
 GameObject:
   m_ObjectHideFlags: 0
@@ -6075,7 +6054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationStartpoint: {fileID: 0}
-  cutscene: {fileID: 75556877}
+  cutscene: {fileID: 740925598}
 --- !u!114 &1682111334
 MonoBehaviour:
   m_ObjectHideFlags: 0
