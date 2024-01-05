@@ -197,7 +197,7 @@ public abstract class CharacterState
                       break;
                     case CutsceneTrigger:
                         var cutsceneTrigger = playerActionType as CutsceneTrigger;
-                        updatedState = new WalkTowards(characterData,cutsceneTrigger.GetCutsceneHandler());
+                        updatedState = new WalkTowards(characterData,cutsceneTrigger.cutscene.cutsceneHandler);
                     break;
                 }
             }
