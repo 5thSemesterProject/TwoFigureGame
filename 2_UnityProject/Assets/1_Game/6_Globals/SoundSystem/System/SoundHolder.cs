@@ -38,6 +38,7 @@ public class SoundHolder : MonoBehaviour
     public static AudioClip GetAudioClip<T>(T soundEnum, out int channel) where T : Enum
     {
         string name = Enum.GetName(typeof(T), soundEnum);
+        name = AudioUtility.RemovePrefix(name, "_");
         AudioClip returnClip = null;
 
         if (typeof(T) == typeof(EVoicelines))

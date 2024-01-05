@@ -8,8 +8,14 @@ public class SoundAmbient : MonoBehaviour
     [SerializeField] private float volume = 1;
     [SerializeField] private bool loop = true;
 
-    private void Awake()
+    private IEnumerator Start()
     {
-        SoundSystem.Play(sound, this.transform, SoundPriority.None, loop, volume);
+        while (true)
+        {
+            if (SoundSystem.Play(sound, this.transform, SoundPriority.None, loop, volume))
+                yield break;
+
+            yield return null;
+        }
     }
 }
