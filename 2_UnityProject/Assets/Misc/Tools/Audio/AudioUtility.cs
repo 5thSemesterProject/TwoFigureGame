@@ -12,7 +12,7 @@ public class AudioUtility
     int numberOfClipsToLoad;
     private Action<AudioClip[]> onAllClipsLoaded;
 
-    public void LoadAllAudioClips<T>(Action<AudioClip[]> onAllClipsLoadedCallback, bool removePrefix = true,string prefixToRemove="E_") where T: Enum
+    public void LoadAllAudioClips<T>(Action<AudioClip[]> onAllClipsLoadedCallback, bool removePrefix = true,string prefixToRemove="E") where T: Enum
     {
         onAllClipsLoaded = onAllClipsLoadedCallback;
 

@@ -1,21 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 [System.Serializable]
 class FootstepSound
 {
     public string tag;
-    public E_5_Character[] sounds;
+    public ECharacterSounds[] sounds;
     public bool setAsDefault;
     int lastRandom;
 
-    public E_5_Character GetRandomSound()
+    public ECharacterSounds GetRandomSound()
     {
         int random = AudioUtility.RandomNumber(lastRandom,sounds.Length,out lastRandom);
         return sounds[random];
@@ -31,7 +28,7 @@ public class CharacterSFX : MonoBehaviour
     void  Awake()
     {
         AudioUtility audioUtility = new AudioUtility();
-        audioUtility.LoadAllAudioClips<E_5_Character>(SaveClips);
+        audioUtility.LoadAllAudioClips<ECharacterSounds>(SaveClips);
     }
 
     private void SaveClips(AudioClip[] audioClips)
@@ -39,19 +36,19 @@ public class CharacterSFX : MonoBehaviour
         this.audioClips.AddRange(audioClips);
     }
 
-    public void PlaySound(E_5_Character soundEffectToPlay)
+    public void PlaySound(ECharacterSounds soundEffectToPlay)
     {
         PlaySoundWithVolumeControl(soundEffectToPlay,-1);
     }
 
-    public void PlaySoundWithVolumeControl(E_5_Character soundEffectToPlay,float volume=-1)
+    public void PlaySoundWithVolumeControl(ECharacterSounds soundEffectToPlay,float volume=-1)
     {
-        string fileName = Enum.GetName(typeof(E_5_Character),soundEffectToPlay);
+        string fileName = Enum.GetName(typeof(ECharacterSounds),soundEffectToPlay);
         
         for (int i = 0; i < audioClips.Count; i++)
         {
-            if (fileName==audioClips[i].name)
-                SoundSystem.PlaySound(audioClips[i],gameObject,volume);
+            if (fileName == audioClips[i].name)
+                SoundSystem.Play(soundEffectToPlay, gameObject.transform, SoundPriority.None, false, volume);
         }
     }
 
@@ -89,7 +86,7 @@ public class CharacterSFX : MonoBehaviour
             {
                 if (tags.Contains(footstepSounds[i].tag))
                 {
-                    E_5_Character soundToPlay = footstepSounds[i].GetRandomSound();
+                    ECharacterSounds soundToPlay = footstepSounds[i].GetRandomSound();
                     PlaySoundWithVolumeControl(soundToPlay,volume);
                     return;
                 }    
@@ -103,7 +100,7 @@ public class CharacterSFX : MonoBehaviour
             if (footstepSounds[i].setAsDefault)
             {   
                // Debug.Log ("Default");
-                E_5_Character soundToPlay = footstepSounds[i].GetRandomSound();
+                ECharacterSounds soundToPlay = footstepSounds[i].GetRandomSound();
                 PlaySoundWithVolumeControl(soundToPlay,volume);
                 return;
             }    

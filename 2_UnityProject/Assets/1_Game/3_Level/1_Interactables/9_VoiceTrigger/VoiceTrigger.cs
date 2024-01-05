@@ -36,10 +36,14 @@ public class MyScriptEditor : Editor
 
     voiceTrigger.triggerType = (TriggerType)EditorGUILayout.EnumPopup("TriggerType",voiceTrigger.triggerType);
 
+    voiceTrigger.priority = (SoundPriority)EditorGUILayout.EnumPopup("Priority",voiceTrigger.priority);
+
     voiceTrigger.characterMode = (CharacterMode)EditorGUILayout.EnumPopup("Required Character Mode",voiceTrigger.characterMode);
 
     EditorGUILayout.Space(10);
     EditorGUILayout.LabelField("Voiceline Settings", EditorStyles.boldLabel);
+
+    voiceTrigger.volume = EditorGUILayout.FloatField("Volume", voiceTrigger.volume);
 
     voiceTrigger.extraWaitTimeAfterClip = EditorGUILayout.FloatField("Wait Time Between Clips", voiceTrigger.extraWaitTimeAfterClip);
 
@@ -51,10 +55,10 @@ public class MyScriptEditor : Editor
         voiceTrigger.playOnceBeforeRandom = EditorGUILayout.Toggle("Play Once Before Random", voiceTrigger.playOnceBeforeRandom);
     }    
     else
-        voiceTrigger.voiceLine = (E_1_Voicelines)EditorGUILayout.EnumPopup("Voiceline",voiceTrigger.voiceLine);
+        voiceTrigger.voiceLine = (EVoicelines)EditorGUILayout.EnumPopup("Voiceline",voiceTrigger.voiceLine);
 
     if (voiceTrigger.playOnceBeforeRandom)
-        voiceTrigger.voiceLine = (E_1_Voicelines)EditorGUILayout.EnumPopup("Voiceline before Random",voiceTrigger.voiceLine);
+        voiceTrigger.voiceLine = (EVoicelines)EditorGUILayout.EnumPopup("Voiceline before Random",voiceTrigger.voiceLine);
 
     serializedObject.ApplyModifiedProperties();
 
@@ -72,49 +76,73 @@ public class VoiceTrigger : MonoBehaviour
 
     int lastRandom = 500;
 
+    public float volume = 1;
     public float extraWaitTimeAfterClip = 1f;
     public bool playOnce = false;
     public bool playOnceBeforeRandom;
-    public E_1_Voicelines voiceLine;
+    public EVoicelines voiceLine;
     public bool randomizeVoicelines;
-    public E_1_Voicelines[] randomVoicelines;
+    public EVoicelines[] randomVoicelines;
     public TriggerType triggerType;
     public CharacterType characterType = CharacterType.None;
     public CharacterMode characterMode = CharacterMode.Both;
+    public SoundPriority priority = SoundPriority.Default;
 
 
     void Start()
     {
         interactable = GetComponent<Interactable>();
 
-        if (triggerType== TriggerType.OnTrigger)
+        switch (triggerType)
         {
+            case TriggerType.OnHighlight:
+                if (characterMode != CharacterMode.Inactive)
+                {
+                    interactable.highlightEvent += LoadVoiceLine;
 
-            interactable.triggerEvent+=LoadVoiceLine;
+                    if (!playOnce)
+                        interactable.unhiglightEvent += Untrigger;
+                }
+                else
+                {
+                    interactable.aiEnterEvent += LoadVoiceLine;
+                    interactable.aiStayEvent += LoadVoiceLine;
 
-            if (!playOnce)
-                interactable.untriggerEvent+=Untrigger;
-        }
-        else if (triggerType == TriggerType.OnHighlight)
-        {
-            if (characterMode != CharacterMode.Inactive)
-            {
-                interactable.highlightEvent+=LoadVoiceLine;
-            
+                    if (!playOnce)
+                        interactable.aiExitEvent += Untrigger;
+                }
+                break;
+            case TriggerType.OnTrigger:
+                interactable.triggerEvent += LoadVoiceLine;
+
                 if (!playOnce)
-                    interactable.unhiglightEvent+=Untrigger;
-            }
-            else
-            {
-                interactable.aiEnterEvent+=LoadVoiceLine;
-                interactable.aiStayEvent += LoadVoiceLine;
-                
+                    interactable.untriggerEvent += Untrigger;
+                break;
+            case TriggerType.OnUntrigger:
+                interactable.untriggerEvent += LoadVoiceLine;
+
                 if (!playOnce)
-                    interactable.aiExitEvent+=Untrigger;
-            }   
+                    interactable.triggerEvent += Untrigger;
+                break;
+            case TriggerType.OnUnHighlight:
+                if (characterMode != CharacterMode.Inactive)
+                {
+                    interactable.unhiglightEvent += LoadVoiceLine;
 
+                    if (!playOnce)
+                        interactable.highlightEvent += Untrigger;
+                }
+                else
+                {
+                    interactable.aiExitEvent += LoadVoiceLine;
+
+                    if (!playOnce)
+                        interactable.aiEnterEvent += Untrigger;
+                }
+                break;
+            default:
+                break;
         }
-
     }
 
     void LoadVoiceLine(Movement movement)
@@ -125,7 +153,7 @@ public class VoiceTrigger : MonoBehaviour
         {
             triggered = true;
 
-            E_1_Voicelines voicelineToPlay; 
+            EVoicelines voicelineToPlay; 
             
             if (randomizeVoicelines)
                 voicelineToPlay = randomVoicelines[AudioUtility.RandomNumber(lastRandom,randomVoicelines.Length,out lastRandom)];
@@ -136,9 +164,9 @@ public class VoiceTrigger : MonoBehaviour
             {   
                 playOnceBeforeRandom = false;
                 voicelineToPlay = voiceLine;
-            }    
+            }
 
-            VoicelinePlayer.instance.TryPlayVoiceLine(voicelineToPlay,extraWaitTimeAfterClip);
+            SoundSystem.Play(voicelineToPlay, null, priority, false, volume, -extraWaitTimeAfterClip);
         }
     }
 

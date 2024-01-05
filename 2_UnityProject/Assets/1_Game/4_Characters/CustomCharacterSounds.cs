@@ -16,7 +16,7 @@ struct VoiceLineDataContainer
         femaleData.characterType = CharacterType.Woman;
    }
 
-   public E_1_Voicelines GetVoicelineByCharacterType(CharacterType characterType)
+   public EVoicelines GetVoicelineByCharacterType(CharacterType characterType)
    {
       if (characterType == CharacterType.Man)
       {
@@ -41,11 +41,11 @@ struct VoiceLineDataContainer
 [Serializable]
 struct VoicelineData
 {
-    public E_1_Voicelines[] voicelines;
+    public EVoicelines[] voicelines;
     [HideInInspector]public int lastRandom;
     [HideInInspector]public CharacterType characterType;
 
-    public E_1_Voicelines GetRandomVoiceline()
+    public EVoicelines GetRandomVoiceline()
     {
           return voicelines[AudioUtility.RandomNumber(lastRandom,voicelines.Length,out lastRandom)];
     }
@@ -72,7 +72,7 @@ public class CustomCharacterSounds : MonoBehaviour
 
    void PlayChargingOxygenSound(CharacterData characterData)
    {
-        E_1_Voicelines voicelineToPlay = chargingOxygenSound.GetVoicelineByCharacterType(characterData.movement.characterType);
-        VoicelinePlayer.instance.TryPlayVoiceLine(voicelineToPlay,waitTimeBetweenClips,2);
+        EVoicelines voicelineToPlay = chargingOxygenSound.GetVoicelineByCharacterType(characterData.movement.characterType);
+        SoundSystem.Play(voicelineToPlay, null, SoundPriority.High, false, -1, -waitTimeBetweenClips);
    }
 }

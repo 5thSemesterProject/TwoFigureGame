@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1261.6075, g: 843.0575, b: 553.6679, a: 1}
+  m_IndirectSpecularColor: {r: 1262.0538, g: 843.3448, b: 553.77765, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -180,26 +180,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 604987425}
-  - component: {fileID: 604987424}
+  - component: {fileID: 604987426}
   m_Layer: 0
-  m_Name: VoicelinePlayer
+  m_Name: SoundHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &604987424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604987423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79ab3b72a3a7dfe4c84e583a15bd36c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &604987425
 Transform:
   m_ObjectHideFlags: 0
@@ -215,6 +203,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &604987426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604987423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38a5db150d245443a9501912c00b03a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &763678843
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,4 +1,4 @@
-public enum E_5_Character
+public enum ECharacterSounds
 {
     clothesRustling,
     evelynFootstepStone_1,

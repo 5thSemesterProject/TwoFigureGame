@@ -16,7 +16,7 @@ public enum CharacterType
 
 public enum TriggerType
 {
-    OnHighlight,OnTrigger
+    OnHighlight, OnTrigger, OnUntrigger, OnUnHighlight
 }
 
 public class Interactable : MonoBehaviour

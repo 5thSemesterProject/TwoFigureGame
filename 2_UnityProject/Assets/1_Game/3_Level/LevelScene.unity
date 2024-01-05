@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1261.6075, g: 843.0575, b: 553.6679, a: 1}
+  m_IndirectSpecularColor: {r: 1262.0538, g: 843.3448, b: 553.77765, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -355,6 +355,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 537188519}
   m_CullTransparentMesh: 1
+--- !u!1001 &547044245
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 963194228}
+    m_Modifications:
+    - target: {fileID: 2026103875530151769, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_Name
+      value: SoundSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ab827256abdce4d6696996bec970252d, type: 3}
+--- !u!4 &547044246 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4819395469261989661, guid: ab827256abdce4d6696996bec970252d, type: 3}
+  m_PrefabInstance: {fileID: 547044245}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &554791172
 GameObject:
   m_ObjectHideFlags: 0
@@ -4111,7 +4173,6 @@ GameObject:
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
   - component: {fileID: 963194231}
-  - component: {fileID: 963194232}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4190,7 +4251,8 @@ Transform:
   m_LocalPosition: {x: -16.745993, y: 5.8180017, z: -2.219998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 547044246}
   m_Father: {fileID: 150153229}
   m_LocalEulerAnglesHint: {x: 39.92, y: -133.421, z: 0}
 --- !u!114 &963194229
@@ -4369,20 +4431,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camParent: {fileID: 554791173}
---- !u!114 &963194232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fca8f3f8b37c04e368ba91320d0d2295, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SFXDefaultVolume: 1
-  musicDefaultVolume: 0.2
 --- !u!1 &998908789
 GameObject:
   m_ObjectHideFlags: 0

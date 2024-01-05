@@ -1,4 +1,4 @@
-public enum E_1_Voicelines
+public enum EVoicelines
 {
     Box_E_01,
     Box_E_02,
