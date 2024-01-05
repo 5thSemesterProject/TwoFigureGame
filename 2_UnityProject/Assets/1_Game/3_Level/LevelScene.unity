@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &75556877 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5386993858617576826, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+  m_PrefabInstance: {fileID: 833025216}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93a0bf7081358648be23611810171af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &95470957
 GameObject:
   m_ObjectHideFlags: 0
@@ -4125,6 +4136,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7067107404353638166, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1688443402}
+    - targetCorrespondingSourceObject: {fileID: 1758277320582865541, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 822914872}
+    - targetCorrespondingSourceObject: {fileID: 6033162207285993452, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1669185097}
   m_SourcePrefab: {fileID: 100100000, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
 --- !u!4 &643871693 stripped
 Transform:
@@ -4455,6 +4472,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   specificCharacterAccess: 0
+--- !u!1 &822914866 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1758277320582865541, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+  m_PrefabInstance: {fileID: 643871692}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &822914872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822914866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5f878cc396a544281741ecd280b8c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationStartpoint: {fileID: 0}
+  cutscene: {fileID: 1400501615}
 --- !u!4 &830098088 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6066715123520040635, guid: 38ef1576894a58641be64be05040116c, type: 3}
@@ -4553,7 +4589,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7377860845106535634, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+    - {fileID: 2754692326502725182, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
@@ -5469,6 +5507,17 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 7fb47b3f86c4f6b4ca814ddc38dcda88, type: 2}
   m_BuildHeightMesh: 1
+--- !u!114 &1400501615 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 465672801389423340, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
+  m_PrefabInstance: {fileID: 833025216}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93a0bf7081358648be23611810171af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1405552172
 GameObject:
   m_ObjectHideFlags: 0
@@ -5815,6 +5864,25 @@ Transform:
   - {fileID: 1399574005}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1669185091 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6033162207285993452, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+  m_PrefabInstance: {fileID: 643871692}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1669185097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669185091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5f878cc396a544281741ecd280b8c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationStartpoint: {fileID: 0}
+  cutscene: {fileID: 75556877}
 --- !u!114 &1682111334
 MonoBehaviour:
   m_ObjectHideFlags: 0
