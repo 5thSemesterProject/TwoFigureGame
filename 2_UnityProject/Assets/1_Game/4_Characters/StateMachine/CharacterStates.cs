@@ -22,7 +22,9 @@ class IdleState : CharacterState
     public IdleState(CharacterData characterData) : base(characterData)
     {
         characterData.movement.MovePlayerFromCamera(Vector2.zero, 0);
-        characterData.audioListener.enabled = true;
+        
+        if (characterData.audioListener == null)
+            characterData.audioListener = characterData.gameObject.AddComponent<AudioListener>();
     }
 
     public override CharacterState SpecificStateUpdate()

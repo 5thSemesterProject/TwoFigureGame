@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Drawing.Drawing2D;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -362,8 +363,13 @@ public class Movement : MonoBehaviour, IIntersectGas
             yield return null;
         }
 
+        navMeshAgent.nextPosition = targetPosition;
+        navMeshAgent.Warp(targetPosition);
+        navMeshAgent.updatePosition = false;
         transform.position = targetPosition;
         transform.rotation = targetRotation;
+        navMeshAgent.updatePosition = true;
+
 
         lerpRoutine = null;
     }

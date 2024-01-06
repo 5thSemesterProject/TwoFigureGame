@@ -198,7 +198,6 @@ public abstract class CharacterState
                       break;
                     case CutsceneTrigger:
                         var cutsceneTrigger = playerActionType as CutsceneTrigger;
-                        
                         updatedState = HandleCutsceneTrigger(cutsceneTrigger);
 
                         //In case character can't reach

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
 
-[RequireComponent (typeof(CharacterController),typeof(NavMeshAgent))]
+[RequireComponent (typeof(NavMeshAgent))]
 public class NavMeshHandler : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;

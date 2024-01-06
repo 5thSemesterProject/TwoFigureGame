@@ -63,13 +63,19 @@ public class Interactable : MonoBehaviour
     {   
         CharacterData activeCharacterData = CharacterManager.ActiveCharacterData;
 
-        if (other.TryGetComponent(out Movement movementComp))
+        Movement  movementComp=null;
+        Transform parent = other.transform.parent;
+        if (parent!=null)
+            movementComp = parent.GetComponent<Movement>();
+
+        if (movementComp!=null)
         {   
             //Handle Active Character    
             if (activeCharacterData.currentState.GetType() != typeof(AIState) &&activeCharacterData.movement == movementComp)
             {
                 if (specificCharacterAccess == CharacterType.None || specificCharacterAccess == movementComp.characterType)
                 {
+
                     if (enterCond!=null && enterCond(movementComp)||enterCond==null)
                         enterEvent?.Invoke(movementComp);
 
@@ -88,7 +94,12 @@ public class Interactable : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Movement movementComp))
+        Movement  movementComp=null;
+        Transform parent = other.transform.parent;
+        if (parent!=null)
+            movementComp = parent.GetComponent<Movement>();
+        
+        if (movementComp!=null)
         {
             CharacterData activeCharacterData = CharacterManager.ActiveCharacterData;
             if (activeCharacterData.movement == movementComp)
@@ -110,9 +121,14 @@ public class Interactable : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         CharacterData activeCharacterData = CharacterManager.ActiveCharacterData;
-        if (other.TryGetComponent(out Movement movementComp))
-        {
 
+        Movement  movementComp=null;
+        Transform parent = other.transform.parent;
+        if (parent!=null)
+            movementComp = parent.GetComponent<Movement>();
+
+        if (movementComp!=null)
+        {
             //Handle Active Player
             if (activeCharacterData.currentState.GetType() != typeof(AIState) &&activeCharacterData.movement == movementComp)
             {

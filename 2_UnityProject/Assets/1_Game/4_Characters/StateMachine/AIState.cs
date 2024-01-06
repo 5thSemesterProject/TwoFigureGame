@@ -12,7 +12,12 @@ class AIState : CharacterState
 
         characterData.movement.MaxSpeed *= GameStats.instance.AISpeedMultiplier;
 
-        characterData.audioListener.enabled = false;
+        if (characterData.audioListener)
+        {
+            GameObject.Destroy(characterData.audioListener);
+            characterData.audioListener = null;
+        }
+           
 
         handleInteractables = false;
 
