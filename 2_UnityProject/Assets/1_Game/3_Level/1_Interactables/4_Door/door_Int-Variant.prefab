@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 752225263862615557}
   - component: {fileID: 6293232099418098692}
   - component: {fileID: 5440813446492820925}
+  - component: {fileID: 851945673160254894}
   m_Layer: 0
   m_Name: door_Int-Variant
   m_TagString: Untagged
@@ -135,8 +136,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.1980594, y: 2.5881476, z: 1.4304277}
-  m_Center: {x: -0.5990291, y: 0.11259389, z: -0.6065149}
+  m_Size: {x: 1.1980594, y: 2.5881476, z: 2.779296}
+  m_Center: {x: -0.5990291, y: 0.11259389, z: 0.067919254}
 --- !u!114 &5440813446492820925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +151,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   specificCharacterAccess: 0
+--- !u!114 &851945673160254894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531797818078762395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eb33c90af5a3423eadadb40ce11973d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerType: 1
+  sound: 13
+  soundPriority: 0
+  volume: 1
+  playOnce: 0
 --- !u!1001 &8707204724512270780
 PrefabInstance:
   m_ObjectHideFlags: 0
