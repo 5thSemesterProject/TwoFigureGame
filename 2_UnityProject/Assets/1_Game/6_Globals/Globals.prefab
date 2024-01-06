@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6820310742034594229}
   - component: {fileID: 5550199543701370580}
   - component: {fileID: 2485981417808355059}
-  - component: {fileID: 7609954135079659221}
   m_Layer: 0
   m_Name: Globals
   m_TagString: Untagged
@@ -96,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9617f5f96060dc648bc2fd636105120f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inactiveFollowDistance: 3
+  inactiveFollowDistance: 2
   oxygenStation:
     maxOxygen: 150
     currentOxygen: 0
@@ -134,18 +133,6 @@ MonoBehaviour:
       m_RotationOrder: 4
     maxFallOff: 4
     initialFallOff: 2
---- !u!114 &7609954135079659221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7087388740281395952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79ab3b72a3a7dfe4c84e583a15bd36c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &163569713777363414
 PrefabInstance:
   m_ObjectHideFlags: 0
