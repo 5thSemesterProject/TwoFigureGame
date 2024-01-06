@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using UnityEngine.Playables;
+using UnityEngine.PlayerLoop;
 
 abstract class CutsceneState : CharacterState
 {
@@ -36,7 +38,6 @@ class WaitForDoor: CutsceneState
         characterData.movement.TerminateMove();
         characterData.movement.GetComponent<CharacterController>().enabled = false;
         characterData.movement.GetComponent<NavMeshAgent>().enabled = false;
-
         characterData.navMeshHandler.IdleAnim();
 
     }
@@ -67,8 +68,6 @@ class WalkTowards : CutsceneState
         characterData.gameObject.GetComponent<CharacterController>().detectCollisions = false;
 
         //Turn off UI
-
-
         characterData.movement.GetComponent<CharacterController>().enabled = false;
         characterData.movement.GetComponent<NavMeshAgent>().enabled = true;
 
@@ -76,7 +75,7 @@ class WalkTowards : CutsceneState
         actor = cutsceneHandler.GetActorData(characterData.movement.characterType).actor;
         targetPos = actor.transform.position;
         targetDir = actor.transform.forward;
-        intitialTargetDistance = Vector2.Distance(characterData.gameObject.transform.position,targetPos)-tolerance;
+        intitialTargetDistance = Vector3.Distance(characterData.gameObject.transform.position,targetPos)-tolerance;
 
         characterData.movement.TerminateMove();
 
@@ -92,29 +91,14 @@ class WalkTowards : CutsceneState
         
         if (distanceToTarget>tolerance)
         {
-            if (distanceToTarget>1f)
-            {
-                characterData.navMeshHandler.MovePlayerToPos(targetPos,1,true,true);
-            }
-            else
-            {
-                //Slowly Lerp Player Rotation into  Actor Direction
-                characterData.navMeshHandler.MovePlayerToPos(targetPos,1,true,false);
-                Vector2 moveDirection = characterData.movement.GetComponent<NavMeshAgent>().velocity.normalized;
-                moveDirection = Vector2.Lerp(moveDirection,targetDir,1-distanceToTarget/intitialTargetDistance);
-                moveDirection = moveDirection.normalized;
-            }
 
+            characterData.navMeshHandler.MovePlayerToPos(targetPos,1,true,true);
             return this;
         }
             
         else
         {   
             characterData.gameObject.GetComponentInChildren<NavMeshAgent>().speed = 0;
-
-            //Set Positions and Rotation exactly
-            characterData.gameObject.transform.position = targetPos;
-            characterData.gameObject.transform.rotation = cutsceneHandler.GetActorData(characterData.movement.characterType).actor.transform.rotation;
             
             //Wait For Other Character to reach the cutscene Pos
             return new WaitForOtherState(characterData,cutsceneHandler);
@@ -175,9 +159,10 @@ class PlayCutsceneState : CutsceneState
         updateLastState = false;
         handleOxygen = false;
 
-        
-        //Swap To Actor Model
-        cutsceneHandler.SwapToActorModel(characterData.gameObject,characterData.movement.characterType);
+        characterData.navMeshHandler.DisableNavMesh();
+
+        cutsceneHandler.LerpBones(characterData.gameObject.transform,cutsceneHandler.GetActorData(characterData.CharacterType).actor.transform);
+        cutsceneHandler.LerpPosition(characterData.gameObject.transform,cutsceneHandler.GetActorData(characterData.CharacterType).actor.transform);
 
         //Start Cutscene if not already playing
         playableDirector = cutsceneHandler.GetPlayableDirector();
@@ -188,22 +173,27 @@ class PlayCutsceneState : CutsceneState
 
     public override CharacterState SpecificStateUpdate()
     {
-        if (playableDirector.state == PlayState.Paused || playableDirector.time>=playableDirector.duration)
+        //Return to previous States
+        if (playableDirector.state == PlayState.Paused || playableDirector.time>=playableDirector.duration) 
         {   
-            //Activate Play Model Again
-            cutsceneHandler.SwapToPlayModel(characterData.gameObject,characterData.movement.characterType);
-            
-            //Activate Collisions again
-            characterData.gameObject.GetComponent<CharacterController>().detectCollisions = true;
-
-            //Return to previous States
+            //cutsceneHandler.StopBlendingRotationAndPosition();
             return new RecoverLastState(characterData,cutsceneHandler);
         }
+            
 
         //Turn off player camera
         if (characterData.virtualCamera.gameObject.activeInHierarchy == true &&!Camera.main.GetComponent<CinemachineBrain>().IsBlending &&
             Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera != characterData.other.virtualCamera as ICinemachineCamera)
-            characterData.other.virtualCamera.gameObject.SetActive(false);
+                characterData.other.virtualCamera.gameObject.SetActive(false);
+
+        #if UNITY_EDITOR
+        //Skip Cutscene Function
+        var playable =  playableDirector.playableGraph.GetRootPlayable(0);
+        if (Input.GetKeyDown(KeyCode.Space))
+            playableDirector.playableGraph.GetRootPlayable(0).SetSpeed(10);    
+        else if (Input.GetKeyUp(KeyCode.Space))
+              playableDirector.playableGraph.GetRootPlayable(0).SetSpeed(1);             
+        #endif  
 
         return this;
     }

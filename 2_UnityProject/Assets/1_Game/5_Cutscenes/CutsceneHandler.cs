@@ -1,8 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.Playables;
 
 [System.Serializable]
@@ -22,26 +26,16 @@ public class ActorData
     {   
         //Toogle Visibility
         var skinnedMeshRenderers = actor.GetComponentsInChildren<SkinnedMeshRenderer>();
-        foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
+        /*foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
         if (skinnedMeshRenderer)
-            skinnedMeshRenderer.enabled = false;
+            skinnedMeshRenderer.enabled = false;*/
         
         //Disable Movement Script
         var movement = actor.GetComponentInChildren<Movement>();
         if (movement)
             movement.enabled = false;
-
-        //TurnOffAllCollliders (actor);
     }
 
-    
-    void TurnOffAllCollliders(GameObject input)
-    {
-        input.GetComponentInChildren<CharacterController>().detectCollisions = false;
-        var colliders = input.GetComponentsInChildren<Collider>();
-        foreach (Collider collider in colliders)
-            collider.enabled = false;
-    }
 }
 
 public class CutsceneHandler
@@ -72,84 +66,99 @@ public class CutsceneHandler
         return null;
     }
 
-    public void SwapToPlayModel(GameObject playModel, CharacterType characterType)
+    public void LerpPosition(Transform playable, Transform actor, float speed=0.1f)
     {
-        ActorData cutsceneData = GetActorData(characterType);
-        SwapCharacterModels(GetActorData(characterType).actor,playModel,true,cutsceneData.actor.transform.position);
+         playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpPosition(playable,actor,speed));
     }
 
-    public void SwapToActorModel(GameObject playModel, CharacterType characterType)
+    IEnumerator _LerpPosition(Transform source, Transform target, float speed)
     {
-        ActorData cutsceneData = GetActorData(characterType);
-
-        if (characterType == CharacterType.Man)
-            SwapCharacterModels(playModel,cutsceneData.actor);
-        if (characterType == CharacterType.Woman)
-            SwapCharacterModels(playModel,cutsceneData.actor);
-    }
-
-    void SwapCharacterModels(GameObject source, GameObject target, bool overwritePosition=false,Vector3 overwitePos = default)
-    {
-        //Set up variables
-        Animator sourceAnimator = source.GetComponentInChildren<Animator>();
-        AnimatorStateInfo  animatorStateInfo = sourceAnimator.GetCurrentAnimatorStateInfo(0);
-        Animator targetAnimator = target.GetComponentInChildren<Animator>();  
-
-        //Set up Cutscene Animator
-        TransferAnimatorComponents(sourceAnimator,targetAnimator);
-        targetAnimator.Play (animatorStateInfo.fullPathHash,0,animatorStateInfo.normalizedTime);
-
-        //Update Position And Rotation
-        if (overwritePosition)
-            target.transform.position = overwitePos;
-        
-        target.transform.rotation = source.transform.rotation;
-        
-        //Swap Model visibility
-        var sourceRenders  = source.GetComponentsInChildren<SkinnedMeshRenderer>();
-        for(int i = 0; i < sourceRenders.Length; i++)
+        float tolerance=0.01f;
+        float t = 0;
+        while (Vector3.Distance(source.position,target.position)>tolerance)
         {
-            sourceRenders[i].enabled = false;
+            t +=Time.deltaTime*speed;
+            source.position = Vector3.Lerp(source.position,target.position,t);
+            yield return null;
         }
 
-        var targetRenderers = target.GetComponentsInChildren<SkinnedMeshRenderer>();
-        for (int i = 0; i < targetRenderers.Length; i++)
+        while (true)
         {
-            targetRenderers[i].enabled = true;
+            source.position = target.position;
+            yield return null;
         }
     }
 
-    void TransferAnimatorComponents(Animator source, Animator target)
-    {
-        // Get all parameters from the source animator
-        int parameterCount = source.parameterCount;
-        for (int i = 0; i < parameterCount; i++)
-        {
-            AnimatorControllerParameter parameter = source.GetParameter(i);
+    public void LerpBones(Transform playableRigRoot, Transform actorRigRoot)
+    {   
+        var playableRig = playableRigRoot.GetComponentsInChildren<Rig>()[1];
+        playableRigRoot = playableRigRoot.GetComponentsInChildren<MultipleTagsTool>()[0].transform;
+        actorRigRoot = actorRigRoot.GetComponentsInChildren<MultipleTagsTool>()[0].transform;
 
-            // Copy the parameter value to the target animator
-            switch (parameter.type)
+        Transform[] playableBones = playableRigRoot.GetComponentsInChildren<Transform>();
+        Transform[] actorBones = actorRigRoot.GetComponentsInChildren<Transform>();
+        MultiRotationConstraint[] playableRotationConstraints =GetMultiRotationConstraint(playableRig.transform);
+
+        //Set Weight to zero
+        playableRig.weight = 0;
+
+        //Add Constraints
+        for (int i = 0; i < playableRotationConstraints.Length; i++)
+        {
+            AddConstraint(playableBones[i],playableRotationConstraints[i],actorBones[i]);
+        }
+
+        //Build Rig
+        RigBuilder rigBuilder = playableRig.GetComponentInParent<RigBuilder>();
+        if (rigBuilder != null)
+            rigBuilder.Build();
+
+        playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpBone(playableRig));
+    }
+
+    private MultiRotationConstraint[] GetMultiRotationConstraint(Transform transform)
+    {
+        List<MultiRotationConstraint> allrotations = new List<MultiRotationConstraint>();
+        var temp = transform.GetComponentsInChildren<Transform>();
+        for (int i = 1; i < temp.Length; i++)
+        {
+            if (temp[i].TryGetComponent(out MultiRotationConstraint multiRotationConstraint))
             {
-                case AnimatorControllerParameterType.Float:
-                    target.SetFloat(parameter.name, source.GetFloat(parameter.name));
-                    break;
-
-                case AnimatorControllerParameterType.Int:
-                    target.SetInteger(parameter.name, source.GetInteger(parameter.name));
-                    break;
-
-                case AnimatorControllerParameterType.Bool:
-                    target.SetBool(parameter.name, source.GetBool(parameter.name));
-                    break;
-
-                case AnimatorControllerParameterType.Trigger:
-                    // Optionally handle triggers if needed
-                    break;
-
-                default:
-                    break;
+                allrotations.Add(multiRotationConstraint);
+            }
+            else
+            {
+                allrotations.Add(temp[i].AddComponent<MultiRotationConstraint>());
             }
         }
+        return allrotations.ToArray();
     }
+
+    void AddConstraint(Transform constrainedObj,MultiRotationConstraint rotationConstraint, Transform correspondingBone)
+    {
+        rotationConstraint.data.constrainedObject = constrainedObj;
+        WeightedTransformArray array = new WeightedTransformArray { new WeightedTransform(correspondingBone,1)};
+        rotationConstraint.data.sourceObjects = array;
+    }
+
+    IEnumerator _LerpBone(Rig playableRig,float speed = 0.1f)
+    {
+        float tolerance=0.01f;
+        float t = 0;
+        while (Mathf.Abs(1-t)>tolerance)
+        {
+            t +=Time.deltaTime*speed;
+            playableRig.weight = t;
+            yield return null;
+        }
+    }
+
+
+    public void StopBlendingRotationAndPosition()
+    {
+        playableDirector.GetComponent<Cutscene>().StopAllCoroutines();
+    }
+
+
 
 }

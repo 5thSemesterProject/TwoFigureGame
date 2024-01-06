@@ -53,7 +53,7 @@ public class NavMeshHandler : MonoBehaviour
         navMeshAgent.isStopped = false;
 
         if (noStoppingDistance)
-            navMeshAgent.stoppingDistance = 0.1f;
+            navMeshAgent.stoppingDistance = 0.01f;
 
         if (position!=navMeshAgent.destination)
         {
