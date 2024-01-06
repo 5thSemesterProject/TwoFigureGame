@@ -167,6 +167,10 @@ public class SoundTask : MonoBehaviour
                 break;
         }
     }
+    public void SyncVolume()
+    {
+        audioSource.volume = volume;
+    }
     #endregion
 
     #region Utility

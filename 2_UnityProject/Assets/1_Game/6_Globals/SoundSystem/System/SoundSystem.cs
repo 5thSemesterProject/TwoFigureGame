@@ -76,6 +76,21 @@ public class SoundChannel
     [SerializeField] private float crossfadeTime = 0.5f;
     public float crossfadeDuration { get => overrideMode == OverrideMode.Crossfade ? crossfadeTime : 0; set => crossfadeTime = value; }
     public float volume = 1;
+    public float Volume
+    {
+        get => volume;
+        set
+        {
+            float newVolume = Mathf.Clamp01(value);
+            foreach (SoundTask task in internalList)
+            {
+                task.volume = newVolume * (task.volume / volume);
+                task.SyncVolume();
+            }
+            volume = newVolume;
+
+        }
+    }
     public float defaultDelay = 0;
     public bool spatialAudio = false;
     public float defaultMaxDistance = 5;
@@ -292,7 +307,7 @@ public class SoundSystem : MonoBehaviour
     #endregion
 
     #region Custom
-    public static bool Play<T>(T soundClipName, Transform playTransform, SoundPriority priority = 0, bool loop = false, float volume = -1, float delay = 0) where T : Enum
+    public static bool Play<T>(T soundClipName, Transform playTransform, SoundPriority priority = 0, bool loop = false, float volume = -1, float delay = 0, FadeMode fadeMode = FadeMode.Default, float fadeDuration = 0f) where T : Enum
     {
         AudioClip clip = SoundHolder.GetAudioClip(soundClipName, out int channel);
         return PlaySound(clip, playTransform, channel, (uint)priority, loop, volume, FadeMode.Default, 0.5f, delay);

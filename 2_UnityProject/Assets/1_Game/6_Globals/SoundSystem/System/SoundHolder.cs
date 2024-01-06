@@ -48,12 +48,12 @@ public class SoundHolder : MonoBehaviour
         }
         else if (typeof(T) == typeof(EAmbientSounds))
         {
-            channel = 1;
+            channel = 3;
             returnClip = ambient.FirstOrDefault(clip => clip.name == name);
         }
         else if (typeof(T) == typeof(ECharacterSounds))
         {
-            channel = 1;
+            channel = 3;
             returnClip = character.FirstOrDefault(clip => clip.name == name);
         }
         else if (typeof(T) == typeof(EMusic))
@@ -63,7 +63,7 @@ public class SoundHolder : MonoBehaviour
         }
         else if (typeof(T) == typeof(ETwineSounds))
         {
-            channel = 1;
+            channel = 3;
             returnClip = twine.FirstOrDefault(clip => clip.name == name);
         }
 
