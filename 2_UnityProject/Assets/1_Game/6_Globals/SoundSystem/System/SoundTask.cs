@@ -15,6 +15,7 @@ public class SoundTask : MonoBehaviour
     public float fadeDuration = 0;
     public float delay = 0;
     public float maxDistance = 5;
+    public AnimationCurve falloffCurve = new AnimationCurve();
     public bool spatialize = false;
     public bool loop = false;
     public uint priority = 1;
@@ -24,6 +25,9 @@ public class SoundTask : MonoBehaviour
     private void Awake()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
+        falloffCurve.AddKey(0, 1);
+        falloffCurve.AddKey(0.2f, 0.4f);
+        falloffCurve.AddKey(1, 0);
     }
 
     #region Stop
@@ -98,7 +102,8 @@ public class SoundTask : MonoBehaviour
         audioSource.volume = volume;
         audioSource.spatialBlend = spatialize ? 1 : 0;
         audioSource.dopplerLevel = 0;
-        audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
+        audioSource.rolloffMode = AudioRolloffMode.Custom;
+        audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, falloffCurve);
         audioSource.minDistance = 0.2f;
         audioSource.maxDistance = maxDistance;
         audioSource.loop = loop;

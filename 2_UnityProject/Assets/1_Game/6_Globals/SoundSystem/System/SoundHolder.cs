@@ -41,6 +41,7 @@ public class SoundHolder : MonoBehaviour
         name = AudioUtility.RemovePrefix(name, "_");
         AudioClip returnClip = null;
 
+        channel = 3;
         if (typeof(T) == typeof(EVoicelines))
         {
             channel = 2;
@@ -71,7 +72,6 @@ public class SoundHolder : MonoBehaviour
         {
             LoadAudioClips(true);
         }
-        channel = 1;
         return returnClip;
     }
 }

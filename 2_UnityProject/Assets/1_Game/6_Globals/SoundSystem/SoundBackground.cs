@@ -12,7 +12,7 @@ public class SoundBackground : MonoBehaviour
     [SerializeField] private bool playOnEnable = true;
     private Coroutine coroutine;
 
-    private void Start()
+    private void OnEnable()
     {
         if (playOnEnable)
             TriggerSound();
