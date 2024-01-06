@@ -19,6 +19,10 @@ public class CharacterData
         navMeshHandler = gameObject.GetComponent<NavMeshHandler>();
         animator = gameObject.GetComponentInChildren<Animator>();
 
+        if (!gameObject.TryGetComponent (out audioListener))
+            audioListener = gameObject.AddComponent<AudioListener>();
+            
+
         var rigidbodysOnCharacter = gameObject.GetComponentsInChildren<Rigidbody>();
         foreach (var rigidbody in rigidbodysOnCharacter)
         {
@@ -41,6 +45,8 @@ public class CharacterData
     public CharacterData other;
     public CharacterState lastState;
     public WSUI_Element oxygenBar;
+
+    public AudioListener audioListener;
     public bool raisedLowOxygenEvent = false;
     public bool raisedChargingEvent = false;
     public float elapsedTime;

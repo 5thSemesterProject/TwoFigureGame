@@ -14,10 +14,11 @@ class AIState : CharacterState
             characterData.virtualCamera.gameObject.SetActive(false);
 
         characterData.movement.TerminateMove();
-
         
         characterData.movement.GetComponent<CharacterController>().enabled = false;
         characterData.movement.GetComponent<NavMeshAgent>().enabled = true;
+
+        characterData.audioListener.enabled = false;
 
         handleInteractables = false;
 

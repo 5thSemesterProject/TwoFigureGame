@@ -18,9 +18,11 @@ class SetUpState : CharacterState
 
 class IdleState : CharacterState
 {
+
     public IdleState(CharacterData characterData) : base(characterData)
     {
         characterData.movement.MovePlayer(Vector2.zero, 0);
+        characterData.audioListener.enabled = true;
     }
 
     public override CharacterState SpecificStateUpdate()
@@ -31,6 +33,7 @@ class IdleState : CharacterState
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
         if (inputVector.magnitude > 0)
             return SwitchState(new MoveState(characterData));
+
 
 
         if (characterData.movement.interactable != null && CharacterManager.customInputMaps.InGame.Action.triggered)
