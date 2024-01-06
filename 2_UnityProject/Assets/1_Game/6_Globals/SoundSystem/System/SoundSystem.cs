@@ -163,6 +163,11 @@ public class SoundChannel
         return task;
     }
     public void Remove(SoundTask task) => internalList.Remove(task);
+    public void RemoveAll()
+    {
+        foreach (var task in internalList)
+            Remove(task);
+    }
     public uint GetCurrentPriority()
     {
         if (overrideMode == OverrideMode.None)
@@ -201,9 +206,6 @@ public class SoundSystem : MonoBehaviour
     public SerializableDictionary<int, SoundChannel> channels = new SerializableDictionary<int, SoundChannel>();
 
     #region Startup
-    private void Awake()
-    {
-    }
     private void OnEnable()
     {
         if (instance == null)
@@ -310,7 +312,6 @@ public class SoundSystem : MonoBehaviour
     public static bool Play<T>(T soundClipName, Transform playTransform, SoundPriority priority = 0, bool loop = false, float volume = -1, float delay = 0, FadeMode fadeMode = FadeMode.Default, float fadeDuration = 0f, float maxRange = 5) where T : Enum
     {
         AudioClip clip = SoundHolder.GetAudioClip(soundClipName, out int channel);
-        Debug.Log(channel);
         return PlaySound(clip, playTransform, channel, (uint)priority, loop, volume, FadeMode.Default, 0.5f, delay, maxRange);
     }
     #endregion

@@ -17,7 +17,7 @@ public class SoundChannelLoader : MonoBehaviour
             SoundSystem.SetChannel(channelNumber, channel);
     }
 
-    private void Start()
+    private void OnEnable()
     {
         channel.customChannel = true;
         canLoad = true;
