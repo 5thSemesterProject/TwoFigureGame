@@ -53,6 +53,15 @@ public struct SoundData
 }
 #endregion
 
+public enum FadeMode
+{
+    Default,
+    None,
+    FadeIn,
+    FadeOut,
+    FadeInOut,
+}
+
 #region SoundChannel
 [Serializable]
 public class SoundChannel
@@ -63,12 +72,15 @@ public class SoundChannel
 
     //Values
     public OverrideMode overrideMode = OverrideMode.Instant;
+    public FadeMode fadeMode = FadeMode.Default;
     [SerializeField] private float crossfadeTime = 0.5f;
     public float crossfadeDuration { get => overrideMode == OverrideMode.Crossfade ? crossfadeTime : 0; set => crossfadeTime = value; }
-    public float defaultVolume = 1;
+    public float volume = 1;
     public float defaultDelay = 0;
     public bool spatialAudio = false;
+    public float defaultMaxDistance = 5;
     public bool checkPriority = false;
+    public bool alwaysLoop = false;
 
     #region List Functionality
     public SoundTask this[int index]
@@ -83,7 +95,7 @@ public class SoundChannel
     #endregion
 
     #region Add / Remove
-    public bool Add(AudioClip soundClip, Transform playTransform, uint priority = 0, bool loop = false, float volume = -1, float delay = 0)
+    public bool Add(AudioClip soundClip, Transform playTransform, uint priority = 0, bool loop = false, float volumeMultiplier = -1, FadeMode fadeModeOverride = FadeMode.Default, float fadeDuration = 0.5f, float delay = 0, float maxDistance = -1)
     {
         if (playTransform == null || soundClip == null)
         {
@@ -102,9 +114,12 @@ public class SoundChannel
         task.clip = soundClip;
         task.channel = this;
         task.spatialize = spatialAudio;
+        task.priority = priority;
         task.delay = delay == 0 ? defaultDelay : delay;
-        task.volume = volume <= 0 ? defaultVolume : volume;
-        task.crossfadeDuration = crossfadeDuration;
+        task.volume = volumeMultiplier <= 0 ? volume : volume * volumeMultiplier;
+        task.maxDistance = maxDistance <= 0 ? defaultMaxDistance : maxDistance;
+        task.fadeDuration = fadeDuration;
+        task.fadeMode = fadeModeOverride == FadeMode.Default ? fadeMode : fadeModeOverride;
         task.loop = loop;
 
         task.Play();
@@ -169,7 +184,6 @@ public class SoundSystem : MonoBehaviour
 
     [Header("Channels")]
     public SerializableDictionary<int, SoundChannel> channels = new SerializableDictionary<int, SoundChannel>();
-    //public Dictionary<int, SoundChannel> channels = new Dictionary<int, SoundChannel>();
 
     #region Startup
     private void Awake()
@@ -255,11 +269,11 @@ public class SoundSystem : MonoBehaviour
     #endregion
 
     #region PlaySound
-    public static bool PlaySound(AudioClip soundClip, Transform playTransform, int channel, uint priority = 0, bool loop = false, float volume = -1, float delay = 0)
+    public static bool PlaySound(AudioClip soundClip, Transform playTransform, int channel, uint priority = 0, bool loop = false, float volume = -1, FadeMode fadeMode = FadeMode.Default, float fadeDuration = 0.5f, float delay = 0, float maxDistance = -1)
     {
-        return PlaySound(soundClip, playTransform, GetChannel(channel), priority, loop, volume, delay);
+        return PlaySound(soundClip, playTransform, GetChannel(channel), priority, loop, volume, fadeMode, fadeDuration, delay, maxDistance);
     }
-    private static bool PlaySound(AudioClip soundClip, Transform playTransform, SoundChannel channel, uint priority = 0, bool loop = false, float volume = -1, float delay = 0)
+    private static bool PlaySound(AudioClip soundClip, Transform playTransform, SoundChannel channel, uint priority = 0, bool loop = false, float volume = -1, FadeMode fadeMode = FadeMode.Default, float fadeDuration = 0.5f, float delay = 0, float maxDistance = -1)
     {
         if (soundClip == null)
         {
@@ -273,8 +287,7 @@ public class SoundSystem : MonoBehaviour
             playTransform = instance.transform;
         }
 
-        channel.Add(soundClip, playTransform, priority, loop, volume, delay);
-        return true;
+        return channel.Add(soundClip, playTransform, priority, loop, volume, fadeMode, fadeDuration, delay, maxDistance);
     }
     #endregion
 
@@ -282,7 +295,7 @@ public class SoundSystem : MonoBehaviour
     public static bool Play<T>(T soundClipName, Transform playTransform, SoundPriority priority = 0, bool loop = false, float volume = -1, float delay = 0) where T : Enum
     {
         AudioClip clip = SoundHolder.GetAudioClip(soundClipName, out int channel);
-        return PlaySound(clip, playTransform, channel, (uint)priority, loop, volume, delay);
+        return PlaySound(clip, playTransform, channel, (uint)priority, loop, volume, FadeMode.Default, 0.5f, delay);
     }
     #endregion
 }

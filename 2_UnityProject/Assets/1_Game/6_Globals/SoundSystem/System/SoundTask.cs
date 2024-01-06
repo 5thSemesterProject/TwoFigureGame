@@ -11,8 +11,10 @@ public class SoundTask : MonoBehaviour
     //Attributes
     public AudioClip clip;
     public float volume = 1;
-    public float crossfadeDuration = 0;
+    public FadeMode fadeMode = FadeMode.None;
+    public float fadeDuration = 0;
     public float delay = 0;
+    public float maxDistance = 5;
     public bool spatialize = false;
     public bool loop = false;
     public uint priority = 1;
@@ -45,7 +47,7 @@ public class SoundTask : MonoBehaviour
         StopCoroutine(coroutine);
         coroutine = StartCoroutine(_FadeOut(duration));
     }
-    private IEnumerator _FadeOut(float duration)
+    private IEnumerator _FadeOut(float duration, float delayAfter = 0)
     {
         float elapsedTime = 0;
         while (elapsedTime < duration)
@@ -54,6 +56,9 @@ public class SoundTask : MonoBehaviour
             elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
+
+        if (delayAfter < 0)
+            yield return new WaitForSecondsRealtime(Mathf.Abs(delay));
 
         Remove();
     }
@@ -75,7 +80,8 @@ public class SoundTask : MonoBehaviour
         audioSource.UnPause();
         if (loop)
             return;
-        coroutine = StartCoroutine(_PlaySound(audioSource, 0, 0));
+        FadeMode resumefadeMode = (fadeMode == FadeMode.FadeOut || fadeMode == FadeMode.FadeInOut) ? FadeMode.FadeOut : FadeMode.None;
+        coroutine = StartCoroutine(_PlaySound(this ,audioSource, Mathf.Clamp(delay,-1, 0), fadeDuration, resumefadeMode));
     }
     #endregion
 
@@ -91,6 +97,10 @@ public class SoundTask : MonoBehaviour
         audioSource.clip = clip;
         audioSource.volume = volume;
         audioSource.spatialBlend = spatialize ? 1 : 0;
+        audioSource.dopplerLevel = 0;
+        audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
+        audioSource.minDistance = 0.2f;
+        audioSource.maxDistance = maxDistance;
         audioSource.loop = loop;
 
         audioSource.Play();
@@ -98,10 +108,10 @@ public class SoundTask : MonoBehaviour
         StopCoroutine();
         if (loop)
             return;
-        coroutine = StartCoroutine(_PlaySound(audioSource, delay, crossfadeDuration));
+        coroutine = StartCoroutine(_PlaySound(this, audioSource, delay, fadeDuration, fadeMode));
     }
 
-    private IEnumerator _PlaySound(AudioSource source, float delay, float crossFade)
+    private IEnumerator _PlaySound(SoundTask soundTask,AudioSource source, float delay, float crossFade, FadeMode fadeMode)
     {
         if (delay > 0)
         {
@@ -110,27 +120,52 @@ public class SoundTask : MonoBehaviour
             source.UnPause();
         }
 
-        if (crossFade > 0)
+        switch (fadeMode)
         {
-            float elapsedTime = 0;
-            float targetVolume = source.volume;
-            source.volume = 0;
-            while (elapsedTime < crossFade)
-            {
-                source.volume = Mathf.Lerp(0, targetVolume, elapsedTime / crossFade);
-                elapsedTime += Time.unscaledDeltaTime;
-                yield return null;
-            }
+            case FadeMode.FadeInOut:
+            case FadeMode.FadeIn:
+                if (crossFade > 0)
+                {
+                    float elapsedTime = 0;
+                    float targetVolume = source.volume;
+                    source.volume = 0;
+                    while (elapsedTime < crossFade)
+                    {
+                        source.volume = Mathf.Lerp(0, targetVolume, elapsedTime / crossFade);
+                        elapsedTime += Time.unscaledDeltaTime;
+                        yield return null;
+                    }
 
-            source.volume = targetVolume;
+                    source.volume = targetVolume;
+                }
+                break;
+            case FadeMode.None:
+            case FadeMode.FadeOut:
+            case FadeMode.Default:
+            default:
+                break;
         }
 
-        yield return new WaitForSecondsRealtime(source.clip.length - source.time);
+        float addedCrossfadeTime = (fadeMode == FadeMode.FadeInOut || fadeMode == FadeMode.FadeOut) ? crossFade : 0;
+        float timeToWait = source.clip.length - source.time - addedCrossfadeTime;
 
-        if (delay < 0)
-            yield return new WaitForSecondsRealtime(Mathf.Abs(delay));
+        yield return new WaitForSecondsRealtime(timeToWait);
 
-        Remove();
+        switch (fadeMode)
+        {
+            case FadeMode.FadeInOut:
+            case FadeMode.FadeOut:
+                yield return _FadeOut(crossFade, Mathf.Abs(Mathf.Clamp(delay, -1, 0)));
+                break;
+            case FadeMode.None:
+            case FadeMode.FadeIn:
+            case FadeMode.Default:
+                if (delay < 0)
+                    yield return new WaitForSecondsRealtime(Mathf.Abs(delay));
+
+                Remove();
+                break;
+        }
     }
     #endregion
 
