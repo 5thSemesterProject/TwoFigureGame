@@ -71,6 +71,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7305982756346145265, guid: 0e7db5f00c22c2d449d4e99a2a5b2dc6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1432433458627378761}
+    - targetCorrespondingSourceObject: {fileID: 7305982756346145265, guid: 0e7db5f00c22c2d449d4e99a2a5b2dc6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8456510583218684935}
   m_SourcePrefab: {fileID: 100100000, guid: 0e7db5f00c22c2d449d4e99a2a5b2dc6, type: 3}
 --- !u!1 &1340664039496406612 stripped
 GameObject:
@@ -158,3 +161,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useTriggeredStates: 1
+--- !u!114 &8456510583218684935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5738198774351855226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eb33c90af5a3423eadadb40ce11973d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerType: 1
+  sound: 25
+  soundPriority: 0
+  volume: 1
+  playOnce: 1
