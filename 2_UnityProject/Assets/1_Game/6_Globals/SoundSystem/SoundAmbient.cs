@@ -64,12 +64,12 @@ public class SoundAmbient : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, maxRange);
     }
 
-    /*private void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         if (_showAllGizmosGizmos)
             Gizmos.DrawWireSphere(transform.position, maxRange);
-    }*/
+    }
 
     public void SetShowAllGizmos(bool value)
     {
