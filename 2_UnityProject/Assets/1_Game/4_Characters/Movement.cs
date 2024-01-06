@@ -41,6 +41,10 @@ public class Movement : MonoBehaviour, IIntersectGas
 
     public CharacterType characterType;
 
+    public float MaxSpeed { get => maxSpeed; set => maxSpeed = value; }
+    public float Acceleration { get => acceleration; set => acceleration = value; }
+    public float Deceleration { get => deceleration; set => deceleration = value; }
+
     private void Awake()
     {
         if (!TryGetComponent(out characterController))

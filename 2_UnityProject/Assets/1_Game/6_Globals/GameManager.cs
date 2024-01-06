@@ -171,6 +171,8 @@ public class GameManager : MonoBehaviour
     private static void NotifyLow()
     {
         instance.notifyLow?.Invoke();
+        CharacterManager.ActiveCharacterData.movement.MaxSpeed = GameStats.instance.lowCharacterSpeed;
+        CharacterManager.ActiveCharacterData.other.movement.MaxSpeed = GameStats.instance.lowCharacterSpeed;
         Volume postProsess = GameObject.Find("PostProcessing").GetComponent<Volume>();
         Vignette vignette;
         if (postProsess.profile.TryGet(out vignette))
@@ -179,6 +181,8 @@ public class GameManager : MonoBehaviour
     private static void UnNotifyLow()
     {
         instance.unNotifyLow?.Invoke();
+        CharacterManager.ActiveCharacterData.movement.MaxSpeed = GameStats.instance.defaultCharacterSpeed;
+        CharacterManager.ActiveCharacterData.other.movement.MaxSpeed = GameStats.instance.defaultCharacterSpeed;
         Volume postProsess = GameObject.Find("PostProcessing").GetComponent<Volume>();
         Vignette vignette;
         if (postProsess.profile.TryGet(out vignette))

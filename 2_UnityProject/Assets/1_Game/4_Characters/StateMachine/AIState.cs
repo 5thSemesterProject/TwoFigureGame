@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,10 +10,7 @@ class AIState : CharacterState
         if (characterData.virtualCamera != null)
             characterData.virtualCamera.gameObject.SetActive(false);
 
-        characterData.movement.TerminateMove();
-        
-        characterData.movement.GetComponent<CharacterController>().enabled = false;
-        characterData.movement.GetComponent<NavMeshAgent>().enabled = true;
+        characterData.movement.MaxSpeed *= GameStats.instance.AISpeedMultiplier;
 
         characterData.audioListener.enabled = false;
 
@@ -44,14 +38,14 @@ class AIState : CharacterState
             characterData.movement.GetComponent<CharacterController>().enabled = false;
             characterData.movement.GetComponent<NavMeshAgent>().enabled = true;
 
+            characterData.movement.MaxSpeed /= GameStats.instance.AISpeedMultiplier;
+
             return new IdleState(characterData);
         }
 
         //Follow Partner
         if (movement.interactable !=null && movement.interactable.TryGetComponent(out PressurePlate pressurePlate)) //Don't follow partner if on pressure plate
         {
-            //movement.DisableNavMeshHandling();
-            //movement.MovePlayer(Vector2.zero,0);
             movement.GetComponent<NavMeshHandler>().IdleAnim();
         }
         else
@@ -61,18 +55,14 @@ class AIState : CharacterState
             characterData.movement.FollowPartner(otherCharacterPos);
         }
 
-
-
         //Stop Handling Oxygen if other character is in GodMode
         if (characterData.other.currentState  is GodModeState)
             handleOxygen = false;
         else
             handleOxygen = true;
 
-
         return this;
     }
-
 }
 
 

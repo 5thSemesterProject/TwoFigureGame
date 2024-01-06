@@ -64,21 +64,21 @@ public struct CharacterOxygenData
 
 public class GameStats : MonoBehaviour
 {
-   public static GameStats instance;
+    public static GameStats instance;
     public float inactiveFollowDistance = 4;
+    public float defaultCharacterSpeed = 4;
+    public float lowCharacterSpeed = 2;
+    public float AISpeedMultiplier = 0.8f;
     public OxygenData oxygenStation;
     public CharacterOxygenData characterOxy;
 
-   void Awake()
-   {    
+    void Awake()
+    {    
         if (instance==null)
             instance = this;
         else
             Destroy(this);
 
         characterOxy.Initialize();
-   }
-
-
-
+    }
 }
