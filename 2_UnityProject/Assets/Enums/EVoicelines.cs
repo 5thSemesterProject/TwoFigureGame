@@ -7,6 +7,8 @@ public enum EVoicelines
     Box_V_02,
     Box_V_03,
     Box_V_04,
+    CanNotPass_E,
+    CanNotPass_V,
     Crawl_01,
     Crawl_02,
     Crawl_03,

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 public abstract class CharacterState
@@ -197,7 +198,16 @@ public abstract class CharacterState
                       break;
                     case CutsceneTrigger:
                         var cutsceneTrigger = playerActionType as CutsceneTrigger;
-                        updatedState = new WalkTowards(characterData,cutsceneTrigger.cutscene.cutsceneHandler);
+                        
+                        updatedState = HandleCutsceneTrigger(cutsceneTrigger);
+
+                        //In case character can't reach
+                        if (updatedState==null)
+                        {   
+                            characterData.movement.interactable = null;
+                            return;
+                        }
+                            
                     break;
                 }
             }
@@ -206,14 +216,45 @@ public abstract class CharacterState
             Movement movement = characterData.movement;
             if (movement.interactable.TryGetComponent(out TriggerByCharacter triggerByCharacter))
             {
+                Debug.Log ("Activate");
                 triggerByCharacter.Activate(movement);
                 movement.interactable = null;
             }
         }
     }
+
+    private CharacterState HandleCutsceneTrigger(CutsceneTrigger cutsceneTrigger)
+    {
+         CutsceneHandler cutsceneHandler = cutsceneTrigger.cutscene.cutsceneHandler;
+                        
+            //In case Door
+            if (cutsceneTrigger.TryGetComponent(out Door door))
+            {   
+
+                //In case other character cant reach
+                if (characterData.other.navMeshHandler.CheckReachable(characterData.other.gameObject.transform.position))
+                    return new WaitForDoor(characterData,cutsceneHandler,door);
+            }
+            else
+            {   
+                //In case actor Positions reachable
+                Vector3 actorPos = cutsceneHandler.GetActorData(characterData.CharacterType).actor.transform.position;
+                Vector3 otherActor = cutsceneHandler.GetActorData(characterData.other.CharacterType).actor.transform.position;
+                if (characterData.navMeshHandler.CheckReachable(actorPos) 
+                && characterData.other.navMeshHandler.CheckReachable(otherActor))
+                    return new WalkTowards(characterData,cutsceneHandler);
+            }
+
+            //Play not reachable sound
+            CharacterType characterType = characterData.CharacterType;
+            EVoicelines voicelineToPlay = characterType == CharacterType.Woman?EVoicelines.CanNotPass_E:EVoicelines.CanNotPass_V;
+            SoundSystem.Play(voicelineToPlay,characterData.gameObject.transform,SoundPriority.High,false,1);
+
+            return null;
+    } 
     #endregion
 
-    public CharacterState HandleCheats()
+    protected CharacterState HandleCheats()
     {
         string cheatCode = "cheat";
 
@@ -240,5 +281,9 @@ public abstract class CharacterState
     {
         return updatedState;
     }
+
+
+
+    
 
 }
