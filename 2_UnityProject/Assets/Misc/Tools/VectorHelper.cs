@@ -18,5 +18,9 @@ public class VectorHelper
     {
         return new(value.x, 0, value.y);
     }
+    public static Vector3 RemoveY(Vector3 value)
+    {
+        return new(value.x, 0, value.z);
+    }
 
 }

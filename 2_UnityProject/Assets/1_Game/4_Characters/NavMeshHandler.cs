@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
@@ -32,12 +33,12 @@ public class NavMeshHandler : MonoBehaviour
         {
             MovePlayerToPos(otherCharacterPos);
         }
-        //Stop in case in range    
-        else
-        {
-            DisableNavMesh();
-            IdleAnim();
-        }
+        ////Stop in case in range    
+        //else
+        //{
+        //    DisableNavMesh();
+        //    IdleAnim();
+        //}
     }
 
     public bool GetMovementRequired(Vector3 targetPos)
@@ -52,34 +53,39 @@ public class NavMeshHandler : MonoBehaviour
         characterController.enabled = false;
         navMeshAgent.isStopped = false;
 
-        if (noStoppingDistance)
-            navMeshAgent.stoppingDistance = 0.01f;
-
-        if (position!=navMeshAgent.destination)
+        NavMeshPath navMeshPath = new NavMeshPath();
+        navMeshAgent.CalculatePath(position, navMeshPath);
+        foreach (var corner in navMeshPath.corners)
         {
-            navMeshAgent.SetDestination(position);
-            animator.SetBool("Grounded", true);
-            animator.SetFloat("MotionSpeed", 1);
-            animator.SetFloat("Speed", navMeshAgent.velocity.magnitude+1);
-
-            //Set Rotation
-            if(navMeshAgent.velocity.magnitude>0.01f)
-            {   
-                if (updateRotation)
-                    transform.rotation = Quaternion.LookRotation(navMeshAgent.velocity);
-            
-                //Caclulate Movement Angle
-                Vector2 currentMove = VectorHelper.Convert3To2(transform.forward).normalized;
-                float angle = Vector2.Angle(currentMove,previousMove);
-                previousMove = currentMove;
-                animator.SetFloat("RotationAngle", angle);
+            Debug.DrawLine(corner,corner + Vector3.up, Color.red);
+        }
+        Debug.Log(navMeshPath.corners.Length);
+        if (navMeshPath.corners.Length<=2)
+        {
+            Debug.DrawLine(transform.position + Vector3.up, (position) + Vector3.up, Color.yellow);
+            Vector3 movementDirection = (position - transform.position).normalized;
+            GetComponent<Movement>().MovePlayerGlobal(movementDirection);
+        }
+        else
+        {
+            if ((navMeshPath.corners[1] - transform.position).magnitude <= 0.5f)
+            {
+                Debug.DrawLine(transform.position + Vector3.up, (navMeshPath.corners[2]) + Vector3.up, Color.yellow);
+                Vector3 movementDirection = (navMeshPath.corners[2] - transform.position).normalized;
+                GetComponent<Movement>().MovePlayerGlobal(movementDirection);
+            }
+            else
+            {
+                Debug.DrawLine(transform.position + Vector3.up, (navMeshPath.corners[1]) + Vector3.up, Color.yellow);
+                Vector3 movementDirection = (navMeshPath.corners[1] - transform.position).normalized;
+                GetComponent<Movement>().MovePlayerGlobal(movementDirection);
             }
         }
     }
 
     public void DisableNavMesh()
     {
-        navMeshAgent.enabled = false;
+        //navMeshAgent.enabled = false;
     }
 
     public void IdleAnim()

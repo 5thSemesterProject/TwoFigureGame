@@ -41,8 +41,8 @@ class AIState : CharacterState
             GameObject.Destroy(collider);
             collider = null;
 
-            characterData.movement.GetComponent<CharacterController>().enabled = true;
-            characterData.movement.GetComponent<NavMeshAgent>().enabled = false;
+            characterData.movement.GetComponent<CharacterController>().enabled = false;
+            characterData.movement.GetComponent<NavMeshAgent>().enabled = true;
 
             return new IdleState(characterData);
         }

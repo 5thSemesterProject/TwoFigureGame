@@ -21,7 +21,7 @@ class IdleState : CharacterState
 
     public IdleState(CharacterData characterData) : base(characterData)
     {
-        characterData.movement.MovePlayer(Vector2.zero, 0);
+        characterData.movement.MovePlayerFromCamera(Vector2.zero, 0);
         characterData.audioListener.enabled = true;
     }
 
@@ -60,7 +60,7 @@ class MoveState : CharacterState
             characterData.movement.interactable.Trigger(characterData.movement);
 
         Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
-        Vector2 MovementVector = characterData.movement.MovePlayer(inputVector);
+        Vector2 MovementVector = characterData.movement.MovePlayerFromCamera(inputVector);
         if (MovementVector.magnitude <= 0)
             return SwitchState(new IdleState(characterData));
 
@@ -213,7 +213,7 @@ class MoveObjectState : CharacterState
                 return new AIState(characterData);
             
             Vector2 inputVector = CharacterManager.customInputMaps.InGame.Movement.ReadValue<Vector2>();
-            characterData.movement.MovePlayer(inputVector,4);
+            characterData.movement.MovePlayerFromCamera(inputVector,4);
             characterData.characterOxygenData.oxygenData.currentOxygen = 100;
 
             if (Input.GetKeyDown(KeyCode.Backspace))

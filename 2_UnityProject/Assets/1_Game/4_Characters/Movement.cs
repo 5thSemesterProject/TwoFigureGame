@@ -55,8 +55,6 @@ public class Movement : MonoBehaviour, IIntersectGas
         {
             Debug.LogError("Missing Navmesh Agent on character prefab");
         }
-        else
-            navMeshAgent.enabled = false;
 
         navMeshHandler = GetComponent<NavMeshHandler>();
     }
@@ -103,7 +101,6 @@ public class Movement : MonoBehaviour, IIntersectGas
         float tolerance = 0.001f;
         while (true)
         {
-
             while (Time.timeScale == 0)
             {
                 yield return null;
@@ -124,18 +121,12 @@ public class Movement : MonoBehaviour, IIntersectGas
                 currentMove = Vector3.zero;
                 desiredMove = Vector3.zero;
 
-                characterController.Move(Vector3.zero);
+                navMeshAgent.Move(Vector3.zero);
                 animator.SetFloat("Speed", 0);
 
                 moveRoutine = null;
                 yield break;
             }
-
-            //Adjust for Camera Rotation
-            Transform cameraTransform = Camera.main.transform;
-            Vector3 cameraForward = new(cameraTransform.forward.x, 0, cameraTransform.forward.z);
-            Vector3 cameraRight = new(cameraTransform.right.x, 0, cameraTransform.right.z);
-            desiredMove = (cameraForward * desiredMove.z + cameraRight * desiredMove.x).normalized * desiredMove.magnitude;
 
             //Calculate Deceleration
             if (desiredMove.magnitude <= 0)
@@ -151,8 +142,8 @@ public class Movement : MonoBehaviour, IIntersectGas
 
             //Move
             Vector3 previousPosition = transform.position;
-            if (currentMove != null && characterController.enabled)
-                characterController.Move(currentMove * Time.unscaledDeltaTime * Time.timeScale);
+            if (currentMove != null && navMeshAgent.enabled)
+                 navMeshAgent.Move(currentMove * Time.unscaledDeltaTime * Time.timeScale);
             Vector3 nextPosition = transform.position;
             currentMove = (nextPosition - previousPosition) / Time.unscaledDeltaTime * Time.timeScale;
             currentMove.y = 0;
@@ -165,7 +156,6 @@ public class Movement : MonoBehaviour, IIntersectGas
                 transform.rotation = Quaternion.LookRotation(currentMove);
 
             previousMove = currentMove;
-
             desiredMove = Vector3.zero;
 
             //Animators
@@ -198,48 +188,36 @@ public class Movement : MonoBehaviour, IIntersectGas
         }
     }
 
-    public Vector2 MovePlayer(Vector2 axis, float speed = 1)
+    public Vector2 MovePlayerGlobal(Vector3 axis, float speed = 1)
+    {
+        return MovePlayerGlobal(VectorHelper.Convert3To2(axis), speed);
+    }
+
+    public Vector2 MovePlayerGlobal(Vector2 axis, float speed = 1)
     {
         desiredMove += VectorHelper.Convert2To3(axis * speed);
 
         ActivateMove();
         return Vector2.Max(VectorHelper.Convert3To2(desiredMove), VectorHelper.Convert3To2(currentMove));
+    }
 
-        /*
-        Vector3 movement=default;
-        Vector3 movementDir=default;
+    public Vector2 MovePlayerFromCamera(Vector3 axis, float speed = 1)
+    {
+        return MovePlayerFromCamera(VectorHelper.Convert3To2(axis), speed);
+    }
 
-        //float yValue = transform.position.y;
-        axis = axis.magnitude >= 1 ? axis.normalized : axis;
+    public Vector2 MovePlayerFromCamera(Vector2 axis, float speed = 1)
+    {
+        var tempMove = VectorHelper.Convert2To3(axis * speed);
 
-        Vector3 characterForward = Camera.main.transform.forward;
-        Vector3 characterRight = Camera.main.transform.right;
-        movementDir = characterForward * axis.y + characterRight * axis.x;
-        movement = movementDir * movementSpeed * speed * Time.deltaTime * Time.timeScale / 3;
-        movement = VectorHelper.Convert2To3(OptimizeMovement(transform.position, VectorHelper.Convert3To2(movement)));
- 
-        characterController.Move(movement);
+        //Adjust for Camera Rotation
+        Transform cameraTransform = Camera.main.transform;
+        Vector3 cameraForward = new(cameraTransform.forward.x, 0, cameraTransform.forward.z);
+        Vector3 cameraRight = new(cameraTransform.right.x, 0, cameraTransform.right.z);
+        desiredMove += (cameraForward * tempMove.z + cameraRight * tempMove.x).normalized * tempMove.magnitude;
 
-        if (movement.magnitude >= 0.001)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(movement.normalized);
-            float angleDifference = Quaternion.Angle(transform.rotation, targetRotation);
-            if (Mathf.Abs(angleDifference) > 4)
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lerpValue * rotationSpeed * Time.deltaTime * speed);
-            }
-            else
-            {
-                transform.rotation = targetRotation;
-            }
-        }
-  
-        //transform.position = new Vector3(transform.position.x, yValue, transform.position.z);
-        animator.SetBool("Grounded", true);
-        animator.SetFloat("MotionSpeed", 1);
-        animator.SetFloat("Speed", speed>0? (movement.magnitude / Time.deltaTime * 3):0);
-        return VectorHelper.Convert3To2(movement);
-        */
+        ActivateMove();
+        return Vector2.Max(VectorHelper.Convert3To2(desiredMove), VectorHelper.Convert3To2(currentMove));
     }
 
     public void FollowPartner(Vector3 otherCharacterPos)
@@ -251,65 +229,6 @@ public class Movement : MonoBehaviour, IIntersectGas
     {
         navMeshHandler.DisableNavMesh();
     }
-
-    /*
-    private Vector2 AssureMovement(Vector3 position, Vector2 input)
-    {
-        return OptimizeMovement(position, input);
-    }
-
-    private Vector2 OptimizeMovement(Vector3 position, Vector2 input)
-    {
-        //If Wall
-        return CalculateOptimizedMovement(input, position);
-
-    }
-
-    private Vector2 CalculateOptimizedMovement(Vector2 movement, Vector3 position)
-    {
-        Vector3 characterMidpoint = characterController.center + transform.position;
-        Vector3 characterExtents = new Vector3( characterController.radius * 2, 0.1f, characterController.radius * 2);
-        RaycastHit hit;
-        Physics.SphereCast(characterMidpoint, characterExtents.x, VectorHelper.Convert2To3(movement.normalized), out hit, 4f, LayerMask.GetMask("Walls"));
-        //Physics.Linecast(position + Vector3.up, position + Vector3.up + VectorHelper.Convert2To3(movement.normalized) * 4, out hit, LayerMask.GetMask("Walls"));
-        if (hit.collider != null)
-        {
-            Vector2 ray = VectorHelper.Convert3To2(hit.point - position);
-            Vector3 dir = hit.point - position;
-            Vector2 dir2 = VectorHelper.Convert3To2(dir);
-            Vector3 normal = hit.normal;
-            Vector2 normal2 = VectorHelper.Convert3To2(normal).normalized;
-
-            float distance = ray.magnitude * Vector2.Dot(ray.normalized, normal2.normalized);
-            distance = Mathf.Abs(distance);
-            distance = Mathf.Clamp01(distance - minWallDistance);
-            float influence = 1 - distance;
-
-            float moveMagnitude = movement.magnitude;
-            Vector2 cardinalDir = GetCardinalDirection(dir2, normal2);
-            Vector2 cardinal = cardinalDir * moveMagnitude;
-
-            Vector2 moveToCardinal = cardinal - movement;
-            Vector2 resultdir = (movement + moveToCardinal * influence).normalized;
-            Vector2 result = resultdir * moveMagnitude;
-
-            return result;
-        }
-
-        return movement;
-    }
-
-    private Vector2 GetCardinalDirection(Vector2 dir2, Vector2 normal2)
-    {
-        normal2 = -normal2;
-        float dotProduct = Vector3.Dot(dir2, normal2);
-        float magnitudeSquared = normal2.sqrMagnitude;
-
-        Vector2 proj = (dotProduct / magnitudeSquared) * normal2;
-
-        return (dir2 - proj).normalized;
-    }
-    */
     #endregion
 
     #region Traversing

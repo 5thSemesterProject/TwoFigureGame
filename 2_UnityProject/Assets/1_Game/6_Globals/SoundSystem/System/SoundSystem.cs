@@ -110,7 +110,7 @@ public class SoundChannel
     #endregion
 
     #region Add / Remove
-    public bool Add(AudioClip soundClip, Transform playTransform, uint priority = 0, bool loop = false, float volumeMultiplier = -1, FadeMode fadeModeOverride = FadeMode.Default, float fadeDuration = 0.5f, float delay = 0, float maxDistance = -1)
+    public bool Add(AudioClip soundClip, Transform playTransform, uint priority = 0, bool loop = false, float volumeMultiplier = 1, FadeMode fadeModeOverride = FadeMode.Default, float fadeDuration = 0.5f, float delay = 0, float maxDistance = -1)
     {
         if (playTransform == null || soundClip == null)
         {
@@ -286,7 +286,7 @@ public class SoundSystem : MonoBehaviour
     #endregion
 
     #region PlaySound
-    public static bool PlaySound(AudioClip soundClip, Transform playTransform, int channel, uint priority = 0, bool loop = false, float volume = -1, FadeMode fadeMode = FadeMode.Default, float fadeDuration = 0.5f, float delay = 0, float maxDistance = -1)
+    public static bool PlaySound(AudioClip soundClip, Transform playTransform, int channel, uint priority = 0, bool loop = false, float volume = 1, FadeMode fadeMode = FadeMode.Default, float fadeDuration = 0.5f, float delay = 0, float maxDistance = -1)
     {
         return PlaySound(soundClip, playTransform, GetChannel(channel), priority, loop, volume, fadeMode, fadeDuration, delay, maxDistance);
     }
@@ -309,7 +309,7 @@ public class SoundSystem : MonoBehaviour
     #endregion
 
     #region Custom
-    public static bool Play<T>(T soundClipName, Transform playTransform, SoundPriority priority = 0, bool loop = false, float volume = -1, float delay = 0, FadeMode fadeMode = FadeMode.Default, float fadeDuration = 0f, float maxRange = 5) where T : Enum
+    public static bool Play<T>(T soundClipName, Transform playTransform, SoundPriority priority = 0, bool loop = false, float volume = 1, float delay = 0, FadeMode fadeMode = FadeMode.Default, float fadeDuration = 0f, float maxRange = 5) where T : Enum
     {
         AudioClip clip = SoundHolder.GetAudioClip(soundClipName, out int channel);
         return PlaySound(clip, playTransform, channel, (uint)priority, loop, volume, FadeMode.Default, 0.5f, delay, maxRange);

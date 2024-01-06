@@ -128,7 +128,7 @@ class WaitForOtherState : CutsceneState
         handleOxygen = false;
 
         Vector2 moveDir = VectorHelper.Convert3To2(cutsceneHandler.GetActorData(characterData.movement.characterType).actor.transform.forward);
-        characterData.movement.MovePlayer(moveDir,0);
+        characterData.movement.MovePlayerFromCamera(moveDir,0);
     }
 
     public override CharacterState SpecificStateUpdate()
