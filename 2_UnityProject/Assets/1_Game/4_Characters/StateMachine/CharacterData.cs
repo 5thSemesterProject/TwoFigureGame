@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.AI;
 
 public enum Characters
 {
@@ -15,6 +16,7 @@ public class CharacterData
     {
         gameObject = obj;
         movement = gameObject.GetComponent<Movement>();
+        navMeshHandler = gameObject.GetComponent<NavMeshHandler>();
         animator = gameObject.GetComponentInChildren<Animator>();
 
         var rigidbodysOnCharacter = gameObject.GetComponentsInChildren<Rigidbody>();
@@ -29,7 +31,9 @@ public class CharacterData
 
     public GameObject gameObject;
     public Movement movement;
+    public  NavMeshHandler navMeshHandler;
     public Animator animator;
+    public CharacterType CharacterType{get{return movement.characterType;}}
     public CharacterState currentState;
     public CinemachineVirtualCamera virtualCamera;
     public CharacterOxygenData characterOxygenData;

@@ -42,10 +42,7 @@ public class NavMeshHandler : MonoBehaviour
 
     public bool GetMovementRequired(Vector3 targetPos)
     {
-        NavMeshPath navMeshPath = new NavMeshPath();
-        navMeshAgent.CalculatePath(targetPos,navMeshPath);
-
-        return navMeshPath.status == NavMeshPathStatus.PathComplete && Vector3.Distance(targetPos,gameObject.transform.position)>GameStats.instance.inactiveFollowDistance;
+        return CheckReachable(targetPos) && Vector3.Distance(targetPos,gameObject.transform.position)>GameStats.instance.inactiveFollowDistance;
     }
 
     private Vector2 previousMove;
@@ -108,6 +105,18 @@ public class NavMeshHandler : MonoBehaviour
             Debug.Log ("Out of range with "+distance+" Range was "+oxygenstation.GetIntersectionRadius());
             GetComponent<Movement>().oxygenstation = null;
         }
+    }
+
+    public bool CheckReachable(Vector3 targetPos)
+    {   
+        bool currentNavmeshAgentState = navMeshAgent.enabled;
+        navMeshAgent.enabled = true;
+
+        NavMeshPath navMeshPath = new NavMeshPath();
+        navMeshAgent.CalculatePath(targetPos,navMeshPath);
+        navMeshAgent.enabled = currentNavmeshAgentState;
+        
+        return navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete;
     }
 
 }

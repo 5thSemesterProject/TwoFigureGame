@@ -37,7 +37,7 @@ class WaitForDoor: CutsceneState
         characterData.movement.GetComponent<CharacterController>().enabled = false;
         characterData.movement.GetComponent<NavMeshAgent>().enabled = false;
 
-        characterData.movement.GetComponent<NavMeshHandler>().IdleAnim();
+        characterData.navMeshHandler.IdleAnim();
 
     }
 
@@ -94,12 +94,12 @@ class WalkTowards : CutsceneState
         {
             if (distanceToTarget>1f)
             {
-                characterData.movement.GetComponent<NavMeshHandler>().MovePlayerToPos(targetPos,1,true,true);
+                characterData.navMeshHandler.MovePlayerToPos(targetPos,1,true,true);
             }
             else
             {
                 //Slowly Lerp Player Rotation into  Actor Direction
-                characterData.movement.GetComponent<NavMeshHandler>().MovePlayerToPos(targetPos,1,true,false);
+                characterData.navMeshHandler.MovePlayerToPos(targetPos,1,true,false);
                 Vector2 moveDirection = characterData.movement.GetComponent<NavMeshAgent>().velocity.normalized;
                 moveDirection = Vector2.Lerp(moveDirection,targetDir,1-distanceToTarget/intitialTargetDistance);
                 moveDirection = moveDirection.normalized;
