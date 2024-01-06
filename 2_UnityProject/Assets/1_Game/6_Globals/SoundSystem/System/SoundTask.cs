@@ -48,7 +48,7 @@ public class SoundTask : MonoBehaviour
         if (fadingOut)
             return;
         fadingOut = true;
-        StopCoroutine(coroutine);
+        StopCurrentCoroutine();
         coroutine = StartCoroutine(_FadeOut(duration));
     }
     private IEnumerator _FadeOut(float duration, float delayAfter = 0)
@@ -74,13 +74,13 @@ public class SoundTask : MonoBehaviour
         if (fadingOut)
             return;
         audioSource.Pause();
-        StopCoroutine();
+        StopCurrentCoroutine();
     }
     public void Resume()
     {
         if (fadingOut)
             return;
-        StopCoroutine();
+        StopCurrentCoroutine();
         audioSource.UnPause();
         if (loop)
             return;
@@ -110,7 +110,7 @@ public class SoundTask : MonoBehaviour
 
         audioSource.Play();
 
-        StopCoroutine();
+        StopCurrentCoroutine();
         if (loop)
             return;
         coroutine = StartCoroutine(_PlaySound(this, audioSource, delay, fadeDuration, fadeMode));
@@ -179,7 +179,7 @@ public class SoundTask : MonoBehaviour
     #endregion
 
     #region Utility
-    private void StopCoroutine()
+    private void StopCurrentCoroutine()
     {
         if (coroutine != null)
             StopCoroutine(coroutine);
