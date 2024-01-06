@@ -33,12 +33,6 @@ public class NavMeshHandler : MonoBehaviour
         {
             MovePlayerToPos(otherCharacterPos);
         }
-        ////Stop in case in range    
-        //else
-        //{
-        //    DisableNavMesh();
-        //    IdleAnim();
-        //}
     }
 
     public bool GetMovementRequired(Vector3 targetPos)
@@ -46,7 +40,6 @@ public class NavMeshHandler : MonoBehaviour
         return CheckReachable(targetPos) && Vector3.Distance(targetPos,gameObject.transform.position)>GameStats.instance.inactiveFollowDistance;
     }
 
-    private Vector2 previousMove;
     public void MovePlayerToPos(Vector3 position,float movementSpeed=1,bool noStoppingDistance = false, bool updateRotation = true)
     {
         navMeshAgent.updateRotation = false;
@@ -59,7 +52,6 @@ public class NavMeshHandler : MonoBehaviour
         {
             Debug.DrawLine(corner,corner + Vector3.up, Color.red);
         }
-        Debug.Log(navMeshPath.corners.Length);
         if (navMeshPath.corners.Length<=2)
         {
             Debug.DrawLine(transform.position + Vector3.up, (position) + Vector3.up, Color.yellow);
