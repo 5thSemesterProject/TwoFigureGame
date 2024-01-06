@@ -66,11 +66,14 @@ MonoBehaviour:
   channel:
     customChannel: 1
     overrideMode: 2
+    fadeMode: 0
     crossfadeTime: 1
-    defaultVolume: 0.2
+    volume: 1
     defaultDelay: 0
     spatialAudio: 0
+    defaultMaxDistance: 5
     checkPriority: 0
+    alwaysLoop: 0
   loadIntoSoundSystem: 1
 --- !u!114 &718687358415518757
 MonoBehaviour:
@@ -88,11 +91,14 @@ MonoBehaviour:
   channel:
     customChannel: 1
     overrideMode: 0
+    fadeMode: 0
     crossfadeTime: 0.5
-    defaultVolume: 1
+    volume: 1
     defaultDelay: 0
-    spatialAudio: 1
+    spatialAudio: 0
+    defaultMaxDistance: 5
     checkPriority: 0
+    alwaysLoop: 0
   loadIntoSoundSystem: 1
 --- !u!114 &1020472783076165915
 MonoBehaviour:
@@ -110,11 +116,14 @@ MonoBehaviour:
   channel:
     customChannel: 1
     overrideMode: 1
+    fadeMode: 0
     crossfadeTime: 0.5
-    defaultVolume: 1
+    volume: 1
     defaultDelay: 0
     spatialAudio: 0
+    defaultMaxDistance: 5
     checkPriority: 1
+    alwaysLoop: 0
   loadIntoSoundSystem: 1
 --- !u!114 &3016766954593861125
 MonoBehaviour:
@@ -132,9 +141,12 @@ MonoBehaviour:
   channel:
     customChannel: 1
     overrideMode: 0
+    fadeMode: 0
     crossfadeTime: 0.5
-    defaultVolume: 1
+    volume: 1
     defaultDelay: 0
     spatialAudio: 1
+    defaultMaxDistance: 5
     checkPriority: 0
+    alwaysLoop: 0
   loadIntoSoundSystem: 1
