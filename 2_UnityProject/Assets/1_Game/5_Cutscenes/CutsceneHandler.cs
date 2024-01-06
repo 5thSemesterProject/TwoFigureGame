@@ -24,12 +24,6 @@ public class ActorData
 
     public void PrepareActorForScene()
     {   
-        //Toogle Visibility
-        var skinnedMeshRenderers = actor.GetComponentsInChildren<SkinnedMeshRenderer>();
-        /*foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
-        if (skinnedMeshRenderer)
-            skinnedMeshRenderer.enabled = false;*/
-        
         //Disable Movement Script
         var movement = actor.GetComponentInChildren<Movement>();
         if (movement)
@@ -42,7 +36,11 @@ public class CutsceneHandler
 {
     ActorData[] actorDatas;
 
+    Rig playableRig;
+    RigBuilder rigBuilder;
+
     PlayableDirector playableDirector;
+
 
     public CutsceneHandler(ActorData[] actorDatas, PlayableDirector playableDirector)
     {
@@ -89,9 +87,9 @@ public class CutsceneHandler
         }
     }
 
-    public void LerpBones(Transform playableRigRoot, Transform actorRigRoot)
+    public void LerpBones(Transform playableRigRoot, Transform actorRigRoot,float speed =1)
     {   
-        var playableRig = playableRigRoot.GetComponentsInChildren<Rig>()[1];
+        playableRig = playableRigRoot.GetComponentsInChildren<Rig>()[1];
         playableRigRoot = playableRigRoot.GetComponentsInChildren<MultipleTagsTool>()[0].transform;
         actorRigRoot = actorRigRoot.GetComponentsInChildren<MultipleTagsTool>()[0].transform;
 
@@ -109,11 +107,11 @@ public class CutsceneHandler
         }
 
         //Build Rig
-        RigBuilder rigBuilder = playableRig.GetComponentInParent<RigBuilder>();
+        rigBuilder = playableRig.GetComponentInParent<RigBuilder>();
         if (rigBuilder != null)
             rigBuilder.Build();
 
-        playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpBone(playableRig));
+        playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpIntoRig(playableRig,speed ));
     }
 
     private MultiRotationConstraint[] GetMultiRotationConstraint(Transform transform)
@@ -128,7 +126,11 @@ public class CutsceneHandler
             }
             else
             {
-                allrotations.Add(temp[i].AddComponent<MultiRotationConstraint>());
+                var newConstraint = temp[i].AddComponent<MultiRotationConstraint>();
+                newConstraint.data.constrainedXAxis = true;
+                newConstraint.data.constrainedYAxis = true;
+                newConstraint.data.constrainedZAxis = true;
+                allrotations.Add(newConstraint);
             }
         }
         return allrotations.ToArray();
@@ -141,22 +143,38 @@ public class CutsceneHandler
         rotationConstraint.data.sourceObjects = array;
     }
 
-    IEnumerator _LerpBone(Rig playableRig,float speed = 0.1f)
+    IEnumerator _LerpIntoRig(Rig rig,float speed = 0.1f)
     {
         float tolerance=0.01f;
         float t = 0;
         while (Mathf.Abs(1-t)>tolerance)
         {
             t +=Time.deltaTime*speed;
-            playableRig.weight = t;
+            rig.weight = t;
             yield return null;
         }
     }
 
-
-    public void StopBlendingRotationAndPosition()
+    IEnumerator _LerpOutOfRig(Rig rig,float speed = 0.1f)
     {
-        playableDirector.GetComponent<Cutscene>().StopAllCoroutines();
+        float tolerance=0.01f;
+        float t = 1;
+        while (Mathf.Abs(0-t)>tolerance)
+        {
+            t -=Time.deltaTime*speed;
+            rig.weight = t;
+            yield return null;
+        }
+    }
+
+    void RemoveContraints()
+    {
+        playableRig.weight = 0;
+    }
+
+    public void StopBlendingRotationAndPosition(float blendSpeed = 1)
+    {
+        playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpOutOfRig(playableRig));
     }
 
 
