@@ -58,7 +58,7 @@ public struct CharacterOxygenData
    {
         float progressInPercent = elapsedTime/(fallOffTimeInMinutes*60);
         falloffProgress = fallOffCurve.Evaluate(progressInPercent);
-        oxygenData.fallOfRate = Mathf.Lerp(oxygenData.fallOfRate,maxFallOff,falloffProgress);
+        oxygenData.fallOfRate = Mathf.Lerp(initialFallOff,maxFallOff,falloffProgress);
    }
 }
 
