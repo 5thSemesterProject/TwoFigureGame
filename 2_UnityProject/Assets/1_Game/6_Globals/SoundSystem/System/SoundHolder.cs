@@ -30,8 +30,6 @@ public class SoundHolder : MonoBehaviour
         audioUtility.LoadAllAudioClips<ECharacterSounds>((AudioClip[] audioClips) => character = audioClips.ToList());
         audioUtility = new AudioUtility();
         audioUtility.LoadAllAudioClips<EMusic>((AudioClip[] audioClips) => backgroundMusic = audioClips.ToList());
-        audioUtility = new AudioUtility();
-        audioUtility.LoadAllAudioClips<ETwineSounds>((AudioClip[] audioClips) => twine = audioClips.ToList());
         clipsLoaded = true;
     }
 
@@ -61,11 +59,6 @@ public class SoundHolder : MonoBehaviour
         {
             channel = 0;
             returnClip = backgroundMusic.FirstOrDefault(clip => clip.name == name);
-        }
-        else if (typeof(T) == typeof(ETwineSounds))
-        {
-            channel = 3;
-            returnClip = twine.FirstOrDefault(clip => clip.name == name);
         }
 
         if (returnClip == null)
