@@ -113,8 +113,12 @@ public class CharacterManager : MonoBehaviour
             manData.currentState = manData.currentState.UpdateState();
             womanData.currentState = womanData.currentState.UpdateState();
 
-            debuggingCharacterStateMachines.text = "Woman: " + womanData.currentState.GetType() + "\n Man: " + manData.currentState.GetType();
-            debuggingOxygenCharacters.text = "WomanOxy: " + womanData.characterOxygenData.oxygenData.currentOxygen + "\n ManOxy: " + manData.characterOxygenData.oxygenData.currentOxygen;
+            debuggingCharacterStateMachines.text = $"<b>Woman</b> " + womanData.currentState.GetType() + "\n <b>Man</b> " + manData.currentState.GetType();
+            
+            //Oxygen Debugging View
+            debuggingOxygenCharacters.text = 
+            $"<b>Woman</b> \n Current: {womanData.characterOxygenData.oxygenData.currentOxygen} \n Falloff Rate: {womanData.characterOxygenData.oxygenData.fallOfRate}\n" + 
+            $"<b>Man</b> \n Current: {manData.characterOxygenData.oxygenData.currentOxygen} \n Falloff Rate: {manData.characterOxygenData.oxygenData.fallOfRate}";
         }
     }
 
