@@ -164,7 +164,7 @@ class PlayCutsceneState : CutsceneState
         Transform playableRigRoot = characterData.gameObject.transform;
         Transform actorRigRoot = cutsceneHandler.GetActorData(characterData.CharacterType).actor.transform;
 
-        cutsceneHandler.LerpBones(playableRigRoot,actorRigRoot,1);
+        cutsceneHandler.LerpBones(playableRigRoot,characterData.CharacterType,1);
         cutsceneHandler.LerpPosition(playableRigRoot,actorRigRoot,1);
 
         //Start Cutscene if not already playing
@@ -179,7 +179,6 @@ class PlayCutsceneState : CutsceneState
         //Return to previous States
         if (playableDirector.state == PlayState.Paused || playableDirector.time>=playableDirector.duration) 
         {   
-            //cutsceneHandler.StopBlendingRotationAndPosition();
             return new RecoverLastState(characterData,cutsceneHandler);
         }
             
@@ -212,25 +211,21 @@ class RecoverLastState : CutsceneState
         handleInteractables = false;
         updateLastState = false;
         handleOxygen = false;
+
+        cutsceneHandler.StopBlendingRotationAndPosition(characterData.CharacterType);
     }
 
     public override CharacterState SpecificStateUpdate()
     {
-        characterData.movement.DisableNavMeshHandling();
 
         //Return to previous States
         if (characterData.lastState is AIState)
         {
-            characterData.movement.GetComponent<CharacterController>().enabled = false;
-            characterData.movement.GetComponent<NavMeshAgent>().enabled = true;
-            characterData.movement.GetComponent<NavMeshAgent>().isStopped = false;
             return new AIState(characterData);
         }
             
         else
         {
-            characterData.movement.GetComponent<CharacterController>().enabled = true;
-            characterData.movement.GetComponent<NavMeshAgent>().enabled = false;
             characterData.virtualCamera.gameObject.SetActive(true);
             return new IdleState(characterData);
         }

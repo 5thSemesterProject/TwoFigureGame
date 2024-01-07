@@ -75,7 +75,6 @@ public class Oxygenstation : MonoBehaviour, IIntersectGas
 
     public float ChargePlayer()
     {
-
         if (oxygenData.currentOxygen>0)
         {
             isCharging = true;
@@ -166,25 +165,26 @@ public class Oxygenstation : MonoBehaviour, IIntersectGas
 
     void  OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Movement movementComp))
+        Movement  movementComp=null;
+        Transform parent = other.transform.parent;
+        if (parent!=null)
+            movementComp = parent.GetComponent<Movement>();
+
+        if (movementComp!=null)
         {
             movementComp.oxygenstation = this;
             amountOfCharacters++;
         }
     }
 
-    void  OnTriggerStay(Collider other)
-    {   
-        if (other.TryGetComponent(out Movement movementComp))
-        {
-            //movementComp.oxygenstation = this;
-        }
-    }
-
     void  OnTriggerExit(Collider other)
     {           
+        Movement  movementComp=null;
+        Transform parent = other.transform.parent;
+        if (parent!=null)
+            movementComp = parent.GetComponent<Movement>();
 
-        if (other.TryGetComponent(out Movement movementComp))
+        if (movementComp!=null)
         {
             movementComp.oxygenstation = null;
             amountOfCharacters--;

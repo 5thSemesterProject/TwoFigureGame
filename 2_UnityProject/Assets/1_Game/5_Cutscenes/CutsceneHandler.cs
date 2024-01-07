@@ -13,6 +13,8 @@ using UnityEngine.Playables;
 public class ActorData
 {
     public GameObject actor;
+    public Rig correspondPlayableRig;
+    public RigBuilder rigBuilder;
 
     [HideInInspector]public CharacterType characterType;
 
@@ -36,8 +38,6 @@ public class CutsceneHandler
 {
     ActorData[] actorDatas;
 
-    Rig playableRig;
-    RigBuilder rigBuilder;
 
     PlayableDirector playableDirector;
 
@@ -87,18 +87,22 @@ public class CutsceneHandler
         }
     }
 
-    public void LerpBones(Transform playableRigRoot, Transform actorRigRoot,float speed =1)
+    public void LerpBones(Transform playableRigRoot, CharacterType characterType,float speed =1)
     {   
-        playableRig = playableRigRoot.GetComponentsInChildren<Rig>()[1];
-        playableRigRoot = playableRigRoot.GetComponentsInChildren<MultipleTagsTool>()[0].transform;
+        ActorData actorData = GetActorData(characterType);
+        Transform actorRigRoot = actorData.actor.transform;
         actorRigRoot = actorRigRoot.GetComponentsInChildren<MultipleTagsTool>()[0].transform;
+
+        actorData.correspondPlayableRig = playableRigRoot.GetComponentsInChildren<Rig>()[1];
+        playableRigRoot = playableRigRoot.GetComponentsInChildren<MultipleTagsTool>()[0].transform;
+
 
         Transform[] playableBones = playableRigRoot.GetComponentsInChildren<Transform>();
         Transform[] actorBones = actorRigRoot.GetComponentsInChildren<Transform>();
-        MultiRotationConstraint[] playableRotationConstraints =GetMultiRotationConstraint(playableRig.transform);
+        MultiRotationConstraint[] playableRotationConstraints =GetMultiRotationConstraint(actorData.correspondPlayableRig.transform);
 
         //Set Weight to zero
-        playableRig.weight = 0;
+        actorData.correspondPlayableRig.weight = 0;
 
         //Add Constraints
         for (int i = 0; i < playableRotationConstraints.Length; i++)
@@ -107,11 +111,11 @@ public class CutsceneHandler
         }
 
         //Build Rig
-        rigBuilder = playableRig.GetComponentInParent<RigBuilder>();
-        if (rigBuilder != null)
-            rigBuilder.Build();
+        actorData.rigBuilder = actorData.correspondPlayableRig.GetComponentInParent<RigBuilder>();
+        if (actorData.rigBuilder != null)
+            actorData.rigBuilder.Build();
 
-        playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpIntoRig(playableRig,speed ));
+        playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpIntoRig(actorData.correspondPlayableRig,speed ));
     }
 
     private MultiRotationConstraint[] GetMultiRotationConstraint(Transform transform)
@@ -153,28 +157,33 @@ public class CutsceneHandler
             rig.weight = t;
             yield return null;
         }
+
+        rig.weight = 1;
     }
 
-    IEnumerator _LerpOutOfRig(Rig rig,float speed = 0.1f)
+    IEnumerator _LerpOutOfRig(Rig rig,RigBuilder rigBuilder,float speed = 0.1f)
     {
         float tolerance=0.01f;
         float t = 1;
-        while (Mathf.Abs(0-t)>tolerance)
+        while (t>tolerance)
         {
             t -=Time.deltaTime*speed;
             rig.weight = t;
             yield return null;
         }
+        
+        rig.weight = 0;
+
+        rigBuilder.GetComponent<Animator>().enabled = false;
+        rigBuilder.Build();
     }
 
-    void RemoveContraints()
-    {
-        playableRig.weight = 0;
-    }
 
-    public void StopBlendingRotationAndPosition(float blendSpeed = 1)
-    {
-        playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpOutOfRig(playableRig));
+    public void StopBlendingRotationAndPosition(CharacterType characterType,float blendSpeed = 1)
+    {   
+        playableDirector.GetComponent<Cutscene>().StopAllCoroutines();
+        ActorData actorData = GetActorData(characterType);
+        playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpOutOfRig(actorData.correspondPlayableRig,actorData.rigBuilder));
     }
 
 

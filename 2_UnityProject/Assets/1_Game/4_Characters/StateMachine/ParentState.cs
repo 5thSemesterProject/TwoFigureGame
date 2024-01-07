@@ -133,8 +133,13 @@ public abstract class CharacterState
         
         if (Physics.Raycast(targetToCheckPos,rayDir, out hitInfo, Mathf.Infinity,allLayersMask,QueryTriggerInteraction.Ignore))
         {
-            if (hitInfo.transform.TryGetComponent(out Movement movement))
-                return false;
+            Movement  movementComp=null;
+            Transform parent = hitInfo.transform.parent;
+            if (parent!=null)
+                movementComp = parent.GetComponent<Movement>();
+
+            if (movementComp!=null)
+                    return false;
         }
 
         return true;

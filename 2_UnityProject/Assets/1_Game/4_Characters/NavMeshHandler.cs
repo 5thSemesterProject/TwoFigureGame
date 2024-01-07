@@ -22,9 +22,9 @@ public class NavMeshHandler : MonoBehaviour
     public void FollowPartner(Vector3 otherCharacterPos)
     {
         //Check Oxygenstation due to collider mess
-        Oxygenstation oxygenstation = GetComponent<Movement>().oxygenstation;
+       /* Oxygenstation oxygenstation = GetComponent<Movement>().oxygenstation;
         if (oxygenstation)
-            CheckOxygenstation(oxygenstation);
+            CheckOxygenstation(oxygenstation);*/
 
         //Follow Character in case out of range
         if (GetMovementRequired(otherCharacterPos))
