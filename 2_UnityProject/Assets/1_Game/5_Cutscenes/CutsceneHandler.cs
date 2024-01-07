@@ -13,8 +13,8 @@ using UnityEngine.Playables;
 public class ActorData
 {
     public GameObject actor;
-    public Rig correspondPlayableRig;
-    public RigBuilder rigBuilder;
+    [HideInInspector]public Rig correspondPlayableRig;
+    [HideInInspector]public RigBuilder rigBuilder;
 
     [HideInInspector]public CharacterType characterType;
 
