@@ -161,8 +161,11 @@ class PlayCutsceneState : CutsceneState
 
         characterData.navMeshHandler.DisableNavMesh();
 
-        cutsceneHandler.LerpBones(characterData.gameObject.transform,cutsceneHandler.GetActorData(characterData.CharacterType).actor.transform);
-        cutsceneHandler.LerpPosition(characterData.gameObject.transform,cutsceneHandler.GetActorData(characterData.CharacterType).actor.transform);
+        Transform playableRigRoot = characterData.gameObject.transform;
+        Transform actorRigRoot = cutsceneHandler.GetActorData(characterData.CharacterType).actor.transform;
+
+        cutsceneHandler.LerpBones(playableRigRoot,actorRigRoot,1);
+        cutsceneHandler.LerpPosition(playableRigRoot,actorRigRoot,1);
 
         //Start Cutscene if not already playing
         playableDirector = cutsceneHandler.GetPlayableDirector();
