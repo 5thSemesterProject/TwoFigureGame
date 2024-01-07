@@ -336,10 +336,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d345f89b9e8e044dac27821cc3092a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightIntensity: 980000
-  mainLight: {fileID: 6397517978088068512}
-  bounceLights:
-  - {fileID: 0}
+  highlightIntensity: 1000000
+  mainLight: {fileID: 1017792897100797071}
+  bounceLights: []
   switchDuration: 0.2
 --- !u!1001 &9072344444396087787
 PrefabInstance:
@@ -497,13 +496,13 @@ PrefabInstance:
       addedObject: {fileID: 6181708063686073232}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 077c7443a729ffc46936df7a5d802a74, type: 3}
+--- !u!108 &1017792897100797071 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 8356600680293367140, guid: 077c7443a729ffc46936df7a5d802a74, type: 3}
+  m_PrefabInstance: {fileID: 9072344444396087787}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3373421958460772798 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5996468487490975829, guid: 077c7443a729ffc46936df7a5d802a74, type: 3}
-  m_PrefabInstance: {fileID: 9072344444396087787}
-  m_PrefabAsset: {fileID: 0}
---- !u!108 &6397517978088068512 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 2679639032998853707, guid: 077c7443a729ffc46936df7a5d802a74, type: 3}
   m_PrefabInstance: {fileID: 9072344444396087787}
   m_PrefabAsset: {fileID: 0}
