@@ -18,7 +18,6 @@ class AIState : CharacterState
             characterData.audioListener = null;
         }
            
-
         handleInteractables = false;
 
         collider = characterData.gameObject.AddComponent<BoxCollider>();
@@ -39,9 +38,6 @@ class AIState : CharacterState
             CustomEvents.RaiseCharacterSwitch(characterData.roomFadeRigidBody);
             GameObject.Destroy(collider);
             collider = null;
-
-            characterData.movement.GetComponent<CharacterController>().enabled = false;
-            characterData.movement.GetComponent<NavMeshAgent>().enabled = true;
 
             characterData.movement.MaxSpeed /= GameStats.instance.AISpeedMultiplier;
 

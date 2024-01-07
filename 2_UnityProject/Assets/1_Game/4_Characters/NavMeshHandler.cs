@@ -21,8 +21,6 @@ public class NavMeshHandler : MonoBehaviour
 
     public void FollowPartner(Vector3 otherCharacterPos)
     {
-        navMeshAgent.enabled = true;
-
         //Check Oxygenstation due to collider mess
         Oxygenstation oxygenstation = GetComponent<Movement>().oxygenstation;
         if (oxygenstation)
@@ -32,6 +30,10 @@ public class NavMeshHandler : MonoBehaviour
         if (GetMovementRequired(otherCharacterPos))
         {
             MovePlayerToPos(otherCharacterPos);
+        }
+        else
+        {
+            IdleAnim();
         }
     }
 
