@@ -21,10 +21,6 @@ public class NavMeshHandler : MonoBehaviour
 
     public void FollowPartner(Vector3 otherCharacterPos)
     {
-        //Check Oxygenstation due to collider mess
-       /* Oxygenstation oxygenstation = GetComponent<Movement>().oxygenstation;
-        if (oxygenstation)
-            CheckOxygenstation(oxygenstation);*/
 
         //Follow Character in case out of range
         if (GetMovementRequired(otherCharacterPos))
@@ -91,22 +87,6 @@ public class NavMeshHandler : MonoBehaviour
             navMeshAgent.isStopped = true;
     }
 
-
-    public void CheckOxygenstation(Oxygenstation oxygenstation)
-    {
-        float distance = Vector3.Distance(transform.position,oxygenstation.transform.position);
-
-        if (distance<=oxygenstation.GetIntersectionRadius())
-        {
-            Debug.Log ("In Range with "+distance+" Range was "+oxygenstation.GetIntersectionRadius());
-        }
-        else
-        {
-            Debug.Log ("Out of range with "+distance+" Range was "+oxygenstation.GetIntersectionRadius());
-            GetComponent<Movement>().oxygenstation = null;
-        }
-    }
-
     public bool CheckReachable(Vector3 targetPos)
     {   
         bool currentNavmeshAgentState = navMeshAgent.enabled;
@@ -117,6 +97,11 @@ public class NavMeshHandler : MonoBehaviour
         navMeshAgent.enabled = currentNavmeshAgentState;
         
         return navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete;
+    }
+
+    public void AllowPressurePlateWalking(bool allow)
+    {
+        navMeshAgent.areaMask = allow?-1:~(1 << 3);
     }
 
 }

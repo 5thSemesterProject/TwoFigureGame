@@ -22,6 +22,10 @@ class AIState : CharacterState
 
         collider = characterData.gameObject.AddComponent<BoxCollider>();
         collider.size = Vector3.one*0.1f;
+
+
+        //Keep character from walking on pressureplates
+        characterData.navMeshHandler.AllowPressurePlateWalking(false);
     }
 
     public override CharacterState SpecificStateUpdate()

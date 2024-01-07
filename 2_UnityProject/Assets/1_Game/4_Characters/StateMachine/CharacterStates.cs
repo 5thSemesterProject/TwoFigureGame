@@ -25,6 +25,9 @@ class IdleState : CharacterState
         
         if (characterData.audioListener == null)
             characterData.audioListener = characterData.gameObject.AddComponent<AudioListener>();
+
+        //Allo to walk on pressureplates
+        characterData.navMeshHandler.AllowPressurePlateWalking(true);
     }
 
     public override CharacterState SpecificStateUpdate()

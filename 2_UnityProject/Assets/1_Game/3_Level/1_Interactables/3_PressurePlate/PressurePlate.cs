@@ -34,7 +34,6 @@ public class PressurePlate : MonoBehaviour
         //Add Actions
         interactable.triggerEvent+=TriggerAction;
         interactable.untriggerEvent+=UntriggerAction;
-        interactable.aiStayEvent+=TriggerStayAI;
 
 
         //Set Conditions
@@ -62,12 +61,6 @@ public class PressurePlate : MonoBehaviour
             coroutine = StartCoroutine(PressDownAnim());
         }
 
-
-
-        //Handle Navmesh Obstacle;
-        navMeshObstacle = GetComponent<NavMeshObstacle>();
-        if (navMeshObstacle!=null)
-            navMeshObstacle.enabled = true;
     }
 
     void OnTriggerEnter(Collider other)
@@ -100,12 +93,6 @@ public class PressurePlate : MonoBehaviour
     {
         return !pressed;
     }
-
-    void TriggerStayAI(Movement movement)
-    {
-        if (navMeshObstacle!=null && navMeshObstacle.enabled)
-            navMeshObstacle.enabled = false;
-    } 
 
     void TriggerAction(Movement movement)
     {
