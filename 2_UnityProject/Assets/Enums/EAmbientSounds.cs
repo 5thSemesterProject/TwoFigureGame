@@ -27,6 +27,7 @@ public enum EAmbientSounds
     pressurePlate,
     pullingLever,
     tickingClock,
+    VinylMusic,
     wind,
     woodenDebris,
 }
