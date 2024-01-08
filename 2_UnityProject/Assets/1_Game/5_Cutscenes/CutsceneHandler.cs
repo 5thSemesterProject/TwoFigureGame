@@ -15,8 +15,9 @@ public class ActorData
     public GameObject actor;
     [HideInInspector]public Rig correspondPlayableRig;
     [HideInInspector]public RigBuilder rigBuilder;
-
     [HideInInspector]public CharacterType characterType;
+
+    [HideInInspector] public Coroutine followPositionCOroutine;
 
     public ActorData(GameObject actor,Transform transformRef,CharacterType characterType)
     {
@@ -37,8 +38,6 @@ public class ActorData
 public class CutsceneHandler
 {
     ActorData[] actorDatas;
-
-
     PlayableDirector playableDirector;
 
 
@@ -64,9 +63,10 @@ public class CutsceneHandler
         return null;
     }
 
-    public void LerpPosition(Transform playable, Transform actor, float speed=0.1f)
+    public void LerpPosition(Transform playable, CharacterType characterType, float speed=0.1f)
     {
-         playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpPosition(playable,actor,speed));
+        ActorData actorData = GetActorData(characterType);
+        actorData.followPositionCOroutine = playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpPosition(playable,actorData.actor.transform,speed));
     }
 
     IEnumerator _LerpPosition(Transform source, Transform target, float speed)
@@ -174,16 +174,21 @@ public class CutsceneHandler
         
         rig.weight = 0;
 
-        rigBuilder.GetComponent<Animator>().enabled = false;
+        var rigChildren = rig.GetComponentsInChildren<MultiRotationConstraint>();
+        for (int i = 0; i < rigChildren.Length; i++)
+        {
+            rigChildren[i].data.sourceObjects = new WeightedTransformArray(0);
+            rigChildren[i].data.constrainedObject = null;
+        }
         rigBuilder.Build();
     }
 
 
     public void StopBlendingRotationAndPosition(CharacterType characterType,float blendSpeed = 1)
     {   
-        playableDirector.GetComponent<Cutscene>().StopAllCoroutines();
         ActorData actorData = GetActorData(characterType);
-        playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpOutOfRig(actorData.correspondPlayableRig,actorData.rigBuilder));
+        playableDirector.GetComponent<Cutscene>().StopCoroutine(actorData.followPositionCOroutine);
+        playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpOutOfRig(actorData.correspondPlayableRig,actorData.rigBuilder,blendSpeed));
     }
 
 
