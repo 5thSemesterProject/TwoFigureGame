@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &846234170272261150
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8199033489683479862}
+    m_Modifications:
+    - target: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4498354226919495525, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+      propertyPath: m_Name
+      value: soundTwineHint
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+--- !u!4 &2531918474020550724 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2926569075165256794, guid: 2cd61b9d433d90f4c8a93535010a3850, type: 3}
+  m_PrefabInstance: {fileID: 846234170272261150}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6894434434654133820
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54,7 +116,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3343115766392857354, guid: 26ff49ab69131274795d26ca5ccb9583, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2531918474020550724}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2679345731162798512, guid: 26ff49ab69131274795d26ca5ccb9583, type: 3}
       insertIndex: -1
@@ -69,6 +134,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 269648421253388991}
   m_SourcePrefab: {fileID: 100100000, guid: 26ff49ab69131274795d26ca5ccb9583, type: 3}
+--- !u!4 &8199033489683479862 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3343115766392857354, guid: 26ff49ab69131274795d26ca5ccb9583, type: 3}
+  m_PrefabInstance: {fileID: 6894434434654133820}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8827900966501951372 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2679345731162798512, guid: 26ff49ab69131274795d26ca5ccb9583, type: 3}
@@ -100,6 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   twineStory: 0
+  popupPrefab: {fileID: 0}
 --- !u!114 &4629143688043961702
 MonoBehaviour:
   m_ObjectHideFlags: 0
