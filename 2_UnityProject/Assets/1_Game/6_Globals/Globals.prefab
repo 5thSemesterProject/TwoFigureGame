@@ -96,6 +96,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inactiveFollowDistance: 2
+  defaultCharacterSpeed: 4
+  lowCharacterSpeed: 2
+  AISpeedMultiplier: 0.8
   oxygenStation:
     maxOxygen: 150
     currentOxygen: 0
@@ -104,7 +107,7 @@ MonoBehaviour:
     oxygenData:
       maxOxygen: 100
       currentOxygen: 0
-      fallOfRate: 2
+      fallOfRate: 1.2
     lowOxygenThreshhold: 20
     fallOffTimeInMinutes: 10
     fallOffCurve:

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1262.0538, g: 843.3448, b: 553.77765, a: 1}
+  m_IndirectSpecularColor: {r: 1261.6075, g: 843.0575, b: 553.6679, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3533,10 +3533,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7511887518795668794, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
-      propertyPath: m_RenderingLayerMask
-      value: 261
-      objectReference: {fileID: 0}
     - target: {fileID: 7556859074974029672, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_Intensity
       value: 43237.625
@@ -3564,6 +3560,10 @@ PrefabInstance:
     - target: {fileID: 7616352688739666134, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7662345868857694488, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7665891124028752534, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_LightlayersMask
@@ -3784,6 +3784,10 @@ PrefabInstance:
     - target: {fileID: 8090013915896287939, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: bounceLights.Array.data[5]
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8122082701265440607, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8130187702147406497, guid: 9dc448c161f9d3449a36f15a4564f25d, type: 3}
       propertyPath: m_IsActive
@@ -5065,11 +5069,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 606387098935758635, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_Lens.m_SensorSize.x
-      value: 36
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 606387098935758635, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_Lens.m_SensorSize.y
-      value: 24
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 620729354357644157, guid: 93eb8f1ad9c988c4fb15c3397d45e129, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10912,7 +10916,7 @@ Transform:
   m_GameObject: {fileID: 1405552172}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -22.63, y: 0, z: 3.8}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11382,7 +11386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentToSearchThrough: {fileID: 1667880893}
-  lightlayerToSelect: 1
+  lightlayerToSelect: 8
   enabled: 1
 --- !u!1001 &1997117465
 PrefabInstance:
@@ -11640,20 +11644,12 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
-      propertyPath: characterOxy.maxFallOff
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
       propertyPath: characterOxy.fallOffTime
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
       propertyPath: characterOxy.fallOffIncreaseRate
       value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
-      propertyPath: characterOxy.oxygenData.fallOfRate
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2485981417808355059, guid: 4aa4f3cfca317e64496fe42643ca16a3, type: 3}
       propertyPath: characterOxygenFallOffDecreaseRate
