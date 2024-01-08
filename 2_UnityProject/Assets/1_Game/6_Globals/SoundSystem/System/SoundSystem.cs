@@ -294,7 +294,7 @@ public class SoundSystem : MonoBehaviour
     {
         if (soundClip == null)
         {
-            Debug.LogError("Soundclip was null!");
+            Debug.LogWarning("Soundclip is null!");
             return false;
         }
 
