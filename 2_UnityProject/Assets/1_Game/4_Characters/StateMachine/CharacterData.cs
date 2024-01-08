@@ -19,10 +19,6 @@ public class CharacterData
         navMeshHandler = gameObject.GetComponent<NavMeshHandler>();
         animator = gameObject.GetComponentInChildren<Animator>();
 
-        if (!gameObject.TryGetComponent (out audioListener))
-            audioListener = gameObject.AddComponent<AudioListener>();
-            
-
         var rigidbodysOnCharacter = gameObject.GetComponentsInChildren<Rigidbody>();
         foreach (var rigidbody in rigidbodysOnCharacter)
         {

@@ -87,7 +87,7 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         //Set Up Inputs
         customInputMaps = CustomEventSystem.GetInputMapping;
@@ -154,15 +154,6 @@ public class CharacterManager : MonoBehaviour
         //Statemachine Setup
         womanData.currentState = new SetUpState(womanData);
         manData.currentState = new SetUpState(manData);
-    }
-
-
-    private GameObject[] GetOrSpawnCharacters()
-    {
-        GameObject[] characters = GameObject.FindGameObjectsWithTag("Character");
-        if (characters == null)
-            return new GameObject[0];
-        return characters;
     }
     #endregion
 }
