@@ -99,7 +99,7 @@ public class CutsceneHandler
 
         Transform[] playableBones = playableRigRoot.GetComponentsInChildren<Transform>();
         Transform[] actorBones = actorRigRoot.GetComponentsInChildren<Transform>();
-        MultiRotationConstraint[] playableRotationConstraints =GetMultiRotationConstraint(actorData.correspondPlayableRig.transform);
+        BlendConstraint[] playableRotationConstraints = GetMultiRotationConstraint(actorData.correspondPlayableRig.transform);
 
         //Set Weight to zero
         actorData.correspondPlayableRig.weight = 0;
@@ -118,33 +118,34 @@ public class CutsceneHandler
         playableDirector.GetComponent<Cutscene>().StartCoroutine(_LerpIntoRig(actorData.correspondPlayableRig,speed ));
     }
 
-    private MultiRotationConstraint[] GetMultiRotationConstraint(Transform transform)
+    private BlendConstraint[] GetMultiRotationConstraint(Transform transform)
     {
-        List<MultiRotationConstraint> allrotations = new List<MultiRotationConstraint>();
+        List<BlendConstraint> allrotations = new List<BlendConstraint>();
         var temp = transform.GetComponentsInChildren<Transform>();
         for (int i = 1; i < temp.Length; i++)
         {
-            if (temp[i].TryGetComponent(out MultiRotationConstraint multiRotationConstraint))
+            if (temp[i].TryGetComponent(out BlendConstraint multiRotationConstraint))
             {
                 allrotations.Add(multiRotationConstraint);
             }
             else
             {
-                var newConstraint = temp[i].AddComponent<MultiRotationConstraint>();
-                newConstraint.data.constrainedXAxis = true;
-                newConstraint.data.constrainedYAxis = true;
-                newConstraint.data.constrainedZAxis = true;
+                var newConstraint = temp[i].AddComponent<BlendConstraint>();
                 allrotations.Add(newConstraint);
             }
         }
         return allrotations.ToArray();
     }
 
-    void AddConstraint(Transform constrainedObj,MultiRotationConstraint rotationConstraint, Transform correspondingBone)
+    void AddConstraint(Transform constrainedObj, BlendConstraint rotationConstraint, Transform correspondingBone)
     {
         rotationConstraint.data.constrainedObject = constrainedObj;
-        WeightedTransformArray array = new WeightedTransformArray { new WeightedTransform(correspondingBone,1)};
-        rotationConstraint.data.sourceObjects = array;
+        rotationConstraint.data.sourceObjectA = correspondingBone;
+        rotationConstraint.data.sourceObjectB = correspondingBone;
+        rotationConstraint.data.blendPosition = true;
+        rotationConstraint.data.blendRotation = true;
+        rotationConstraint.data.positionWeight = 0;
+        rotationConstraint.data.rotationWeight = 0;
     }
 
     IEnumerator _LerpIntoRig(Rig rig,float speed = 0.1f)
